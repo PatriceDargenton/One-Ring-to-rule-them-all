@@ -50,12 +50,6 @@ Public Module modFctAct
         ''' </summary>
         ReLuSigmoid = 8
 
-        SigneDoux = 9 ' Converge assez lentement vers la cible (nouvelle fct 09/03/2019)
-        DoubleSeuil = 10 ' (Lineaire2Seuils)
-        PasUnitaire = 11 ' Aucun résultat obtenu (test avec 3Xor)
-        LogistiqueVerhulst = 12 ' Aucun résultat obtenu (test avec 3Xor)
-        Signe = 13 ' ToDo : à tester
-
     End Enum
 
     ' Matrix implementation requires activation function expressed from 
