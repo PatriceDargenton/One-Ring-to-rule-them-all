@@ -78,8 +78,8 @@
     <Compile Include="clsMLPHelper.vb" />
     <Compile Include="clsRndExtension.vb" />
     <Compile Include="modMLPTest.vb" />
-    <Compile Include="MLPClassique\clsMLPClassic.vb" />
-    <Compile Include="MLPClassique\modMLPClassicTest.vb" />
+    <Compile Include="MLPClassic\clsMLPClassic.vb" />
+    <Compile Include="MLPClassic\modMLPClassicTest.vb" />
     <Compile Include="MLPMatrixVec\clsVecMatrixMLP.vb" />
     <Compile Include="MLPMatrixVec\clsVecMatrixMLPTest.vb" />
     <Compile Include="MLPMatrixVec\modLinearAlgebra.vb" />
