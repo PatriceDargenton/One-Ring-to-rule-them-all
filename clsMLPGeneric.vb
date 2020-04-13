@@ -134,11 +134,6 @@ Public MustInherit Class clsMLPGeneric
             Case TActivationFunction.ReLu : Me.activFnc = New ReLuFunction
             Case TActivationFunction.ELU : Me.activFnc = New ELUFunction
             Case TActivationFunction.ReLuSigmoid : Me.activFnc = New ReLuSigmoidFunction
-                'Case TActivationFunction.SigneDoux : Me.activFct = New SweetSignFunction
-                'Case TActivationFunction.DoubleSeuil : Me.activFct = New DoubleThresholdFunction
-                'Case TActivationFunction.PasUnitaire : Me.activFct = New StepFunction
-                'Case TActivationFunction.LogistiqueVerhulst : Me.activFct = New VerhulstFunction
-                'Case TActivationFunction.Signe : Me.activFct = New SignFunction
             Case Else
                 Stop
         End Select
@@ -161,11 +156,6 @@ Public MustInherit Class clsMLPGeneric
             Case TActivationFunction.ReLu : activFnc = New ReLuFunction
             Case TActivationFunction.ELU : activFnc = New ELUFunction
             Case TActivationFunction.ReLuSigmoid : activFnc = New ReLuSigmoidFunction
-            'Case TActivationFunction.SigneDoux : activFnc = New SweetSignFunction
-            'Case TActivationFunction.DoubleSeuil : activFnc = New DoubleThresholdFunction
-            'Case TActivationFunction.PasUnitaire : activFnc = New StepFunction
-            'Case TActivationFunction.LogistiqueVerhulst : activFnc = New VerhulstFunction
-            'Case TActivationFunction.Signe : activFnc = New SignFunction
             Case Else
                 Stop
         End Select

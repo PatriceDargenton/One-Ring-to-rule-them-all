@@ -6,7 +6,7 @@ https://github.com/PatriceDargenton/One-Ring-to-rule-them-all
 This is the classical XOR test.
 
 ## Classic MLP
-http://patrice.dargenton.free.fr/ia/ialab/perceptron.html
+http://patrice.dargenton.free.fr/ia/ialab/perceptron.html (french)
 
 From C++ (at 22/08/2000): https://github.com/sylbarth/mlp
 
