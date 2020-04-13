@@ -143,25 +143,6 @@ Public MustInherit Class clsMLPGeneric
         Me.lambdaFncDFOF = Function(x#) Me.activFnc.DerivativeFromOriginalFunction(x, gain)
     End Sub
 
-    Public Shared Sub SetActivationFunction(
-        ByRef activFnc As IActivationFunction, actFnc As TActivationFunction)
-
-        Select Case actFnc
-            Case TActivationFunction.Identity : activFnc = New IdentityFunction
-            Case TActivationFunction.Sigmoid : activFnc = New SigmoidFunction
-            Case TActivationFunction.HyperbolicTangent : activFnc = New HyperbolicTangentFunction
-            Case TActivationFunction.Gaussian : activFnc = New GaussianFunction
-            Case TActivationFunction.ArcTangent : activFnc = New ArcTangentFunction
-            Case TActivationFunction.Sinus : activFnc = New SinusFunction
-            Case TActivationFunction.ReLu : activFnc = New ReLuFunction
-            Case TActivationFunction.ELU : activFnc = New ELUFunction
-            Case TActivationFunction.ReLuSigmoid : activFnc = New ReLuSigmoidFunction
-            Case Else
-                Stop
-        End Select
-
-    End Sub
-
 #End Region
 
 #Region "Randomize"

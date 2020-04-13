@@ -301,19 +301,15 @@ Friend Class clsMLPClassic : Inherits clsMLPGeneric
 
 #Region "Error"
 
-    Public Function ComputeOutputError(target() As Single,
-        ByRef averageAbsErrN!, isLearning As Boolean) As Single
+    Public Function ComputeOutputError(target() As Single) As Single
 
         Dim averageAbsErr As Single = 0
-        averageAbsErrN = 0
         Dim outputLayerIndex% = Me.layerCount - 1
 
         For i As Integer = 0 To Me.nbOutputNeurons - 1
 
             Dim signal = Me.Layers(outputLayerIndex).Neurons(i).signal
             Dim delta = target(i) - signal
-            Dim deltaN! = 0
-            If Not isLearning Then deltaN = delta
 
             Dim signalCopy! = Me.Layers(outputLayerIndex).Neurons(i).signalCopy
 
@@ -328,14 +324,10 @@ Friend Class clsMLPClassic : Inherits clsMLPGeneric
             Me.Layers(outputLayerIndex).Neurons(i).err = delta * CSng(deriv)
 
             averageAbsErr += Math.Abs(delta)
-            If Not isLearning Then averageAbsErrN += Math.Abs(deltaN)
 
         Next i
 
-        If Me.nbOutputNeurons <> 1 Then
-            averageAbsErr /= Me.nbOutputNeurons
-            If Not isLearning Then averageAbsErrN /= Me.nbOutputNeurons
-        End If
+        If Me.nbOutputNeurons <> 1 Then averageAbsErr /= Me.nbOutputNeurons
 
         Return averageAbsErr
 
@@ -369,10 +361,7 @@ Friend Class clsMLPClassic : Inherits clsMLPGeneric
 
         Dim outputs_array!(Me.nbOutputNeurons - 1)
         Simulate(inputs_array, outputs_array)
-
-        Dim averageAbsErrN! = 0
-        ComputeOutputError(targets_array, averageAbsErrN, isLearning:=True)
-
+        ComputeOutputError(targets_array)
         BackPropagateError()
         AdjustWeights()
 
