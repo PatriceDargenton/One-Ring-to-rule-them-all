@@ -50,6 +50,8 @@ Public Module modFctAct
         ''' </summary>
         ReLuSigmoid = 8
 
+        DoubleThreshold = 9
+
     End Enum
 
     ' Matrix implementation requires activation function expressed from 
@@ -252,12 +254,12 @@ Namespace MLP.ActivationFunction
 
         End Function
 
-        Public Function Derivative#(x#, gain#, centre#) Implements IActivationFunction.Derivative
+        Public Function Derivative#(x#, gain#, center#) Implements IActivationFunction.Derivative
 
-            Dim xc# = x - centre
+            Dim xc# = x - center
             Dim y#
             If gain = 1 Then
-                Dim fx# = Activation(x, gain, centre)
+                Dim fx# = Activation(x, gain, center)
                 y = 1 - fx * fx
             Else
                 Dim xg# = -2 * gain
@@ -461,7 +463,7 @@ Namespace MLP.ActivationFunction
         End Function
 
         Function DoesDerivativeDependOnOriginalFunction() As Boolean Implements IActivationFunction.DoesDerivativeDependOnOriginalFunction
-            If useAlternateDerivativeFunction Then Return True
+            'If useAlternateDerivativeFunction Then Return True
             Return False
         End Function
 
@@ -479,8 +481,8 @@ Namespace MLP.ActivationFunction
 
         Public Function DerivativeFromOriginalFunction#(fx#, gain#) Implements IActivationFunction.DerivativeFromOriginalFunction
             ' ReLUFunction
-            If useAlternateDerivativeFunction Then _
-                Return SigmoidFunction.CommonDerivativeFromOriginalFunction(fx)
+            'If useAlternateDerivativeFunction Then _
+            '    Return SigmoidFunction.CommonDerivativeFromOriginalFunction(fx)
             Return 0
         End Function
 
@@ -492,11 +494,12 @@ Namespace MLP.ActivationFunction
     Public Class ReLuSigmoidFunction : Implements IActivationFunction
 
         Public Function IsNonLinear() As Boolean Implements IActivationFunction.IsNonLinear
-            Return False ' Linear using sigmoid
+            Return True
+            'Return False ' Linear using sigmoid?
         End Function
 
         Function DoesDerivativeDependOnOriginalFunction() As Boolean Implements IActivationFunction.DoesDerivativeDependOnOriginalFunction
-            If useAlternateDerivativeFunction Then Return True
+            'If useAlternateDerivativeFunction Then Return True
             Return False
         End Function
 
@@ -512,6 +515,56 @@ Namespace MLP.ActivationFunction
 
         Public Function DerivativeFromOriginalFunction#(fx#, gain#) Implements IActivationFunction.DerivativeFromOriginalFunction
             Return SigmoidFunction.CommonDerivativeFromOriginalFunction(fx)
+        End Function
+
+    End Class
+
+    ''' <summary>
+    ''' f(x) = Double-threshold(x)
+    ''' </summary>
+    Public Class DoubleThresholdFunction : Implements IActivationFunction
+
+        Public Function IsNonLinear() As Boolean Implements IActivationFunction.IsNonLinear
+            Return True
+        End Function
+
+        Function DoesDerivativeDependOnOriginalFunction() As Boolean Implements IActivationFunction.DoesDerivativeDependOnOriginalFunction
+            'If useAlternateDerivativeFunction Then Return True
+            Return False
+        End Function
+
+        Public Function Activation#(x#, gain#, center#) Implements IActivationFunction.Activation
+
+            Dim xc# = x - center
+            Dim reducedGain# = gain / 8
+            Dim x2#
+            If reducedGain = 0 Then
+                x2 = 0.5
+            Else
+                x2 = (xc + 0.5 / reducedGain) * reducedGain
+            End If
+            Dim y#
+            If x2 < 0.33 Then
+                y = 0
+            ElseIf x2 > 0.66 Then
+                y = 1
+            Else
+                y = x2 / 0.33 - 1
+            End If
+            Return y
+
+        End Function
+
+        Public Function Derivative#(x#, gain#, center#) Implements IActivationFunction.Derivative
+            If useAlternateDerivativeFunction Then _
+                Return SigmoidFunction.CommonDerivative(x, gain, center)
+            Return 0
+        End Function
+
+        Public Function DerivativeFromOriginalFunction#(fx#, gain#) Implements IActivationFunction.DerivativeFromOriginalFunction
+            If useAlternateDerivativeFunction Then _
+                Return SigmoidFunction.CommonDerivativeFromOriginalFunction(fx)
+            Return 0
         End Function
 
     End Class

@@ -5,7 +5,8 @@ Public MustInherit Class clsMLPGeneric
 
 #Region "Declaration"
 
-    Public MustOverride Sub InitStruct(aiNeuronCount%(), addBiasColumn As Boolean)
+    Public MustOverride Sub InitStruct(neuronCount%(), addBiasColumn As Boolean)
+    Public MustOverride Sub WeightInit(layer%, weights#(,))
 
     ''' <summary>
     ''' Round random weights to reproduce functionnal tests exactly
@@ -119,6 +120,8 @@ Public MustInherit Class clsMLPGeneric
     ''' </summary>
     Protected activFnc As MLP.ActivationFunction.IActivationFunction
 
+    Private m_gain!, m_center!
+
     ''' <summary>
     ''' Set registered activation function
     ''' </summary>
@@ -134,6 +137,7 @@ Public MustInherit Class clsMLPGeneric
             Case TActivationFunction.ReLu : Me.activFnc = New ReLuFunction
             Case TActivationFunction.ELU : Me.activFnc = New ELUFunction
             Case TActivationFunction.ReLuSigmoid : Me.activFnc = New ReLuSigmoidFunction
+            Case TActivationFunction.DoubleThreshold : Me.activFnc = New DoubleThresholdFunction
             Case Else
                 Stop
         End Select
@@ -141,6 +145,9 @@ Public MustInherit Class clsMLPGeneric
         Me.lambdaFnc = Function(x#) Me.activFnc.Activation(x, gain, center)
         Me.lambdaFncD = Function(x#) Me.activFnc.Derivative(x, gain, center)
         Me.lambdaFncDFOF = Function(x#) Me.activFnc.DerivativeFromOriginalFunction(x, gain)
+        m_gain = gain
+        m_center = center
+
     End Sub
 
 #End Region
@@ -178,7 +185,7 @@ Public MustInherit Class clsMLPGeneric
     ''' <summary>
     ''' Train one sample
     ''' </summary>
-    Public MustOverride Sub TrainOneSample(inputs_array!(), targets_array!())
+    Public MustOverride Sub TrainOneSample(input!(), target!())
 
     Public Sub Train(Optional learningMode As enumLearningMode = enumLearningMode.Defaut)
         Train(Me.inputArray, Me.targetArray, Me.nbIterations, learningMode)
@@ -189,24 +196,24 @@ Public MustInherit Class clsMLPGeneric
         Train(Me.inputArray, Me.targetArray, nbIterations, learningMode)
     End Sub
 
-    Public Sub Train(inputArray!(,), nbIterations%,
+    Public Sub Train(inputs!(,), nbIterations%,
         Optional learningMode As enumLearningMode = enumLearningMode.Defaut)
-        Train(inputArray, Me.targetArray, nbIterations, learningMode)
+        Train(inputs, Me.targetArray, nbIterations, learningMode)
     End Sub
 
-    Public Sub Train(inputArray!(,), targetArray!(,), nbIterations%,
+    Public Sub Train(inputs!(,), targets!(,), nbIterations%,
         Optional learningMode As enumLearningMode = enumLearningMode.Defaut)
 
         Me.nbIterations = nbIterations
         Select Case learningMode
             Case enumLearningMode.Vectoriel
-                TrainSystematic(inputArray, targetArray, learningMode)
+                TrainSystematic(inputs, targets, learningMode)
             Case enumLearningMode.Systematique
-                TrainSystematic(inputArray, targetArray)
+                TrainSystematic(inputs, targets)
             Case enumLearningMode.SemiStochastique
-                TrainSemiStochastic(inputArray, targetArray)
+                TrainSemiStochastic(inputs, targets)
             Case enumLearningMode.Stochastique
-                TrainStochastic(inputArray, targetArray)
+                TrainStochastic(inputs, targets)
         End Select
 
     End Sub
@@ -297,7 +304,7 @@ Public MustInherit Class clsMLPGeneric
     ''' <summary>
     ''' Test one sample
     ''' </summary>
-    Public MustOverride Sub TestOneSample(inputArray!())
+    Public MustOverride Sub TestOneSample(input!())
 
     ''' <summary>
     ''' Test all samples
@@ -328,6 +335,19 @@ Public MustInherit Class clsMLPGeneric
     Public MustOverride Sub PrintWeights()
 
     Public MustOverride Sub PrintOutput(iteration%)
+
+    Public Sub PrintParameters()
+
+        ShowMessage("")
+        ShowMessage(Now() & " :")
+        ShowMessage("")
+        ShowMessage("learningRate=" & Me.learningRate)
+        ShowMessage("weightAdjustment=" & Me.weightAdjustment)
+        ShowMessage("gain=" & Me.m_gain)
+        ShowMessage("center=" & Me.m_center)
+        ShowMessage("")
+
+    End Sub
 
     Public Function ShowThisIteration(iteration%) As Boolean
         If (iteration < 10 OrElse

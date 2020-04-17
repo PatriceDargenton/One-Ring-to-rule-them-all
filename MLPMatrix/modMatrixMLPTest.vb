@@ -21,6 +21,9 @@ Namespace MatrixMLP
 
             Dim p As New MultiLayerPerceptron()
 
+            p.ShowMessage("Matrix MLP test")
+            p.ShowMessage("---------------")
+
             Dim nbIterations%
 
             ' Sometimes works
@@ -57,24 +60,17 @@ Namespace MatrixMLP
             p.printOutput_ = True
             p.inputArray = inputs
             p.targetArray = targets
-            p.Train()
+            'p.Train()
             'p.Train(clsMLPGeneric.enumLearningMode.SemiStochastique)
-            'p.Train(clsMLPGeneric.enumLearningMode.Stochastique)
+            p.Train(clsMLPGeneric.enumLearningMode.Stochastique)
 
             p.TestAllSamples(inputs, nbOutput)
             p.output = p.outputArray
             p.targetArray = targets
             p.ComputeAverageError()
 
-            ShowMessage("Result matrix: " & p.output.ToString())
-            ShowMessage("Average error = " & p.averageError.ToString("0.000000"))
-            ShowMessage("Done.")
+            p.ShowMessage("Matrix MLP test: Done.")
 
-        End Sub
-
-        Private Sub ShowMessage(msg$)
-            Console.WriteLine(msg)
-            Debug.WriteLine(msg)
         End Sub
 
     End Module

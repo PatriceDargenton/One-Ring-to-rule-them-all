@@ -48,12 +48,12 @@ Namespace MatrixMLP
         Public Sub New()
         End Sub
 
-        Public Overrides Sub InitStruct(aiNeuronCount%(), addBiasColumn As Boolean)
+        Public Overrides Sub InitStruct(neuronCount%(), addBiasColumn As Boolean)
 
-            Dim inputNodes% = aiNeuronCount(0)
-            Dim hiddenNodes% = aiNeuronCount(1)
-            Me.layerCount = aiNeuronCount.Length
-            Dim outputNodes% = aiNeuronCount(Me.layerCount - 1)
+            Dim inputNodes% = neuronCount(0)
+            Dim hiddenNodes% = neuronCount(1)
+            Me.layerCount = neuronCount.Length
+            Dim outputNodes% = neuronCount(Me.layerCount - 1)
             Me.weights_ih = New Matrix(hiddenNodes, inputNodes)
             Me.weights_ho = New Matrix(outputNodes, hiddenNodes)
 
@@ -106,12 +106,17 @@ Namespace MatrixMLP
 
         End Sub
 
+        Public Overrides Sub WeightInit(layer%, weights#(,))
+            Throw New NotImplementedException("WeightInit() is not implemented for clsMatrixMLP!")
+        End Sub
+
         ''' <summary>
         ''' Print weights for functionnal test
         ''' </summary>
         Public Overrides Sub PrintWeights()
-            Debug.WriteLine("")
-            Debug.WriteLine(Now() & " :")
+
+            Me.PrintParameters()
+
             Dim inputNodes% = Me.weights_ih.Rows
             Dim hiddenNodes% = Me.weights_ih.Cols
             Dim outputNodes% = Me.weights_ho.Rows
@@ -119,23 +124,27 @@ Namespace MatrixMLP
                 Dim iNeuronCount% = inputNodes
                 If i > 0 Then iNeuronCount = hiddenNodes
                 If i >= Me.layerCount - 1 Then iNeuronCount = outputNodes
-                Debug.WriteLine("Neuron count(" & i & ")=" & iNeuronCount)
+                ShowMessage("Neuron count(" & i & ")=" & iNeuronCount)
             Next
-            Debug.WriteLine("Me.weights_ih=" & Me.weights_ih.ToString())
-            Debug.WriteLine("Me.weights_ho=" & Me.weights_ho.ToString())
+
+            ShowMessage("")
+            ShowMessage("Me.weights_ih=" & Me.weights_ih.ToString())
+            ShowMessage("Me.weights_ho=" & Me.weights_ho.ToString())
+
             If Me.useBias Then
-                Debug.WriteLine("Me.bias_h=" & Me.bias_h.ToString())
-                Debug.WriteLine("Me.bias_o=" & Me.bias_o.ToString())
+                ShowMessage("Me.bias_h=" & Me.bias_h.ToString())
+                ShowMessage("Me.bias_o=" & Me.bias_o.ToString())
             End If
+
         End Sub
 
         ''' <summary>
         ''' Propagate the input signal into the MLP
         ''' </summary>
-        Public Function FeedForward(inputs_array!()) As Single()
+        Public Function FeedForward(inputsArray!()) As Single()
 
             ' Generating the Hidden Outputs
-            Dim inputs = Matrix.FromArraySingle(inputs_array)
+            Dim inputs = Matrix.FromArraySingle(inputsArray)
             Dim hidden As Matrix
             If Me.useBias Then
                 hidden = Matrix.MultiplyAddAndMap(Me.weights_ih, inputs, Me.bias_h, Me.lambdaFnc)
@@ -160,21 +169,18 @@ Namespace MatrixMLP
         ''' <summary>
         ''' Train MLP with one sample
         ''' </summary>
-        Public Overrides Sub TrainOneSample(inputs_array!(), targets_array!())
+        Public Overrides Sub TrainOneSample(input!(), target!())
 
-            Train_internal(inputs_array, targets_array,
-                backwardLearningRate:=Me.learningRate,
+            Train_internal(input, target,
+                backwardLearningRate:=Me.weightAdjustment,
                 forewardLearningRate:=Me.learningRate)
 
         End Sub
 
-        ''' <summary>
-        ''' Train MLP with one sample using actual activation function
-        ''' </summary>
-        Private Sub Train_internal(inputs_array!(), targets_array!(),
+        Private Sub Train_internal(inputsArray!(), targetsArray!(),
             backwardLearningRate!, forewardLearningRate!)
 
-            Dim inputs = Matrix.FromArraySingle(inputs_array)
+            Dim inputs = Matrix.FromArraySingle(inputsArray)
 
             ' Generating the Hidden Outputs
             Dim hidden As Matrix
@@ -194,7 +200,7 @@ Namespace MatrixMLP
             Me.output = outputs
 
             ' Calculate the error: ERROR = TARGETS - OUTPUTS
-            ComputeErrorOneSample(targets_array)
+            ComputeErrorOneSample(targetsArray)
 
             ' Calculate gradient
             ' Calculate hidden -> output delta weights
@@ -239,10 +245,10 @@ Namespace MatrixMLP
         ''' <summary>
         ''' Compute error from output and target matrices
         ''' </summary>
-        Public Sub ComputeErrorOneSample(targets_array!())
+        Public Sub ComputeErrorOneSample(target!())
 
             ' Calculate the error: ERROR = TARGETS - OUTPUTS
-            Me.lastError = Matrix.SubtractFromArraySingle(targets_array, Me.output)
+            Me.lastError = Matrix.SubtractFromArraySingle(target, Me.output)
 
         End Sub
 
@@ -279,8 +285,12 @@ Namespace MatrixMLP
         Public Overrides Sub PrintOutput(iteration%)
             If ShowThisIteration(iteration) Then
                 ComputeAverageErrorFromLastError()
-                Dim sMsg$ = "Iteration n°" & iteration + 1 & "/" & nbIterations &
-                    " : average error = " & Me.averageError.ToString("0.00")
+                Dim nbTargets% = Me.targetArray.GetLength(1)
+                TestAllSamples(Me.inputArray, nbTargets)
+                Me.output = Me.outputArray
+                Dim sMsg$ = vbLf & "Iteration n°" & iteration + 1 & "/" & nbIterations & vbLf &
+                    "Output: " & Me.output.ToString() & vbLf &
+                    "Average error: " & Me.averageError.ToString("0.000000")
                 ShowMessage(sMsg)
             End If
         End Sub
@@ -288,8 +298,8 @@ Namespace MatrixMLP
         ''' <summary>
         ''' Test one sample
         ''' </summary>
-        Public Overrides Sub TestOneSample(inputs!())
-            Me.lastOutputArraySingle = Me.FeedForward(inputs)
+        Public Overrides Sub TestOneSample(input!())
+            Me.lastOutputArraySingle = Me.FeedForward(input)
         End Sub
 
     End Class

@@ -40,7 +40,7 @@ Namespace MatrixMLP
                 gain:=1, center:=2.2)
 
             InitXOR()
-            m_mlp.Init(learningRate:=0.9, weightAdjustment:=0.05)
+            m_mlp.Init(learningRate:=0.9, weightAdjustment:=0.9)
 
             m_mlp.weights_ih = {
                 {0.95, 0.82},

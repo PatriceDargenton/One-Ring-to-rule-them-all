@@ -7,6 +7,8 @@ Namespace VectorizedMatrixMLP
 
     Public Class clsVectorizedMatrixMLP : Inherits clsMLPGeneric
 
+        ' Note: Me.weightAdjustment: not used there
+
         Public vectorizedLearningMode As Boolean = True
 
         Public input As Matrix
@@ -19,20 +21,20 @@ Namespace VectorizedMatrixMLP
 
         Public exampleCount%
 
-        Public w As Matrix()
+        Private w As Matrix()
 
         Private error_ As Matrix()
         Private lastError As Matrix
 
         Private neuronCount%()
 
-        Public Overrides Sub InitStruct(aiNeuronCount%(), addBiasColumn As Boolean)
+        Public Overrides Sub InitStruct(neuronCount%(), addBiasColumn As Boolean)
 
             Me.useBias = addBiasColumn
-            Me.layerCount = aiNeuronCount.Length
+            Me.layerCount = neuronCount.Length
             ReDim Me.neuronCount(0 To Me.layerCount - 1)
             For i As Integer = 0 To Me.layerCount - 1
-                Me.neuronCount(i) = aiNeuronCount(i)
+                Me.neuronCount(i) = neuronCount(i)
                 If Me.useBias AndAlso
                     i > 0 AndAlso i < Me.layerCount - 1 Then Me.neuronCount(i) += 1 ' Bias
             Next
@@ -56,16 +58,22 @@ Namespace VectorizedMatrixMLP
 
         End Sub
 
+        Public Overrides Sub WeightInit(layer%, weights#(,))
+            Me.w(layer) = weights
+        End Sub
+
         Public Overrides Sub PrintWeights()
 
-            Debug.WriteLine("")
-            Debug.WriteLine(Now() & " :")
+            Me.PrintParameters()
+
             For i As Integer = 0 To Me.layerCount - 1
-                Debug.WriteLine("Neuron count(" & i & ")=" & Me.neuronCount(i))
+                ShowMessage("Neuron count(" & i & ")=" & Me.neuronCount(i))
             Next
 
+            ShowMessage("")
+
             For i = 0 To Me.w.Length - 1
-                Debug.WriteLine("W(" & i & ")=" & Me.w(i).ToString)
+                ShowMessage("W(" & i & ")=" & Me.w(i).ToString)
             Next
 
         End Sub
@@ -93,18 +101,14 @@ Namespace VectorizedMatrixMLP
                     TestAllSamples(Me.inputArray, nbOutputs:=nbTargets)
                     Me.outputMatrix = Me.outputArray
                 End If
-
-                Dim sMsg$ = vbLf &
-                    "-------" & iteration + 1 & "----------------" & vbLf &
-                    "Output: " & Me.outputMatrix.ToString() & vbLf
-                '"Input: " & InputValue.ToString() & vbLf &
+                ComputeAverageError()
+                Dim sMsg$ = vbLf & "Iteration n°" & iteration + 1 & "/" & nbIterations & vbLf &
+                    "Output: " & Me.outputMatrix.ToString() & vbLf &
+                    "Average error: " & Me.averageError.ToString("0.000000")
                 'For i = 0 To Me.LayerCount - 1
                 '    sMsg &= "Error(" & i & ")=" & Me.error_(i).ToString() & vbLf
                 '    sMsg &= "A(" & i & ")=" & A(i).ToString() & vbLf
                 'Next
-
-                ComputeAverageError()
-                sMsg &= "Loss: " & Me.averageError.ToString("0.000000") & vbLf
 
                 ShowMessage(sMsg)
 
@@ -181,7 +185,7 @@ Namespace VectorizedMatrixMLP
             ' Last A must have no Nonlinear function Matrix, Last A must be Equal To Last Z;
             '  because of that Last Delta has not derivated Matrix "Last Delta = Last error Error * 1";
             ' The learning rate must be smaller, like 0.001
-            ' Optionaly you can use a Softmax layer to make a clasifier
+            ' Optionaly you can use a Softmax layer to make a classifier
             ' Use if Relu OR iregularized Values
             If Me.activFnc.IsNonLinear Then A(A.Length - 1) = Z(Z.Length - 1)
 
@@ -273,14 +277,14 @@ Namespace VectorizedMatrixMLP
 
         End Sub
 
-        Public Overrides Sub TrainOneSample(inputs!(), targets!())
+        Public Overrides Sub TrainOneSample(input!(), target!())
 
-            Dim inputsDble#(0, inputs.Length - 1)
-            inputsDble = clsMLPHelper.FillArray2(inputsDble, inputs, 0)
+            Dim inputsDble#(0, input.Length - 1)
+            inputsDble = clsMLPHelper.FillArray2(inputsDble, input, 0)
             Dim matrixInput As Matrix = inputsDble
 
-            Dim targetsDble#(0, targets.Length - 1)
-            targetsDble = clsMLPHelper.FillArray2(targetsDble, targets, 0)
+            Dim targetsDble#(0, target.Length - 1)
+            targetsDble = clsMLPHelper.FillArray2(targetsDble, target, 0)
             Dim TargetValue As Matrix = targetsDble
 
             Me.exampleCount = 1
@@ -289,11 +293,11 @@ Namespace VectorizedMatrixMLP
 
         End Sub
 
-        Public Overrides Sub TestOneSample(inputs!())
+        Public Overrides Sub TestOneSample(input!())
 
-            Dim inputsDble#(0, inputs.Length - 1)
-            inputsDble = clsMLPHelper.FillArray2(inputsDble, inputs, 0)
-            Dim matrixInput As Matrix = inputsDble
+            Dim inputDble#(0, input.Length - 1)
+            inputDble = clsMLPHelper.FillArray2(inputDble, input, 0)
+            Dim matrixInput As Matrix = inputDble
 
             OneIteration(matrixInput, testOnly:=True, computeError:=False)
 

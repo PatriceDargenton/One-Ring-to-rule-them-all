@@ -22,6 +22,10 @@ Namespace VectorizedMatrixMLP
         Public Sub VectorizedMatrixMLPTest()
 
             Dim mlp As New clsVectorizedMatrixMLP
+
+            mlp.ShowMessage("Vectorized Matrix MLP test")
+            mlp.ShowMessage("--------------------------")
+
             mlp.input = m_inputArrayXOR
             mlp.targetArray = m_targetArrayXOR
             mlp.target = mlp.targetArray
@@ -34,6 +38,7 @@ Namespace VectorizedMatrixMLP
             'mlp.nbIterations = 1000 ' ELU: works fine (but only one XOR)
             'mlp.nbIterations = 100000 ' ReLU: Does not work yet, but this next one yes:
             'mlp.nbIterations = 5000 ' ReLUSigmoid: works fine
+            'mlp.nbIterations = 5000 ' Double threshold: works fine
             mlp.SetActivationFunction(TActivationFunction.Sigmoid, gain:=1, center:=0)
 
             mlp.InitStruct(m_neuronCountXOR, addBiasColumn:=True)
@@ -51,6 +56,8 @@ Namespace VectorizedMatrixMLP
             'mlp.Train(clsMLPGeneric.enumLearningMode.Systematique)
             'mlp.Train(clsMLPGeneric.enumLearningMode.SemiStochastique) ' Does not work yet
             'mlp.Train(clsMLPGeneric.enumLearningMode.Stochastique) ' Does not work yet
+
+            mlp.ShowMessage("Vectorized Matrix MLP test: Done.")
 
         End Sub
 

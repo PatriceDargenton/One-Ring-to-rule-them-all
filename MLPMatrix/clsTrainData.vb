@@ -50,7 +50,7 @@ Class ML_TrainingData
         For i As Integer = 0 To rows - 1
             Dim k% = 0
             For j As Integer = cols - tgts To cols - 1
-                Console.WriteLine("row {0} - targetCol {1}", i, k)
+                'Console.WriteLine("row {0} - targetCol {1}", i, k)
                 tgt(i, k) = Me.data(i, j)
             Next
         Next

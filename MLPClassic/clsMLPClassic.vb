@@ -57,9 +57,9 @@ Friend Class clsMLPClassic : Inherits clsMLPGeneric
 
 #Region "Init"
 
-    Public Overrides Sub InitStruct(aiNeuronCount%(), addBiasColumn As Boolean)
+    Public Overrides Sub InitStruct(neuronCount%(), addBiasColumn As Boolean)
 
-        Me.layerCount = aiNeuronCount.GetLength(0)
+        Me.layerCount = neuronCount.GetLength(0)
 
         ReDim Me.Layers(Me.layerCount - 1)
 
@@ -67,7 +67,7 @@ Friend Class clsMLPClassic : Inherits clsMLPGeneric
 
         For i As Integer = 0 To Me.layerCount - 1
             With Me.Layers(i)
-                .nbNeurons = aiNeuronCount(i)
+                .nbNeurons = neuronCount(i)
 
                 If Me.biasType >= TBias.NeuronAdded AndAlso
                     i > 0 AndAlso i < Me.layerCount - 1 Then .nbNeurons -= 1
@@ -114,7 +114,7 @@ Friend Class clsMLPClassic : Inherits clsMLPGeneric
 
     End Sub
 
-    Public Sub WeightInit(layer%, weights#(,))
+    Public Overrides Sub WeightInit(layer%, weights#(,))
 
         For j As Integer = 0 To Me.Layers(layer).nbNeurons - 1
             For k As Integer = 0 To Me.Layers(layer - 1).nbWeights - 1
@@ -126,15 +126,15 @@ Friend Class clsMLPClassic : Inherits clsMLPGeneric
 
     Public Overrides Sub PrintWeights()
 
-        Debug.WriteLine("")
-        Debug.WriteLine(Now() & " :")
+        Me.PrintParameters()
 
         Dim sb As New StringBuilder
-        sb.AppendLine()
 
         For i As Integer = 0 To Me.layerCount - 1
             sb.AppendLine("Neuron count(" & i & ")=" & Me.Layers(i).nbNeurons)
         Next
+
+        sb.AppendLine()
 
         For i As Integer = 1 To Me.layerCount - 1
 
@@ -157,7 +157,7 @@ Friend Class clsMLPClassic : Inherits clsMLPGeneric
 
         Next i
 
-        Debug.WriteLine(sb.ToString())
+        ShowMessage(sb.ToString())
 
     End Sub
 
@@ -353,15 +353,15 @@ Friend Class clsMLPClassic : Inherits clsMLPGeneric
 
 #End Region
 
-    Public Overrides Sub TestOneSample(inputs!())
-        Me.lastOutputArraySingle = FeedForward(inputs)
+    Public Overrides Sub TestOneSample(input!())
+        Me.lastOutputArraySingle = FeedForward(input)
     End Sub
 
-    Public Overrides Sub TrainOneSample(inputs_array!(), targets_array!())
+    Public Overrides Sub TrainOneSample(input!(), target!())
 
-        Dim outputs_array!(Me.nbOutputNeurons - 1)
-        Simulate(inputs_array, outputs_array)
-        ComputeOutputError(targets_array)
+        Dim output!(Me.nbOutputNeurons - 1)
+        Simulate(input, output)
+        ComputeOutputError(target)
         BackPropagateError()
         AdjustWeights()
 
@@ -374,11 +374,11 @@ Friend Class clsMLPClassic : Inherits clsMLPGeneric
             Dim nbTargets% = Me.targetArray.GetLength(1)
             TestAllSamples(Me.inputArray, nbTargets)
             Dim avErr# = ComputeAverageError()
-            Dim msg$ = "Iteration n°" & iteration + 1 & "/" & nbIterations &
-                " : average error = " & avErr.ToString("0.00")
-            ShowMessage(msg)
             Dim outputMaxtrix As MatrixMLP.Matrix = Me.outputArraySingle
-            ShowMessage("Result matrix: " & outputMaxtrix.ToString())
+            Dim msg$ = vbLf & "Iteration n°" & iteration + 1 & "/" & nbIterations & vbLf &
+                "Output: " & outputMaxtrix.ToString() & vbLf &
+                "Average error: " & avErr.ToString("0.000000")
+            ShowMessage(msg)
 
         End If
 
