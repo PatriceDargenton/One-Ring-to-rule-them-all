@@ -48,6 +48,11 @@ Namespace VectorizedMatrixMLP
 
             mlp.PrintWeights()
 
+            Console.WriteLine()
+            Console.WriteLine("Press a key to start.")
+            Console.ReadKey()
+            Console.WriteLine()
+
             mlp.printOutput_ = True
             mlp.TrainVector()
 

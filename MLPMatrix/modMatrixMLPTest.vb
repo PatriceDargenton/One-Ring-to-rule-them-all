@@ -50,6 +50,13 @@ Namespace MatrixMLP
             p.Init(learningRate:=0.1, weightAdjustment:=0.1)
 
             p.Randomize(-1, 2)
+            p.PrintWeights()
+
+            Console.WriteLine()
+            Console.WriteLine("Press a key to start.")
+            Console.ReadKey()
+            Console.WriteLine()
+
             Dim nbOutput% = 1
             Dim training As New ML_TrainingData(inputsLength:=2, targetsLength:=nbOutput)
             training.Create()

@@ -22,35 +22,36 @@ Public Module modFctAct
     Public Const debugActivationFunction As Boolean = False
 
     Public Enum TActivationFunction ' Type for Activation Function
-        Identity = 0
-        Sigmoid = 1
-        HyperbolicTangent = 2
-        Gaussian = 3
+        Undefined = 0
+        Identity = 1
+        Sigmoid = 2
+        HyperbolicTangent = 3
+        Gaussian = 4
 
         ''' <summary>
         ''' Arc tangent (Atan or tan^-1: inverse of tangent function)
         ''' </summary>
-        ArcTangent = 4
+        ArcTangent = 5
 
-        Sinus = 5
+        Sinus = 6
 
         ''' <summary>
         ''' Exponential Linear Units (ELU)
         ''' </summary>
-        ELU = 6
+        ELU = 7
 
         ''' <summary>
         ''' Rectified Linear Units (ReLU)
         ''' f(x) = Max(0, x) : return x if x > 0 or return 0
         ''' </summary>
-        ReLu = 7
+        ReLu = 8
 
         ''' <summary>
         ''' Rectified Linear Units (ReLU) with sigmoid for derivate
         ''' </summary>
-        ReLuSigmoid = 8
+        ReLuSigmoid = 9
 
-        DoubleThreshold = 9
+        DoubleThreshold = 10
 
     End Enum
 
@@ -248,7 +249,15 @@ Namespace MLP.ActivationFunction
                 y = 0
                 If expMax Then y = -clsMLPGeneric.expMax
             Else
-                y = 2 / (1 + Math.Exp(xg)) - 1
+                y = 2 / (1 + Math.Exp(xg)) - 1 ' = Math.Tanh(-xg / 2)
+
+                ' https://www.wolframalpha.com/input/?i=HyperbolicTangent
+                If debugActivationFunction Then
+                    'Dim th# = Math.Tanh(gain * xc)
+                    Dim th# = Math.Tanh(-xg / 2)
+                    If Not clsMLPHelper.Compare(y, th, dec:=5) Then Stop
+                End If
+
             End If
             Return y
 

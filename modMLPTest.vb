@@ -2,6 +2,7 @@
 Module modMLPTest
 
     Public ReadOnly m_neuronCountXOR As Integer() = {2, 2, 1}
+    Public ReadOnly m_neuronCountXOR231 As Integer() = {2, 3, 1} ' With bias
     Public ReadOnly m_neuronCount2XOR As Integer() = {4, 4, 2}
     Public ReadOnly m_neuronCount3XOR As Integer() = {6, 6, 3}
 

@@ -283,16 +283,21 @@ Namespace MatrixMLP
         End Sub
 
         Public Overrides Sub PrintOutput(iteration%)
+
             If ShowThisIteration(iteration) Then
-                ComputeAverageErrorFromLastError()
+
+                'ComputeAverageErrorFromLastError()
                 Dim nbTargets% = Me.targetArray.GetLength(1)
                 TestAllSamples(Me.inputArray, nbTargets)
                 Me.output = Me.outputArray
+                ComputeAverageError()
                 Dim sMsg$ = vbLf & "Iteration n°" & iteration + 1 & "/" & nbIterations & vbLf &
                     "Output: " & Me.output.ToString() & vbLf &
                     "Average error: " & Me.averageError.ToString("0.000000")
                 ShowMessage(sMsg)
+
             End If
+
         End Sub
 
         ''' <summary>

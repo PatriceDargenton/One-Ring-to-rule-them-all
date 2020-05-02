@@ -12,6 +12,11 @@ http://patrice.dargenton.free.fr/ia/ialab/perceptron.html (french)
 
 From C++ (at 22/08/2000): https://github.com/sylbarth/mlp
 
+## Object-oriented programming MLP
+https://github.com/PatriceDargenton/multilayer-perceptron-vb (VB .Net)
+
+From : https://github.com/RutledgePaulV/multilayer-perceptron-vb (VB .Net)
+
 ## Matrix MLP: implementation using matrix products
 https://github.com/PatriceDargenton/Matrix-MultiLayerPerceptron (VB .Net)
 
@@ -29,6 +34,12 @@ From C#: https://github.com/HectorPulido/Vectorized-multilayer-neural-network
 
 
 # Versions
+
+02/05/2020 V1.03
+- OOP MLP version
+- MatrixMLP: PrintOutput fixed
+- Vectorized Matrix MLP: faster tests
+- PrintParameters: activation function name displayed
 
 17/04/2020 V1.02
 - clsMLPGeneric: MustOverride WeightInit(layer%, weights#(,))

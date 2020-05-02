@@ -1,5 +1,5 @@
 ﻿
-'Option Infer On
+Imports System.ComponentModel ' DescriptionAttribute
 
 Public Class clsMLPHelper
 
@@ -50,6 +50,15 @@ Public Class clsMLPHelper
         Return arr
     End Function
 
+    Public Shared Function ConvertSingleToDouble1D(inputs!()) As Double()
+        Dim length0% = inputs.GetLength(0)
+        Dim arr#(0 To length0 - 1)
+        For i As Integer = 0 To length0 - 1
+            arr(i) = inputs(i)
+        Next
+        Return arr
+    End Function
+
     Public Shared Function ConvertDoubleToSingle(inputs#()) As Single()
         Dim length0% = inputs.GetLength(0)
         Dim arr!(0 To length0 - 1)
@@ -67,5 +76,19 @@ Public Class clsMLPHelper
         Return False
 
     End Function
+
+    Public Shared Function ReadEnumDescription$(ByVal monEnum As [Enum])
+
+       Dim fi As Reflection.FieldInfo = monEnum.GetType().GetField(monEnum.ToString())
+       Dim aAttr() As DescriptionAttribute = DirectCast( _
+           fi.GetCustomAttributes(GetType(DescriptionAttribute), False), 
+           DescriptionAttribute())
+       If aAttr.Length > 0 Then
+           Return aAttr(0).Description
+       Else
+           Return monEnum.ToString()
+       End If
+
+   End Function
 
 End Class

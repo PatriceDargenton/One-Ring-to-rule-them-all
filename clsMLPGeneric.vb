@@ -66,12 +66,12 @@ Public MustInherit Class clsMLPGeneric
     ''' <summary>
     ''' Learning rate of the MLP (Eta coeff.)
     ''' </summary>
-    Protected learningRate!
+    Public learningRate!
 
     ''' <summary>
-    ''' Weight adjustment of the MLP (Alpha coeff.)
+    ''' Weight adjustment of the MLP (Alpha coeff. or momentum)
     ''' </summary>
-    Protected weightAdjustment!
+    Public weightAdjustment!
 
     Public Sub Init(learningRate!, weightAdjustment!)
 
@@ -121,32 +121,37 @@ Public MustInherit Class clsMLPGeneric
     Protected activFnc As MLP.ActivationFunction.IActivationFunction
 
     Private m_gain!, m_center!
+    Private m_actFunc As TActivationFunction = TActivationFunction.Undefined
 
     ''' <summary>
     ''' Set registered activation function
     ''' </summary>
-    Public Sub SetActivationFunction(ActFnc As TActivationFunction, gain!, center!)
+    Public Sub SetActivationFunction(actFnc As TActivationFunction, gain!, center!)
 
-        Select Case ActFnc
+        Select Case actFnc
+            Case TActivationFunction.Undefined : Me.activFnc = Nothing
             Case TActivationFunction.Identity : Me.activFnc = New IdentityFunction
             Case TActivationFunction.Sigmoid : Me.activFnc = New SigmoidFunction
             Case TActivationFunction.HyperbolicTangent : Me.activFnc = New HyperbolicTangentFunction
             Case TActivationFunction.Gaussian : Me.activFnc = New GaussianFunction
             Case TActivationFunction.ArcTangent : Me.activFnc = New ArcTangentFunction
             Case TActivationFunction.Sinus : Me.activFnc = New SinusFunction
-            Case TActivationFunction.ReLu : Me.activFnc = New ReLuFunction
             Case TActivationFunction.ELU : Me.activFnc = New ELUFunction
+            Case TActivationFunction.ReLu : Me.activFnc = New ReLuFunction
             Case TActivationFunction.ReLuSigmoid : Me.activFnc = New ReLuSigmoidFunction
             Case TActivationFunction.DoubleThreshold : Me.activFnc = New DoubleThresholdFunction
             Case Else
                 Stop
         End Select
 
-        Me.lambdaFnc = Function(x#) Me.activFnc.Activation(x, gain, center)
-        Me.lambdaFncD = Function(x#) Me.activFnc.Derivative(x, gain, center)
-        Me.lambdaFncDFOF = Function(x#) Me.activFnc.DerivativeFromOriginalFunction(x, gain)
+        If Not IsNothing(Me.activFnc) Then
+            Me.lambdaFnc = Function(x#) Me.activFnc.Activation(x, gain, center)
+            Me.lambdaFncD = Function(x#) Me.activFnc.Derivative(x, gain, center)
+            Me.lambdaFncDFOF = Function(x#) Me.activFnc.DerivativeFromOriginalFunction(x, gain)
+        End If
         m_gain = gain
         m_center = center
+        m_actFunc = actFnc
 
     End Sub
 
@@ -266,8 +271,8 @@ Public MustInherit Class clsMLPGeneric
             Next
             For j As Integer = 0 To nbLines - 1
 
-                Dim iNbElemRestants% = lstEch.Count
-                Dim r% = rndShared.Next(maxValue:=iNbElemRestants)
+                Dim nbItemsRemaining% = lstEch.Count
+                Dim r% = rndShared.Next(maxValue:=nbItemsRemaining)
                 lstEch.RemoveAt(r)
 
                 Dim inp = clsMLPHelper.GetVector(inputs, r)
@@ -343,6 +348,7 @@ Public MustInherit Class clsMLPGeneric
         ShowMessage("")
         ShowMessage("learningRate=" & Me.learningRate)
         ShowMessage("weightAdjustment=" & Me.weightAdjustment)
+        ShowMessage("activation function=" & clsMLPHelper.ReadEnumDescription(Me.m_actFunc))
         ShowMessage("gain=" & Me.m_gain)
         ShowMessage("center=" & Me.m_center)
         ShowMessage("")

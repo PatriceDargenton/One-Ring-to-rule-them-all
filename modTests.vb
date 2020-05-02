@@ -8,6 +8,11 @@ Module modTests
         Console.ReadKey()
         Console.WriteLine()
 
+        OOPMLPScenario1()
+        Console.WriteLine("Press a key to continue.")
+        Console.ReadKey()
+        Console.WriteLine()
+
         MatrixMLP.MatrixMLPTest()
         Console.WriteLine("Press a key to continue.")
         Console.ReadKey()
