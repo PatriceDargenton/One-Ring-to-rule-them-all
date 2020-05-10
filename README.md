@@ -35,6 +35,9 @@ From C#: https://github.com/HectorPulido/Vectorized-multilayer-neural-network
 
 # Versions
 
+10/05/2020 V1.05
+- Vectorized Matrix MLP: faster tests
+
 10/05/2020 V1.04
 - Homogenization of function names
 - Vectorized Matrix MLP: standard tests
