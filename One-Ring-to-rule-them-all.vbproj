@@ -76,6 +76,7 @@
     <Compile Include="modActivation.vb" />
     <Compile Include="clsMLPGeneric.vb" />
     <Compile Include="clsMLPHelper.vb" />
+    <Compile Include="modMLPHelper.vb" />
     <Compile Include="clsRndExtension.vb" />
     <Compile Include="modMLPTest.vb" />
     <Compile Include="MLPClassic\clsMLPClassic.vb" />

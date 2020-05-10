@@ -60,6 +60,7 @@ Friend Class clsMLPClassic : Inherits clsMLPGeneric
     Public Overrides Sub InitStruct(neuronCount%(), addBiasColumn As Boolean)
 
         Me.layerCount = neuronCount.GetLength(0)
+        Me.useBias = addBiasColumn
 
         ReDim Me.Layers(Me.layerCount - 1)
 
@@ -146,7 +147,7 @@ Friend Class clsMLPClassic : Inherits clsMLPGeneric
                 Dim nbWeights% = Me.Layers(i - 1).nbWeights
                 For k As Integer = 0 To nbWeights - 1
                     Dim rPoids! = Me.Layers(i).Neurons(j).w(k)
-                    Dim sVal$ = rPoids.ToString("0.00").Replace(",", ".")
+                    Dim sVal$ = rPoids.ToString(format2Dec).ReplaceCommaByDot()
                     sb.Append(sVal)
                     If k < nbWeights - 1 Then sb.Append(", ")
                 Next k
@@ -154,6 +155,8 @@ Friend Class clsMLPClassic : Inherits clsMLPGeneric
                 If j < nbNeurons - 1 Then sb.Append("," & vbLf)
             Next j
             sb.Append("}" & vbLf)
+
+            If i < Me.layerCount - 1 Then sb.AppendLine()
 
         Next i
 
@@ -165,19 +168,29 @@ Friend Class clsMLPClassic : Inherits clsMLPGeneric
 
 #Region "Compute"
 
-    Public Function FeedForward(input!()) As Single()
+    Public Overrides Sub TestOneSample(input!())
 
         Dim ouput!(Me.nbOutputNeurons - 1)
-        Simulate(input, ouput)
-        Return ouput
+        TestOneSample(input, ouput)
+        Me.lastOutputArraySingle = ouput
 
-    End Function
+    End Sub
 
-    Public Sub Simulate(input() As Single, ByRef ouput() As Single)
+    Public Overrides Sub TestOneSample(input() As Single, ByRef ouput() As Single)
 
         SetInputSignal(input)
-        PropagateSignal()
+        ForwardPropogateSignal()
         GetOutputSignal(ouput)
+
+    End Sub
+
+    Public Overrides Sub TrainOneSample(input!(), target!())
+
+        Dim output!(Me.nbOutputNeurons - 1)
+        TestOneSample(input, output)
+        ComputeOutputError(target)
+        BackwardPropagateError()
+        ComputeGradientAndAdjustWeights()
 
     End Sub
 
@@ -189,7 +202,7 @@ Friend Class clsMLPClassic : Inherits clsMLPGeneric
 
     End Sub
 
-    Private Sub PropagateSignal()
+    Private Sub ForwardPropogateSignal()
 
         ' Calculate and feedforward outputs from the first layer to the last
 
@@ -241,9 +254,9 @@ Friend Class clsMLPClassic : Inherits clsMLPGeneric
 
     End Sub
 
-    Public Sub BackPropagateError()
+    Public Sub BackwardPropagateError()
 
-        ' Backpropagate error from the output layer through to the first layer
+        ' Backward propagate error from the output layer through to the first layer
 
         Dim sumError As Single
         For i As Integer = Me.layerCount - 2 To 0 Step -1
@@ -264,8 +277,9 @@ Friend Class clsMLPClassic : Inherits clsMLPGeneric
 
     End Sub
 
-    Public Sub AdjustWeights()
+    Public Sub ComputeGradientAndAdjustWeights()
 
+        ' Gradient descend: Compute gradient and adjust weights
         ' Update weights for all of the neurons from the first to the last layer
 
         For i As Integer = 1 To Me.layerCount - 1
@@ -353,20 +367,6 @@ Friend Class clsMLPClassic : Inherits clsMLPGeneric
 
 #End Region
 
-    Public Overrides Sub TestOneSample(input!())
-        Me.lastOutputArraySingle = FeedForward(input)
-    End Sub
-
-    Public Overrides Sub TrainOneSample(input!(), target!())
-
-        Dim output!(Me.nbOutputNeurons - 1)
-        Simulate(input, output)
-        ComputeOutputError(target)
-        BackPropagateError()
-        AdjustWeights()
-
-    End Sub
-
     Public Overrides Sub PrintOutput(iteration%)
 
         If ShowThisIteration(iteration) Then
@@ -377,7 +377,7 @@ Friend Class clsMLPClassic : Inherits clsMLPGeneric
             Dim outputMaxtrix As MatrixMLP.Matrix = Me.outputArraySingle
             Dim msg$ = vbLf & "Iteration n°" & iteration + 1 & "/" & nbIterations & vbLf &
                 "Output: " & outputMaxtrix.ToString() & vbLf &
-                "Average error: " & avErr.ToString("0.000000")
+                "Average error: " & avErr.ToString(format6Dec)
             ShowMessage(msg)
 
         End If

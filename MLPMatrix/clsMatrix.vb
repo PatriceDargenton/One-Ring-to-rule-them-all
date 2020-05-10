@@ -177,14 +177,14 @@ Namespace MatrixMLP
             Return ToStringWithFormat()
         End Function
 
-        Public Function ToStringWithFormat$(Optional dec$ = "0.00")
+        Public Function ToStringWithFormat$(Optional dec$ = format2Dec)
 
             Dim sb As New StringBuilder
             sb.AppendLine("{")
             For i As Integer = 0 To Me.m_rows - 1
                 sb.Append(" {")
                 For j As Integer = 0 To Me.m_cols - 1
-                    Dim strVal$ = Me.data(i, j).ToString(dec).Replace(",", ".")
+                    Dim strVal$ = Me.data(i, j).ToString(dec).ReplaceCommaByDot()
                     sb.Append(strVal)
                     If j < Me.m_cols - 1 Then sb.Append(", ")
                 Next

@@ -53,6 +53,14 @@ Namespace MatrixMLP
             Dim inputNodes% = neuronCount(0)
             Dim hiddenNodes% = neuronCount(1)
             Me.layerCount = neuronCount.Length
+
+            If Me.layerCount <> 3 Then
+                ' ToDo: declare and use Me.weights_ih2 to compute 2 hidden layers
+                MsgBox("This Matrix implementation can only compute one hidden layer!",
+                    MsgBoxStyle.Exclamation)
+                Me.layerCount = 3
+            End If
+
             Dim outputNodes% = neuronCount(Me.layerCount - 1)
             Me.weights_ih = New Matrix(hiddenNodes, inputNodes)
             Me.weights_ho = New Matrix(outputNodes, hiddenNodes)
@@ -139,9 +147,20 @@ Namespace MatrixMLP
         End Sub
 
         ''' <summary>
+        ''' Test one sample
+        ''' </summary>
+        Public Overrides Sub TestOneSample(input!())
+            Me.lastOutputArraySingle = Me.ForwardPropogateSignal(input)
+        End Sub
+
+        Public Overrides Sub TestOneSample(input() As Single, ByRef ouput() As Single)
+            ouput = ForwardPropogateSignal(input)
+        End Sub
+
+        ''' <summary>
         ''' Propagate the input signal into the MLP
         ''' </summary>
-        Public Function FeedForward(inputsArray!()) As Single()
+        Private Function ForwardPropogateSignal(inputsArray!()) As Single()
 
             ' Generating the Hidden Outputs
             Dim inputs = Matrix.FromArraySingle(inputsArray)
@@ -169,16 +188,7 @@ Namespace MatrixMLP
         ''' <summary>
         ''' Train MLP with one sample
         ''' </summary>
-        Public Overrides Sub TrainOneSample(input!(), target!())
-
-            Train_internal(input, target,
-                backwardLearningRate:=Me.weightAdjustment,
-                forewardLearningRate:=Me.learningRate)
-
-        End Sub
-
-        Private Sub Train_internal(inputsArray!(), targetsArray!(),
-            backwardLearningRate!, forewardLearningRate!)
+        Public Overrides Sub TrainOneSample(inputsArray!(), targetsArray!())
 
             Dim inputs = Matrix.FromArraySingle(inputsArray)
 
@@ -201,12 +211,13 @@ Namespace MatrixMLP
 
             ' Calculate the error: ERROR = TARGETS - OUTPUTS
             ComputeErrorOneSample(targetsArray)
+            ComputeAverageErrorFromLastError() ' 08/05/2020
 
             ' Calculate gradient
             ' Calculate hidden -> output delta weights
             ' Adjust the weights by deltas
             ' Calculate the hidden layer errors
-            ComputeGradient(outputs, Me.lastError, hidden, backwardLearningRate,
+            BackwardPropagateErrorComputeGradientAndAdjustWeights(outputs, Me.lastError, hidden, Me.weightAdjustment,
                 Me.weights_ho, Me.bias_o)
 
             ' Calculate the hidden layer errors
@@ -215,15 +226,15 @@ Namespace MatrixMLP
             ' Calculate hidden gradient
             ' Calculate input -> hidden delta weights
             ' Adjust the bias by its deltas (which is just the gradients)
-            ComputeGradient(hidden, hidden_errors, inputs, forewardLearningRate,
+            BackwardPropagateErrorComputeGradientAndAdjustWeights(hidden, hidden_errors, inputs, Me.learningRate,
                 Me.weights_ih, Me.bias_h)
 
         End Sub
 
         ''' <summary>
-        ''' Compute gradient and return weight and bias matrices
+        ''' Gradient descend: Compute gradient and adjust weights
         ''' </summary>
-        Public Sub ComputeGradient(final As Matrix, error_ As Matrix, original As Matrix,
+        Public Sub BackwardPropagateErrorComputeGradientAndAdjustWeights(final As Matrix, error_ As Matrix, original As Matrix,
             learningRate!, ByRef weight As Matrix, ByRef bias As Matrix)
 
             ' Calculate gradient
@@ -293,18 +304,11 @@ Namespace MatrixMLP
                 ComputeAverageError()
                 Dim sMsg$ = vbLf & "Iteration n°" & iteration + 1 & "/" & nbIterations & vbLf &
                     "Output: " & Me.output.ToString() & vbLf &
-                    "Average error: " & Me.averageError.ToString("0.000000")
+                    "Average error: " & Me.averageError.ToString(format6Dec)
                 ShowMessage(sMsg)
 
             End If
 
-        End Sub
-
-        ''' <summary>
-        ''' Test one sample
-        ''' </summary>
-        Public Overrides Sub TestOneSample(input!())
-            Me.lastOutputArraySingle = Me.FeedForward(input)
         End Sub
 
     End Class

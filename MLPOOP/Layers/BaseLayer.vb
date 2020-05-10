@@ -109,12 +109,12 @@ Namespace Layers
                 Dim iNumW% = 0
                 For Each rVal In n2.WeightsToParent
                     iNumW += 1
-                    sb.Append(rVal.Value.ToString("0.00").Replace(",", "."))
+                    sb.Append(rVal.Value.ToString(format2Dec).ReplaceCommaByDot())
                     If iNumW < iNbW Then sb.Append(", ")
                 Next
 
                 If Not IsNothing(n2.WeightToBias) Then
-                    sb.Append(", " & n2.WeightToBias.Value.ToString("0.00").Replace(",", "."))
+                    sb.Append(", " & n2.WeightToBias.Value.ToString(format2Dec).ReplaceCommaByDot())
                 End If
 
                 Dim sVirg$ = ""

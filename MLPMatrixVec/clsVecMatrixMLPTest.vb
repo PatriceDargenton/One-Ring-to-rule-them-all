@@ -15,28 +15,29 @@ Namespace VectorizedMatrixMLP
 
         Private m_mlp As New clsVectorizedMatrixMLP
 
+        'Private m_mlp As New clsMLPClassic ' Not same weight array size
+        'Private m_mlp As New MatrixMLP.MultiLayerPerceptron ' WeightInit not implemented
+        'Private m_mlp As New NetworkOOP.MultilayerPerceptron ' Not same weight array size
+
         <TestInitialize()>
         Public Sub Init()
         End Sub
 
         Private Sub InitXOR()
             m_mlp.Init(learningRate:=0.1!, weightAdjustment:=0)
-            m_mlp.input = m_inputArrayXOR
-            m_mlp.target = m_targetArrayXOR
+            m_mlp.inputArray = m_inputArrayXOR
             m_mlp.targetArray = m_targetArrayXOR
         End Sub
 
         Private Sub Init2XOR()
             m_mlp.Init(learningRate:=0.1!, weightAdjustment:=0)
-            m_mlp.input = m_inputArray2XOR
-            m_mlp.target = m_targetArray2XOR
+            m_mlp.inputArray = m_inputArray2XOR
             m_mlp.targetArray = m_targetArray2XOR
         End Sub
 
         Private Sub Init3XOR()
             m_mlp.Init(learningRate:=0.1!, weightAdjustment:=0)
-            m_mlp.input = m_inputArray3XOR
-            m_mlp.target = m_targetArray3XOR
+            m_mlp.inputArray = m_inputArray3XOR
             m_mlp.targetArray = m_targetArray3XOR
         End Sub
 
@@ -49,18 +50,19 @@ Namespace VectorizedMatrixMLP
 
             m_mlp.InitStruct(m_neuronCountXOR, addBiasColumn:=True)
 
-            m_mlp.WeightInit(0, {
+            m_mlp.WeightInit(1, {
                  {-0.5, -0.78, -0.07},
                  {0.54, 0.32, -0.13},
                  {-0.29, 0.89, -0.8}})
-            m_mlp.WeightInit(1, {
+            m_mlp.WeightInit(2, {
                  {0.28},
                  {-0.94},
                  {-0.5},
                  {-0.36}})
 
-            m_mlp.TrainVector()
+            'm_mlp.TrainVector()
             'm_mlp.Train(clsMLPGeneric.enumLearningMode.Vectoriel)
+            m_mlp.Train()
 
             Dim expectedOutput = New Double(,) {
                 {0.97},
@@ -68,12 +70,14 @@ Namespace VectorizedMatrixMLP
                 {0.97},
                 {0.02}}
 
-            Dim sOutput = m_mlp.outputMatrix.ToString()
+            'Dim sOutput = m_mlp.outputMatrix.ToString()
+            Dim outputMatrix As Matrix = m_mlp.outputArraySingle ' Single(,) -> Matrix
+            Dim sOutput$ = outputMatrix.ToString()
             Dim expectedMatrix As Matrix = expectedOutput ' Double(,) -> Matrix
             Dim sExpectedOutput = expectedMatrix.ToString()
             Assert.AreEqual(sOutput, sExpectedOutput)
 
-            Dim rExpectedLoss# = 0.1
+            Dim rExpectedLoss# = 0.02 '0.1
             Dim rLoss! = m_mlp.ComputeAverageError()
             Dim rLossRounded# = Math.Round(rLoss, 2)
             Assert.AreEqual(rExpectedLoss, rLossRounded)
@@ -89,15 +93,16 @@ Namespace VectorizedMatrixMLP
 
             m_mlp.InitStruct(m_neuronCountXOR, addBiasColumn:=False)
 
-            m_mlp.WeightInit(0, {
+            m_mlp.WeightInit(1, {
                 {0.38, 0.55},
                 {0.24, 0.58}})
-            m_mlp.WeightInit(1, {
+            m_mlp.WeightInit(2, {
                 {0.2},
                 {0.16}})
 
-            m_mlp.TrainVector()
+            'm_mlp.TrainVector()
             'm_mlp.Train(clsMLPGeneric.enumLearningMode.Vectoriel)
+            m_mlp.Train()
 
             Dim expectedOutput = New Double(,) {
                 {0.93},
@@ -105,12 +110,14 @@ Namespace VectorizedMatrixMLP
                 {0.93},
                 {0.09}}
 
-            Dim sOutput = m_mlp.outputMatrix.ToString()
+            'Dim sOutput = m_mlp.outputMatrix.ToString()
+            Dim outputMatrix As Matrix = m_mlp.outputArraySingle ' Single(,) -> Matrix
+            Dim sOutput$ = outputMatrix.ToString()
             Dim expectedMatrix As Matrix = expectedOutput ' Double(,) -> Matrix
             Dim sExpectedOutput = expectedMatrix.ToString()
             Assert.AreEqual(sOutput, sExpectedOutput)
 
-            Dim rExpectedLoss# = 0.26
+            Dim rExpectedLoss# = 0.07 '0.26
             Dim rLoss! = m_mlp.ComputeAverageError()
             Dim rLossRounded# = Math.Round(rLoss, 2)
             Assert.AreEqual(rExpectedLoss, rLossRounded)
@@ -126,18 +133,19 @@ Namespace VectorizedMatrixMLP
 
             m_mlp.InitStruct(m_neuronCountXOR, addBiasColumn:=True)
 
-            m_mlp.WeightInit(0, {
+            m_mlp.WeightInit(1, {
                  {-0.5, -0.78, -0.07},
                  {0.54, 0.32, -0.13},
                  {-0.29, 0.89, -0.8}})
-            m_mlp.WeightInit(1, {
+            m_mlp.WeightInit(2, {
                  {0.28},
                  {-0.94},
                  {-0.5},
                  {-0.36}})
 
-            m_mlp.TrainVector()
+            'm_mlp.TrainVector()
             'm_mlp.Train(clsMLPGeneric.enumLearningMode.Vectoriel)
+            m_mlp.Train()
 
             Dim expectedOutput = New Double(,) {
                 {0.99},
@@ -145,12 +153,14 @@ Namespace VectorizedMatrixMLP
                 {0.99},
                 {0.0}}
 
-            Dim sOutput = m_mlp.outputMatrix.ToString()
+            'Dim sOutput = m_mlp.outputMatrix.ToString()
+            Dim outputMatrix As Matrix = m_mlp.outputArraySingle ' Single(,) -> Matrix
+            Dim sOutput$ = outputMatrix.ToString()
             Dim expectedMatrix As Matrix = expectedOutput ' Double(,) -> Matrix
             Dim sExpectedOutput = expectedMatrix.ToString()
             Assert.AreEqual(sOutput, sExpectedOutput)
 
-            Dim rExpectedLoss# = 0.02
+            Dim rExpectedLoss# = 0.01 '0.02
             Dim rLoss! = m_mlp.ComputeAverageError()
             Dim rLossRounded# = Math.Round(rLoss, 2)
             Assert.AreEqual(rExpectedLoss, rLossRounded)
@@ -166,18 +176,19 @@ Namespace VectorizedMatrixMLP
 
             m_mlp.InitStruct(m_neuronCountXOR, addBiasColumn:=True)
 
-            m_mlp.WeightInit(0, {
+            m_mlp.WeightInit(1, {
                 {-0.5, -0.78, -0.07},
                 {0.54, 0.32, -0.13},
                 {-0.29, 0.89, -0.8}})
-            m_mlp.WeightInit(1, {
+            m_mlp.WeightInit(2, {
                 {0.28},
                 {-0.94},
                 {-0.5},
                 {-0.36}})
 
-            m_mlp.TrainVector()
+            'm_mlp.TrainVector()
             'm_mlp.Train(clsMLPGeneric.enumLearningMode.Vectoriel)
+            m_mlp.Train()
 
             Dim expectedOutput = New Double(,) {
                 {0.99},
@@ -185,12 +196,14 @@ Namespace VectorizedMatrixMLP
                 {0.99},
                 {0.03}}
 
-            Dim sOutput = m_mlp.outputMatrix.ToString()
+            'Dim sOutput = m_mlp.outputMatrix.ToString()
+            Dim outputMatrix As Matrix = m_mlp.outputArraySingle ' Single(,) -> Matrix
+            Dim sOutput$ = outputMatrix.ToString()
             Dim expectedMatrix As Matrix = expectedOutput ' Double(,) -> Matrix
             Dim sExpectedOutput = expectedMatrix.ToString()
             Assert.AreEqual(sOutput, sExpectedOutput)
 
-            Dim rExpectedLoss# = 0.08
+            Dim rExpectedLoss# = 0.02 '0.08
             Dim rLoss! = m_mlp.ComputeAverageError()
             Dim rLossRounded# = Math.Round(rLoss, 2)
             Assert.AreEqual(rExpectedLoss, rLossRounded)
@@ -206,15 +219,16 @@ Namespace VectorizedMatrixMLP
 
             m_mlp.InitStruct(m_neuronCountXOR, addBiasColumn:=False)
 
-            m_mlp.WeightInit(0, {
+            m_mlp.WeightInit(1, {
                 {0.7, 0.8},
                 {0.04, 0.59}})
-            m_mlp.WeightInit(1, {
+            m_mlp.WeightInit(2, {
                 {0.03},
                 {0.66}})
 
-            m_mlp.TrainVector()
+            'm_mlp.TrainVector()
             'm_mlp.Train(clsMLPGeneric.enumLearningMode.Vectoriel)
+            m_mlp.Train()
 
             Dim expectedOutput = New Double(,) {
                 {0.99},
@@ -222,12 +236,14 @@ Namespace VectorizedMatrixMLP
                 {0.99},
                 {0.0}}
 
-            Dim sOutput = m_mlp.outputMatrix.ToString()
+            'Dim sOutput = m_mlp.outputMatrix.ToString()
+            Dim outputMatrix As Matrix = m_mlp.outputArraySingle ' Single(,) -> Matrix
+            Dim sOutput$ = outputMatrix.ToString()
             Dim expectedMatrix As Matrix = expectedOutput ' Double(,) -> Matrix
             Dim sExpectedOutput = expectedMatrix.ToString()
             Assert.AreEqual(sOutput, sExpectedOutput)
 
-            Dim rExpectedLoss# = 0.02
+            Dim rExpectedLoss# = 0.01 '0.02
             Dim rLoss! = m_mlp.ComputeAverageError()
             Dim rLossRounded# = Math.Round(rLoss, 2)
             Assert.AreEqual(rExpectedLoss, rLossRounded)
@@ -243,18 +259,19 @@ Namespace VectorizedMatrixMLP
 
             m_mlp.InitStruct(m_neuronCountXOR, addBiasColumn:=True)
 
-            m_mlp.WeightInit(0, {
+            m_mlp.WeightInit(1, {
                 {-0.5, -0.78, -0.07},
                 {0.54, 0.32, -0.13},
                 {-0.29, 0.89, -0.8}})
-            m_mlp.WeightInit(1, {
+            m_mlp.WeightInit(2, {
                 {0.28},
                 {-0.94},
                 {-0.5},
                 {-0.36}})
 
-            m_mlp.TrainVector()
+            'm_mlp.TrainVector()
             'm_mlp.Train(clsMLPGeneric.enumLearningMode.Vectoriel)
+            m_mlp.Train()
 
             Dim expectedOutput = New Double(,) {
                 {0.99},
@@ -262,12 +279,14 @@ Namespace VectorizedMatrixMLP
                 {0.99},
                 {0}}
 
-            Dim sOutput = m_mlp.outputMatrix.ToString()
+            'Dim sOutput = m_mlp.outputMatrix.ToString()
+            Dim outputMatrix As Matrix = m_mlp.outputArraySingle ' Single(,) -> Matrix
+            Dim sOutput$ = outputMatrix.ToString()
             Dim expectedMatrix As Matrix = expectedOutput ' Double(,) -> Matrix
             Dim sExpectedOutput = expectedMatrix.ToString()
             Assert.AreEqual(sOutput, sExpectedOutput)
 
-            Dim rExpectedLoss# = 0.03
+            Dim rExpectedLoss# = 0.01 '0.03
             Dim rLoss! = m_mlp.ComputeAverageError()
             Dim rLossRounded# = Math.Round(rLoss, 2)
             Assert.AreEqual(rExpectedLoss, rLossRounded)
@@ -278,37 +297,36 @@ Namespace VectorizedMatrixMLP
         Public Sub VectorizedMatrixMLPXORELU()
 
             InitXOR()
-            m_mlp.nbIterations = 400 ' ELU: works
+            m_mlp.nbIterations = 500 '400 ' ELU: works
             m_mlp.SetActivationFunction(TActivationFunction.ELU, gain:=0.1, center:=0.4)
             m_mlp.Init(learningRate:=0.07!, weightAdjustment:=1)
 
             m_mlp.InitStruct(m_neuronCountXOR, addBiasColumn:=True)
 
-            m_mlp.WeightInit(0, {
+            m_mlp.WeightInit(1, {
                 {0.37, 0.08, 0.74},
                 {0.59, 0.54, 0.32},
                 {0.2, 0.78, 0.01}})
-            m_mlp.WeightInit(1, {
+            m_mlp.WeightInit(2, {
                 {0.5},
                 {0.27},
                 {0.4},
                 {0.11}})
 
-            m_mlp.TrainVector()
+            'm_mlp.TrainVector()
             'm_mlp.Train(clsMLPGeneric.enumLearningMode.Vectoriel)
+            m_mlp.Train()
 
-            Dim expectedOutput = New Double(,) {
-                {0.99},
-                {0.02},
-                {0.99},
-                {0.01}}
+            Dim expectedOutput = m_targetArrayXOR
 
-            Dim sOutput = m_mlp.outputMatrix.ToString()
+            'Dim sOutput = m_mlp.outputMatrix.ToString()
+            Dim outputMatrix As Matrix = m_mlp.outputArraySingle ' Single(,) -> Matrix
+            Dim sOutput$ = outputMatrix.ToString()
             Dim expectedMatrix As Matrix = expectedOutput ' Double(,) -> Matrix
             Dim sExpectedOutput = expectedMatrix.ToString()
             Assert.AreEqual(sOutput, sExpectedOutput)
 
-            Dim rExpectedLoss# = 0.04
+            Dim rExpectedLoss# = 0 '0.04
             Dim rLoss! = m_mlp.ComputeAverageError()
             Dim rLossRounded# = Math.Round(rLoss, 2)
             Assert.AreEqual(rExpectedLoss, rLossRounded)
@@ -324,27 +342,30 @@ Namespace VectorizedMatrixMLP
 
             m_mlp.InitStruct(m_neuronCountXOR, addBiasColumn:=True)
 
-            m_mlp.WeightInit(0, {
+            m_mlp.WeightInit(1, {
                 {-0.5, -0.78, -0.07},
                 {0.54, 0.32, -0.13},
                 {-0.29, 0.89, -0.8}})
-            m_mlp.WeightInit(1, {
+            m_mlp.WeightInit(2, {
                 {0.28},
                 {-0.94},
                 {-0.5},
                 {-0.36}})
 
-            m_mlp.TrainVector()
+            'm_mlp.TrainVector()
             'm_mlp.Train(clsMLPGeneric.enumLearningMode.Vectoriel)
+            m_mlp.Train()
 
             Dim expectedOutput = m_targetArrayXOR
 
-            Dim sOutput = m_mlp.outputMatrix.ToString()
+            'Dim sOutput = m_mlp.outputMatrix.ToString()
+            Dim outputMatrix As Matrix = m_mlp.outputArraySingle ' Single(,) -> Matrix
+            Dim sOutput$ = outputMatrix.ToString()
             Dim expectedMatrix As Matrix = expectedOutput ' Double(,) -> Matrix
             Dim sExpectedOutput = expectedMatrix.ToString()
             Assert.AreEqual(sOutput, sExpectedOutput)
 
-            Dim rExpectedLoss# = 0.01
+            Dim rExpectedLoss# = 0 '0.01
             Dim rLoss! = m_mlp.ComputeAverageError()
             Dim rLossRounded# = Math.Round(rLoss, 2)
             Assert.AreEqual(rExpectedLoss, rLossRounded)
@@ -360,27 +381,30 @@ Namespace VectorizedMatrixMLP
 
             m_mlp.InitStruct(m_neuronCountXOR, addBiasColumn:=True)
 
-            m_mlp.WeightInit(0, {
+            m_mlp.WeightInit(1, {
                 {0.21, 0.63, 0.54},
                 {0.01, 0.43, 0.85},
                 {0.77, 0.77, 0.27}})
-            m_mlp.WeightInit(1, {
+            m_mlp.WeightInit(2, {
                 {0.01},
                 {0.57},
                 {0.19},
                 {0.66}})
 
-            m_mlp.TrainVector()
+            'm_mlp.TrainVector()
             'm_mlp.Train(clsMLPGeneric.enumLearningMode.Vectoriel)
+            m_mlp.Train()
 
             Dim expectedOutput = m_targetArrayXOR
 
-            Dim sOutput = m_mlp.outputMatrix.ToString()
+            'Dim sOutput = m_mlp.outputMatrix.ToString()
+            Dim outputMatrix As Matrix = m_mlp.outputArraySingle ' Single(,) -> Matrix
+            Dim sOutput$ = outputMatrix.ToString()
             Dim expectedMatrix As Matrix = expectedOutput ' Double(,) -> Matrix
             Dim sExpectedOutput = expectedMatrix.ToString()
             Assert.AreEqual(sOutput, sExpectedOutput)
 
-            Dim rExpectedLoss# = 0.01
+            Dim rExpectedLoss# = 0 '0.01
             Dim rLoss! = m_mlp.ComputeAverageError()
             Dim rLossRounded# = Math.Round(rLoss, 2)
             Assert.AreEqual(rExpectedLoss, rLossRounded)
@@ -396,13 +420,13 @@ Namespace VectorizedMatrixMLP
 
             m_mlp.InitStruct(m_neuronCount2XOR, addBiasColumn:=True)
 
-            m_mlp.WeightInit(0, {
+            m_mlp.WeightInit(1, {
                 {0.85, 0.86, 0.13, 0.16, 0.57},
                 {0.93, 0.8, 0.45, 0.62, 0.96},
                 {0.27, 0.54, 0.46, 0.41, 0.03},
                 {0.82, 0.73, 0.7, 0.89, 0.38},
                 {0.28, 0.95, 0.12, 0.28, 0.28}})
-            m_mlp.WeightInit(1, {
+            m_mlp.WeightInit(2, {
                 {0.48, 0.65},
                 {0.86, 0.63},
                 {0.97, 0.3},
@@ -410,17 +434,20 @@ Namespace VectorizedMatrixMLP
                 {0.06, 0.66},
                 {0.05, 0.69}})
 
-            m_mlp.TrainVector()
+            'm_mlp.TrainVector()
             'm_mlp.Train(clsMLPGeneric.enumLearningMode.Vectoriel)
+            m_mlp.Train()
 
             Dim expectedOutput = m_targetArray2XOR
 
-            Dim sOutput = m_mlp.outputMatrix.ToString()
+            'Dim sOutput = m_mlp.outputMatrix.ToString()
+            Dim outputMatrix As Matrix = m_mlp.outputArraySingle ' Single(,) -> Matrix
+            Dim sOutput$ = outputMatrix.ToString()
             Dim expectedMatrix As Matrix = expectedOutput ' Double(,) -> Matrix
             Dim sExpectedOutput = expectedMatrix.ToString()
             Assert.AreEqual(sOutput, sExpectedOutput)
 
-            Dim rExpectedLoss# = 0.02
+            Dim rExpectedLoss# = 0 '0.02
             Dim rLoss! = m_mlp.ComputeAverageError()
             Dim rLossRounded# = Math.Round(rLoss, 2)
             Assert.AreEqual(rExpectedLoss, rLossRounded)
@@ -436,13 +463,13 @@ Namespace VectorizedMatrixMLP
 
             m_mlp.InitStruct(m_neuronCount2XOR, addBiasColumn:=True)
 
-            m_mlp.WeightInit(0, {
+            m_mlp.WeightInit(1, {
                 {0.26, 0.34, 0.51, 0.79, 0.37},
                 {0.38, 0.84, 0.97, 0.65, 0.93},
                 {0.2, 0.22, 0.69, 0.25, 0.68},
                 {0.45, 0.58, 0.77, 0.59, 0.46},
                 {0.58, 0.46, 0.93, 0.47, 0.28}})
-            m_mlp.WeightInit(1, {
+            m_mlp.WeightInit(2, {
                 {0.23, 0.29},
                 {0.75, 0.21},
                 {0.52, 0.38},
@@ -450,17 +477,20 @@ Namespace VectorizedMatrixMLP
                 {0.96, 0.53},
                 {0.31, 0.91}})
 
-            m_mlp.TrainVector()
+            'm_mlp.TrainVector()
             'm_mlp.Train(clsMLPGeneric.enumLearningMode.Vectoriel)
+            m_mlp.Train()
 
             Dim expectedOutput = m_targetArray2XOR
 
-            Dim sOutput = m_mlp.outputMatrix.ToStringWithFormat(dec:="0.0")
+            'Dim sOutput = m_mlp.outputMatrix.ToStringWithFormat(dec:="0.0")
+            Dim outputMatrix As Matrix = m_mlp.outputArraySingle ' Single(,) -> Matrix
+            Dim sOutput$ = outputMatrix.ToStringWithFormat(dec:="0.0")
             Dim expectedMatrix As Matrix = expectedOutput ' Double(,) -> Matrix
             Dim sExpectedOutput = expectedMatrix.ToStringWithFormat(dec:="0.0")
             Assert.AreEqual(sOutput, sExpectedOutput)
 
-            Dim rExpectedLoss# = 0.14
+            Dim rExpectedLoss# = 0.01 '0.14
             Dim rLoss! = m_mlp.ComputeAverageError()
             Dim rLossRounded# = Math.Round(rLoss, 2)
             Assert.AreEqual(rExpectedLoss, rLossRounded)
@@ -476,13 +506,13 @@ Namespace VectorizedMatrixMLP
 
             m_mlp.InitStruct(m_neuronCount2XOR, addBiasColumn:=True)
 
-            m_mlp.WeightInit(0, {
+            m_mlp.WeightInit(1, {
                 {0.21, 0.81, 0.81, 0.57, 0.47},
                 {0.5, 0.48, 0.22, 0.17, 0.17},
                 {0.73, 0.29, 0.55, 0.41, 0.86},
                 {0.91, 0.74, 0.87, 0.32, 0.85},
                 {0.99, 0.31, 0.83, 0.95, 0.03}})
-            m_mlp.WeightInit(1, {
+            m_mlp.WeightInit(2, {
                 {0.26, 0.09},
                 {0.1, 0.16},
                 {0.04, 0.87},
@@ -490,17 +520,20 @@ Namespace VectorizedMatrixMLP
                 {0.34, 0.99},
                 {0.9, 0.28}})
 
-            m_mlp.TrainVector()
+            'm_mlp.TrainVector()
             'm_mlp.Train(clsMLPGeneric.enumLearningMode.Vectoriel)
+            m_mlp.Train()
 
             Dim expectedOutput = m_targetArray2XOR
 
-            Dim sOutput = m_mlp.outputMatrix.ToStringWithFormat(dec:="0.0")
+            'Dim sOutput = m_mlp.outputMatrix.ToStringWithFormat(dec:="0.0")
+            Dim outputMatrix As Matrix = m_mlp.outputArraySingle ' Single(,) -> Matrix
+            Dim sOutput$ = outputMatrix.ToStringWithFormat(dec:="0.0")
             Dim expectedMatrix As Matrix = expectedOutput ' Double(,) -> Matrix
             Dim sExpectedOutput = expectedMatrix.ToStringWithFormat(dec:="0.0")
             Assert.AreEqual(sOutput, sExpectedOutput)
 
-            Dim rExpectedLoss# = 0.25
+            Dim rExpectedLoss# = 0 '0.25
             Dim rLoss! = m_mlp.ComputeAverageError()
             Dim rLossRounded# = Math.Round(rLoss, 2)
             Assert.AreEqual(rExpectedLoss, rLossRounded)
@@ -511,18 +544,18 @@ Namespace VectorizedMatrixMLP
         Public Sub VectorizedMatrixMLP2XORSigmoid()
 
             Init2XOR()
-            m_mlp.nbIterations = 5000 ' Sigmoid: works
+            m_mlp.nbIterations = 9000 '5000 ' Sigmoid: works
             m_mlp.SetActivationFunction(TActivationFunction.Sigmoid, gain:=1, center:=0)
 
             m_mlp.InitStruct(m_neuronCount2XOR, addBiasColumn:=True)
 
-            m_mlp.WeightInit(0, {
+            m_mlp.WeightInit(1, {
                 {0.42, 0.38, 0.53, 0.72, 0.19},
                 {0.79, 0.54, 0.55, 0.31, 0.09},
                 {0.12, 0.04, 0.12, 0.62, 0.58},
                 {0.72, 0.91, 0.06, 0.69, 0.11},
                 {0.38, 0.91, 0.72, 0.18, 0.68}})
-            m_mlp.WeightInit(1, {
+            m_mlp.WeightInit(2, {
                 {0.51, 0.43},
                 {0.18, 0.43},
                 {0.19, 0.86},
@@ -530,17 +563,20 @@ Namespace VectorizedMatrixMLP
                 {0.73, 0.63},
                 {0.23, 0.95}})
 
-            m_mlp.TrainVector()
+            'm_mlp.TrainVector()
             'm_mlp.Train(clsMLPGeneric.enumLearningMode.Vectoriel)
+            m_mlp.Train()
 
             Dim expectedOutput = m_targetArray2XOR
 
-            Dim sOutput = m_mlp.outputMatrix.ToStringWithFormat(dec:="0.0")
+            'Dim sOutput = m_mlp.outputMatrix.ToStringWithFormat(dec:="0.0")
+            Dim outputMatrix As Matrix = m_mlp.outputArraySingle ' Single(,) -> Matrix
+            Dim sOutput$ = outputMatrix.ToStringWithFormat(dec:="0.0")
             Dim expectedMatrix As Matrix = expectedOutput ' Double(,) -> Matrix
             Dim sExpectedOutput = expectedMatrix.ToStringWithFormat(dec:="0.0")
             Assert.AreEqual(sOutput, sExpectedOutput)
 
-            Dim rExpectedLoss# = 0.47
+            Dim rExpectedLoss# = 0.02 '0.47
             Dim rLoss! = m_mlp.ComputeAverageError()
             Dim rLossRounded# = Math.Round(rLoss, 2)
             Assert.AreEqual(rExpectedLoss, rLossRounded)
@@ -552,18 +588,18 @@ Namespace VectorizedMatrixMLP
 
             Init2XOR()
             m_mlp.learningRate = 0.05
-            m_mlp.nbIterations = 400 ' Arc tangent: works fine
+            m_mlp.nbIterations = 500 '400 ' Arc tangent: works fine
             m_mlp.SetActivationFunction(TActivationFunction.ArcTangent, gain:=1, center:=0.9)
 
             m_mlp.InitStruct(m_neuronCount2XOR, addBiasColumn:=True)
 
-            m_mlp.WeightInit(0, {
+            m_mlp.WeightInit(1, {
                 {0.92, 0.83, 0.73, 0.13, 0.63},
                 {0.07, 0.44, 0.83, 0.63, 0.67},
                 {0.59, 0.88, 0.17, 0.97, 0.15},
                 {0.85, 0.47, 0.98, 0.53, 0.33},
                 {0.08, 0.39, 0.35, 0.52, 0.38}})
-            m_mlp.WeightInit(1, {
+            m_mlp.WeightInit(2, {
                 {0.77, 0.39},
                 {0.72, 0.38},
                 {0.12, 0.06},
@@ -571,17 +607,20 @@ Namespace VectorizedMatrixMLP
                 {0.85, 0.84},
                 {0.41, 0.47}})
 
-            m_mlp.TrainVector()
+            'm_mlp.TrainVector()
             'm_mlp.Train(clsMLPGeneric.enumLearningMode.Vectoriel)
+            m_mlp.Train()
 
             Dim expectedOutput = m_targetArray2XOR
 
-            Dim sOutput = m_mlp.outputMatrix.ToStringWithFormat(dec:="0.0")
+            'Dim sOutput = m_mlp.outputMatrix.ToStringWithFormat(dec:="0.0")
+            Dim outputMatrix As Matrix = m_mlp.outputArraySingle ' Single(,) -> Matrix
+            Dim sOutput$ = outputMatrix.ToStringWithFormat(dec:="0.0")
             Dim expectedMatrix As Matrix = expectedOutput ' Double(,) -> Matrix
             Dim sExpectedOutput = expectedMatrix.ToStringWithFormat(dec:="0.0")
             Assert.AreEqual(sOutput, sExpectedOutput)
 
-            Dim rExpectedLoss# = 0.17
+            Dim rExpectedLoss# = 0 '0.17
             Dim rLoss! = m_mlp.ComputeAverageError()
             Dim rLossRounded# = Math.Round(rLoss, 2)
             Assert.AreEqual(rExpectedLoss, rLossRounded)
@@ -597,13 +636,13 @@ Namespace VectorizedMatrixMLP
 
             m_mlp.InitStruct(m_neuronCount2XOR, addBiasColumn:=True)
 
-            m_mlp.WeightInit(0, {
+            m_mlp.WeightInit(1, {
                 {0.27, 0.07, 0.72, 0.16, 0.71},
                 {0.41, 0.96, 0.18, 0.93, 0.43},
                 {0.49, 0.91, 0.45, 0.86, 0.32},
                 {0.48, 0.03, 0.21, 0.38, 0.63},
                 {0.28, 0.59, 0.5, 0.35, 0.67}})
-            m_mlp.WeightInit(1, {
+            m_mlp.WeightInit(2, {
                 {0.24, 0.75},
                 {0.6, 0.27},
                 {0.72, 0.54},
@@ -611,17 +650,20 @@ Namespace VectorizedMatrixMLP
                 {0.11, 0.53},
                 {0.07, 0.88}})
 
-            m_mlp.TrainVector()
+            'm_mlp.TrainVector()
             'm_mlp.Train(clsMLPGeneric.enumLearningMode.Vectoriel)
+            m_mlp.Train()
 
             Dim expectedOutput = m_targetArray2XOR
 
-            Dim sOutput = m_mlp.outputMatrix.ToStringWithFormat(dec:="0.0")
+            'Dim sOutput = m_mlp.outputMatrix.ToStringWithFormat(dec:="0.0")
+            Dim outputMatrix As Matrix = m_mlp.outputArraySingle ' Single(,) -> Matrix
+            Dim sOutput$ = outputMatrix.ToStringWithFormat(dec:="0.0")
             Dim expectedMatrix As Matrix = expectedOutput ' Double(,) -> Matrix
             Dim sExpectedOutput = expectedMatrix.ToStringWithFormat(dec:="0.0")
             Assert.AreEqual(sOutput, sExpectedOutput)
 
-            Dim rExpectedLoss# = 0.27
+            Dim rExpectedLoss# = 0.01 '0.27
             Dim rLoss! = m_mlp.ComputeAverageError()
             Dim rLossRounded# = Math.Round(rLoss, 2)
             Assert.AreEqual(rExpectedLoss, rLossRounded)
@@ -633,12 +675,12 @@ Namespace VectorizedMatrixMLP
 
             Init3XOR()
             m_mlp.learningRate = 0.05
-            m_mlp.nbIterations = 700 ' Gaussian: works
+            m_mlp.nbIterations = 5000 '700 ' Gaussian: works
             m_mlp.SetActivationFunction(TActivationFunction.Gaussian, gain:=1, center:=0)
 
             m_mlp.InitStruct(m_neuronCount3XOR, addBiasColumn:=True)
 
-            m_mlp.WeightInit(0, {
+            m_mlp.WeightInit(1, {
                 {0.57, 0.35, 0.16, 0.64, 0.23, 0.77, 0.33},
                 {0.78, 0.43, 0.99, 0.16, 0.32, 0.33, 0.92},
                 {0.39, 0.61, 0.97, 0.03, 0.04, 0.48, 0.62},
@@ -646,7 +688,7 @@ Namespace VectorizedMatrixMLP
                 {0.14, 0.72, 0.4, 0.17, 0.05, 0.14, 0.26},
                 {0.98, 0.33, 0.08, 0.05, 0.42, 0.68, 0.18},
                 {0.87, 0.7, 0.33, 0.24, 0.27, 0.54, 0.88}})
-            m_mlp.WeightInit(1, {
+            m_mlp.WeightInit(2, {
                 {0.91, 0.28, 0.47},
                 {0.26, 0.02, 0.64},
                 {0.88, 0.42, 0.27},
@@ -656,17 +698,20 @@ Namespace VectorizedMatrixMLP
                 {0.19, 0.67, 0.4},
                 {0.28, 0.88, 0.98}})
 
-            m_mlp.TrainVector()
+            'm_mlp.TrainVector()
             'm_mlp.Train(clsMLPGeneric.enumLearningMode.Vectoriel)
+            m_mlp.Train()
 
             Dim expectedOutput = m_targetArray3XOR
 
-            Dim sOutput = m_mlp.outputMatrix.ToStringWithFormat(dec:="0.0")
+            'Dim sOutput = m_mlp.outputMatrix.ToStringWithFormat(dec:="0.0")
+            Dim outputMatrix As Matrix = m_mlp.outputArraySingle ' Single(,) -> Matrix
+            Dim sOutput$ = outputMatrix.ToStringWithFormat(dec:="0.0")
             Dim expectedMatrix As Matrix = expectedOutput ' Double(,) -> Matrix
             Dim sExpectedOutput = expectedMatrix.ToStringWithFormat(dec:="0.0")
             Assert.AreEqual(sOutput, sExpectedOutput)
 
-            Dim rExpectedLoss# = 0.41
+            Dim rExpectedLoss# = 0.01 '0.41
             Dim rLoss! = m_mlp.ComputeAverageError()
             Dim rLossRounded# = Math.Round(rLoss, 2)
             Assert.AreEqual(rExpectedLoss, rLossRounded)
@@ -677,12 +722,12 @@ Namespace VectorizedMatrixMLP
         Public Sub VectorizedMatrixMLP3XORDbleThreshold()
 
             Init3XOR()
-            m_mlp.nbIterations = 1100
+            m_mlp.nbIterations = 2000 '1100
             m_mlp.SetActivationFunction(TActivationFunction.DoubleThreshold, gain:=1, center:=1)
 
             m_mlp.InitStruct(m_neuronCount3XOR, addBiasColumn:=True)
 
-            m_mlp.WeightInit(0, {
+            m_mlp.WeightInit(1, {
                 {0.84, 0.41, 0.61, 0.55, 0.58, 0.09, 0.98},
                 {0.96, 0.22, 0.02, 0.46, 0.51, 0.12, 0.91},
                 {0.48, 0.24, 0.75, 0.94, 0.74, 0.85, 1.0},
@@ -690,7 +735,7 @@ Namespace VectorizedMatrixMLP
                 {0.15, 0.11, 0.89, 0.6, 0.23, 0.84, 0.12},
                 {0.24, 0.12, 0.65, 0.17, 0.27, 0.69, 0.79},
                 {0.19, 0.78, 0.96, 0.76, 0.44, 0.98, 0.25}})
-            m_mlp.WeightInit(1, {
+            m_mlp.WeightInit(2, {
                 {0.67, 0.91, 0.67},
                 {0.69, 0.85, 0.75},
                 {0.23, 0.98, 0.44},
@@ -700,17 +745,20 @@ Namespace VectorizedMatrixMLP
                 {0.17, 0.36, 0.62},
                 {0.29, 0.57, 0.58}})
 
-            m_mlp.TrainVector()
+            'm_mlp.TrainVector()
             'm_mlp.Train(clsMLPGeneric.enumLearningMode.Vectoriel)
+            m_mlp.Train()
 
             Dim expectedOutput = m_targetArray3XOR
 
-            Dim sOutput = m_mlp.outputMatrix.ToStringWithFormat(dec:="0.0")
+            'Dim sOutput = m_mlp.outputMatrix.ToStringWithFormat(dec:="0.0")
+            Dim outputMatrix As Matrix = m_mlp.outputArraySingle ' Single(,) -> Matrix
+            Dim sOutput$ = outputMatrix.ToStringWithFormat(dec:="0.0")
             Dim expectedMatrix As Matrix = expectedOutput ' Double(,) -> Matrix
             Dim sExpectedOutput = expectedMatrix.ToStringWithFormat(dec:="0.0")
             Assert.AreEqual(sOutput, sExpectedOutput)
 
-            Dim rExpectedLoss# = 0.66
+            Dim rExpectedLoss# = 0.01 '0.66
             Dim rLoss! = m_mlp.ComputeAverageError()
             Dim rLossRounded# = Math.Round(rLoss, 2)
             Assert.AreEqual(rExpectedLoss, rLossRounded)

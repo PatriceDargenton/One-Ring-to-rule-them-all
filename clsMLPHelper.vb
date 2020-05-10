@@ -68,6 +68,18 @@ Public Class clsMLPHelper
         Return arr
     End Function
 
+    Public Shared Function ConvertDoubleToSingle2D(inputs#(,)) As Single(,)
+        Dim length0% = inputs.GetLength(0)
+        Dim length1% = inputs.GetLength(1)
+        Dim arr!(0 To length0 - 1, 0 To length1 - 1)
+        For i As Integer = 0 To length0 - 1
+            For j As Integer = 0 To length1 - 1
+                arr(i, j) = CSng(inputs(i, j))
+            Next
+        Next
+        Return arr
+    End Function
+
     Public Shared Function Compare(val1#, val2#, dec%) As Boolean
 
         If Double.IsNaN(val1) AndAlso Double.IsNaN(val2) Then Return True

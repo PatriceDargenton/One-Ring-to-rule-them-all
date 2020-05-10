@@ -11,7 +11,7 @@ Namespace VectorizedMatrixMLP
 
         Public vectorizedLearningMode As Boolean = True
 
-        Public input As Matrix
+        Private input As Matrix
         Public target As Matrix
 
         ''' <summary>
@@ -29,6 +29,9 @@ Namespace VectorizedMatrixMLP
         Private neuronCount%()
 
         Public Overrides Sub InitStruct(neuronCount%(), addBiasColumn As Boolean)
+
+            Me.input = Me.inputArray
+            Me.target = Me.targetArray
 
             Me.useBias = addBiasColumn
             Me.layerCount = neuronCount.Length
@@ -59,7 +62,8 @@ Namespace VectorizedMatrixMLP
         End Sub
 
         Public Overrides Sub WeightInit(layer%, weights#(,))
-            Me.w(layer) = weights
+            'Me.w(layer) = weights
+            Me.w(layer - 1) = weights
         End Sub
 
         Public Overrides Sub PrintWeights()
@@ -67,13 +71,16 @@ Namespace VectorizedMatrixMLP
             Me.PrintParameters()
 
             For i As Integer = 0 To Me.layerCount - 1
-                ShowMessage("Neuron count(" & i & ")=" & Me.neuronCount(i))
+                Dim neuronCount% = Me.neuronCount(i)
+                If Me.useBias AndAlso i > 0 AndAlso i < Me.layerCount - 1 Then _
+                    neuronCount -= 1
+                ShowMessage("Neuron count(" & i & ")=" & neuronCount)
             Next
 
             ShowMessage("")
 
             For i = 0 To Me.w.Length - 1
-                ShowMessage("W(" & i & ")=" & Me.w(i).ToString)
+                ShowMessage("W(" & i + 1 & ")=" & Me.w(i).ToString & vbLf)
             Next
 
         End Sub
@@ -83,12 +90,13 @@ Namespace VectorizedMatrixMLP
             Me.vectorizedLearningMode = True
             For iteration = 0 To Me.nbIterations - 1
 
-                OneIteration(Me.input, testOnly:=False, computeError:=True,
-                    TargetValue:=Me.target)
+                OneIteration(testOnly:=False, computeError:=True, TargetValue:=Me.target)
 
                 If Me.printOutput_ Then PrintOutput(iteration)
 
             Next
+            Dim outputArrayDble#(,) = Me.outputMatrix
+            Me.outputArraySingle = clsMLPHelper.ConvertDoubleToSingle2D(outputArrayDble)
 
         End Sub
 
@@ -101,10 +109,12 @@ Namespace VectorizedMatrixMLP
                     TestAllSamples(Me.inputArray, nbOutputs:=nbTargets)
                     Me.outputMatrix = Me.outputArray
                 End If
+                Dim outputArrayDble#(,) = Me.outputMatrix
+                Me.outputArraySingle = clsMLPHelper.ConvertDoubleToSingle2D(outputArrayDble)
                 ComputeAverageError()
                 Dim sMsg$ = vbLf & "Iteration n°" & iteration + 1 & "/" & nbIterations & vbLf &
                     "Output: " & Me.outputMatrix.ToString() & vbLf &
-                    "Average error: " & Me.averageError.ToString("0.000000")
+                    "Average error: " & Me.averageError.ToString(format6Dec)
                 'For i = 0 To Me.LayerCount - 1
                 '    sMsg &= "Error(" & i & ")=" & Me.error_(i).ToString() & vbLf
                 '    sMsg &= "A(" & i & ")=" & A(i).ToString() & vbLf
@@ -117,7 +127,7 @@ Namespace VectorizedMatrixMLP
         End Sub
 
         Public Sub OneIteration(
-            InputValue As Matrix, testOnly As Boolean,
+            testOnly As Boolean,
             Optional computeError As Boolean = False,
             Optional TargetValue As Matrix = Nothing)
 
@@ -126,7 +136,7 @@ Namespace VectorizedMatrixMLP
 
             Dim Z As Matrix() = Nothing
             Dim A As Matrix() = Nothing
-            ForwardPropagation(InputValue, Z, A)
+            ForwardPropagateSignal(Z, A)
 
             Dim maxLayer% = layerCount - 1
             Dim maxIndex% = A.Length - 1
@@ -151,19 +161,19 @@ Namespace VectorizedMatrixMLP
             If testOnly Then Exit Sub
 
             Dim delta As Matrix() = Nothing
-            BackPropagation(delta, Me.error_, Zlast, Z)
+            BackwardPropagateError(delta, Me.error_, Zlast, Z)
 
-            GradientDescend(A, delta)
+            ComputeGradientAndAdjustWeights(A, delta)
 
         End Sub
 
-        Private Sub ForwardPropagation(InputValue As Matrix,
+        Private Sub ForwardPropagateSignal(
             <Out> ByRef Z As Matrix(), <Out> ByRef A As Matrix())
 
             Z = New Matrix(layerCount - 1) {}
             A = New Matrix(layerCount - 1) {}
 
-            Z(0) = InputValue
+            Z(0) = Me.input
             ' Column added with 1 for all examples
             If Me.useBias Then Z(0) = Z(0).AddColumn(Matrix.Ones(Me.exampleCount, 1))
             A(0) = Z(0)
@@ -191,7 +201,7 @@ Namespace VectorizedMatrixMLP
 
         End Sub
 
-        Private Sub BackPropagation(
+        Private Sub BackwardPropagateError(
             <Out> ByRef delta As Matrix(), error_ As Matrix(),
             Zlast As Matrix, Z As Matrix())
 
@@ -213,7 +223,9 @@ Namespace VectorizedMatrixMLP
 
         End Sub
 
-        Private Sub GradientDescend(A As Matrix(), delta As Matrix())
+        Private Sub ComputeGradientAndAdjustWeights(A As Matrix(), delta As Matrix())
+
+            ' Gradient descend: Compute gradient and adjust weights
 
             For i = 0 To w.Length - 1
                 Me.w(i) -= A(i).T * delta(i + 1) * Me.learningRate
@@ -238,6 +250,7 @@ Namespace VectorizedMatrixMLP
 
         Public Overrides Function ComputeAverageError!()
 
+            Me.outputMatrix = Me.outputArraySingle ' Single(,) -> Matrix
             Me.ComputeError()
             Me.ComputeAverageErrorFromLastError()
             Return Me.averageError
@@ -267,10 +280,12 @@ Namespace VectorizedMatrixMLP
             Optional learningMode As enumLearningMode = enumLearningMode.Defaut)
 
             If learningMode = enumLearningMode.Vectoriel Then
+                ' Does not work fine!? (mean error does not converge to 0?)
                 TrainVector()
                 Exit Sub
             End If
 
+            ' Works fine!
             Me.vectorizedLearningMode = False
             Me.exampleCount = 1
             MyBase.TrainSystematic(inputs, targets, learningMode)
@@ -288,8 +303,15 @@ Namespace VectorizedMatrixMLP
             Dim TargetValue As Matrix = targetsDble
 
             Me.exampleCount = 1
-            OneIteration(matrixInput, testOnly:=False, computeError:=True,
-                TargetValue:=TargetValue)
+            Me.input = matrixInput
+            OneIteration(testOnly:=False, computeError:=True, TargetValue:=TargetValue)
+
+        End Sub
+
+        Public Overrides Sub TestOneSample(input() As Single, ByRef ouput() As Single)
+
+            TestOneSample(input)
+            ouput = Me.lastOutputArraySingle
 
         End Sub
 
@@ -299,7 +321,8 @@ Namespace VectorizedMatrixMLP
             inputDble = clsMLPHelper.FillArray2(inputDble, input, 0)
             Dim matrixInput As Matrix = inputDble
 
-            OneIteration(matrixInput, testOnly:=True, computeError:=False)
+            Me.input = matrixInput
+            OneIteration(testOnly:=True, computeError:=False)
 
             ' Get first row
             Dim outputMatrix1D = Me.outputMatrix.GetRow(0)

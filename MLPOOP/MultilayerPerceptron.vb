@@ -117,9 +117,9 @@ Namespace NetworkOOP
             Me.Outputs = New List(Of List(Of Double))
             For Each item In data
                 Me.InputLayer.SetInput(item.Input)
-                ForwardPropogate()
+                ForwardPropogateSignal()
                 Me.OutputLayer.AssignErrors(item.Output)
-                BackwardPropogate()
+                BackwardPropogateErrorComputeGradientAndAdjustWeights()
                 TotalError += Me.OutputLayer.CalculateSquaredError()
                 Me.Outputs.Add(Me.OutputLayer.ExtractOutputs)
             Next
@@ -132,9 +132,9 @@ Namespace NetworkOOP
             TotalError = 0.0
             For Each item In data
                 Me.InputLayer.SetInput(item.Input)
-                ForwardPropogate()
+                ForwardPropogateSignal()
                 Me.OutputLayer.AssignErrors(item.Output)
-                BackwardPropogate()
+                BackwardPropogateErrorComputeGradientAndAdjustWeights()
                 TotalError += Me.OutputLayer.CalculateSquaredError()
                 Me.Outputs.Add(Me.OutputLayer.ExtractOutputs)
             Next
@@ -157,13 +157,20 @@ Namespace NetworkOOP
 
         End Sub
 
+        Public Overrides Sub TestOneSample(input() As Single, ByRef ouput() As Single)
+
+            TestOneSample(input)
+            ouput = Me.lastOutputArraySingle
+
+        End Sub
+
         Public Overrides Sub TestOneSample(input() As Single)
 
             Dim inputDble#() = clsMLPHelper.ConvertSingleToDouble1D(input)
             Dim lst As List(Of Double) = inputDble.ToList
             Dim data As New Testing(lst)
             Me.InputLayer.SetInput(data.Input)
-            ForwardPropogate()
+            ForwardPropogateSignal()
 
             Dim lstRes = Me.OutputLayer.ExtractOutputs()
             Me.lastOutputArray = lstRes.ToArray()
@@ -171,7 +178,7 @@ Namespace NetworkOOP
 
         End Sub
 
-        Private Sub ForwardPropogate()
+        Private Sub ForwardPropogateSignal()
 
             For x As Integer = 1 To Me.Layers.Count - 1
                 For Each node In Me.Layers(x).Neurons
@@ -200,7 +207,10 @@ Namespace NetworkOOP
 
         End Sub
 
-        Private Sub BackwardPropogate()
+        Private Sub BackwardPropogateErrorComputeGradientAndAdjustWeights()
+
+            ' Backward propagate error from the output layer through to the first layer
+            ' Gradient descend: Compute gradient and adjust weights
 
             'updating weights for all other layers
             For x = Me.Layers.Count - 1 To 1 Step -1
@@ -270,6 +280,8 @@ Namespace NetworkOOP
                 ShowMessage("Neuron count(" & i & ")=" & iNeuronCount)
             Next
 
+            ShowMessage("")
+
             For i As Integer = 1 To Me.Layers.Count - 1
                 ShowMessage("W(" & i & ")=" & Layers(i).PrintWeights())
             Next
@@ -286,7 +298,7 @@ Namespace NetworkOOP
                 Dim outputMaxtrix As MatrixMLP.Matrix = Me.outputArraySingle
                 Dim sMsg$ = vbLf & "Iteration n°" & iteration + 1 & "/" & nbIterations & vbLf &
                     "Output: " & outputMaxtrix.ToString() & vbLf &
-                    "Average error: " & Me.averageError.ToString("0.000000")
+                    "Average error: " & Me.averageError.ToString(format6Dec)
                 ShowMessage(sMsg)
 
             End If
@@ -303,7 +315,7 @@ Namespace NetworkOOP
                 Dim numd% = 0
                 sb.Append(" {")
                 For Each ld In outp
-                    sb.Append(ld.ToString("0.00").Replace(",", "."))
+                    sb.Append(ld.ToString(format2Dec).ReplaceCommaByDot())
                     numd += 1
                     If numd < nbd Then sb.Append(", ")
                 Next
@@ -314,6 +326,8 @@ Namespace NetworkOOP
             Return sb.ToString
 
         End Function
+
+        
 
     End Class
 

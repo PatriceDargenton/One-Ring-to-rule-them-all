@@ -1,12 +1,7 @@
-﻿Imports Perceptron.MLP.ActivationFunction
-
+﻿
 ' Patrice Dargenton
 ' Vectorized-MultiLayerPerceptron
 ' From https://github.com/HectorPulido/Vectorized-multilayer-neural-network : C# -> VB .NET conversion
-
-'Option Infer On ' Lambda function
-
-'Imports System.Runtime.InteropServices ' OutAttribute
 
 Namespace VectorizedMatrixMLP
 
@@ -26,9 +21,8 @@ Namespace VectorizedMatrixMLP
             mlp.ShowMessage("Vectorized Matrix MLP test")
             mlp.ShowMessage("--------------------------")
 
-            mlp.input = m_inputArrayXOR
+            mlp.inputArray = m_inputArrayXOR
             mlp.targetArray = m_targetArrayXOR
-            mlp.target = mlp.targetArray
 
             mlp.nbIterations = 10000 ' Sigmoid: works
             'mlp.nbIterations = 5000 ' Hyperbolic tangent: works

@@ -198,14 +198,14 @@ Namespace VectorizedMatrixMLP
             Return ToStringWithFormat()
         End Function
 
-        Public Function ToStringWithFormat$(Optional dec$ = "0.00")
+        Public Function ToStringWithFormat$(Optional dec$ = format2Dec)
 
             Dim sb As New StringBuilder()
             sb.AppendLine("{")
             For i = 0 To x - 1
                 sb.Append(" {")
                 For j = 0 To y - 1
-                    Dim sVal$ = matrix(i, j).ToString(dec).Replace(",", ".")
+                    Dim sVal$ = matrix(i, j).ToString(dec).ReplaceCommaByDot()
                     sb.Append(sVal)
                     If j < y - 1 Then sb.Append(", ")
                 Next

@@ -307,9 +307,14 @@ Public MustInherit Class clsMLPGeneric
 #Region "Test"
 
     ''' <summary>
-    ''' Test one sample
+    ''' Test one sample: Propagate the input signal into the MLP (feed forward)
     ''' </summary>
     Public MustOverride Sub TestOneSample(input!())
+
+    ''' <summary>
+    ''' Test one sample: Propagate the input signal into the MLP and return the ouput
+    ''' </summary>
+    Public MustOverride Sub TestOneSample(input() As Single, ByRef ouput() As Single)
 
     ''' <summary>
     ''' Test all samples
@@ -346,8 +351,10 @@ Public MustInherit Class clsMLPGeneric
         ShowMessage("")
         ShowMessage(Now() & " :")
         ShowMessage("")
-        ShowMessage("learningRate=" & Me.learningRate)
-        ShowMessage("weightAdjustment=" & Me.weightAdjustment)
+        ShowMessage("layer count=" & Me.layerCount)
+        ShowMessage("use bias=" & Me.useBias)
+        ShowMessage("learning rate=" & Me.learningRate)
+        ShowMessage("weight adjustment=" & Me.weightAdjustment)
         ShowMessage("activation function=" & clsMLPHelper.ReadEnumDescription(Me.m_actFunc))
         ShowMessage("gain=" & Me.m_gain)
         ShowMessage("center=" & Me.m_center)

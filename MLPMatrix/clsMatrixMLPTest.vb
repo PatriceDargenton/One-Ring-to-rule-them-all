@@ -10,6 +10,11 @@ Namespace MatrixMLP
 
         Private m_mlp As New MultiLayerPerceptron
 
+        ' Some functions are not implemented
+        'Private m_mlp As New NetworkOOP.MultilayerPerceptron
+        'Private m_mlp As New clsMLPClassic 
+        'Private m_mlp As New VectorizedMatrixMLP.clsVectorizedMatrixMLP 
+
         <TestInitialize()>
         Public Sub Init()
         End Sub

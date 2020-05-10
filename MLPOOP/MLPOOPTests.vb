@@ -19,22 +19,22 @@ Module Main
         Dim standard As New Randoms.Standard(
             New Range(-1, 1), seed:=DateTime.Now.Millisecond)
 
-        Dim Network As New MultilayerPerceptron(
+        Dim mlp As New MultilayerPerceptron(
             learning_rate:=0.5,
             momentum:=0.8, randomizer:=standard,
             activation:=New BipolarSigmoid(Alpha:=0.5))
 
-        'Network.SetActivationFunction(TActivationFunction.Sigmoid, gain:=0.5, center:=0)
-        'Network.ActivationFunction = Nothing
+        'mlp.SetActivationFunction(TActivationFunction.Sigmoid, gain:=0.5, center:=0)
+        'mlp.ActivationFunction = Nothing
 
-        Network.ShowMessage("Object-oriented programming MLP test")
-        Network.ShowMessage("------------------------------------")
+        mlp.ShowMessage("Object-oriented programming MLP test")
+        mlp.ShowMessage("------------------------------------")
 
         'num_input:=2, num_hidden:={5}, num_output:=1
-        Network.InitStruct({2, 5, 1}, addBiasColumn:=True)
-        'Network.InitStruct({4, 4, 2}, addBiasColumn:=True)
-        Network.Randomize()
-        Network.PrintWeights()
+        mlp.InitStruct({2, 5, 1}, addBiasColumn:=True)
+        'mlp.InitStruct({4, 4, 2}, addBiasColumn:=True)
+        mlp.Randomize()
+        mlp.PrintWeights()
 
         Console.WriteLine()
         Console.WriteLine("Press a key to start.")
@@ -54,38 +54,38 @@ Module Main
 
         'Dim result = False
         'While Not result
-        '    Network.TrainOrig(Training, 5, 0.1)
+        '    mlp.TrainOrig(Training, 5, 0.1)
         '    Console.WriteLine(String.Format(
         '        "Total error on correctly predicting training set: {0}",
-        '        Network.TotalError))
+        '        mlp.TotalError))
         '    Console.ReadLine()
         'End While
 
         'Dim nbIterations% = 3000
         'For iteration As Integer = 0 To nbIterations - 1
-        '    Network.TrainOneIteration(Training)
+        '    mlp.TrainOneIteration(Training)
         '    If (iteration < 10 OrElse
         '        ((iteration + 1) Mod 100 = 0 AndAlso iteration < 1000) OrElse
         '        ((iteration + 1) Mod 1000 = 0 AndAlso iteration < 10000) OrElse
         '        (iteration + 1) Mod 10000 = 0) Then
         '        Dim msg$ = vbLf & "Iteration n°" & iteration + 1 & "/" & nbIterations & vbLf &
-        '            "Output: " & Network.PrintOutputOOP() & vbLf &
-        '            "Average error: " & Network.TotalError.ToString("0.000000")
+        '            "Output: " & mlp.PrintOutputOOP() & vbLf &
+        '            "Average error: " & mlp.TotalError.ToString(format6Dec)
         '        Console.WriteLine(msg)
         '    End If
         'Next
         'Console.WriteLine("Press a key to quit.")
         'Console.ReadLine()
 
-        Network.nbIterations = 10000
-        Network.inputArray = m_inputArrayXOR
-        Network.targetArray = m_targetArrayXOR
-        Network.printOutput_ = True
-        Network.Train()
-        'Network.Train(enumLearningMode.SemiStochastique) ' Does not work?
-        'Network.Train(enumLearningMode.Stochastique)
+        mlp.nbIterations = 10000
+        mlp.inputArray = m_inputArrayXOR
+        mlp.targetArray = m_targetArrayXOR
+        mlp.printOutput_ = True
+        mlp.Train()
+        'mlp.Train(enumLearningMode.SemiStochastique) ' Does not work?
+        'mlp.Train(enumLearningMode.Stochastique)
 
-        Network.ShowMessage("Object-oriented programming MLP test: Done.")
+        mlp.ShowMessage("Object-oriented programming MLP test: Done.")
 
     End Sub
 
@@ -97,6 +97,13 @@ Namespace OOPMLP
     Public Class MultiLayerPerceptronOOPTest
 
         Private m_mlp As New MultilayerPerceptron
+
+        ' Weights are quite the same as MLP Classic, but not exactly:
+        'Private m_mlp As New clsMLPClassic ' 3/6 fails
+
+        ' Weights are not stored in the same way:
+        'Private m_mlp As New MatrixMLP.MultiLayerPerceptron ' 6/6 fails
+        'Private m_mlp As New VectorizedMatrixMLP.clsVectorizedMatrixMLP ' 6/6 fails
 
         <TestInitialize()>
         Public Sub Init()
