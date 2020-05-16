@@ -76,7 +76,8 @@ Namespace MatrixMLP
             m_mlp.targetArray = m_targetArrayXOR
             Dim rLoss! = m_mlp.ComputeAverageError()
             Dim rLossRounded# = Math.Round(rLoss, 2)
-            Assert.AreEqual(rExpectedLoss, rLossRounded)
+            'Assert.AreEqual(rExpectedLoss, rLossRounded)
+            Assert.AreEqual(rLossRounded <= rExpectedLoss, True)
 
         End Sub
 
@@ -115,7 +116,8 @@ Namespace MatrixMLP
             m_mlp.targetArray = m_targetArrayXOR
             Dim rLoss! = m_mlp.ComputeAverageError()
             Dim rLossRounded# = Math.Round(rLoss, 2)
-            Assert.AreEqual(rExpectedLoss, rLossRounded)
+            'Assert.AreEqual(rExpectedLoss, rLossRounded)
+            Assert.AreEqual(rLossRounded <= rExpectedLoss, True)
 
         End Sub
 
@@ -158,7 +160,8 @@ Namespace MatrixMLP
             m_mlp.targetArray = m_targetArrayXOR
             Dim rLoss! = m_mlp.ComputeAverageError()
             Dim rLossRounded# = Math.Round(rLoss, 2)
-            Assert.AreEqual(rExpectedLoss, rLossRounded)
+            'Assert.AreEqual(rExpectedLoss, rLossRounded)
+            Assert.AreEqual(rLossRounded <= rExpectedLoss, True)
 
         End Sub
 
@@ -201,7 +204,8 @@ Namespace MatrixMLP
             m_mlp.targetArray = m_targetArrayXOR
             Dim rLoss! = m_mlp.ComputeAverageError()
             Dim rLossRounded# = Math.Round(rLoss, 2)
-            Assert.AreEqual(rExpectedLoss, rLossRounded)
+            'Assert.AreEqual(rExpectedLoss, rLossRounded)
+            Assert.AreEqual(rLossRounded <= rExpectedLoss, True)
 
         End Sub
 
@@ -245,7 +249,8 @@ Namespace MatrixMLP
             Dim rExpectedLoss# = 0.01
             Dim rLoss! = m_mlp.ComputeAverageError()
             Dim rLossRounded# = Math.Round(rLoss, 2)
-            Assert.AreEqual(rExpectedLoss, rLossRounded)
+            'Assert.AreEqual(rExpectedLoss, rLossRounded)
+            Assert.AreEqual(rLossRounded <= rExpectedLoss, True)
 
         End Sub
 

@@ -35,6 +35,10 @@ From C#: https://github.com/HectorPulido/Vectorized-multilayer-neural-network
 
 # Versions
 
+16/05/2020 V1.06
+- Vectorized Matrix MLP, OOP MLP: faster tests
+- Tests: Assert rounded loss <= expected loss (instead of equality) to test other implementation without exactly the same loss
+
 10/05/2020 V1.05
 - Vectorized Matrix MLP: faster tests
 

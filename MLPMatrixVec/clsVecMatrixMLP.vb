@@ -30,6 +30,7 @@ Namespace VectorizedMatrixMLP
 
         Public Overrides Sub InitStruct(neuronCount%(), addBiasColumn As Boolean)
 
+            Me.weightAdjustment = 0 ' not used in this implementation
             Me.input = Me.inputArray
             Me.target = Me.targetArray
 
