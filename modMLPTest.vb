@@ -1,24 +1,24 @@
 ﻿
 Module modMLPTest
 
-    Public ReadOnly m_neuronCountXOR As Integer() = {2, 2, 1}
-    Public ReadOnly m_neuronCountXOR231 As Integer() = {2, 3, 1} ' With bias
-    Public ReadOnly m_neuronCount2XOR As Integer() = {4, 4, 2}
-    Public ReadOnly m_neuronCount3XOR As Integer() = {6, 6, 3}
+    Public ReadOnly m_neuronCountXOR%() = {2, 2, 1}
+    Public ReadOnly m_neuronCountXOR231%() = {2, 3, 1} ' With bias
+    Public ReadOnly m_neuronCount2XOR%() = {4, 4, 2}
+    Public ReadOnly m_neuronCount3XOR%() = {6, 6, 3}
 
-    Public ReadOnly m_inputArrayXOR As Single(,) = {
+    Public ReadOnly m_inputArrayXOR!(,) = {
         {1, 0},
         {0, 0},
         {0, 1},
         {1, 1}}
 
-    Public ReadOnly m_targetArrayXOR As Single(,) = {
+    Public ReadOnly m_targetArrayXOR!(,) = {
         {1},
         {0},
         {1},
         {0}}
 
-    Public ReadOnly m_inputArray2XOR As Single(,) = {
+    Public ReadOnly m_inputArray2XOR!(,) = {
         {1, 0, 1, 0},
         {1, 0, 0, 0},
         {1, 0, 0, 1},
@@ -36,7 +36,7 @@ Module modMLPTest
         {1, 1, 0, 1},
         {1, 1, 1, 1}}
 
-    Public ReadOnly m_targetArray2XOR As Single(,) = {
+    Public ReadOnly m_targetArray2XOR!(,) = {
         {1, 1},
         {1, 0},
         {1, 1},
@@ -54,7 +54,7 @@ Module modMLPTest
         {0, 1},
         {0, 0}}
 
-    Public ReadOnly m_inputArray3XOR As Single(,) = {
+    Public ReadOnly m_inputArray3XOR!(,) = {
         {1, 0, 1, 0, 1, 0},
         {1, 0, 1, 0, 0, 0},
         {1, 0, 1, 0, 0, 1},
@@ -120,7 +120,7 @@ Module modMLPTest
         {1, 1, 1, 1, 0, 1},
         {1, 1, 1, 1, 1, 1}}
 
-    Public ReadOnly m_targetArray3XOR As Single(,) = {
+    Public ReadOnly m_targetArray3XOR!(,) = {
         {1, 1, 1},
         {1, 1, 0},
         {1, 1, 1},

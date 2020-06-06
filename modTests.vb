@@ -4,24 +4,28 @@ Module modTests
     Sub Main()
 
         ClassicMLPTest()
-        Console.WriteLine("Press a key to continue.")
-        Console.ReadKey()
-        Console.WriteLine()
+        NextTest()
 
-        OOPMLPScenario1()
-        Console.WriteLine("Press a key to continue.")
-        Console.ReadKey()
-        Console.WriteLine()
+        OOPMLPTest()
+        NextTest()
 
-        MatrixMLP.MatrixMLPTest()
-        Console.WriteLine("Press a key to continue.")
-        Console.ReadKey()
-        Console.WriteLine()
+        MatrixMLPTest()
+        NextTest()
 
-        VectorizedMatrixMLP.VectorizedMatrixMLPTest()
+        VectorizedMatrixMLPTest()
+        NextTest()
+
+        TensorMLPTest()
+
         Console.WriteLine("Press a key to quit.")
         Console.ReadKey()
 
+    End Sub
+
+    Private Sub NextTest()
+        Console.WriteLine("Press a key to continue.")
+        Console.ReadKey()
+        Console.WriteLine()
     End Sub
 
 End Module

@@ -1,4 +1,5 @@
-﻿Namespace Data
+﻿
+Namespace Data
     Public Class Training
 
         Public Property Input As List(Of Double)

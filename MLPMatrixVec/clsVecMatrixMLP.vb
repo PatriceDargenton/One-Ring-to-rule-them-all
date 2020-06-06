@@ -1,46 +1,31 @@
 ﻿
-Option Infer On ' Lambda function
-
 Imports System.Runtime.InteropServices ' OutAttribute <Out>
+Imports Perceptron.Util ' Matrix
 
 Namespace VectorizedMatrixMLP
 
-    Public Class clsVectorizedMatrixMLP : Inherits clsMLPGeneric
+    Public Class clsVectorizedMatrixMLP : Inherits clsVectorizedMLPGeneric
 
-        ' Note: Me.weightAdjustment: not used there
-
-        Public vectorizedLearningMode As Boolean = True
-
-        Private input As Matrix
         Public target As Matrix
 
-        ''' <summary>
-        ''' Output matrix (returned to compute average error, and discrete error)
-        ''' </summary>
-        Public outputMatrix As Matrix
+        Private neuronCountWithBias%()
+        Private input, Zlast As Matrix
+        Private w, error_, Z, A, delta As Matrix()
 
-        Public exampleCount%
+        Public Overrides Sub InitializeStruct(neuronCount%(), addBiasColumn As Boolean)
 
-        Private w As Matrix()
-
-        Private error_ As Matrix()
-        Private lastError As Matrix
-
-        Private neuronCount%()
-
-        Public Overrides Sub InitStruct(neuronCount%(), addBiasColumn As Boolean)
-
-            Me.weightAdjustment = 0 ' not used in this implementation
             Me.input = Me.inputArray
             Me.target = Me.targetArray
 
             Me.useBias = addBiasColumn
             Me.layerCount = neuronCount.Length
             ReDim Me.neuronCount(0 To Me.layerCount - 1)
-            For i As Integer = 0 To Me.layerCount - 1
+            ReDim Me.neuronCountWithBias(0 To Me.layerCount - 1)
+            For i = 0 To Me.layerCount - 1
                 Me.neuronCount(i) = neuronCount(i)
-                If Me.useBias AndAlso
-                    i > 0 AndAlso i < Me.layerCount - 1 Then Me.neuronCount(i) += 1 ' Bias
+                Me.neuronCountWithBias(i) = neuronCount(i)
+                If Me.useBias AndAlso i > 0 AndAlso i < Me.layerCount - 1 Then _
+                    Me.neuronCountWithBias(i) += 1
             Next
             Me.exampleCount = Me.target.x
             Me.w = New Matrix(Me.layerCount - 1 - 1) {}
@@ -53,142 +38,84 @@ Namespace VectorizedMatrixMLP
             Me.rnd = New Random()
 
             For i = 0 To Me.w.Length - 1
-                Dim iNbNeur% = Me.neuronCount(i)
-                If Me.useBias Then iNbNeur += 1
-                Dim iNbNeurCP1% = Me.neuronCount(i + 1)
+                Dim nbNeurons = Me.neuronCountWithBias(i)
+                If Me.useBias Then nbNeurons += 1
+                Dim nbNeuronsNextLayer = Me.neuronCountWithBias(i + 1)
                 Me.w(i) = Matrix.Random(
-                    iNbNeur, iNbNeurCP1, Me.rnd, minValue, maxValue) * 2 - 1
+                    nbNeurons, nbNeuronsNextLayer, Me.rnd, minValue, maxValue) * 2 - 1
             Next
 
         End Sub
 
-        Public Overrides Sub WeightInit(layer%, weights#(,))
-            'Me.w(layer) = weights
+        Public Overrides Sub InitializeWeights(layer%, weights#(,))
             Me.w(layer - 1) = weights
         End Sub
 
-        Public Overrides Sub PrintWeights()
-
-            Me.PrintParameters()
-
-            For i As Integer = 0 To Me.layerCount - 1
-                Dim neuronCount% = Me.neuronCount(i)
-                If Me.useBias AndAlso i > 0 AndAlso i < Me.layerCount - 1 Then _
-                    neuronCount -= 1
-                ShowMessage("Neuron count(" & i & ")=" & neuronCount)
-            Next
-
-            ShowMessage("")
-
-            For i = 0 To Me.w.Length - 1
-                ShowMessage("W(" & i + 1 & ")=" & Me.w(i).ToString & vbLf)
-            Next
-
-        End Sub
-
-        Public Sub TrainVector()
+        Public Overrides Sub TrainVector()
 
             Me.vectorizedLearningMode = True
             For iteration = 0 To Me.nbIterations - 1
-
-                OneIteration(testOnly:=False, computeError:=True, TargetValue:=Me.target)
-
+                TrainAllSamplesInternal()
                 If Me.printOutput_ Then PrintOutput(iteration)
-
             Next
             Dim outputArrayDble#(,) = Me.outputMatrix
             Me.outputArraySingle = clsMLPHelper.ConvertDoubleToSingle2D(outputArrayDble)
 
         End Sub
 
-        Public Overrides Sub PrintOutput(iteration%)
-
-            If ShowThisIteration(iteration) Then
-
-                If Not Me.vectorizedLearningMode Then
-                    Dim nbTargets% = Me.targetArray.GetLength(1)
-                    TestAllSamples(Me.inputArray, nbOutputs:=nbTargets)
-                    Me.outputMatrix = Me.outputArray
-                End If
-                Dim outputArrayDble#(,) = Me.outputMatrix
-                Me.outputArraySingle = clsMLPHelper.ConvertDoubleToSingle2D(outputArrayDble)
-                ComputeAverageError()
-                Dim sMsg$ = vbLf & "Iteration n°" & iteration + 1 & "/" & nbIterations & vbLf &
-                    "Output: " & Me.outputMatrix.ToString() & vbLf &
-                    "Average error: " & Me.averageError.ToString(format6Dec)
-                'For i = 0 To Me.LayerCount - 1
-                '    sMsg &= "Error(" & i & ")=" & Me.error_(i).ToString() & vbLf
-                '    sMsg &= "A(" & i & ")=" & A(i).ToString() & vbLf
-                'Next
-
-                ShowMessage(sMsg)
-
-            End If
-
-        End Sub
-
-        Public Sub OneIteration(
-            testOnly As Boolean,
-            Optional computeError As Boolean = False,
-            Optional TargetValue As Matrix = Nothing)
+        Public Sub ForwardPropagateSignal()
 
             Me.error_ = Nothing
-            Me.outputMatrix = Nothing
 
-            Dim Z As Matrix() = Nothing
-            Dim A As Matrix() = Nothing
-            ForwardPropagateSignal(Z, A)
+            ForwardPropagateSignalInternal()
 
-            Dim maxLayer% = layerCount - 1
-            Dim maxIndex% = A.Length - 1
-            Dim Zlast As Matrix = Z(maxLayer)
+            Dim maxLayer = layerCount - 1
+            Dim maxIndex = Me.A.Length - 1
+            Me.Zlast = Me.Z(maxLayer)
             ' Cut first column for last layer
-            Dim zx = Z(maxLayer).x
-            Dim zy = Z(maxLayer).y
+            Dim zx = Me.Z(maxLayer).x
+            Dim zy = Me.Z(maxLayer).y
             If Me.useBias Then Zlast = Zlast.Slice(0, 1, zx, zy)
 
-            Me.outputMatrix = A(maxIndex)
+            Me.outputMatrix = Me.A(maxIndex)
             ' Cut first column for last index of result matrix
-            Dim ax = A(maxIndex).x
-            Dim ay = A(maxIndex).y
+            Dim ax = Me.A(maxIndex).x
+            Dim ay = Me.A(maxIndex).y
             If Me.useBias Then Me.outputMatrix = Me.outputMatrix.Slice(0, 1, ax, ay)
-
-            Me.error_ = Nothing
-            If computeError Then
-                Me.error_ = New Matrix(Me.layerCount - 1) {}
-                Me.error_(Me.layerCount - 1) = Me.outputMatrix - TargetValue
-            End If
-
-            If testOnly Then Exit Sub
-
-            Dim delta As Matrix() = Nothing
-            BackwardPropagateError(delta, Me.error_, Zlast, Z)
-
-            ComputeGradientAndAdjustWeights(A, delta)
 
         End Sub
 
-        Private Sub ForwardPropagateSignal(
-            <Out> ByRef Z As Matrix(), <Out> ByRef A As Matrix())
+        Public Sub ComputeErrorInternal()
+            Me.error_ = New Matrix(Me.layerCount - 1) {}
+            Me.error_(Me.layerCount - 1) = Me.outputMatrix - Me.target
+        End Sub
 
-            Z = New Matrix(layerCount - 1) {}
-            A = New Matrix(layerCount - 1) {}
+        Public Sub BackwardPropagateError()
+            ComputeErrorInternal()
+            BackwardPropagateErrorInternal()
+            ComputeGradientAndAdjustWeights()
+        End Sub
 
-            Z(0) = Me.input
+        Public Sub TrainAllSamplesInternal()
+            ForwardPropagateSignal()
+            BackwardPropagateError()
+        End Sub
+
+        Private Sub ForwardPropagateSignalInternal()
+
+            Me.Z = New Matrix(layerCount - 1) {}
+            Me.A = New Matrix(layerCount - 1) {}
+
+            Me.Z(0) = Me.input
             ' Column added with 1 for all examples
-            If Me.useBias Then Z(0) = Z(0).AddColumn(Matrix.Ones(Me.exampleCount, 1))
-            A(0) = Z(0)
+            If Me.useBias Then Me.Z(0) = Me.Z(0).AddColumn(Matrix.Ones(Me.exampleCount, 1))
+            Me.A(0) = Me.Z(0)
 
             For i = 1 To layerCount - 1
-
-                Dim AW = A(i - 1) * w(i - 1)
-
-                Z(i) = AW
+                Me.Z(i) = Me.A(i - 1) * Me.w(i - 1)
                 ' Column added with 1 for all examples
-                If Me.useBias Then Z(i) = Z(i).AddColumn(Matrix.Ones(Me.exampleCount, 1))
-
-                A(i) = Matrix.Map(Z(i), Me.lambdaFnc)
-
+                If Me.useBias Then Me.Z(i) = Me.Z(i).AddColumn(Matrix.Ones(Me.exampleCount, 1))
+                Me.A(i) = Matrix.Map(Me.Z(i), Me.lambdaFnc)
             Next
 
             ' How use Relu
@@ -198,38 +125,40 @@ Namespace VectorizedMatrixMLP
             ' The learning rate must be smaller, like 0.001
             ' Optionaly you can use a Softmax layer to make a classifier
             ' Use if Relu OR iregularized Values
-            If Me.activFnc.IsNonLinear Then A(A.Length - 1) = Z(Z.Length - 1)
+            If Me.activFnc.IsNonLinear Then Me.A(Me.A.Length - 1) = Me.Z(Me.Z.Length - 1)
 
         End Sub
 
-        Private Sub BackwardPropagateError(
-            <Out> ByRef delta As Matrix(), error_ As Matrix(),
-            Zlast As Matrix, Z As Matrix())
+        Private Sub BackwardPropagateErrorInternal()
 
-            delta = New Matrix(Me.layerCount - 1) {}
-            delta(Me.layerCount - 1) = error_(Me.layerCount - 1) * Matrix.Map(Zlast, Me.lambdaFncD)
+            Me.delta = New Matrix(Me.layerCount - 1) {}
+            Me.delta(Me.layerCount - 1) = Me.error_(Me.layerCount - 1) *
+                Matrix.Map(Zlast, Me.lambdaFncD)
 
             For i = Me.layerCount - 2 To 0 Step -1
 
-                Dim d = delta(i + 1)
+                Dim d = Me.delta(i + 1)
                 Dim t = Me.w(i).T
                 Me.error_(i) = d * t
 
-                delta(i) = Me.error_(i) * Matrix.Map(Z(i), Me.lambdaFncD)
+                Me.delta(i) = Me.error_(i) * Matrix.Map(Z(i), Me.lambdaFncD)
 
                 ' Cut first column
-                If Me.useBias Then delta(i) = delta(i).Slice(0, 1, delta(i).x, delta(i).y)
+                If Me.useBias Then Me.delta(i) = Me.delta(i).Slice(0, 1, Me.delta(i).x, Me.delta(i).y)
 
             Next
 
         End Sub
 
-        Private Sub ComputeGradientAndAdjustWeights(A As Matrix(), delta As Matrix())
+        Private Sub ComputeGradientAndAdjustWeights()
 
             ' Gradient descend: Compute gradient and adjust weights
 
             For i = 0 To w.Length - 1
-                Me.w(i) -= A(i).T * delta(i + 1) * Me.learningRate
+                Dim gradient = Me.A(i).T * Me.delta(i + 1)
+                Me.w(i) -= gradient * Me.learningRate
+                ' 30/05/2020 weightAdjustment
+                If Me.weightAdjustment <> 0 Then Me.w(i) -= gradient * Me.weightAdjustment
             Next
 
         End Sub
@@ -250,12 +179,9 @@ Namespace VectorizedMatrixMLP
         End Sub
 
         Public Overrides Function ComputeAverageError!()
-
             Me.outputMatrix = Me.outputArraySingle ' Single(,) -> Matrix
-            Me.ComputeError()
-            Me.ComputeAverageErrorFromLastError()
+            MyBase.ComputeAverageError()
             Return Me.averageError
-
         End Function
 
         Public Sub ComputeErrorOneSample()
@@ -270,65 +196,80 @@ Namespace VectorizedMatrixMLP
         End Sub
 
         Public Function ComputeAverageErrorOneSample!()
-
             Me.ComputeErrorOneSample()
             Me.ComputeAverageErrorFromLastErrorOneSample()
             Return Me.averageError
-
         End Function
 
-        Public Overrides Sub TrainSystematic(inputs!(,), targets!(,),
-            Optional learningMode As enumLearningMode = enumLearningMode.Defaut)
-
-            If learningMode = enumLearningMode.Vectoriel Then
-                ' Does not work fine!? (mean error does not converge to 0?)
-                TrainVector()
-                Exit Sub
-            End If
-
-            ' Works fine!
-            Me.vectorizedLearningMode = False
-            Me.exampleCount = 1
-            MyBase.TrainSystematic(inputs, targets, learningMode)
-
-        End Sub
-
         Public Overrides Sub TrainOneSample(input!(), target!())
-
-            Dim inputsDble#(0, input.Length - 1)
-            inputsDble = clsMLPHelper.FillArray2(inputsDble, input, 0)
-            Dim matrixInput As Matrix = inputsDble
-
-            Dim targetsDble#(0, target.Length - 1)
-            targetsDble = clsMLPHelper.FillArray2(targetsDble, target, 0)
-            Dim TargetValue As Matrix = targetsDble
-
+            SetInputOneSample(input)
+            SetTargetOneSample(target)
             Me.exampleCount = 1
-            Me.input = matrixInput
-            OneIteration(testOnly:=False, computeError:=True, TargetValue:=TargetValue)
-
+            TrainAllSamplesInternal()
         End Sub
 
-        Public Overrides Sub TestOneSample(input() As Single, ByRef ouput() As Single)
-
-            TestOneSample(input)
-            ouput = Me.lastOutputArraySingle
-
-        End Sub
-
-        Public Overrides Sub TestOneSample(input!())
-
+        Private Sub SetInputOneSample(input!())
             Dim inputDble#(0, input.Length - 1)
             inputDble = clsMLPHelper.FillArray2(inputDble, input, 0)
             Dim matrixInput As Matrix = inputDble
-
             Me.input = matrixInput
-            OneIteration(testOnly:=True, computeError:=False)
+        End Sub
 
-            ' Get first row
-            Dim outputMatrix1D = Me.outputMatrix.GetRow(0)
-            Me.lastOutputArray = outputMatrix1D.ToArray
-            Me.lastOutputArraySingle = clsMLPHelper.ConvertDoubleToSingle(Me.lastOutputArray)
+        Private Sub SetTargetOneSample(target!())
+            Dim targetsDble#(0, target.Length - 1)
+            targetsDble = clsMLPHelper.FillArray2(targetsDble, target, 0)
+            Me.target = targetsDble
+        End Sub
+
+        Public Sub SetOuput1D()
+            Me.lastOutputArray1DSingle = Me.outputMatrix.ToArraySingle()
+        End Sub
+
+        Public Overrides Sub TestOneSample(input!())
+            SetInputOneSample(input)
+            ForwardPropagateSignal()
+            SetOuput1D()
+        End Sub
+
+        Public Overrides Sub PrintWeights()
+
+            Me.PrintParameters()
+
+            For i = 0 To Me.layerCount - 1
+                ShowMessage("Neuron count(" & i & ")=" & Me.neuronCount(i))
+            Next
+
+            ShowMessage("")
+
+            For i = 0 To Me.w.Length - 1
+                ShowMessage("W(" & i + 1 & ")=" & Me.w(i).ToString & vbLf)
+            Next
+
+        End Sub
+
+        Public Overrides Sub PrintOutput(iteration%)
+
+            If ShowThisIteration(iteration) Then
+
+                If Not Me.vectorizedLearningMode Then
+                    Dim nbTargets = Me.targetArray.GetLength(1)
+                    TestAllSamples(Me.inputArray, nbOutputs:=nbTargets)
+                    Me.outputMatrix = Me.outputArray
+                End If
+                Dim outputArrayDble#(,) = Me.outputMatrix
+                Me.outputArraySingle = clsMLPHelper.ConvertDoubleToSingle2D(outputArrayDble)
+                ComputeAverageError()
+                Dim sMsg$ = vbLf & "Iteration n°" & iteration + 1 & "/" & nbIterations & vbLf &
+                    "Output: " & Me.outputMatrix.ToString() & vbLf &
+                    "Average error: " & Me.averageError.ToString(format6Dec)
+                'For i = 0 To Me.LayerCount - 1
+                '    sMsg &= "Error(" & i & ")=" & Me.error_(i).ToString() & vbLf
+                '    sMsg &= "A(" & i & ")=" & A(i).ToString() & vbLf
+                'Next
+
+                ShowMessage(sMsg)
+
+            End If
 
         End Sub
 

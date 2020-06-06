@@ -73,8 +73,11 @@
     <Import Include="System.Threading.Tasks" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="MLPOOP\Activation\ELU.vb" />
+    <Compile Include="MLPTensor\Layer\clsELULayer.vb" />
     <Compile Include="modActivation.vb" />
     <Compile Include="clsMLPGeneric.vb" />
+    <Compile Include="clsMLPGenericVec.vb" />
     <Compile Include="clsMLPHelper.vb" />
     <Compile Include="modMLPHelper.vb" />
     <Compile Include="clsRndExtension.vb" />
@@ -83,8 +86,8 @@
     <Compile Include="MLPClassic\modMLPClassicTest.vb" />
     <Compile Include="MLPMatrixVec\clsVecMatrixMLP.vb" />
     <Compile Include="MLPMatrixVec\clsVecMatrixMLPTest.vb" />
-    <Compile Include="MLPMatrixVec\modLinearAlgebra.vb" />
     <Compile Include="MLPMatrixVec\modMatrixMLPTest.vb" />
+    <Compile Include="modLinearAlgebra.vb" />
     <Compile Include="MLPMatrix\clsMatrix.vb" />
     <Compile Include="MLPMatrix\clsMatrixMLP.vb" />
     <Compile Include="MLPMatrix\clsMatrixMLPTest.vb" />
@@ -111,6 +114,17 @@
     <Compile Include="MLPOOP\Randoms\Standard.vb" />
     <Compile Include="MLPOOP\MLPOOPTests.vb" />
     <Compile Include="MLPOOP\Range.vb" />
+    <Compile Include="MLPTensor\Layer\clsHyperbolicTangentLayer.vb" />
+    <Compile Include="MLPTensor\Layer\clsLayer.vb" />
+    <Compile Include="MLPTensor\Layer\clsLinear.vb" />
+    <Compile Include="MLPTensor\Layer\clsSequential.vb" />
+    <Compile Include="MLPTensor\Layer\clsSigmoidLayer.vb" />
+    <Compile Include="MLPTensor\clsStochasticGradientDescent.vb" />
+    <Compile Include="MLPTensor\clsMLPTensorTest.vb" />
+    <Compile Include="MLPTensor\clsMLPTensor.vb" />
+    <Compile Include="MLPTensor\clsActivation.vb" />
+    <Compile Include="MLPTensor\clsMeanSquaredError.vb" />
+    <Compile Include="MLPTensor\clsTensor.vb" />
     <Compile Include="modTests.vb" />
     <Compile Include="AssemblyInfo.vb" />
     <Compile Include="My Project\Application.Designer.vb">

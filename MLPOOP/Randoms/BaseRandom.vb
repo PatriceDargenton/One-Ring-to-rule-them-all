@@ -1,4 +1,5 @@
-﻿Imports Perceptron.Utilities
+﻿
+Imports Perceptron.Utilities
 
 Namespace Randoms
     Public MustInherit Class BaseRandom
@@ -9,7 +10,7 @@ Namespace Randoms
             Me.Range = range
         End Sub
 
-        Public MustOverride Function Generate() As Double
+        Public MustOverride Function Generate#()
 
     End Class
 End Namespace

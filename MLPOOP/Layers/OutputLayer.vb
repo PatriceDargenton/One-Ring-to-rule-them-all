@@ -1,11 +1,11 @@
-﻿Imports Perceptron.Activation
+﻿
+Imports Perceptron.Activation
 Imports Perceptron.Neurons
 
 Namespace Layers
-    Public Class OutputLayer
-        Inherits BaseLayer
+    Public Class OutputLayer : Inherits BaseLayer
 
-        Public Sub New(Size As Integer, Activation As BaseActivation)
+        Public Sub New(Size%, Activation As BaseActivation)
             MyBase.New(Size, Activation)
             For x = 1 To Size
                 Me.Neurons.Add(New Neuron(NeuronType.Output))
@@ -26,8 +26,8 @@ Namespace Layers
             Return results
         End Function
 
-        Public Function CalculateSquaredError() As Double
-            Dim sum = 0.0
+        Public Function CalculateSquaredError#()
+            Dim sum# = 0.0
             For Each n In Me.Neurons
                 sum += n.ErrorDelta * n.ErrorDelta
             Next

@@ -1,11 +1,31 @@
-# One Ring to rule them all
+One Ring to rule them all
+---
+
 Functional tests for Multi-Layer Perceptron implementations, using OOP paradigm
 
 This is the classical XOR test.
 
-Why 2 XOR and 3 XOR?
+<!-- TOC -->
 
--> To reduce hazard and improve learning stability.
+- [Documentation](#documentation)
+    - [Why 2 XOR and 3 XOR?](#why-2-xor-and-3-xor)
+- [MLP implementations](#mlp-implementations)
+    - [Classic MLP](#classic-mlp)
+    - [Object-oriented programming MLP](#object-oriented-programming-mlp)
+    - [Matrix MLP: implementation using matrix products](#matrix-mlp-implementation-using-matrix-products)
+    - [Vectorized Matrix MLP: implementation using matrix products, including samples vector](#vectorized-matrix-mlp-implementation-using-matrix-products-including-samples-vector)
+    - [Tensor MLP: implementation using tensor](#tensor-mlp-implementation-using-tensor)
+- [Versions](#versions)
+
+<!-- /TOC -->
+
+# Documentation
+
+## Why 2 XOR and 3 XOR?
+
+-> To reduce hazard and improve learning stability, see [MLPComparison.xls](MLPComparison.xls).
+
+# MLP implementations
 
 ## Classic MLP
 http://patrice.dargenton.free.fr/ia/ialab/perceptron.html (french)
@@ -33,7 +53,23 @@ From C#: https://github.com/PatriceDargenton/Vectorized-multilayer-neural-networ
 From C#: https://github.com/HectorPulido/Vectorized-multilayer-neural-network
 
 
+## Tensor MLP: implementation using tensor
+
+From C#: https://github.com/HectorPulido/Machine-learning-Framework-Csharp
+
+
 # Versions
+
+06/06/2020 V1.07
+- Source code cleaned
+- Matrix MLP: finally weightAdjustment is not used in this implementation (only learningRate)
+- Vectorized Matrix MLP: weight adjustment
+- Classic MLP MatrixMLP.Matrix -> VectorizedMatrixMLP.Matrix (Perceptron.Util namespace)
+- LinearAlgebra.Matrix: common for Tensor MLP and Vectorized matrix MLP (Perceptron.Util namespace)
+- ComputeAverageError: in generic class
+- Tests added for semi-stochastic and stochastic learning mode
+- TrainSemiStochastic: fixed
+- Tensor MLP added
 
 16/05/2020 V1.06
 - Vectorized Matrix MLP, OOP MLP: faster tests

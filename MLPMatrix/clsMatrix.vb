@@ -68,7 +68,7 @@ Namespace MatrixMLP
 
             Dim m As New Matrix(inputs.Length, 1)
 
-            For i As Integer = 0 To inputs.Length - 1
+            For i = 0 To inputs.Length - 1
                 m.data(i, 0) = inputs(i)
             Next
 
@@ -83,7 +83,7 @@ Namespace MatrixMLP
 
             Dim m As New Matrix(inputs.Length, 1)
 
-            For i As Integer = 0 To inputs.Length - 1
+            For i = 0 To inputs.Length - 1
                 m.data(i, 0) = inputs(i)
             Next
 
@@ -101,15 +101,15 @@ Namespace MatrixMLP
             Me.m_rows = matrix.GetLength(0)
             Me.m_cols = matrix.GetLength(1)
             ReDim Me.data(0 To Me.m_rows - 1, 0 To Me.m_cols - 1)
-            For i As Integer = 0 To Me.m_rows - 1
-                For j As Integer = 0 To Me.m_cols - 1
+            For i = 0 To Me.m_rows - 1
+                For j = 0 To Me.m_cols - 1
                     Me.data(i, j) = matrix(i, j)
                 Next
             Next
         End Sub
 
         ' Implicit conversion operator #(,) -> Matrix
-        Public Shared Widening Operator CType(matrix(,) As Double) As Matrix
+        Public Shared Widening Operator CType(matrix#(,)) As Matrix
             Return New Matrix(matrix)
         End Operator
 
@@ -119,7 +119,7 @@ Namespace MatrixMLP
         End Operator
 
         ' Implicit conversion operator !(,) -> Matrix
-        Public Shared Widening Operator CType(matrix(,) As Single) As Matrix
+        Public Shared Widening Operator CType(matrix!(,)) As Matrix
             Return New Matrix(matrix)
         End Operator
 
@@ -130,7 +130,7 @@ Namespace MatrixMLP
 
             Dim array#() = New Double(Me.data.GetLength(0) - 1) {}
 
-            For i As Integer = 0 To array.Length - 1
+            For i = 0 To array.Length - 1
                 array(i) = Me.data(i, 0)
             Next
 
@@ -145,7 +145,7 @@ Namespace MatrixMLP
 
             Dim array!() = New Single(Me.data.GetLength(0) - 1) {}
 
-            For i As Integer = 0 To array.Length - 1
+            For i = 0 To array.Length - 1
                 array(i) = CSng(Me.data(i, 0))
             Next
 
@@ -181,9 +181,9 @@ Namespace MatrixMLP
 
             Dim sb As New StringBuilder
             sb.AppendLine("{")
-            For i As Integer = 0 To Me.m_rows - 1
+            For i = 0 To Me.m_rows - 1
                 sb.Append(" {")
-                For j As Integer = 0 To Me.m_cols - 1
+                For j = 0 To Me.m_cols - 1
                     Dim strVal$ = Me.data(i, j).ToString(dec).ReplaceCommaByDot()
                     sb.Append(strVal)
                     If j < Me.m_cols - 1 Then sb.Append(", ")
@@ -221,8 +221,8 @@ Namespace MatrixMLP
         ''' </summary>
         Public Overloads Sub Add(n%)
 
-            For i As Integer = 0 To Me.m_rows - 1
-                For j As Integer = 0 To Me.m_cols - 1
+            For i = 0 To Me.m_rows - 1
+                For j = 0 To Me.m_cols - 1
                     Me.data(i, j) += n
                 Next
             Next
@@ -234,8 +234,8 @@ Namespace MatrixMLP
         ''' </summary>
         Public Overloads Sub Add(m As Matrix)
 
-            For i As Integer = 0 To Me.m_rows - 1
-                For j As Integer = 0 To Me.m_cols - 1
+            For i = 0 To Me.m_rows - 1
+                For j = 0 To Me.m_cols - 1
                     Me.data(i, j) += m.data(i, j)
                 Next
             Next
@@ -247,8 +247,8 @@ Namespace MatrixMLP
         ''' </summary>
         Public Overloads Sub Subtract(n%)
 
-            For i As Integer = 0 To Me.m_rows - 1
-                For j As Integer = 0 To Me.m_cols - 1
+            For i = 0 To Me.m_rows - 1
+                For j = 0 To Me.m_cols - 1
                     Me.data(i, j) -= n
                 Next
             Next
@@ -260,8 +260,8 @@ Namespace MatrixMLP
         ''' </summary>
         Public Overloads Sub Subtract(m As Matrix)
 
-            For i As Integer = 0 To Me.m_rows - 1
-                For j As Integer = 0 To Me.m_cols - 1
+            For i = 0 To Me.m_rows - 1
+                For j = 0 To Me.m_cols - 1
                     Me.data(i, j) -= m.data(i, j)
                 Next
             Next
@@ -275,8 +275,8 @@ Namespace MatrixMLP
 
             Dim c As New Matrix(a.Rows, a.Cols)
 
-            For i As Integer = 0 To c.Rows - 1
-                For j As Integer = 0 To c.Cols - 1
+            For i = 0 To c.Rows - 1
+                For j = 0 To c.Cols - 1
                     c.data(i, j) = a.data(i, j) - b.data(i, j)
                 Next
             Next
@@ -299,8 +299,8 @@ Namespace MatrixMLP
         ''' </summary>
         Public Overloads Sub Multiply(n#)
 
-            For i As Integer = 0 To Me.m_rows - 1
-                For j As Integer = 0 To Me.m_cols - 1
+            For i = 0 To Me.m_rows - 1
+                For j = 0 To Me.m_cols - 1
                     Me.data(i, j) *= n
                 Next
             Next
@@ -313,8 +313,8 @@ Namespace MatrixMLP
         ''' </summary>
         Public Overloads Sub Multiply(m As Matrix)
 
-            For i As Integer = 0 To Me.m_rows - 1
-                For j As Integer = 0 To Me.m_cols - 1
+            For i = 0 To Me.m_rows - 1
+                For j = 0 To Me.m_cols - 1
                     Me.data(i, j) *= m.data(i, j)
                 Next
             Next
@@ -332,10 +332,10 @@ Namespace MatrixMLP
 
             Dim c As New Matrix(a.Rows, b.Cols)
 
-            For i As Integer = 0 To c.Rows - 1
-                For j As Integer = 0 To c.Cols - 1
+            For i = 0 To c.Rows - 1
+                For j = 0 To c.Cols - 1
                     Dim sum# = 0
-                    For k As Integer = 0 To a.Cols - 1
+                    For k = 0 To a.Cols - 1
                         sum += a.data(i, k) * b.data(k, j)
                     Next
                     c.data(i, j) = sum
@@ -392,8 +392,8 @@ Namespace MatrixMLP
 
             Dim c As New Matrix(Me.m_rows, Me.m_cols)
 
-            For i As Integer = 0 To Me.m_rows - 1
-                For j As Integer = 0 To Me.m_cols - 1
+            For i = 0 To Me.m_rows - 1
+                For j = 0 To Me.m_cols - 1
                     c.data(i, j) = Math.Abs(Me.data(i, j))
                 Next
             Next
@@ -409,8 +409,8 @@ Namespace MatrixMLP
 
             Dim nbElements% = Me.m_rows * Me.m_cols
             Dim sum# = 0
-            For i As Integer = 0 To Me.m_rows - 1
-                For j As Integer = 0 To Me.m_cols - 1
+            For i = 0 To Me.m_rows - 1
+                For j = 0 To Me.m_cols - 1
                     sum += Me.data(i, j)
                 Next
             Next
@@ -433,8 +433,8 @@ Namespace MatrixMLP
 
             Dim c As New Matrix(m.Cols, m.Rows)
 
-            For i As Integer = 0 To m.Rows - 1
-                For j As Integer = 0 To m.Cols - 1
+            For i = 0 To m.Rows - 1
+                For j = 0 To m.Cols - 1
                     c.data(j, i) = m.data(i, j)
                 Next
             Next
@@ -448,8 +448,8 @@ Namespace MatrixMLP
         ''' </summary>
         Public Overloads Sub Transpose()
 
-            For i As Integer = 0 To Me.Rows - 1
-                For j As Integer = 0 To Me.Cols - 1
+            For i = 0 To Me.Rows - 1
+                For j = 0 To Me.Cols - 1
                     Me.data(j, i) = Me.data(i, j)
                 Next
             Next
@@ -481,8 +481,8 @@ Namespace MatrixMLP
         ''' </summary>
         Public Sub Map(lambdaFct As Func(Of Double, Double))
 
-            For i As Integer = 0 To Me.Rows - 1
-                For j As Integer = 0 To Me.Cols - 1
+            For i = 0 To Me.Rows - 1
+                For j = 0 To Me.Cols - 1
                     Me.data(i, j) = lambdaFct.Invoke(Me.data(i, j))
                 Next
             Next
@@ -496,8 +496,8 @@ Namespace MatrixMLP
 
             Dim c As New Matrix(m.Rows, m.Cols)
 
-            For i As Integer = 0 To m.Rows - 1
-                For j As Integer = 0 To m.Cols - 1
+            For i = 0 To m.Rows - 1
+                For j = 0 To m.Cols - 1
                     c.data(i, j) = lambdaFct.Invoke(m.data(i, j))
                 Next
             Next

@@ -7,11 +7,11 @@ Namespace Layers
 
     Public Class BaseLayer
 
-        Public Property Size As Integer
+        Public Property Size%
         Public Property Neurons As List(Of Neuron)
         Public Property ActivationFunction As BaseActivation
 
-        Public Sub New(Size As Integer, Activation As BaseActivation)
+        Public Sub New(Size%, Activation As BaseActivation)
             Me.Size = Size
             Me.Neurons = New List(Of Neuron)
             Me.ActivationFunction = Activation
@@ -46,9 +46,9 @@ Namespace Layers
         End Sub
 
         Public Sub InitChild(layer As BaseLayer, Random As BaseRandom)
-            Dim i% = 0
+            Dim i = 0
             For Each n2 As Neuron In Me.Neurons
-                Dim j% = 0
+                Dim j = 0
                 For Each n As Neuron In layer.Neurons
                     Dim weight = New Weight(Random.Generate(), n2, n)
                     n.WeightsToParent(i) = weight
@@ -78,7 +78,7 @@ Namespace Layers
         End Sub
 
         Public Sub InitBias(bias As Neuron, Random As BaseRandom)
-            Dim i% = 0
+            Dim i = 0
             For Each n As Neuron In Me.Neurons
                 Dim weight = New Weight(Random.Generate(), bias, n)
                 n.WeightToBias = weight
@@ -99,32 +99,32 @@ Namespace Layers
 
             Dim sb As New System.Text.StringBuilder("{" & vbCrLf)
 
-            Dim nbNeurons% = Me.Neurons.Count
-            Dim numNeuron% = 0
+            Dim nbNeurons = Me.Neurons.Count
+            Dim numNeuron = 0
             For Each n2 As Neuron In Me.Neurons
                 numNeuron += 1
                 If n2.Type = NeuronType.Input Then Continue For
                 sb.Append(" {")
-                Dim iNbW% = n2.WeightsToParent.Count
-                Dim iNumW% = 0
+                Dim nbW = n2.WeightsToParent.Count
+                Dim numW = 0
                 For Each rVal In n2.WeightsToParent
-                    iNumW += 1
+                    numW += 1
                     sb.Append(rVal.Value.ToString(format2Dec).ReplaceCommaByDot())
-                    If iNumW < iNbW Then sb.Append(", ")
+                    If numW < nbW Then sb.Append(", ")
                 Next
 
                 If Not IsNothing(n2.WeightToBias) Then
                     sb.Append(", " & n2.WeightToBias.Value.ToString(format2Dec).ReplaceCommaByDot())
                 End If
 
-                Dim sVirg$ = ""
+                Dim comma$ = ""
                 If numNeuron < nbNeurons Then
-                    sVirg = ","
+                    comma = ","
                 Else
-                    sVirg = "}"
+                    comma = "}"
                 End If
 
-                sb.Append("}" & sVirg & vbCrLf)
+                sb.Append("}" & comma & vbCrLf)
 
             Next
 
@@ -135,17 +135,17 @@ Namespace Layers
         Public Sub RestoreWeightsWithBias(weightsWithBias#(,),
             useBias As Boolean, bias As Neuron, layerParent As BaseLayer)
 
-            Dim layerParentSize% = weightsWithBias.GetUpperBound(1)
+            Dim layerParentSize = weightsWithBias.GetUpperBound(1)
             Dim weights#(Me.Neurons.Count - 1, layerParentSize)
             Dim biasWeights#(Me.Neurons.Count - 1)
 
-            Dim i% = 0
-            Dim nbNeurons% = Me.Neurons.Count
-            Dim nbNeuronsParent% = layerParent.Neurons.Count
+            Dim i = 0
+            Dim nbNeurons = Me.Neurons.Count
+            Dim nbNeuronsParent = layerParent.Neurons.Count
 
             For Each n2 As Neuron In Me.Neurons
                 If n2.Type = NeuronType.Input Then Continue For
-                Dim j% = 0
+                Dim j = 0
                 For j = 0 To nbNeuronsParent - 1
                     weights(i, j) = weightsWithBias(i, j)
                 Next
@@ -160,10 +160,10 @@ Namespace Layers
         End Sub
 
         Public Sub ConnectParent2(layer As BaseLayer, weights#(,))
-            Dim i% = 0
+            Dim i = 0
             For Each n2 As Neuron In Me.Neurons
-                Dim j% = 0
-                Dim nbLayerNeurons% = layer.Neurons.Count
+                Dim j = 0
+                Dim nbLayerNeurons = layer.Neurons.Count
                 For Each n As Neuron In layer.Neurons
                     Dim weight = New Weight(weights(i, j), n, n2)
                     If n.Type <> NeuronType.Output Then n.WeightsToChild.Add(weight)
@@ -175,7 +175,7 @@ Namespace Layers
         End Sub
 
         Public Sub ConnectBias2(bias As Neuron, weights#())
-            Dim i% = 0
+            Dim i = 0
             For Each n As Neuron In Me.Neurons
                 Dim weight = New Weight(weights(i), bias, n)
                 n.WeightToBias = weight

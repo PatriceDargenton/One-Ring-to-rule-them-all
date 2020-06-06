@@ -1,11 +1,23 @@
 ﻿
 ' From https://github.com/HectorPulido/Vectorized-multilayer-neural-network : C# -> VB .NET conversion
-
-Option Infer On ' Lambda function
+'  and for Axis, AxisZero and Item (this function) from:
+' https://github.com/HectorPulido/Machine-learning-Framework-Csharp : C# -> VB .NET conversion
 
 Imports System.Text ' StringBuilder
 
-Namespace VectorizedMatrixMLP
+Namespace Util
+
+    ' From https://github.com/HectorPulido/Machine-learning-Framework-Csharp 
+    Public Enum Axis
+        horizontal
+        vertical
+    End Enum
+
+    Public Enum AxisZero
+        horizontal
+        vertical
+        none
+    End Enum
 
     Public Structure Matrix
 
@@ -71,23 +83,23 @@ Namespace VectorizedMatrixMLP
         End Sub
 
         Public Sub New(matrix!(,))
-            Dim x% = matrix.GetLength(0)
-            Dim y% = matrix.GetLength(1)
+            Dim x = matrix.GetLength(0)
+            Dim y = matrix.GetLength(1)
             _matrix = New Double(x - 1, y - 1) {}
-            For i As Integer = 0 To x - 1
-                For j As Integer = 0 To y - 1
+            For i = 0 To x - 1
+                For j = 0 To y - 1
                     _matrix(i, j) = matrix(i, j)
                 Next
             Next
         End Sub
 
         ' Implicit conversion operator !(,) -> Matrix
-        Public Shared Widening Operator CType(matrix(,) As Single) As Matrix
+        Public Shared Widening Operator CType(matrix!(,)) As Matrix
             Return New Matrix(matrix)
         End Operator
 
         ' Implicit conversion operator #(,) -> Matrix
-        Public Shared Widening Operator CType(matrix(,) As Double) As Matrix
+        Public Shared Widening Operator CType(matrix#(,)) As Matrix
             Return New Matrix(matrix)
         End Operator
 
@@ -109,6 +121,16 @@ Namespace VectorizedMatrixMLP
             Return matrix(x, y)
 
         End Function
+
+        ' From https://github.com/HectorPulido/Machine-learning-Framework-Csharp (double this[int i, int j])
+        Default Public Property Item#(i%, j%)
+            Get
+                Return _matrix(i, j)
+            End Get
+            Set(value#)
+                _matrix(i, j) = value
+            End Set
+        End Property
 
         ''' <summary>
         ''' Cut matrix from x1, y1 to x2, y2
@@ -463,8 +485,8 @@ Namespace VectorizedMatrixMLP
 
             Dim c As New Matrix(m.x, m.y)
 
-            For i As Integer = 0 To m.x - 1
-                For j As Integer = 0 To m.y - 1
+            For i = 0 To m.x - 1
+                For j = 0 To m.y - 1
                     c._matrix(i, j) = lambdaFct.Invoke(m._matrix(i, j))
                 Next
             Next
@@ -480,9 +502,9 @@ Namespace VectorizedMatrixMLP
 
             Dim array#() = New Double(Me._matrix.Length - 1) {}
 
-            Dim k% = 0
-            For i As Integer = 0 To Me.x - 1
-                For j As Integer = 0 To Me.y - 1
+            Dim k = 0
+            For i = 0 To Me.x - 1
+                For j = 0 To Me.y - 1
                     array(k) = Me._matrix(i, j)
                     k += 1
                 Next
@@ -499,9 +521,9 @@ Namespace VectorizedMatrixMLP
 
             Dim array!() = New Single(Me._matrix.Length - 1) {}
 
-            Dim k% = 0
-            For i As Integer = 0 To Me.x - 1
-                For j As Integer = 0 To Me.y - 1
+            Dim k = 0
+            For i = 0 To Me.x - 1
+                For j = 0 To Me.y - 1
                     array(k) = CSng(Me._matrix(i, j))
                     k += 1
                 Next

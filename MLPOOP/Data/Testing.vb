@@ -1,4 +1,5 @@
-﻿Namespace Data
+﻿
+Namespace Data
     Public Class Testing
 
         Public Property Input As List(Of Double)

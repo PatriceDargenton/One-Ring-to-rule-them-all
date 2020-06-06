@@ -1,4 +1,5 @@
-﻿Namespace Neurons
+﻿
+Namespace Neurons
     Public Module NeuronEnum
 
         Public Enum NeuronType

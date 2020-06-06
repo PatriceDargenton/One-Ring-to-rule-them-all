@@ -1,16 +1,17 @@
-﻿Namespace Utilities
+﻿
+Namespace Utilities
     Public Class Range
 
-        Public Property Minimum As Double
-        Public Property Maximum As Double
+        Public Property Minimum#
+        Public Property Maximum#
 
-        Public ReadOnly Property Delta As Double
+        Public ReadOnly Property Delta#
             Get
                 Return Me.Maximum - Me.Minimum
             End Get
         End Property
 
-        Public Sub New(min As Double, max As Double)
+        Public Sub New(min#, max#)
             Me.Minimum = min
             Me.Maximum = max
         End Sub

@@ -1,11 +1,10 @@
-﻿Imports Perceptron.Utilities
+﻿
+Imports Perceptron.Utilities
 
 Namespace Activation
+    Public Class Linear : Inherits BaseActivation
 
-    Public Class Linear
-        Inherits BaseActivation
-
-        Public Property Slope As Double
+        Public Property Slope#
 
         Public Sub New()
             Me.Slope = 1
@@ -13,25 +12,25 @@ Namespace Activation
             Me.out_range = New Range(Double.NegativeInfinity, Double.PositiveInfinity)
         End Sub
 
-        Public Sub New(slope As Double)
+        Public Sub New(slope#)
             Me.Slope = slope
             Me.in_range = New Range(Double.NegativeInfinity, Double.PositiveInfinity)
             Me.out_range = New Range(Double.NegativeInfinity, Double.PositiveInfinity)
         End Sub
 
-        Public Sub New(slope As Integer)
+        Public Sub New(slope%)
             Me.Slope = slope
         End Sub
 
-        Public Overrides Function AbstractedDerivative(value As Double) As Double
+        Public Overrides Function AbstractedDerivative#(value#)
             Return Me.Slope
         End Function
 
-        Public Overrides Function Derivative(value As Double) As Double
+        Public Overrides Function Derivative#(value#)
             Return Me.Slope
         End Function
 
-        Public Overrides Function Evaluate(value As Double) As Double
+        Public Overrides Function Evaluate#(value#)
             Return Me.Slope * value
         End Function
 

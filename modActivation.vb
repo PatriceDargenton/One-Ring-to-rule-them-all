@@ -445,16 +445,16 @@ Namespace MLP.ActivationFunction
 
         End Function
 
-        Public Function DerivativeFromOriginalFunction#(x#, gain#) Implements IActivationFunction.DerivativeFromOriginalFunction
+        Public Function DerivativeFromOriginalFunction#(fx#, gain#) Implements IActivationFunction.DerivativeFromOriginalFunction
 
             ' If gain < 0 the derivate is undefined
             If gain < 0 Then Return 0
 
             Dim y#
-            If x >= 0 Then
+            If fx >= 0 Then
                 y = 1
             Else
-                y = x + gain
+                y = fx + gain
             End If
             Return y
 

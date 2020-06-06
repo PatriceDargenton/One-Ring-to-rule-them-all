@@ -1,4 +1,5 @@
-﻿Imports Perceptron.Utilities
+﻿
+Imports Perceptron.Utilities
 
 Namespace Activation
     Public MustInherit Class BaseActivation
@@ -6,7 +7,7 @@ Namespace Activation
         Protected in_range As Range
         Protected out_range As Range
 
-        Public Property Center As Double
+        Public Property Center#
 
         Public ReadOnly Property InputRange As Range
             Get
@@ -20,9 +21,9 @@ Namespace Activation
             End Get
         End Property
 
-        Public MustOverride Function Evaluate(value As Double) As Double
-        Public MustOverride Function Derivative(value As Double) As Double
-        Public MustOverride Function AbstractedDerivative(value As Double) As Double
+        Public MustOverride Function Evaluate#(value#)
+        Public MustOverride Function Derivative#(value#)
+        Public MustOverride Function AbstractedDerivative#(value#)
 
         Public Sub New()
             Me.Center = 0

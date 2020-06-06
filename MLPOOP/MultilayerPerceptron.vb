@@ -6,17 +6,15 @@ Imports Perceptron.Activation
 Imports Perceptron.Data
 Imports Perceptron.Neurons
 Imports Perceptron.Randoms
+Imports Perceptron.Util ' Matrix
 
 Namespace NetworkOOP
 
     Public Class MultilayerPerceptron : Inherits clsMLPGeneric
 
-        Private LastError As MatrixMLP.Matrix
+        Public Property TotalError#
 
-        Public Property TotalError As Double
-
-        'Public Property Momentum As Double -> weightAdjustment
-        'Public Property LearningRate As Double
+        'Public Property Momentum# -> weightAdjustment
 
         Public Property Bias As Neuron
         Public Property Randomizer As BaseRandom
@@ -33,7 +31,7 @@ Namespace NetworkOOP
         Public Sub New()
         End Sub
 
-        Public Sub New(learning_rate As Single, momentum As Single,
+        Public Sub New(learning_rate!, momentum!,
             randomizer As BaseRandom, activation As BaseActivation)
 
             'setting properties
@@ -44,11 +42,11 @@ Namespace NetworkOOP
 
         End Sub
 
-        Public Overrides Sub InitStruct(neuronCount() As Integer, addBiasColumn As Boolean)
+        Public Overrides Sub InitializeStruct(neuronCount%(), addBiasColumn As Boolean)
 
-            Dim num_input% = neuronCount(0)
+            Dim num_input = neuronCount(0)
             Me.layerCount = neuronCount.GetLength(0)
-            Dim num_output% = neuronCount(Me.layerCount - 1)
+            Dim num_output = neuronCount(Me.layerCount - 1)
 
             Me.useBias = addBiasColumn
             If addBiasColumn Then
@@ -67,7 +65,7 @@ Namespace NetworkOOP
             'creating layers
             Me.InputLayer = New InputLayer(num_input, Me.ActivationFunction)
             Me.Layers.Add(InputLayer)
-            Dim numLayer% = 0
+            Dim numLayer = 0
             For Each i In neuronCount
                 numLayer += 1
                 If numLayer = 1 Then Continue For
@@ -87,7 +85,7 @@ Namespace NetworkOOP
         Private Sub WeightInitStruct()
 
             'connecting layers (creating weights)
-            For x As Integer = 0 To Me.Layers.Count - 2
+            For x = 0 To Me.Layers.Count - 2
                 Me.Layers(x).ConnectChildInit(Layers(x + 1))
 
                 'connecting bias
@@ -96,91 +94,104 @@ Namespace NetworkOOP
 
         End Sub
 
-        Public Overrides Sub WeightInit(layer As Integer, weights(,) As Double)
+        Public Overrides Sub InitializeWeights(layer%, weights#(,))
 
             Me.Layers(layer).RestoreWeightsWithBias(weights, Me.useBias, Me.Bias,
                 Me.Layers(layer - 1))
 
         End Sub
 
-        Public Overrides Sub Randomize(Optional minValue As Single = 0, Optional maxValue As Single = 1)
+        Public Overrides Sub Randomize(Optional minValue! = 0, Optional maxValue! = 1)
 
-            For x As Integer = 0 To Me.Layers.Count - 2
+            For x = 0 To Me.Layers.Count - 2
                 Me.Layers(x).InitChild(Layers(x + 1), Me.Randomizer)
                 If Me.useBias Then Me.Layers(x + 1).InitBias(Me.Bias, Me.Randomizer)
             Next
 
         End Sub
 
-        Public Sub TrainOneSampleOOP(data As List(Of Training), ByRef TotalError#)
+        Public Sub TrainOneSampleOOP(data As List(Of Training))
 
             Me.Outputs = New List(Of List(Of Double))
+            Me.TotalError = 0.0
             For Each item In data
                 Me.InputLayer.SetInput(item.Input)
                 ForwardPropogateSignal()
                 Me.OutputLayer.AssignErrors(item.Output)
                 BackwardPropogateErrorComputeGradientAndAdjustWeights()
-                TotalError += Me.OutputLayer.CalculateSquaredError()
+                Me.TotalError += Me.OutputLayer.CalculateSquaredError()
                 Me.Outputs.Add(Me.OutputLayer.ExtractOutputs)
             Next
 
         End Sub
 
-        Public Sub TrainOneIteration(ByVal data As List(Of Training))
+        Public Sub TrainOneIteration(data As List(Of Training))
 
             Me.Outputs = New List(Of List(Of Double))
-            TotalError = 0.0
+            Me.TotalError = 0.0
             For Each item In data
                 Me.InputLayer.SetInput(item.Input)
                 ForwardPropogateSignal()
                 Me.OutputLayer.AssignErrors(item.Output)
                 BackwardPropogateErrorComputeGradientAndAdjustWeights()
-                TotalError += Me.OutputLayer.CalculateSquaredError()
+                Me.TotalError += Me.OutputLayer.CalculateSquaredError()
                 Me.Outputs.Add(Me.OutputLayer.ExtractOutputs)
             Next
 
         End Sub
 
-        Public Overrides Sub TrainOneSample(input() As Single, target() As Single)
-
-            Dim data As New List(Of Training)
-            Dim inputDble#() = clsMLPHelper.ConvertSingleToDouble1D(input)
-            Dim targetDble#() = clsMLPHelper.ConvertSingleToDouble1D(target)
-            data.Add(New Training(inputDble, targetDble))
-            Dim TotalError# = 0
-            TrainOneSampleOOP(data, TotalError)
-            Me.averageError = CSng(TotalError / target.GetLength(0))
-
-            Dim lst = Me.OutputLayer.ExtractOutputs()
-            Me.lastOutputArray = lst.ToArray()
-            Me.lastOutputArraySingle = clsMLPHelper.ConvertDoubleToSingle(Me.lastOutputArray)
-
-        End Sub
-
-        Public Overrides Sub TestOneSample(input() As Single, ByRef ouput() As Single)
-
-            TestOneSample(input)
-            ouput = Me.lastOutputArraySingle
-
-        End Sub
-
-        Public Overrides Sub TestOneSample(input() As Single)
+        Private Sub SetInputOneSample(input!())
 
             Dim inputDble#() = clsMLPHelper.ConvertSingleToDouble1D(input)
             Dim lst As List(Of Double) = inputDble.ToList
             Dim data As New Testing(lst)
             Me.InputLayer.SetInput(data.Input)
-            ForwardPropogateSignal()
 
-            Dim lstRes = Me.OutputLayer.ExtractOutputs()
-            Me.lastOutputArray = lstRes.ToArray()
-            Me.lastOutputArraySingle = clsMLPHelper.ConvertDoubleToSingle(Me.lastOutputArray)
+        End Sub
+
+        Private Function SetInputAndTargetOneSample(input!(), target!()) As List(Of Training)
+
+            Dim data As New List(Of Training)
+            Dim inputDble#() = clsMLPHelper.ConvertSingleToDouble1D(input)
+            Dim targetDble#() = clsMLPHelper.ConvertSingleToDouble1D(target)
+            data.Add(New Training(inputDble, targetDble))
+            Return data
+
+        End Function
+
+        Public Overrides Sub TrainOneSample(input!(), target!())
+
+            Dim data = SetInputAndTargetOneSample(input, target)
+            TrainOneSampleOOP(data)
+            Me.averageError = CSng(Me.TotalError / target.GetLength(0))
+            SetOuput1D()
+
+        End Sub
+
+        Public Sub SetOuput1D()
+            Dim lst = Me.OutputLayer.ExtractOutputs()
+            Dim lastOutputArray1D#() = lst.ToArray()
+            Me.lastOutputArray1DSingle = clsMLPHelper.ConvertDoubleToSingle(lastOutputArray1D)
+        End Sub
+
+        Public Overrides Sub TestOneSample(input!(), ByRef ouput!())
+
+            TestOneSample(input)
+            ouput = Me.lastOutputArray1DSingle
+
+        End Sub
+
+        Public Overrides Sub TestOneSample(input!())
+
+            SetInputOneSample(input)
+            ForwardPropogateSignal()
+            SetOuput1D()
 
         End Sub
 
         Private Sub ForwardPropogateSignal()
 
-            For x As Integer = 1 To Me.Layers.Count - 1
+            For x = 1 To Me.Layers.Count - 1
                 For Each node In Me.Layers(x).Neurons
                     node.Input = 0.0
                     For Each w In node.WeightsToParent
@@ -236,7 +247,9 @@ Namespace NetworkOOP
                     For Each w In node.WeightsToParent
                         Dim adjustment = Me.learningRate * node.ErrorDelta *
                             node.Primed * w.Parent.Output
-                        w.Value += adjustment + w.Previous * Me.weightAdjustment
+                        w.Value += adjustment '+ w.Previous * Me.weightAdjustment
+                        If Me.weightAdjustment <> 0 Then _
+                            w.Value += w.Previous * Me.weightAdjustment
                         w.Previous = adjustment
                     Next
 
@@ -244,8 +257,11 @@ Namespace NetworkOOP
                     If Me.useBias Then
                         Dim biasAdjustment = Me.learningRate * node.ErrorDelta *
                             node.Primed * node.WeightToBias.Parent.Output
-                        node.WeightToBias.Value += biasAdjustment +
-                            node.WeightToBias.Previous * Me.weightAdjustment
+                        node.WeightToBias.Value += biasAdjustment '+
+                        'node.WeightToBias.Previous * Me.weightAdjustment
+                        If Me.weightAdjustment <> 0 Then _
+                            node.WeightToBias.Value +=
+                                node.WeightToBias.Previous * Me.weightAdjustment
                         node.WeightToBias.Previous = biasAdjustment
                     End If
                 Next
@@ -255,17 +271,17 @@ Namespace NetworkOOP
 
         Public Overrides Sub ComputeError()
             ' Calculate the error: ERROR = TARGETS - OUTPUTS
-            Dim m As MatrixMLP.Matrix = Me.targetArray
-            Dim output As MatrixMLP.Matrix = Me.outputArray
-            Me.LastError = m - output
+            Dim m As Matrix = Me.targetArray
+            Dim output As Matrix = Me.outputArray
+            Me.lastError = m - output
         End Sub
 
         Public Overrides Sub ComputeAverageErrorFromLastError()
             ' Compute first abs then average:
-            Me.averageError = CSng(Me.LastError.Abs.Average)
+            Me.averageError = CSng(Me.lastError.abs.average)
         End Sub
 
-        Public Overrides Function ComputeAverageError() As Single
+        Public Overrides Function ComputeAverageError!()
             Me.ComputeError()
             Me.ComputeAverageErrorFromLastError()
             Return Me.averageError
@@ -275,27 +291,26 @@ Namespace NetworkOOP
 
             Me.PrintParameters()
 
-            For i As Integer = 0 To Me.Layers.Count - 1
-                Dim iNeuronCount% = Me.Layers(i).Neurons.Count
-                ShowMessage("Neuron count(" & i & ")=" & iNeuronCount)
+            For i = 0 To Me.Layers.Count - 1
+                ShowMessage("Neuron count(" & i & ")=" & Me.Layers(i).Neurons.Count)
             Next
 
             ShowMessage("")
 
-            For i As Integer = 1 To Me.Layers.Count - 1
+            For i = 1 To Me.Layers.Count - 1
                 ShowMessage("W(" & i & ")=" & Layers(i).PrintWeights())
             Next
 
         End Sub
 
-        Public Overrides Sub PrintOutput(iteration As Integer)
+        Public Overrides Sub PrintOutput(iteration%)
 
             If ShowThisIteration(iteration) Then
 
-                Dim nbTargets% = Me.targetArray.GetLength(1)
+                Dim nbTargets = Me.targetArray.GetLength(1)
                 TestAllSamples(Me.inputArray, nbTargets)
                 ComputeAverageError()
-                Dim outputMaxtrix As MatrixMLP.Matrix = Me.outputArraySingle
+                Dim outputMaxtrix As Matrix = Me.outputArraySingle
                 Dim sMsg$ = vbLf & "Iteration n°" & iteration + 1 & "/" & nbIterations & vbLf &
                     "Output: " & outputMaxtrix.ToString() & vbLf &
                     "Average error: " & Me.averageError.ToString(format6Dec)
@@ -308,11 +323,11 @@ Namespace NetworkOOP
         Public Function PrintOutputOOP$()
 
             Dim sb As New System.Text.StringBuilder("{" & vbCrLf)
-            Dim nbOuputs% = Me.Outputs.Count
-            Dim numOuput% = 0
+            Dim nbOuputs = Me.Outputs.Count
+            Dim numOuput = 0
             For Each outp In Me.Outputs
-                Dim nbd% = outp.Count
-                Dim numd% = 0
+                Dim nbd = outp.Count
+                Dim numd = 0
                 sb.Append(" {")
                 For Each ld In outp
                     sb.Append(ld.ToString(format2Dec).ReplaceCommaByDot())
@@ -326,8 +341,6 @@ Namespace NetworkOOP
             Return sb.ToString
 
         End Function
-
-        
 
     End Class
 

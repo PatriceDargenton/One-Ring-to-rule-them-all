@@ -1,63 +1,72 @@
 ﻿
 Imports Perceptron.MLP.ActivationFunction
+Imports Perceptron.Util ' Matrix
 
 Public MustInherit Class clsMLPGeneric
 
 #Region "Declaration"
 
-    Public MustOverride Sub InitStruct(neuronCount%(), addBiasColumn As Boolean)
-    Public MustOverride Sub WeightInit(layer%, weights#(,))
+    Public MustOverride Sub InitializeStruct(neuronCount%(), addBiasColumn As Boolean)
+    Public MustOverride Sub InitializeWeights(layer%, weights#(,))
+
+    Protected nbInputNeurons%
+    Protected nbHiddenNeurons%
+    Protected nbOutputNeurons%
 
     ''' <summary>
     ''' Round random weights to reproduce functionnal tests exactly
     ''' </summary>
     Public Const roundWeights% = 2
 
-    Public Const expMax As Single = 50
+    Public Const expMax! = 50
 
     Public Enum enumLearningMode
-        Defaut = Systematique
+        Defaut = Systematic
         ''' <summary>
         ''' Learn all samples in order
         ''' </summary>
-        Systematique = 0
+        Systematic = 0
         ''' <summary>
         ''' Learn all samples randomly
         ''' </summary>
-        SemiStochastique = 1
+        SemiStochastic = 1
         ''' <summary>
         ''' Learn samples randomly
         ''' </summary>
-        Stochastique = 2
+        Stochastic = 2
         ''' <summary>
         ''' Leanr all samples in order as a vector
         ''' </summary>
-        Vectoriel = 3
+        Vectorial = 3
     End Enum
 
     Public printOutput_ As Boolean = False
     Public useBias As Boolean = False
 
-    Public inputArray As Single(,)
-    Public targetArray As Single(,)
+    Public inputArray!(,)
+    Public targetArray!(,)
 
     ''' <summary>
     ''' Output array (returned to compute average error, and discrete error)
     ''' </summary>
-    Public outputArray As Double(,)
+    Public outputArray#(,)
 
     ''' <summary>
     ''' Output array (as Single(,))
     ''' </summary>
-    Public outputArraySingle As Single(,)
+    Public outputArraySingle!(,)
 
     ''' <summary>
-    ''' Output array of the last layer
+    ''' Output array 1D
     ''' </summary>
-    Public lastOutputArray As Double()
-    Public lastOutputArraySingle As Single()
+    Public lastOutputArray1DSingle!()
 
-    Public lastErrorArray As Double(,)
+    Public lastErrorArray#(,)
+
+    ''' <summary>
+    ''' Last error of the output matrix
+    ''' </summary>
+    Protected lastError As Matrix
 
     Public nbIterations%
 
@@ -70,6 +79,7 @@ Public MustInherit Class clsMLPGeneric
 
     ''' <summary>
     ''' Weight adjustment of the MLP (Alpha coeff. or momentum)
+    ''' (can be 0, but works best if 0.1 for example)
     ''' </summary>
     Public weightAdjustment!
 
@@ -120,8 +130,9 @@ Public MustInherit Class clsMLPGeneric
     ''' </summary>
     Protected activFnc As MLP.ActivationFunction.IActivationFunction
 
-    Private m_gain!, m_center!
-    Private m_actFunc As TActivationFunction = TActivationFunction.Undefined
+    Private m_gain!
+    Protected m_center!
+    Protected m_actFunc As TActivationFunction = TActivationFunction.Undefined
 
     ''' <summary>
     ''' Set registered activation function
@@ -181,7 +192,11 @@ Public MustInherit Class clsMLPGeneric
     ''' <summary>
     ''' Compute average error of the output matrix for all samples
     ''' </summary>
-    Public MustOverride Function ComputeAverageError!()
+    Public Overridable Function ComputeAverageError!()
+        Me.ComputeError()
+        Me.ComputeAverageErrorFromLastError()
+        Return Me.averageError
+    End Function
 
 #End Region
 
@@ -211,13 +226,13 @@ Public MustInherit Class clsMLPGeneric
 
         Me.nbIterations = nbIterations
         Select Case learningMode
-            Case enumLearningMode.Vectoriel
+            Case enumLearningMode.Vectorial
                 TrainSystematic(inputs, targets, learningMode)
-            Case enumLearningMode.Systematique
+            Case enumLearningMode.Systematic
                 TrainSystematic(inputs, targets)
-            Case enumLearningMode.SemiStochastique
+            Case enumLearningMode.SemiStochastic
                 TrainSemiStochastic(inputs, targets)
-            Case enumLearningMode.Stochastique
+            Case enumLearningMode.Stochastic
                 TrainStochastic(inputs, targets)
         End Select
 
@@ -228,8 +243,8 @@ Public MustInherit Class clsMLPGeneric
     ''' </summary>
     Public Sub TrainAllSamples(inputs!(,), targets!(,))
 
-        Dim nbLines% = inputs.GetLength(0)
-        For j As Integer = 0 To nbLines - 1 ' Systematic learning
+        Dim nbLines = inputs.GetLength(0)
+        For j = 0 To nbLines - 1 ' Systematic learning
             Dim inp = clsMLPHelper.GetVector(inputs, j)
             Dim targ = clsMLPHelper.GetVector(targets, j)
             TrainOneSample(inp, targ)
@@ -240,40 +255,44 @@ Public MustInherit Class clsMLPGeneric
     ''' <summary>
     ''' Train samples in random order
     ''' </summary>
-    Public Sub TrainStochastic(inputs!(,), targets!(,))
+    Public Overridable Sub TrainStochastic(inputs!(,), targets!(,))
 
-        Dim nbLines% = inputs.GetLength(0)
-        For iteration As Integer = 0 To Me.nbIterations - 1
+        Dim nbLines = inputs.GetLength(0)
+        Dim nbTargets = targets.GetLength(1)
+        For iteration = 0 To Me.nbIterations - 1
             Dim r% = rndShared.Next(maxValue:=nbLines) ' Stochastic learning
             Dim inp = clsMLPHelper.GetVector(inputs, r)
             Dim targ = clsMLPHelper.GetVector(targets, r)
             TrainOneSample(inp, targ)
             If Me.printOutput_ Then PrintOutput(iteration)
         Next
+        TestAllSamples(inputs, nbTargets)
 
     End Sub
 
     ''' <summary>
     ''' Train all samples in random order
     ''' </summary>
-    Public Sub TrainSemiStochastic(inputs!(,), targets!(,))
+    Public Overridable Sub TrainSemiStochastic(inputs!(,), targets!(,))
 
-        Dim nbLines% = inputs.GetLength(0)
-        Dim nbInputs% = inputs.GetLength(1)
-        Dim nbTargets% = targets.GetLength(1)
+        Dim nbLines = inputs.GetLength(0)
+        Dim nbInputs = inputs.GetLength(1)
+        Dim nbTargets = targets.GetLength(1)
 
-        For iteration As Integer = 0 To Me.nbIterations - 1
+        For iteration = 0 To Me.nbIterations - 1
 
             ' Semi-stochastic learning
             Dim lstEch As New List(Of Integer)
-            For i As Integer = 0 To nbLines - 1
+            For i = 0 To nbLines - 1
                 lstEch.Add(i)
             Next
-            For j As Integer = 0 To nbLines - 1
+            For j = 0 To nbLines - 1
 
-                Dim nbItemsRemaining% = lstEch.Count
-                Dim r% = rndShared.Next(maxValue:=nbItemsRemaining)
-                lstEch.RemoveAt(r)
+                Dim nbItemsRemaining = lstEch.Count
+                ' 28/05/2020 In two stages!
+                Dim k = rndShared.Next(maxValue:=nbItemsRemaining)
+                Dim r = lstEch(k)
+                lstEch.RemoveAt(k)
 
                 Dim inp = clsMLPHelper.GetVector(inputs, r)
                 Dim targ = clsMLPHelper.GetVector(targets, r)
@@ -284,6 +303,7 @@ Public MustInherit Class clsMLPGeneric
             If Me.printOutput_ Then PrintOutput(iteration)
 
         Next
+        TestAllSamples(inputs, nbTargets)
 
     End Sub
 
@@ -293,8 +313,8 @@ Public MustInherit Class clsMLPGeneric
     Public Overridable Sub TrainSystematic(inputs!(,), targets!(,),
         Optional learningMode As enumLearningMode = enumLearningMode.Defaut)
 
-        Dim nbTargets% = targets.GetLength(1)
-        For iteration As Integer = 0 To Me.nbIterations - 1
+        Dim nbTargets = targets.GetLength(1)
+        For iteration = 0 To Me.nbIterations - 1
             TrainAllSamples(inputs, targets)
             If Me.printOutput_ Then PrintOutput(iteration)
         Next
@@ -314,20 +334,20 @@ Public MustInherit Class clsMLPGeneric
     ''' <summary>
     ''' Test one sample: Propagate the input signal into the MLP and return the ouput
     ''' </summary>
-    Public MustOverride Sub TestOneSample(input() As Single, ByRef ouput() As Single)
+    Public MustOverride Sub TestOneSample(input!(), ByRef ouput!())
 
     ''' <summary>
     ''' Test all samples
     ''' </summary>
     Public Sub TestAllSamples(inputs!(,), nbOutputs%)
-        Dim length% = inputs.GetLength(0)
-        Dim nbInputs% = inputs.GetLength(1)
+        Dim length = inputs.GetLength(0)
+        Dim nbInputs = inputs.GetLength(1)
         Dim outputs!(0 To length - 1, 0 To nbOutputs - 1)
-        For i As Integer = 0 To length - 1
+        For i = 0 To length - 1
             Dim inp = clsMLPHelper.GetVector(inputs, i)
             TestOneSample(inp)
-            Dim output!() = Me.lastOutputArraySingle
-            For j As Integer = 0 To output.GetLength(0) - 1
+            Dim output!() = Me.lastOutputArray1DSingle
+            For j = 0 To output.GetLength(0) - 1
                 outputs(i, j) = output(j)
             Next
         Next

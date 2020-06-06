@@ -1,11 +1,12 @@
-﻿Namespace Neurons
+﻿
+Namespace Neurons
     Public Class Neuron
 
-        Public Property NumericalFormat As String = "0.000"
-        Public Property Input As Double
-        Public Property Output As Double
-        Public Property ErrorDelta As Double
-        Public Property Primed As Double
+        Public Property NumericalFormat$ = "0.000"
+        Public Property Input#
+        Public Property Output#
+        Public Property ErrorDelta#
+        Public Property Primed#
 
         Public Property Type As NeuronType
         Public Property WeightsToChild As List(Of Weight)
@@ -29,7 +30,7 @@
             End Select
         End Sub
 
-        Public Overrides Function ToString() As String
+        Public Overrides Function ToString$()
             Dim result = "Input = " & Me.Input.ToString(NumericalFormat) & vbCr
             result &= "Output = " & Me.Output.ToString(NumericalFormat) & vbCr
             result &= "Error = " & Me.ErrorDelta.ToString(NumericalFormat)

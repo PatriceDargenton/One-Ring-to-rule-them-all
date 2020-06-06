@@ -1,8 +1,8 @@
-﻿Imports Perceptron.Utilities
+﻿
+Imports Perceptron.Utilities
 
 Namespace Randoms
-    Public Class Predefined
-        Inherits BaseRandom
+    Public Class Predefined : Inherits BaseRandom
 
         Private Values As List(Of Double)
 
@@ -12,7 +12,7 @@ Namespace Randoms
             Me.Values.AddRange(values)
         End Sub
 
-        Public Overrides Function Generate() As Double
+        Public Overrides Function Generate#()
             Dim result = Me.Values(0)
             Me.Values.RemoveAt(0)
             Return result

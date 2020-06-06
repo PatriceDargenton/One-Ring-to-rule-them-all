@@ -27,12 +27,12 @@ Class ML_TrainingData
 
     Public Function GetInputs() As Single(,)
 
-        Dim rows% = Me.data.GetLength(0)
-        Dim cols% = Me.inputsLength
+        Dim rows = Me.data.GetLength(0)
+        Dim cols = Me.inputsLength
         Dim inp!(rows - 1, cols - 1)
 
-        For i As Integer = 0 To rows - 1
-            For j As Integer = 0 To cols - 1
+        For i = 0 To rows - 1
+            For j = 0 To cols - 1
                 inp(i, j) = Me.data(i, j)
             Next
         Next
@@ -42,15 +42,14 @@ Class ML_TrainingData
 
     Public Function GetOutputs() As Single(,)
 
-        Dim rows% = Me.data.GetLength(0) ' 4
-        Dim cols% = Me.data.GetLength(1) ' 3
-        Dim tgts% = Me.targetsLength ' 1
+        Dim rows = Me.data.GetLength(0) ' 4
+        Dim cols = Me.data.GetLength(1) ' 3
+        Dim tgts = Me.targetsLength ' 1
         Dim tgt!(rows - 1, tgts - 1)
 
-        For i As Integer = 0 To rows - 1
-            Dim k% = 0
-            For j As Integer = cols - tgts To cols - 1
-                'Console.WriteLine("row {0} - targetCol {1}", i, k)
+        For i = 0 To rows - 1
+            Dim k = 0
+            For j = cols - tgts To cols - 1
                 tgt(i, k) = Me.data(i, j)
             Next
         Next

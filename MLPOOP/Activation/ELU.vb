@@ -2,7 +2,7 @@
 Imports Perceptron.Utilities
 
 Namespace Activation
-    Public Class Sigmoid : Inherits BaseActivation
+    Public Class ELU : Inherits BaseActivation
 
         Public Property Alpha#
 
@@ -21,20 +21,46 @@ Namespace Activation
         End Sub
 
         Public Overrides Function AbstractedDerivative#(value#)
-            Dim xc# = value - Me.Center
-            Return Me.Alpha * xc * (1 - xc)
+
+            ' If gain < 0 the derivate is undefined
+            If Me.Alpha < 0 Then Return 0
+
+            Dim y#
+            If value >= 0 Then
+                y = 1
+            Else
+                y = value + Me.Alpha
+            End If
+            Return y
+
         End Function
 
         Public Overrides Function Derivative#(value#)
+
+            ' If gain < 0 the derivate is undefined
+            If Me.Alpha < 0 Then Return 0
+
             Dim xc# = value - Me.Center
-            Dim exp = Math.Exp(Me.Alpha * xc)
-            'Dim exp2 = Math.Exp(-Me.Alpha * xc) ' Quasi-same value
-            Return (Me.Alpha * exp) / ((exp + 1) * (exp + 1))
+            Dim y#
+            If xc >= 0 Then
+                y = 1
+            Else
+                Dim fx# = Evaluate(value)
+                y = fx + Me.Alpha
+            End If
+            Return y
+
         End Function
 
         Public Overrides Function Evaluate#(value#)
             Dim xc# = value - Me.Center
-            Return 1 / (1 + Math.Exp(-Me.Alpha * xc))
+            Dim y#
+            If xc >= 0 Then
+                y = xc
+            Else
+                y = Me.Alpha * (Math.Exp(xc) - 1)
+            End If
+            Return y
         End Function
 
     End Class
