@@ -1,5 +1,6 @@
 ﻿
 Imports System.Collections.Generic
+Imports System.Text
 
 Namespace DLFramework.Layers
 
@@ -46,6 +47,14 @@ Namespace DLFramework.Layers
                 temp.AddRange(layer.Parameters)
             Next
             Return temp
+        End Function
+
+        Public Function ParametersToString$()
+            Dim sb As New StringBuilder()
+            For Each parameter In Parameters
+                sb.Append(parameter.ToString())
+            Next
+            Return sb.ToString
         End Function
 
     End Class

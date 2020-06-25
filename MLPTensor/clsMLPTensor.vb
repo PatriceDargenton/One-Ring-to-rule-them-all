@@ -5,7 +5,7 @@ Imports Perceptron.DLFramework ' Tensor
 Imports Perceptron.DLFramework.Layers ' Linear, Sequential
 Imports Perceptron.DLFramework.Layers.Loss ' MeanSquaredError
 Imports Perceptron.DLFramework.Optimizers ' StochasticGradientDescent
-Imports Perceptron.Util ' Matrix
+Imports Perceptron.Utility ' Matrix
 
 Public Class clsMLPTensor : Inherits clsVectorizedMLPGeneric
 
@@ -66,11 +66,11 @@ Public Class clsMLPTensor : Inherits clsVectorizedMLPGeneric
 
     Private Sub AddLayerWithActivationFunction()
         Select Case Me.m_actFunc
-            Case TActivationFunction.Sigmoid : Me.seq.Layers.Add(
+            Case enumActivationFunction.Sigmoid : Me.seq.Layers.Add(
                 New SigmoidLayer(Me.m_center))
-            Case TActivationFunction.HyperbolicTangent : Me.seq.Layers.Add(
+            Case enumActivationFunction.HyperbolicTangent : Me.seq.Layers.Add(
                 New HyperbolicTangentLayer(Me.m_center))
-            Case TActivationFunction.ELU : Me.seq.Layers.Add(
+            Case enumActivationFunction.ELU : Me.seq.Layers.Add(
                 New ELULayer(Me.m_center))
         End Select
     End Sub
@@ -111,6 +111,7 @@ Public Class clsMLPTensor : Inherits clsVectorizedMLPGeneric
     Public Sub InitializeSequential()
         Me.sgd = New StochasticGradientDescent(
             Me.seq.Parameters, Me.learningRate, Me.weightAdjustment)
+        'Debug.WriteLine("seq.prm=" & Me.seq.ParametersToString)
     End Sub
 
     Public Overrides Sub Randomize(Optional minValue! = 0, Optional maxValue! = 1)
@@ -125,7 +126,7 @@ Public Class clsMLPTensor : Inherits clsVectorizedMLPGeneric
             If Me.useBias AndAlso i > 1 Then nbNodes1 += 1
             If Me.useBias AndAlso i < Me.layerCount - 1 Then nbNodes2 += 1
             If i = Me.layerCount - 1 Then nbNodes2 = Me.nbOutputNeurons
-            Me.weights.Add(New Tensor(Matrix.Random(
+            Me.weights.Add(New Tensor(Matrix.Randomize(
                 nbNodes1, nbNodes2, Me.rnd), autoGrad:=True))
         Next
 
@@ -185,9 +186,7 @@ Public Class clsMLPTensor : Inherits clsVectorizedMLPGeneric
 
     Private Sub SetOuputAllSamples()
 
-        Dim output As Matrix = Me.pred.Data
-        Me.outputArray = output
-        Me.outputArraySingle = clsMLPHelper.ConvertDoubleToSingle2D(Me.outputArray)
+        Me.output = Me.pred.Data
 
     End Sub
 
@@ -198,9 +197,7 @@ Public Class clsMLPTensor : Inherits clsVectorizedMLPGeneric
             TrainVectorOneIteration()
             If Me.printOutput_ Then PrintOutput(iteration)
         Next
-        Dim outputMatrix As Matrix = Me.pred.Data
-        Me.outputArray = outputMatrix
-        Me.outputArraySingle = clsMLPHelper.ConvertDoubleToSingle2D(Me.outputArray)
+        Me.output = Me.pred.Data
 
     End Sub
 
@@ -235,7 +232,7 @@ Public Class clsMLPTensor : Inherits clsVectorizedMLPGeneric
     End Sub
 
     Public Sub BackwardPropagateError()
-        Me.loss.Backward(New Tensor(Matrix.Ones(Me.loss.Data.x, Me.loss.Data.y)))
+        Me.loss.Backward(New Tensor(Matrix.Ones(Me.loss.Data.r, Me.loss.Data.c)))
         Me.sgd.Step_()
     End Sub
 
@@ -247,14 +244,13 @@ Public Class clsMLPTensor : Inherits clsVectorizedMLPGeneric
 
     Public Overrides Sub ComputeAverageErrorFromLastError()
         ' Compute first abs then average:
-        Me.averageError = CSng(Me.lastError.abs.average)
+        Me.averageError = CSng(Me.lastError.Abs.Average)
     End Sub
 
     Public Function ComputeAverageErrorFromAllSamples!()
         ' Calculate the error: ERROR = TARGETS - OUTPUTS
         Dim m As Matrix = Me.targetArray
-        Me.outputMatrix = Me.outputArray
-        Me.lastError = m - Me.outputMatrix
+        Me.lastError = m - Me.output
         ComputeAverageErrorFromLastError()
         Return Me.averageError
     End Function
@@ -299,13 +295,16 @@ Public Class clsMLPTensor : Inherits clsVectorizedMLPGeneric
             Else
                 SetOuputAllSamples()
             End If
-            Me.outputMatrix = Me.outputArray
             ComputeAverageError()
             Dim sMsg$ = vbLf & "Iteration n°" & iteration + 1 & "/" & nbIterations & vbLf &
-                "Output: " & Me.outputMatrix.ToString() & vbLf &
+                "Output: " & Me.output.ToString() & vbLf &
                 "Average error: " & Me.averageError.ToString(format6Dec)
-
             ShowMessage(sMsg)
+
+            'ShowMessage("pred=" & Me.pred.ToString)
+            'ShowMessage("loss=" & Me.loss.ToString)
+            'ShowMessage("weights=" & Me.weights.ToString)
+
         End If
 
     End Sub

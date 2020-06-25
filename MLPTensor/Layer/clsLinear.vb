@@ -1,5 +1,5 @@
 ﻿
-Imports Perceptron.Util ' Matrix
+Imports Perceptron.Utility ' Matrix
 
 Namespace DLFramework.Layers
 
@@ -32,7 +32,7 @@ Namespace DLFramework.Layers
         End Sub
 
         Public Sub New(input%, output%, r As Random, addBias As Boolean)
-            Dim w = (Matrix.Random(input, output, r) * 2) - 1
+            Dim w = (Matrix.Randomize(input, output, r) * 2) - 1
             Dim weights = New Tensor(w, autoGrad:=True)
             Parameters.Add(weights)
             Me.m_addBias = addBias
@@ -43,8 +43,8 @@ Namespace DLFramework.Layers
 
         Public Overrides Function Forward(input As Tensor) As Tensor
             If Me.m_addBias Then
-                Dim bias = Tensor.Expand(Parameters(1), AxisZero.vertical, input.Data.x)
-                Return Tensor.Add(Tensor.MatMul(input, Parameters(0)), bias)
+                Dim bias = Tensor.Expand(Parameters(1), AxisZero.vertical, input.Data.r)
+                Return Tensor.Add(Tensor.MatMult(input, Parameters(0)), bias)
             Else
                 Return input
             End If

@@ -21,7 +21,7 @@ Public Module modFctAct
 
     Public Const debugActivationFunction As Boolean = False
 
-    Public Enum TActivationFunction ' Type for Activation Function
+    Public Enum enumActivationFunction
         Undefined = 0
         Identity = 1
         Sigmoid = 2
@@ -59,7 +59,7 @@ Public Module modFctAct
     '  its direct function: f'(x)=g(f(x))
 
     ' Type for Activation Function for Matrix implementation of MLP
-    Public Enum TActivationFunctionForMatrix
+    Public Enum enumActivationFunctionForMatrix
 
         Sigmoid = 1
 

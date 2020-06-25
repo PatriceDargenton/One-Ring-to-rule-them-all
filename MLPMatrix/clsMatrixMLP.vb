@@ -1,6 +1,7 @@
 ﻿
 ' From: https://github.com/nlabiris/perceptrons : C# -> VB .NET conversion
 
+Imports Perceptron.Utility ' Matrix
 Imports Perceptron.MLP.ActivationFunction
 
 Namespace MatrixMLP
@@ -34,15 +35,10 @@ Namespace MatrixMLP
 
         Private input, hidden As Matrix
 
-        ''' <summary>
-        ''' Output matrix (returned to compute average error, and discrete error)
-        ''' </summary>
-        Public output As Matrix
-
-        ''' <summary>
-        ''' Last error of the output matrix
-        ''' </summary>
-        Private lastError_ As Matrix
+        ' ''' <summary>
+        ' ''' Output matrix (returned to compute average error, and discrete error)
+        ' ''' </summary>
+        'Public output As Matrix
 
         Public Overrides Sub InitializeStruct(neuronCount%(), addBiasColumn As Boolean)
 
@@ -58,35 +54,45 @@ Namespace MatrixMLP
             End If
 
             Dim outputNodes = neuronCount(Me.layerCount - 1)
-            Me.weights_ih = New Matrix(hiddenNodes, inputNodes)
-            Me.weights_ho = New Matrix(outputNodes, hiddenNodes)
+
+            'Me.weights_ih = New Matrix(hiddenNodes, inputNodes)
+            Dim dbleArray_ih#(hiddenNodes - 1, inputNodes - 1)
+            Me.weights_ih = dbleArray_ih
+
+            'Me.weights_ho = New Matrix(outputNodes, hiddenNodes)
+            Dim dbleArray_ho#(outputNodes - 1, hiddenNodes - 1)
+            Me.weights_ho = dbleArray_ho
 
             Me.useBias = addBiasColumn
             If Me.useBias Then
-                Me.bias_h = New Matrix(hiddenNodes, 1)
-                Me.bias_o = New Matrix(outputNodes, 1)
+                'Me.bias_h = New Matrix(hiddenNodes, 1)
+                'Me.bias_o = New Matrix(outputNodes, 1)
+                Dim dbleArray_bh#(hiddenNodes - 1, 0)
+                Dim dbleArray_bo#(outputNodes - 1, 0)
+                Me.bias_h = dbleArray_bh
+                Me.bias_o = dbleArray_bo
             End If
 
         End Sub
 
-        Public Sub SetActivationFunctionForMatrix(fctAct As TActivationFunctionForMatrix,
+        Public Sub SetActivationFunctionForMatrix(fctAct As enumActivationFunctionForMatrix,
             gain!, center!)
 
             Select Case fctAct
-                Case TActivationFunctionForMatrix.Sigmoid
-                    Me.m_actFunc = TActivationFunction.Sigmoid
+                Case enumActivationFunctionForMatrix.Sigmoid
+                    Me.m_actFunc = enumActivationFunction.Sigmoid
                     Me.activFnc = New SigmoidFunction
                     If gain <> 1.0! Then MsgBox(
                         "gain must be 1 for Sigmoid activation function for Matrix",
                         MsgBoxStyle.Exclamation)
-                Case TActivationFunctionForMatrix.HyperbolicTangent
-                    Me.m_actFunc = TActivationFunction.HyperbolicTangent
+                Case enumActivationFunctionForMatrix.HyperbolicTangent
+                    Me.m_actFunc = enumActivationFunction.HyperbolicTangent
                     Me.activFnc = New HyperbolicTangentFunction
                     If gain <> 1.0! Then MsgBox(
                         "gain must be 1 for hyperbolic tangent activation function for Matrix",
                         MsgBoxStyle.Exclamation)
-                Case TActivationFunctionForMatrix.ELU
-                    Me.m_actFunc = TActivationFunction.ELU
+                Case enumActivationFunctionForMatrix.ELU
+                    Me.m_actFunc = enumActivationFunction.ELU
                     ' gain <> 1 is possible
                     Me.activFnc = New ELUFunction
                 Case Else
@@ -110,12 +116,14 @@ Namespace MatrixMLP
         ''' </summary>
         Public Overrides Sub Randomize(Optional minValue! = 0, Optional maxValue! = 1)
 
-            Me.weights_ih.Randomize(minValue, maxValue)
-            Me.weights_ho.Randomize(minValue, maxValue)
+            Me.rnd = New Random()
+
+            Me.weights_ih.Randomize(Me.rnd, minValue, maxValue)
+            Me.weights_ho.Randomize(Me.rnd, minValue, maxValue)
 
             If Me.useBias Then
-                Me.bias_h.Randomize(minValue, maxValue)
-                Me.bias_o.Randomize(minValue, maxValue)
+                Me.bias_h.Randomize(Me.rnd, minValue, maxValue)
+                Me.bias_o.Randomize(Me.rnd, minValue, maxValue)
             End If
 
         End Sub
@@ -130,7 +138,7 @@ Namespace MatrixMLP
         ''' </summary>
         Public Overrides Sub TestOneSample(input!())
             ForwardPropogateSignal(input)
-            Me.lastOutputArray1DSingle = Me.output.ToVectorArraySingle()
+            Me.lastOutputArray1DSingle = Me.output.ToArraySingle()
         End Sub
 
         Public Overrides Sub TestOneSample(input!(), ByRef ouput!())
@@ -152,13 +160,11 @@ Namespace MatrixMLP
             End If
 
             ' Generating the output's output!
-            Dim output As Matrix
             If Me.useBias Then
-                output = Matrix.MultiplyAddAndMap(Me.weights_ho, Me.hidden, Me.bias_o, Me.lambdaFnc)
+                Me.output = Matrix.MultiplyAddAndMap(Me.weights_ho, Me.hidden, Me.bias_o, Me.lambdaFnc)
             Else
-                output = Matrix.MultiplyAndMap(Me.weights_ho, Me.hidden, Me.lambdaFnc)
+                Me.output = Matrix.MultiplyAndMap(Me.weights_ho, Me.hidden, Me.lambdaFnc)
             End If
-            Me.output = output
 
         End Sub
 
@@ -170,11 +176,11 @@ Namespace MatrixMLP
             ' Calculate the hidden layer errors
             ' Me.weightAdjustment is not used in this implementation
             BackwardPropagateErrorComputeGradientAndAdjustWeights(
-                Me.output, Me.lastError_, Me.hidden, Me.learningRate,
+                Me.output, Me.lastError, Me.hidden, Me.learningRate,
                 Me.weights_ho, Me.bias_o)
 
             ' Calculate the hidden layer errors
-            Dim hidden_errors = Matrix.TransposeAndMultiply1(Me.weights_ho, Me.lastError_)
+            Dim hidden_errors = Matrix.TransposeAndMultiply1(Me.weights_ho, Me.lastError)
 
             ' Calculate hidden gradient
             ' Calculate input -> hidden delta weights
@@ -204,22 +210,22 @@ Namespace MatrixMLP
         ''' Gradient descend: Compute gradient and adjust weights
         ''' </summary>
         Public Sub BackwardPropagateErrorComputeGradientAndAdjustWeights(
-            final As Matrix, error_ As Matrix, original As Matrix,
-            adjustment!, ByRef weight As Matrix, ByRef bias As Matrix)
+            final As Matrix, error_ As Matrix, original As Matrix, adjustment!,
+            ByRef weight As Matrix, ByRef bias As Matrix)
 
             ' Calculate gradient
             Dim gradient = Matrix.Map(final, lambdaFncD)
-            gradient.Multiply(error_)
-            gradient.Multiply(adjustment)
+            gradient *= error_
+            gradient *= adjustment
 
             ' Calculate original -> final delta weights
             Dim weight_deltas = Matrix.TransposeAndMultiply2(original, gradient)
 
             ' Adjust the weights by deltas
-            weight.Add(weight_deltas)
+            weight += weight_deltas
 
             ' Adjust the bias by its deltas (which is just the gradients)
-            If Me.useBias Then bias.Add(gradient)
+            If Me.useBias Then bias += gradient
 
         End Sub
 
@@ -229,21 +235,21 @@ Namespace MatrixMLP
         Public Sub ComputeErrorOneSample(target!())
 
             ' Calculate the error: ERROR = TARGETS - OUTPUTS
-            Me.lastError_ = Matrix.SubtractFromArraySingle(target, Me.output)
+            Me.lastError = Matrix.SubtractFromArraySingle(target, Me.output)
 
         End Sub
 
         Public Overrides Sub ComputeError()
             ' Calculate the error: ERROR = TARGETS - OUTPUTS
             Dim m As Matrix = Me.targetArray
-            Me.lastError_ = m - Me.output
+            Me.lastError = m - Me.output
         End Sub
 
         Public Overrides Sub ComputeAverageErrorFromLastError()
 
             ' Compute first abs then average:
             'Me.averageError = CSng(Matrix.Abs(Me.lastError_).Average)
-            Me.averageError = CSng(Me.lastError_.Abs.Average)
+            Me.averageError = CSng(Me.lastError.Abs.Average)
 
         End Sub
 
@@ -251,7 +257,6 @@ Namespace MatrixMLP
             Optional learningMode As enumLearningMode = enumLearningMode.Defaut)
 
             MyBase.TrainSystematic(inputs, targets, learningMode)
-            Me.output = Me.outputArray
 
         End Sub
 
@@ -262,9 +267,9 @@ Namespace MatrixMLP
 
             Me.PrintParameters()
 
-            Dim inputNodes = Me.weights_ih.Rows
-            Dim hiddenNodes = Me.weights_ih.Cols
-            Dim outputNodes = Me.weights_ho.Rows
+            Dim inputNodes = Me.weights_ih.r
+            Dim hiddenNodes = Me.weights_ih.c
+            Dim outputNodes = Me.weights_ho.r
             For i = 0 To Me.layerCount - 1
                 Dim iNeuronCount = inputNodes
                 If i > 0 Then iNeuronCount = hiddenNodes
@@ -289,7 +294,6 @@ Namespace MatrixMLP
 
                 Dim nbTargets = Me.targetArray.GetLength(1)
                 TestAllSamples(Me.inputArray, nbTargets)
-                Me.output = Me.outputArray
                 ComputeAverageError()
                 Dim sMsg$ = vbLf & "Iteration n°" & iteration + 1 & "/" & nbIterations & vbLf &
                     "Output: " & Me.output.ToString() & vbLf &

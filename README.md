@@ -60,6 +60,11 @@ From C#: https://github.com/HectorPulido/Machine-learning-Framework-Csharp
 
 # Versions
 
+25/06/2020 V1.08
+- Matrix.ToVectorArraySingle() -> ToArraySingle()
+- clsMLPGeneric: output Matrix instead of ouput array
+- Single Matrix class: 2 times faster
+
 06/06/2020 V1.07
 - Source code cleaned
 - Matrix MLP: finally weightAdjustment is not used in this implementation (only learningRate)

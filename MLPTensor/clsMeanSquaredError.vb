@@ -1,5 +1,5 @@
 ﻿
-Imports Perceptron.Util ' AxisZero
+Imports Perceptron.Utility ' AxisZero
 
 Namespace DLFramework.Layers.Loss
 

@@ -1,6 +1,7 @@
 ﻿
-Imports Perceptron.Util ' Matrix
+Imports Perceptron.Utility ' Matrix
 Imports Perceptron.clsMLPGeneric ' enumLearningMode
+
 Imports Microsoft.VisualStudio.TestTools.UnitTesting
 
 Namespace VectorizedMatrixMLP
@@ -37,12 +38,12 @@ Namespace VectorizedMatrixMLP
         End Sub
 
         <TestMethod()>
-        Public Sub VectorizedMatrixMLP1XORSemiStochastic()
+        Public Sub VecMatrixMLP1XORSemiStochastic()
 
             InitXOR()
             m_mlp.learningRate = 0.3
             m_mlp.nbIterations = 6000
-            m_mlp.SetActivationFunction(TActivationFunction.Sigmoid, gain:=1, center:=1)
+            m_mlp.SetActivationFunction(enumActivationFunction.Sigmoid, gain:=1, center:=1)
 
             m_mlp.InitializeStruct(m_neuronCountXOR, addBiasColumn:=True)
 
@@ -60,8 +61,7 @@ Namespace VectorizedMatrixMLP
 
             Dim expectedOutput = m_targetArrayXOR
 
-            Dim outputMatrix As Matrix = m_mlp.outputArraySingle ' Single(,) -> Matrix
-            Dim sOutput$ = outputMatrix.ToStringWithFormat(dec:="0.0")
+            Dim sOutput$ = m_mlp.output.ToStringWithFormat(dec:="0.0")
             Dim expectedMatrix As Matrix = expectedOutput ' Single(,) -> Matrix
             Dim sExpectedOutput = expectedMatrix.ToStringWithFormat(dec:="0.0")
             Assert.AreEqual(sOutput, sExpectedOutput)
@@ -74,12 +74,12 @@ Namespace VectorizedMatrixMLP
         End Sub
 
         <TestMethod()>
-        Public Sub VectorizedMatrixMLP1XORStochastic()
+        Public Sub VecMatrixMLP1XORStochastic()
 
             InitXOR()
             m_mlp.learningRate = 0.3
             m_mlp.nbIterations = 25000
-            m_mlp.SetActivationFunction(TActivationFunction.Sigmoid, gain:=1, center:=1)
+            m_mlp.SetActivationFunction(enumActivationFunction.Sigmoid, gain:=1, center:=1)
 
             m_mlp.InitializeStruct(m_neuronCountXOR, addBiasColumn:=True)
 
@@ -97,8 +97,7 @@ Namespace VectorizedMatrixMLP
 
             Dim expectedOutput = m_targetArrayXOR
 
-            Dim outputMatrix As Matrix = m_mlp.outputArraySingle ' Single(,) -> Matrix
-            Dim sOutput$ = outputMatrix.ToStringWithFormat(dec:="0.0")
+            Dim sOutput$ = m_mlp.output.ToStringWithFormat(dec:="0.0")
             Dim expectedMatrix As Matrix = expectedOutput ' Single(,) -> Matrix
             Dim sExpectedOutput = expectedMatrix.ToStringWithFormat(dec:="0.0")
             Assert.AreEqual(sOutput, sExpectedOutput)
@@ -111,12 +110,12 @@ Namespace VectorizedMatrixMLP
         End Sub
 
         <TestMethod()>
-        Public Sub VectorizedMatrixMLP1XORTrainVector()
+        Public Sub VecMatrixMLP1XORTrainVector()
 
             InitXOR()
             m_mlp.learningRate = 0.3
             m_mlp.nbIterations = 5000
-            m_mlp.SetActivationFunction(TActivationFunction.Sigmoid, gain:=1, center:=1)
+            m_mlp.SetActivationFunction(enumActivationFunction.Sigmoid, gain:=1, center:=1)
 
             m_mlp.InitializeStruct(m_neuronCountXOR, addBiasColumn:=True)
 
@@ -134,8 +133,7 @@ Namespace VectorizedMatrixMLP
 
             Dim expectedOutput = m_targetArrayXOR
 
-            Dim outputMatrix As Matrix = m_mlp.outputArraySingle ' Single(,) -> Matrix
-            Dim sOutput$ = outputMatrix.ToStringWithFormat(dec:="0.0")
+            Dim sOutput$ = m_mlp.output.ToStringWithFormat(dec:="0.0")
             Dim expectedMatrix As Matrix = expectedOutput ' Single(,) -> Matrix
             Dim sExpectedOutput = expectedMatrix.ToStringWithFormat(dec:="0.0")
             Assert.AreEqual(sOutput, sExpectedOutput)
@@ -148,12 +146,12 @@ Namespace VectorizedMatrixMLP
         End Sub
 
         <TestMethod()>
-        Public Sub VectorizedMatrixMLP1XORSigmoid()
+        Public Sub VecMatrixMLP1XORSigmoid()
 
             InitXOR()
             m_mlp.learningRate = 1.5
             m_mlp.nbIterations = 1000 ' Sigmoid: works
-            m_mlp.SetActivationFunction(TActivationFunction.Sigmoid, gain:=1, center:=1)
+            m_mlp.SetActivationFunction(enumActivationFunction.Sigmoid, gain:=1, center:=1)
 
             m_mlp.InitializeStruct(m_neuronCountXOR, addBiasColumn:=True)
 
@@ -173,8 +171,7 @@ Namespace VectorizedMatrixMLP
 
             Dim expectedOutput = m_targetArrayXOR
 
-            Dim outputMatrix As Matrix = m_mlp.outputArraySingle ' Single(,) -> Matrix
-            Dim sOutput$ = outputMatrix.ToStringWithFormat(dec:="0.0")
+            Dim sOutput$ = m_mlp.output.ToStringWithFormat(dec:="0.0")
             Dim expectedMatrix As Matrix = expectedOutput ' Single(,) -> Matrix
             Dim sExpectedOutput = expectedMatrix.ToStringWithFormat(dec:="0.0")
             Assert.AreEqual(sOutput, sExpectedOutput)
@@ -187,14 +184,14 @@ Namespace VectorizedMatrixMLP
         End Sub
 
         <TestMethod()>
-        Public Sub VectorizedMatrixMLP1XORSigmoidWithoutBias()
+        Public Sub VecMatrixMLP1XORSigmoidWithoutBias()
 
             m_mlp.Init(learningRate:=0.1!, weightAdjustment:=0.02!)
             InitXOR()
             m_mlp.InitializeStruct(m_neuronCountXOR, addBiasColumn:=False)
 
             m_mlp.nbIterations = 30000
-            m_mlp.SetActivationFunction(TActivationFunction.Sigmoid, gain:=1, center:=0.2!)
+            m_mlp.SetActivationFunction(enumActivationFunction.Sigmoid, gain:=1, center:=0.2!)
 
             m_mlp.InitializeWeights(1, {
                 {0.7, 0.28},
@@ -214,8 +211,7 @@ Namespace VectorizedMatrixMLP
 
             Dim expectedMatrix As Matrix = expectedOutput ' Single(,) -> Matrix
 
-            Dim outputMaxtrix As Matrix = m_mlp.outputArraySingle
-            Dim sOutput = outputMaxtrix.ToStringWithFormat(dec:="0.0")
+            Dim sOutput = m_mlp.output.ToStringWithFormat(dec:="0.0")
 
             Dim sExpectedOutput = expectedMatrix.ToStringWithFormat(dec:="0.0")
             Assert.AreEqual(sOutput, sExpectedOutput)
@@ -228,14 +224,14 @@ Namespace VectorizedMatrixMLP
         End Sub
 
         <TestMethod()>
-        Public Sub VectorizedMatrixMLP1XORSigmoidWithoutBias231()
+        Public Sub VecMatrixMLP1XORSigmoidWithoutBias231()
 
             m_mlp.Init(learningRate:=0.1!, weightAdjustment:=0.02!)
             InitXOR()
             m_mlp.InitializeStruct(m_neuronCountXOR231, addBiasColumn:=False)
 
             m_mlp.nbIterations = 10000
-            m_mlp.SetActivationFunction(TActivationFunction.Sigmoid, gain:=1, center:=0.2!)
+            m_mlp.SetActivationFunction(enumActivationFunction.Sigmoid, gain:=1, center:=0.2!)
 
             m_mlp.InitializeWeights(1, {
                 {0.88, 0.94, 0.23},
@@ -256,8 +252,7 @@ Namespace VectorizedMatrixMLP
 
             Dim expectedMatrix As Matrix = expectedOutput ' Single(,) -> Matrix
 
-            Dim outputMaxtrix As Matrix = m_mlp.outputArraySingle
-            Dim sOutput = outputMaxtrix.ToStringWithFormat(dec:="0.0")
+            Dim sOutput = m_mlp.output.ToStringWithFormat(dec:="0.0")
 
             Dim sExpectedOutput = expectedMatrix.ToStringWithFormat(dec:="0.0")
             Assert.AreEqual(sOutput, sExpectedOutput)
@@ -270,12 +265,12 @@ Namespace VectorizedMatrixMLP
         End Sub
 
         <TestMethod()>
-        Public Sub VectorizedMatrixMLP1XORSigmoidWithoutBias2()
+        Public Sub VecMatrixMLP1XORSigmoidWithoutBias2()
 
             InitXOR()
             m_mlp.learningRate = 1.1
             m_mlp.nbIterations = 8000 ' Sigmoid: works
-            m_mlp.SetActivationFunction(TActivationFunction.Sigmoid, gain:=1.1!, center:=0.5!)
+            m_mlp.SetActivationFunction(enumActivationFunction.Sigmoid, gain:=1.1!, center:=0.5!)
 
             m_mlp.InitializeStruct(m_neuronCountXOR, addBiasColumn:=False)
 
@@ -292,8 +287,7 @@ Namespace VectorizedMatrixMLP
 
             Dim expectedOutput = m_targetArrayXOR
 
-            Dim outputMatrix As Matrix = m_mlp.outputArraySingle ' Single(,) -> Matrix
-            Dim sOutput$ = outputMatrix.ToStringWithFormat(dec:="0.0")
+            Dim sOutput$ = m_mlp.output.ToStringWithFormat(dec:="0.0")
             Dim expectedMatrix As Matrix = expectedOutput ' Single(,) -> Matrix
             Dim sExpectedOutput = expectedMatrix.ToStringWithFormat(dec:="0.0")
             Assert.AreEqual(sOutput, sExpectedOutput)
@@ -306,11 +300,11 @@ Namespace VectorizedMatrixMLP
         End Sub
 
         <TestMethod()>
-        Public Sub VectorizedMatrixMLP1XORHTangent()
+        Public Sub VecMatrixMLP1XORHTangent()
 
             InitXOR()
             m_mlp.nbIterations = 600 ' Hyperbolic tangent: works
-            m_mlp.SetActivationFunction(TActivationFunction.HyperbolicTangent, gain:=1, center:=1)
+            m_mlp.SetActivationFunction(enumActivationFunction.HyperbolicTangent, gain:=1, center:=1)
 
             m_mlp.InitializeStruct(m_neuronCountXOR, addBiasColumn:=True)
 
@@ -330,8 +324,7 @@ Namespace VectorizedMatrixMLP
 
             Dim expectedOutput = m_targetArrayXOR
 
-            Dim outputMatrix As Matrix = m_mlp.outputArraySingle ' Single(,) -> Matrix
-            Dim sOutput$ = outputMatrix.ToStringWithFormat(dec:="0.0")
+            Dim sOutput$ = m_mlp.output.ToStringWithFormat(dec:="0.0")
             Dim expectedMatrix As Matrix = expectedOutput ' Single(,) -> Matrix
             Dim sExpectedOutput = expectedMatrix.ToStringWithFormat(dec:="0.0")
             Assert.AreEqual(sOutput, sExpectedOutput)
@@ -344,11 +337,11 @@ Namespace VectorizedMatrixMLP
         End Sub
 
         <TestMethod()>
-        Public Sub VectorizedMatrixMLP1XORGaussian()
+        Public Sub VecMatrixMLP1XORGaussian()
 
             InitXOR()
             m_mlp.nbIterations = 400 ' Gaussian: works
-            m_mlp.SetActivationFunction(TActivationFunction.Gaussian, gain:=1, center:=0)
+            m_mlp.SetActivationFunction(enumActivationFunction.Gaussian, gain:=1, center:=0)
 
             m_mlp.InitializeStruct(m_neuronCountXOR, addBiasColumn:=True)
 
@@ -372,9 +365,7 @@ Namespace VectorizedMatrixMLP
                 {0.99},
                 {0.03}}
 
-            'Dim sOutput = m_mlp.outputMatrix.ToString()
-            Dim outputMatrix As Matrix = m_mlp.outputArraySingle ' Single(,) -> Matrix
-            Dim sOutput$ = outputMatrix.ToString()
+            Dim sOutput$ = m_mlp.output.ToString()
             Dim expectedMatrix As Matrix = expectedOutput ' Single(,) -> Matrix
             Dim sExpectedOutput = expectedMatrix.ToString()
             Assert.AreEqual(sOutput, sExpectedOutput)
@@ -387,11 +378,11 @@ Namespace VectorizedMatrixMLP
         End Sub
 
         <TestMethod()>
-        Public Sub VectorizedMatrixMLP1XORSinus()
+        Public Sub VecMatrixMLP1XORSinus()
 
             InitXOR()
             m_mlp.nbIterations = 200 ' Sinus: works
-            m_mlp.SetActivationFunction(TActivationFunction.Sinus, gain:=1, center:=0)
+            m_mlp.SetActivationFunction(enumActivationFunction.Sinus, gain:=1, center:=0)
 
             m_mlp.InitializeStruct(m_neuronCountXOR, addBiasColumn:=False)
 
@@ -412,9 +403,7 @@ Namespace VectorizedMatrixMLP
                 {0.99},
                 {0.0}}
 
-            'Dim sOutput = m_mlp.outputMatrix.ToString()
-            Dim outputMatrix As Matrix = m_mlp.outputArraySingle ' Single(,) -> Matrix
-            Dim sOutput$ = outputMatrix.ToString()
+            Dim sOutput$ = m_mlp.output.ToString()
             Dim expectedMatrix As Matrix = expectedOutput ' Single(,) -> Matrix
             Dim sExpectedOutput = expectedMatrix.ToString()
             Assert.AreEqual(sOutput, sExpectedOutput)
@@ -427,11 +416,11 @@ Namespace VectorizedMatrixMLP
         End Sub
 
         <TestMethod()>
-        Public Sub VectorizedMatrixMLP1XORArcTangent()
+        Public Sub VecMatrixMLP1XORArcTangent()
 
             InitXOR()
             m_mlp.nbIterations = 500 ' Arc Tangent: works
-            m_mlp.SetActivationFunction(TActivationFunction.ArcTangent, gain:=1, center:=0)
+            m_mlp.SetActivationFunction(enumActivationFunction.ArcTangent, gain:=1, center:=0)
 
             m_mlp.InitializeStruct(m_neuronCountXOR, addBiasColumn:=True)
 
@@ -455,9 +444,7 @@ Namespace VectorizedMatrixMLP
                 {0.99},
                 {0}}
 
-            'Dim sOutput = m_mlp.outputMatrix.ToString()
-            Dim outputMatrix As Matrix = m_mlp.outputArraySingle ' Single(,) -> Matrix
-            Dim sOutput$ = outputMatrix.ToString()
+            Dim sOutput$ = m_mlp.output.ToString()
             Dim expectedMatrix As Matrix = expectedOutput ' Single(,) -> Matrix
             Dim sExpectedOutput = expectedMatrix.ToString()
             Assert.AreEqual(sOutput, sExpectedOutput)
@@ -470,11 +457,11 @@ Namespace VectorizedMatrixMLP
         End Sub
 
         <TestMethod()>
-        Public Sub VectorizedMatrixMLP1XORELU()
+        Public Sub VecMatrixMLP1XORELU()
 
             InitXOR()
             m_mlp.nbIterations = 500 '400 ' ELU: works
-            m_mlp.SetActivationFunction(TActivationFunction.ELU, gain:=0.1, center:=0.4)
+            m_mlp.SetActivationFunction(enumActivationFunction.ELU, gain:=0.1, center:=0.4)
             m_mlp.Init(learningRate:=0.07!, weightAdjustment:=0)
 
             m_mlp.InitializeStruct(m_neuronCountXOR, addBiasColumn:=True)
@@ -495,8 +482,7 @@ Namespace VectorizedMatrixMLP
 
             Dim expectedOutput = m_targetArrayXOR
 
-            Dim outputMatrix As Matrix = m_mlp.outputArraySingle ' Single(,) -> Matrix
-            Dim sOutput$ = outputMatrix.ToString()
+            Dim sOutput$ = m_mlp.output.ToString()
             Dim expectedMatrix As Matrix = expectedOutput ' Single(,) -> Matrix
             Dim sExpectedOutput = expectedMatrix.ToString()
             Assert.AreEqual(sOutput, sExpectedOutput)
@@ -509,11 +495,11 @@ Namespace VectorizedMatrixMLP
         End Sub
 
         <TestMethod()>
-        Public Sub VectorizedMatrixMLP1XORReLUSigmoid()
+        Public Sub VecMatrixMLP1XORReLUSigmoid()
 
             InitXOR()
             m_mlp.nbIterations = 5000 ' ReLUSigmoid: works
-            m_mlp.SetActivationFunction(TActivationFunction.ReLuSigmoid, gain:=1, center:=0)
+            m_mlp.SetActivationFunction(enumActivationFunction.ReLuSigmoid, gain:=1, center:=0)
 
             m_mlp.InitializeStruct(m_neuronCountXOR, addBiasColumn:=True)
 
@@ -533,8 +519,7 @@ Namespace VectorizedMatrixMLP
 
             Dim expectedOutput = m_targetArrayXOR
 
-            Dim outputMatrix As Matrix = m_mlp.outputArraySingle ' Single(,) -> Matrix
-            Dim sOutput$ = outputMatrix.ToString()
+            Dim sOutput$ = m_mlp.output.ToString()
             Dim expectedMatrix As Matrix = expectedOutput ' Single(,) -> Matrix
             Dim sExpectedOutput = expectedMatrix.ToString()
             Assert.AreEqual(sOutput, sExpectedOutput)
@@ -547,11 +532,11 @@ Namespace VectorizedMatrixMLP
         End Sub
 
         <TestMethod()>
-        Public Sub VectorizedMatrixMLP1XORDbleThreshold()
+        Public Sub VecMatrixMLP1XORDbleThreshold()
 
             InitXOR()
             m_mlp.nbIterations = 4000
-            m_mlp.SetActivationFunction(TActivationFunction.DoubleThreshold, gain:=1, center:=0)
+            m_mlp.SetActivationFunction(enumActivationFunction.DoubleThreshold, gain:=1, center:=0)
 
             m_mlp.InitializeStruct(m_neuronCountXOR, addBiasColumn:=True)
 
@@ -571,8 +556,7 @@ Namespace VectorizedMatrixMLP
 
             Dim expectedOutput = m_targetArrayXOR
 
-            Dim outputMatrix As Matrix = m_mlp.outputArraySingle ' Single(,) -> Matrix
-            Dim sOutput$ = outputMatrix.ToStringWithFormat(dec:="0.0")
+            Dim sOutput$ = m_mlp.output.ToStringWithFormat(dec:="0.0")
             Dim expectedMatrix As Matrix = expectedOutput ' Single(,) -> Matrix
             Dim sExpectedOutput = expectedMatrix.ToStringWithFormat(dec:="0.0")
             Assert.AreEqual(sOutput, sExpectedOutput)
@@ -584,12 +568,12 @@ Namespace VectorizedMatrixMLP
 
         End Sub
 
-        <TestMethod()> _
-        Public Sub VectorizedMatrixMLP2XORSinus()
+        <TestMethod()>
+        Public Sub VecMatrixMLP2XORSinus()
 
             Init2XOR()
             m_mlp.nbIterations = 400 ' Sinus: works
-            m_mlp.SetActivationFunction(TActivationFunction.Sinus, gain:=1, center:=0)
+            m_mlp.SetActivationFunction(enumActivationFunction.Sinus, gain:=1, center:=0)
 
             m_mlp.InitializeStruct(m_neuronCount2XOR, addBiasColumn:=True)
 
@@ -613,8 +597,7 @@ Namespace VectorizedMatrixMLP
 
             Dim expectedOutput = m_targetArray2XOR
 
-            Dim outputMatrix As Matrix = m_mlp.outputArraySingle ' Single(,) -> Matrix
-            Dim sOutput$ = outputMatrix.ToString()
+            Dim sOutput$ = m_mlp.output.ToString()
             Dim expectedMatrix As Matrix = expectedOutput ' Single(,) -> Matrix
             Dim sExpectedOutput = expectedMatrix.ToString()
             Assert.AreEqual(sOutput, sExpectedOutput)
@@ -626,12 +609,12 @@ Namespace VectorizedMatrixMLP
 
         End Sub
 
-        <TestMethod()> _
-        Public Sub VectorizedMatrixMLP2XORGaussian()
+        <TestMethod()>
+        Public Sub VecMatrixMLP2XORGaussian()
 
             Init2XOR()
             m_mlp.nbIterations = 300 ' Gaussian: works
-            m_mlp.SetActivationFunction(TActivationFunction.Gaussian, gain:=1, center:=1)
+            m_mlp.SetActivationFunction(enumActivationFunction.Gaussian, gain:=1, center:=1)
 
             m_mlp.InitializeStruct(m_neuronCount2XOR, addBiasColumn:=True)
 
@@ -655,8 +638,7 @@ Namespace VectorizedMatrixMLP
 
             Dim expectedOutput = m_targetArray2XOR
 
-            Dim outputMatrix As Matrix = m_mlp.outputArraySingle ' Single(,) -> Matrix
-            Dim sOutput$ = outputMatrix.ToStringWithFormat(dec:="0.0")
+            Dim sOutput$ = m_mlp.output.ToStringWithFormat(dec:="0.0")
             Dim expectedMatrix As Matrix = expectedOutput ' Single(,) -> Matrix
             Dim sExpectedOutput = expectedMatrix.ToStringWithFormat(dec:="0.0")
             Assert.AreEqual(sOutput, sExpectedOutput)
@@ -668,12 +650,12 @@ Namespace VectorizedMatrixMLP
 
         End Sub
 
-        <TestMethod()> _
-        Public Sub VectorizedMatrixMLP2XORHTangent()
+        <TestMethod()>
+        Public Sub VecMatrixMLP2XORHTangent()
 
             Init2XOR()
             m_mlp.nbIterations = 300 ' HTan: works
-            m_mlp.SetActivationFunction(TActivationFunction.HyperbolicTangent, gain:=1, center:=0.5)
+            m_mlp.SetActivationFunction(enumActivationFunction.HyperbolicTangent, gain:=1, center:=0.5)
 
             m_mlp.InitializeStruct(m_neuronCount2XOR, addBiasColumn:=True)
 
@@ -697,8 +679,7 @@ Namespace VectorizedMatrixMLP
 
             Dim expectedOutput = m_targetArray2XOR
 
-            Dim outputMatrix As Matrix = m_mlp.outputArraySingle ' Single(,) -> Matrix
-            Dim sOutput$ = outputMatrix.ToStringWithFormat(dec:="0.0")
+            Dim sOutput$ = m_mlp.output.ToStringWithFormat(dec:="0.0")
             Dim expectedMatrix As Matrix = expectedOutput ' Single(,) -> Matrix
             Dim sExpectedOutput = expectedMatrix.ToStringWithFormat(dec:="0.0")
             Assert.AreEqual(sOutput, sExpectedOutput)
@@ -710,13 +691,13 @@ Namespace VectorizedMatrixMLP
 
         End Sub
 
-        <TestMethod()> _
-        Public Sub VectorizedMatrixMLP2XORSigmoid()
+        <TestMethod()>
+        Public Sub VecMatrixMLP2XORSigmoid()
 
             Init2XOR()
             m_mlp.learningRate = 3.45
             m_mlp.nbIterations = 400 ' Sigmoid: works
-            m_mlp.SetActivationFunction(TActivationFunction.Sigmoid, gain:=1, center:=0.5!)
+            m_mlp.SetActivationFunction(enumActivationFunction.Sigmoid, gain:=1, center:=0.5!)
 
             m_mlp.InitializeStruct(m_neuronCount2XOR, addBiasColumn:=True)
 
@@ -740,8 +721,7 @@ Namespace VectorizedMatrixMLP
 
             Dim expectedOutput = m_targetArray2XOR
 
-            Dim outputMatrix As Matrix = m_mlp.outputArraySingle ' Single(,) -> Matrix
-            Dim sOutput$ = outputMatrix.ToStringWithFormat(dec:="0.0")
+            Dim sOutput$ = m_mlp.output.ToStringWithFormat(dec:="0.0")
             Dim expectedMatrix As Matrix = expectedOutput ' Single(,) -> Matrix
             Dim sExpectedOutput = expectedMatrix.ToStringWithFormat(dec:="0.0")
             Assert.AreEqual(sOutput, sExpectedOutput)
@@ -753,13 +733,13 @@ Namespace VectorizedMatrixMLP
 
         End Sub
 
-        <TestMethod()> _
-        Public Sub VectorizedMatrixMLP2XORArcTan()
+        <TestMethod()>
+        Public Sub VecMatrixMLP2XORArcTan()
 
             Init2XOR()
             m_mlp.learningRate = 0.05
             m_mlp.nbIterations = 500 '400 ' Arc tangent: works fine
-            m_mlp.SetActivationFunction(TActivationFunction.ArcTangent, gain:=1, center:=0.9)
+            m_mlp.SetActivationFunction(enumActivationFunction.ArcTangent, gain:=1, center:=0.9)
 
             m_mlp.InitializeStruct(m_neuronCount2XOR, addBiasColumn:=True)
 
@@ -783,9 +763,7 @@ Namespace VectorizedMatrixMLP
 
             Dim expectedOutput = m_targetArray2XOR
 
-            'Dim sOutput = m_mlp.outputMatrix.ToStringWithFormat(dec:="0.0")
-            Dim outputMatrix As Matrix = m_mlp.outputArraySingle ' Single(,) -> Matrix
-            Dim sOutput$ = outputMatrix.ToStringWithFormat(dec:="0.0")
+            Dim sOutput$ = m_mlp.output.ToStringWithFormat(dec:="0.0")
             Dim expectedMatrix As Matrix = expectedOutput ' Single(,) -> Matrix
             Dim sExpectedOutput = expectedMatrix.ToStringWithFormat(dec:="0.0")
             Assert.AreEqual(sOutput, sExpectedOutput)
@@ -799,13 +777,13 @@ Namespace VectorizedMatrixMLP
 
 
 
-        <TestMethod()> _
-        Public Sub VectorizedMatrixMLP2XORDbleThreshold()
+        <TestMethod()>
+        Public Sub VecMatrixMLP2XORDbleThreshold()
 
             Init2XOR()
             m_mlp.learningRate = 0.15
             m_mlp.nbIterations = 900
-            m_mlp.SetActivationFunction(TActivationFunction.DoubleThreshold, gain:=1, center:=0.2!)
+            m_mlp.SetActivationFunction(enumActivationFunction.DoubleThreshold, gain:=1, center:=0.2!)
 
             m_mlp.InitializeStruct(m_neuronCount2XOR, addBiasColumn:=True)
 
@@ -829,8 +807,7 @@ Namespace VectorizedMatrixMLP
 
             Dim expectedOutput = m_targetArray2XOR
 
-            Dim outputMatrix As Matrix = m_mlp.outputArraySingle ' Single(,) -> Matrix
-            Dim sOutput$ = outputMatrix.ToStringWithFormat(dec:="0.0")
+            Dim sOutput$ = m_mlp.output.ToStringWithFormat(dec:="0.0")
             Dim expectedMatrix As Matrix = expectedOutput ' Single(,) -> Matrix
             Dim sExpectedOutput = expectedMatrix.ToStringWithFormat(dec:="0.0")
             Assert.AreEqual(sOutput, sExpectedOutput)
@@ -843,13 +820,13 @@ Namespace VectorizedMatrixMLP
         End Sub
 
         <TestMethod()>
-        Public Sub VectorizedMatrixMLP3XORSigmoid()
+        Public Sub VecMatrixMLP3XORSigmoid()
 
             Init3XOR()
             m_mlp.learningRate = 0.4
             m_mlp.weightAdjustment = 0.35
             m_mlp.nbIterations = 400 ' Sigmoid: works
-            m_mlp.SetActivationFunction(TActivationFunction.Sigmoid, gain:=1, center:=0)
+            m_mlp.SetActivationFunction(enumActivationFunction.Sigmoid, gain:=1, center:=0)
 
             m_mlp.InitializeStruct(m_neuronCount3XOR, addBiasColumn:=True)
 
@@ -876,8 +853,7 @@ Namespace VectorizedMatrixMLP
 
             Dim expectedOutput = m_targetArray3XOR
 
-            Dim outputMatrix As Matrix = m_mlp.outputArraySingle ' Single(,) -> Matrix
-            Dim sOutput$ = outputMatrix.ToStringWithFormat(dec:="0.0")
+            Dim sOutput$ = m_mlp.output.ToStringWithFormat(dec:="0.0")
             Dim expectedMatrix As Matrix = expectedOutput ' Single(,) -> Matrix
             Dim sExpectedOutput = expectedMatrix.ToStringWithFormat(dec:="0.0")
             Assert.AreEqual(sOutput, sExpectedOutput)
@@ -889,13 +865,13 @@ Namespace VectorizedMatrixMLP
 
         End Sub
 
-        <TestMethod()> _
-        Public Sub VectorizedMatrixMLP3XORGaussian()
+        <TestMethod()>
+        Public Sub VecMatrixMLP3XORGaussian()
 
             Init3XOR()
             m_mlp.learningRate = 0.1
             m_mlp.nbIterations = 100 ' Gaussian: works
-            m_mlp.SetActivationFunction(TActivationFunction.Gaussian, gain:=1, center:=1)
+            m_mlp.SetActivationFunction(enumActivationFunction.Gaussian, gain:=1, center:=1)
 
             m_mlp.InitializeStruct(m_neuronCount3XOR, addBiasColumn:=True)
 
@@ -923,8 +899,7 @@ Namespace VectorizedMatrixMLP
 
             Dim expectedOutput = m_targetArray3XOR
 
-            Dim outputMatrix As Matrix = m_mlp.outputArraySingle ' Single(,) -> Matrix
-            Dim sOutput$ = outputMatrix.ToStringWithFormat(dec:="0.0")
+            Dim sOutput$ = m_mlp.output.ToStringWithFormat(dec:="0.0")
             Dim expectedMatrix As Matrix = expectedOutput ' Single(,) -> Matrix
             Dim sExpectedOutput = expectedMatrix.ToStringWithFormat(dec:="0.0")
             Assert.AreEqual(sOutput, sExpectedOutput)
@@ -936,13 +911,13 @@ Namespace VectorizedMatrixMLP
 
         End Sub
 
-        <TestMethod()> _
-        Public Sub VectorizedMatrixMLP3XORDbleThreshold()
+        <TestMethod()>
+        Public Sub VecMatrixMLP3XORDbleThreshold()
 
             Init3XOR()
             m_mlp.learningRate = 0.8
             m_mlp.nbIterations = 400
-            m_mlp.SetActivationFunction(TActivationFunction.DoubleThreshold, gain:=1, center:=2)
+            m_mlp.SetActivationFunction(enumActivationFunction.DoubleThreshold, gain:=1, center:=2)
 
             m_mlp.InitializeStruct(m_neuronCount3XOR, addBiasColumn:=True)
 
@@ -970,8 +945,7 @@ Namespace VectorizedMatrixMLP
 
             Dim expectedOutput = m_targetArray3XOR
 
-            Dim outputMatrix As Matrix = m_mlp.outputArraySingle ' Single(,) -> Matrix
-            Dim sOutput$ = outputMatrix.ToStringWithFormat(dec:="0.0")
+            Dim sOutput$ = m_mlp.output.ToStringWithFormat(dec:="0.0")
             Dim expectedMatrix As Matrix = expectedOutput ' Single(,) -> Matrix
             Dim sExpectedOutput = expectedMatrix.ToStringWithFormat(dec:="0.0")
             Assert.AreEqual(sOutput, sExpectedOutput)

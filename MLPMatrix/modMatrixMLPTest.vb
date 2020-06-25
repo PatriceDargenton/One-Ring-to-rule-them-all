@@ -26,26 +26,26 @@ Module modMatrixMLPTest
 
         ' Works
         nbIterations = 100000
-        mlp.SetActivationFunctionForMatrix(TActivationFunctionForMatrix.Sigmoid,
+        mlp.SetActivationFunctionForMatrix(enumActivationFunctionForMatrix.Sigmoid,
             gain:=1, center:=2)
 
         ' Sometimes works 
         'nbIterations = 100000
-        'mlp.SetActivationFunctionForMatrix(TActivationFunctionForMatrix.HyperbolicTangent,
+        'mlp.SetActivationFunctionForMatrix(enumActivationFunctionForMatrix.HyperbolicTangent,
         '    gain:=1, center:=0)
         'mlp.Init(learningRate:=0.05, weightAdjustment:=0.05)
 
         ' Works
         'nbIterations = 10000
-        'mlp.SetActivationFunctionForMatrix(TActivationFunctionForMatrix.ELU,
+        'mlp.SetActivationFunctionForMatrix(enumActivationFunctionForMatrix.ELU,
         '    gain:=1, center:=-2)
 
         ' Doesn't work
         'nbIterations = 1000000
-        'mlp.SetActivationFunctionForMatrix(TActivationFunctionForMatrix.ReLU, gain:=1, center:=0)
+        'mlp.SetActivationFunctionForMatrix(enumActivationFunctionForMatrix.ReLU, gain:=1, center:=0)
 
         ' Doesn't work
-        'mlp.SetActivationFunctionForMatrix(TActivationFunctionForMatrix.ReLUSigmoid, gain:=1, center:=0)
+        'mlp.SetActivationFunctionForMatrix(enumActivationFunctionForMatrix.ReLUSigmoid, gain:=1, center:=0)
 
         mlp.InitializeStruct(m_neuronCountXOR, addBiasColumn:=True)
         mlp.Init(learningRate:=0.1, weightAdjustment:=0.1)
@@ -72,7 +72,6 @@ Module modMatrixMLPTest
         mlp.Train(enumLearningMode.Stochastic)
 
         mlp.TestAllSamples(inputs, nbOutput)
-        mlp.output = mlp.outputArray
         mlp.targetArray = targets
         mlp.ComputeAverageError()
 

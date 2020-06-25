@@ -1,6 +1,6 @@
 ﻿
 Imports Perceptron.MLP.ActivationFunction
-Imports Perceptron.Util ' Matrix
+Imports Perceptron.Utility ' Matrix
 
 Public MustInherit Class clsMLPGeneric
 
@@ -47,14 +47,9 @@ Public MustInherit Class clsMLPGeneric
     Public targetArray!(,)
 
     ''' <summary>
-    ''' Output array (returned to compute average error, and discrete error)
+    ''' Output matrix
     ''' </summary>
-    Public outputArray#(,)
-
-    ''' <summary>
-    ''' Output array (as Single(,))
-    ''' </summary>
-    Public outputArraySingle!(,)
+    Public output As Matrix
 
     ''' <summary>
     ''' Output array 1D
@@ -132,25 +127,25 @@ Public MustInherit Class clsMLPGeneric
 
     Private m_gain!
     Protected m_center!
-    Protected m_actFunc As TActivationFunction = TActivationFunction.Undefined
+    Protected m_actFunc As enumActivationFunction = enumActivationFunction.Undefined
 
     ''' <summary>
     ''' Set registered activation function
     ''' </summary>
-    Public Sub SetActivationFunction(actFnc As TActivationFunction, gain!, center!)
+    Public Sub SetActivationFunction(actFnc As enumActivationFunction, gain!, center!)
 
         Select Case actFnc
-            Case TActivationFunction.Undefined : Me.activFnc = Nothing
-            Case TActivationFunction.Identity : Me.activFnc = New IdentityFunction
-            Case TActivationFunction.Sigmoid : Me.activFnc = New SigmoidFunction
-            Case TActivationFunction.HyperbolicTangent : Me.activFnc = New HyperbolicTangentFunction
-            Case TActivationFunction.Gaussian : Me.activFnc = New GaussianFunction
-            Case TActivationFunction.ArcTangent : Me.activFnc = New ArcTangentFunction
-            Case TActivationFunction.Sinus : Me.activFnc = New SinusFunction
-            Case TActivationFunction.ELU : Me.activFnc = New ELUFunction
-            Case TActivationFunction.ReLu : Me.activFnc = New ReLuFunction
-            Case TActivationFunction.ReLuSigmoid : Me.activFnc = New ReLuSigmoidFunction
-            Case TActivationFunction.DoubleThreshold : Me.activFnc = New DoubleThresholdFunction
+            Case enumActivationFunction.Undefined : Me.activFnc = Nothing
+            Case enumActivationFunction.Identity : Me.activFnc = New IdentityFunction
+            Case enumActivationFunction.Sigmoid : Me.activFnc = New SigmoidFunction
+            Case enumActivationFunction.HyperbolicTangent : Me.activFnc = New HyperbolicTangentFunction
+            Case enumActivationFunction.Gaussian : Me.activFnc = New GaussianFunction
+            Case enumActivationFunction.ArcTangent : Me.activFnc = New ArcTangentFunction
+            Case enumActivationFunction.Sinus : Me.activFnc = New SinusFunction
+            Case enumActivationFunction.ELU : Me.activFnc = New ELUFunction
+            Case enumActivationFunction.ReLu : Me.activFnc = New ReLuFunction
+            Case enumActivationFunction.ReLuSigmoid : Me.activFnc = New ReLuSigmoidFunction
+            Case enumActivationFunction.DoubleThreshold : Me.activFnc = New DoubleThresholdFunction
             Case Else
                 Stop
         End Select
@@ -351,8 +346,7 @@ Public MustInherit Class clsMLPGeneric
                 outputs(i, j) = output(j)
             Next
         Next
-        Me.outputArraySingle = outputs
-        Me.outputArray = clsMLPHelper.ConvertSingleToDouble(outputs)
+        Me.output = outputs
     End Sub
 
 #End Region

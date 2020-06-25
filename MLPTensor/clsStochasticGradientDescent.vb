@@ -1,4 +1,7 @@
 ﻿
+Imports System.Text
+Imports Perceptron.Utility
+
 Namespace DLFramework.Optimizers
 
     Public Class StochasticGradientDescent
@@ -37,11 +40,22 @@ Namespace DLFramework.Optimizers
 
         Public Sub Step_()
             For Each parameter In Parameters
-                parameter.Data -= parameter.Gradient.Data * Me.LearningRate
+                Dim m As Matrix = parameter.Gradient.Data * Me.LearningRate
+                parameter.Data -= m
                 If Me.WeightAdjustment <> 0 Then _
                     parameter.Gradient.Data *= Me.WeightAdjustment
             Next
         End Sub
+
+        Public Function ParametersToString$()
+            Dim sb As New StringBuilder()
+            Dim numPrm% = 0
+            For Each parameter In Parameters
+                numPrm += 1
+                sb.AppendLine("prm n°" & numPrm & "=" & parameter.ToString())
+            Next
+            Return sb.ToString
+        End Function
 
     End Class
 

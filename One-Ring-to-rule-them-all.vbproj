@@ -76,6 +76,8 @@
     <Compile Include="MLPOOP\Activation\ELU.vb" />
     <Compile Include="MLPTensor\Layer\clsELULayer.vb" />
     <Compile Include="modActivation.vb" />
+    <Compile Include="clsMatrixHP.vb" />
+    <Compile Include="clsMatrixNL.vb" />
     <Compile Include="clsMLPGeneric.vb" />
     <Compile Include="clsMLPGenericVec.vb" />
     <Compile Include="clsMLPHelper.vb" />
@@ -87,8 +89,6 @@
     <Compile Include="MLPMatrixVec\clsVecMatrixMLP.vb" />
     <Compile Include="MLPMatrixVec\clsVecMatrixMLPTest.vb" />
     <Compile Include="MLPMatrixVec\modMatrixMLPTest.vb" />
-    <Compile Include="modLinearAlgebra.vb" />
-    <Compile Include="MLPMatrix\clsMatrix.vb" />
     <Compile Include="MLPMatrix\clsMatrixMLP.vb" />
     <Compile Include="MLPMatrix\clsMatrixMLPTest.vb" />
     <Compile Include="MLPMatrix\clsTrainData.vb" />

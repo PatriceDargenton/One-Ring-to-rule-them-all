@@ -1,5 +1,5 @@
 ﻿
-Imports Perceptron.Util ' Matrix
+Imports Perceptron.Utility ' Matrix
 
 Public MustInherit Class clsVectorizedMLPGeneric : Inherits clsMLPGeneric
 
@@ -7,11 +7,6 @@ Public MustInherit Class clsVectorizedMLPGeneric : Inherits clsMLPGeneric
     Public exampleCount%
 
     Protected neuronCount%()
-
-    ''' <summary>
-    ''' Output matrix (returned to compute average error, and discrete error)
-    ''' </summary>
-    Public outputMatrix As Matrix
 
     Public MustOverride Sub TrainVector()
 

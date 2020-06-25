@@ -1,5 +1,5 @@
 ﻿
-Imports Perceptron.Util ' Matrix
+Imports Perceptron.Utility ' Matrix
 
 Namespace DLFramework
 
@@ -130,7 +130,7 @@ Namespace DLFramework
             If Not Me.m_autoGrad Then Return
 
             If gradient Is Nothing Then _
-                gradient = New Tensor(Matrix.Ones(m_data.x, m_data.y))
+                gradient = New Tensor(Matrix.Ones(m_data.r, m_data.c))
 
             If gradientOrigin IsNot Nothing Then
                 If m_childrens(gradientOrigin.Id) = 0 Then _
@@ -210,9 +210,9 @@ Namespace DLFramework
 
             Dim copies% = 0
             If dimension = AxisZero.horizontal Then
-                copies = CInt(Me.m_creators(0).m_data.y)
+                copies = CInt(Me.m_creators(0).m_data.c)
             Else
-                copies = CInt(Me.m_creators(0).m_data.x)
+                copies = CInt(Me.m_creators(0).m_data.r)
             End If
 
             Me.m_creators(0).Backward(Tensor.Expand(Me.m_gradient, dimension, copies))
@@ -221,9 +221,9 @@ Namespace DLFramework
 
         Private Sub MatrixMultiplicationTensorOperation()
             Me.m_creators(0).Backward(
-                Tensor.MatMul(m_gradient, Tensor.Transp(Me.m_creators(1))))
+                Tensor.MatMult(Me.m_gradient, Tensor.Transp(Me.m_creators(1))))
             Me.m_creators(1).Backward(
-                Tensor.Transp(Tensor.MatMul(Tensor.Transp(Me.m_gradient), Me.m_creators(0))))
+                Tensor.Transp(Tensor.MatMult(Tensor.Transp(Me.m_gradient), Me.m_creators(0))))
         End Sub
 
         Private Sub TransposeTensorOperation()
@@ -266,15 +266,15 @@ Namespace DLFramework
             Dim m As New Matrix()
 
             If axis0 = AxisZero.horizontal Then
-                m = Matrix.Zeros(A.m_data.x, copies)
+                m = Matrix.Zeros(A.m_data.r, copies)
                 Matrix.MatrixLoop(Sub(i, j)
                                       m(i, j) = A.m_data(i, 0)
-                                  End Sub, A.m_data.x, copies)
+                                  End Sub, A.m_data.r, copies)
             ElseIf axis0 = AxisZero.vertical Then
-                m = Matrix.Zeros(copies, A.m_data.y)
+                m = Matrix.Zeros(copies, A.m_data.c)
                 Matrix.MatrixLoop(Sub(i, j)
                                       m(i, j) = A.m_data(0, j)
-                                  End Sub, copies, A.m_data.y)
+                                  End Sub, copies, A.m_data.c)
             End If
 
             If A.m_autoGrad Then
@@ -292,10 +292,10 @@ Namespace DLFramework
 
             If A.m_autoGrad Then
                 Dim Creators = New List(Of Tensor)() From {A}
-                Return New Tensor(A.m_data * -1.0F, autoGrad:=True,
+                Return New Tensor(A.m_data * -1.0!, autoGrad:=True,
                     creators:=Creators, creationOperation:=TensorOperations.Negation)
             End If
-            Return New Tensor(A.m_data * -1.0F)
+            Return New Tensor(A.m_data * -1.0!)
 
         End Function
 
@@ -325,11 +325,31 @@ Namespace DLFramework
 
             If A.m_autoGrad AndAlso B.m_autoGrad Then
                 Dim Creators = New List(Of Tensor)() From {A, B}
-                Return New Tensor(Matrix.DeltaMult(A.m_data, B.m_data),
+                'Return New Tensor(Matrix.DeltaMult(A.m_data, B.m_data),
+                '    autoGrad:=True, creators:=Creators,
+                '    creationOperation:=TensorOperations.Multiplication)
+                Return New Tensor(A.m_data * B.m_data,
                     autoGrad:=True, creators:=Creators,
                     creationOperation:=TensorOperations.Multiplication)
             End If
-            Return New Tensor(Matrix.DeltaMult(A.m_data, B.m_data))
+            'Return New Tensor(Matrix.DeltaMult(A.m_data, B.m_data))
+            Return New Tensor(A.m_data * B.m_data)
+
+        End Function
+
+        Public Shared Function MatMult(A As Tensor, B As Tensor) As Tensor
+
+            If A.m_autoGrad AndAlso B.m_autoGrad Then
+                Dim Creators = New List(Of Tensor)() From {A, B}
+                'Return New Tensor(Matrix.MatMult(A.m_data, B.m_data),
+                '    autoGrad:=True, creators:=Creators,
+                '    creationOperation:=TensorOperations.MatrixMultiplication)
+                Return New Tensor(A.m_data * B.m_data,
+                    autoGrad:=True, creators:=Creators,
+                    creationOperation:=TensorOperations.MatrixMultiplication)
+            End If
+            'Return New Tensor(Matrix.MatMult(A.m_data, B.m_data))
+            Return New Tensor(A.m_data * B.m_data)
 
         End Function
 
@@ -354,18 +374,6 @@ Namespace DLFramework
                     creationOperation:=TensorOperations.Transpose)
             End If
             Return New Tensor(A.m_data.T)
-
-        End Function
-
-        Public Shared Function MatMul(A As Tensor, B As Tensor) As Tensor
-
-            If A.m_autoGrad AndAlso B.m_autoGrad Then
-                Dim Creators = New List(Of Tensor)() From {A, B}
-                Return New Tensor(Matrix.MatMult(A.m_data, B.m_data),
-                    autoGrad:=True, creators:=Creators,
-                    creationOperation:=TensorOperations.MatrixMultiplication)
-            End If
-            Return New Tensor(Matrix.MatMult(A.m_data, B.m_data))
 
         End Function
 

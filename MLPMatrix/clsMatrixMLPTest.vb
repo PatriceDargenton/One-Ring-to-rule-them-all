@@ -1,4 +1,7 @@
 ﻿
+Imports Perceptron.Utility ' Matrix
+Imports Perceptron.clsMLPClassic ' enumLearningMode
+
 Imports Microsoft.VisualStudio.TestTools.UnitTesting
 
 Namespace MatrixMLP
@@ -39,7 +42,7 @@ Namespace MatrixMLP
         Public Sub MatrixMLP1XORSigmoid()
 
             Dim nbIterations% = 10000
-            m_mlp.SetActivationFunctionForMatrix(TActivationFunctionForMatrix.Sigmoid,
+            m_mlp.SetActivationFunctionForMatrix(enumActivationFunctionForMatrix.Sigmoid,
                 gain:=1, center:=2.2)
 
             InitXOR()
@@ -82,7 +85,7 @@ Namespace MatrixMLP
         Public Sub MatrixMLP1XORSigmoidWithoutBias()
 
             Dim nbIterations% = 100000
-            m_mlp.SetActivationFunctionForMatrix(TActivationFunctionForMatrix.Sigmoid,
+            m_mlp.SetActivationFunctionForMatrix(enumActivationFunctionForMatrix.Sigmoid,
                 gain:=1, center:=0)
 
             InitXOR()
@@ -121,7 +124,7 @@ Namespace MatrixMLP
         Public Sub MatrixMLP1XORHyperbolicTangent()
 
             Dim nbIterations% = 5000
-            m_mlp.SetActivationFunctionForMatrix(TActivationFunctionForMatrix.HyperbolicTangent,
+            m_mlp.SetActivationFunctionForMatrix(enumActivationFunctionForMatrix.HyperbolicTangent,
                 gain:=1, center:=0)
 
             InitXOR()
@@ -164,7 +167,7 @@ Namespace MatrixMLP
         Public Sub MatrixMLP1XORELU()
 
             Dim nbIterations% = 300
-            m_mlp.SetActivationFunctionForMatrix(TActivationFunctionForMatrix.ELU,
+            m_mlp.SetActivationFunctionForMatrix(enumActivationFunctionForMatrix.ELU,
                 gain:=1, center:=-1.8)
 
             InitXOR()
@@ -208,7 +211,7 @@ Namespace MatrixMLP
 
             Dim nbIterations% = 5000
             m_mlp.SetActivationFunctionForMatrix(
-                TActivationFunctionForMatrix.HyperbolicTangent, gain:=1, center:=0.5)
+                enumActivationFunctionForMatrix.HyperbolicTangent, gain:=1, center:=0.5)
 
             Init2XOR()
             m_mlp.Init(learningRate:=0.1, weightAdjustment:=0.1)

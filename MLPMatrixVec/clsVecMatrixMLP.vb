@@ -1,6 +1,6 @@
 ﻿
 Imports System.Runtime.InteropServices ' OutAttribute <Out>
-Imports Perceptron.Util ' Matrix
+Imports Perceptron.Utility ' Matrix
 
 Namespace VectorizedMatrixMLP
 
@@ -27,7 +27,7 @@ Namespace VectorizedMatrixMLP
                 If Me.useBias AndAlso i > 0 AndAlso i < Me.layerCount - 1 Then _
                     Me.neuronCountWithBias(i) += 1
             Next
-            Me.exampleCount = Me.target.x
+            Me.exampleCount = Me.target.r
             Me.w = New Matrix(Me.layerCount - 1 - 1) {}
 
         End Sub
@@ -41,8 +41,9 @@ Namespace VectorizedMatrixMLP
                 Dim nbNeurons = Me.neuronCountWithBias(i)
                 If Me.useBias Then nbNeurons += 1
                 Dim nbNeuronsNextLayer = Me.neuronCountWithBias(i + 1)
-                Me.w(i) = Matrix.Random(
+                Me.w(i) = Matrix.Randomize(
                     nbNeurons, nbNeuronsNextLayer, Me.rnd, minValue, maxValue) * 2 - 1
+                'Me.w(i).Randomize(minValue, maxValue)
             Next
 
         End Sub
@@ -58,8 +59,6 @@ Namespace VectorizedMatrixMLP
                 TrainAllSamplesInternal()
                 If Me.printOutput_ Then PrintOutput(iteration)
             Next
-            Dim outputArrayDble#(,) = Me.outputMatrix
-            Me.outputArraySingle = clsMLPHelper.ConvertDoubleToSingle2D(outputArrayDble)
 
         End Sub
 
@@ -73,21 +72,24 @@ Namespace VectorizedMatrixMLP
             Dim maxIndex = Me.A.Length - 1
             Me.Zlast = Me.Z(maxLayer)
             ' Cut first column for last layer
-            Dim zx = Me.Z(maxLayer).x
-            Dim zy = Me.Z(maxLayer).y
-            If Me.useBias Then Zlast = Zlast.Slice(0, 1, zx, zy)
+            Dim zr = Me.Z(maxLayer).r
+            Dim zc = Me.Z(maxLayer).c
+            If Me.useBias Then Zlast = Zlast.Slice(0, 1, zr, zc)
 
-            Me.outputMatrix = Me.A(maxIndex)
+            'Me.outputMatrix = Me.A(maxIndex)
+            Me.output = Me.A(maxIndex)
             ' Cut first column for last index of result matrix
-            Dim ax = Me.A(maxIndex).x
-            Dim ay = Me.A(maxIndex).y
-            If Me.useBias Then Me.outputMatrix = Me.outputMatrix.Slice(0, 1, ax, ay)
+            Dim ar = Me.A(maxIndex).r
+            Dim ac = Me.A(maxIndex).c
+            'If Me.useBias Then Me.outputMatrix = Me.outputMatrix.Slice(0, 1, ar, ac)
+            If Me.useBias Then Me.output = Me.output.Slice(0, 1, ar, ac)
 
         End Sub
 
         Public Sub ComputeErrorInternal()
             Me.error_ = New Matrix(Me.layerCount - 1) {}
-            Me.error_(Me.layerCount - 1) = Me.outputMatrix - Me.target
+            'Me.error_(Me.layerCount - 1) = Me.outputMatrix - Me.target
+            Me.error_(Me.layerCount - 1) = Me.output - Me.target
         End Sub
 
         Public Sub BackwardPropagateError()
@@ -144,7 +146,7 @@ Namespace VectorizedMatrixMLP
                 Me.delta(i) = Me.error_(i) * Matrix.Map(Z(i), Me.lambdaFncD)
 
                 ' Cut first column
-                If Me.useBias Then Me.delta(i) = Me.delta(i).Slice(0, 1, Me.delta(i).x, Me.delta(i).y)
+                If Me.useBias Then Me.delta(i) = Me.delta(i).Slice(0, 1, Me.delta(i).r, Me.delta(i).c)
 
             Next
 
@@ -166,7 +168,8 @@ Namespace VectorizedMatrixMLP
         Public Overrides Sub ComputeError()
             ' Calculate the error: ERROR = TARGETS - OUTPUTS
             Dim m As Matrix = Me.targetArray
-            Me.lastError = m - Me.outputMatrix
+            'Me.lastError = m - Me.outputMatrix
+            Me.lastError = m - Me.output
         End Sub
 
         Public Sub SetLastError()
@@ -175,11 +178,10 @@ Namespace VectorizedMatrixMLP
 
         Public Overrides Sub ComputeAverageErrorFromLastError()
             ' Compute first abs then average:
-            Me.averageError = CSng(Me.lastError.abs.average * Me.exampleCount)
+            Me.averageError = CSng(Me.lastError.Abs.Average * Me.exampleCount)
         End Sub
 
         Public Overrides Function ComputeAverageError!()
-            Me.outputMatrix = Me.outputArraySingle ' Single(,) -> Matrix
             MyBase.ComputeAverageError()
             Return Me.averageError
         End Function
@@ -187,12 +189,12 @@ Namespace VectorizedMatrixMLP
         Public Sub ComputeErrorOneSample()
             ' Calculate the error: ERROR = TARGETS - OUTPUTS
             Dim m As Matrix = Me.targetArray
-            Me.lastError = (m - Me.outputMatrix).GetRow(0)
+            Me.lastError = (m - Me.output).GetRow(0)
         End Sub
 
         Public Sub ComputeAverageErrorFromLastErrorOneSample()
             ' Compute first abs then average:
-            Me.averageError = CSng(Me.lastError.abs.average)
+            Me.averageError = CSng(Me.lastError.Abs.Average)
         End Sub
 
         Public Function ComputeAverageErrorOneSample!()
@@ -222,7 +224,8 @@ Namespace VectorizedMatrixMLP
         End Sub
 
         Public Sub SetOuput1D()
-            Me.lastOutputArray1DSingle = Me.outputMatrix.ToArraySingle()
+            'Me.lastOutputArray1DSingle = Me.outputMatrix.ToArraySingle()
+            Me.lastOutputArray1DSingle = Me.output.ToArraySingle()
         End Sub
 
         Public Overrides Sub TestOneSample(input!())
@@ -254,13 +257,11 @@ Namespace VectorizedMatrixMLP
                 If Not Me.vectorizedLearningMode Then
                     Dim nbTargets = Me.targetArray.GetLength(1)
                     TestAllSamples(Me.inputArray, nbOutputs:=nbTargets)
-                    Me.outputMatrix = Me.outputArray
                 End If
-                Dim outputArrayDble#(,) = Me.outputMatrix
-                Me.outputArraySingle = clsMLPHelper.ConvertDoubleToSingle2D(outputArrayDble)
+                Dim outputArrayDble#(,) = Me.output
                 ComputeAverageError()
                 Dim sMsg$ = vbLf & "Iteration n°" & iteration + 1 & "/" & nbIterations & vbLf &
-                    "Output: " & Me.outputMatrix.ToString() & vbLf &
+                    "Output: " & Me.output.ToString() & vbLf &
                     "Average error: " & Me.averageError.ToString(format6Dec)
                 'For i = 0 To Me.LayerCount - 1
                 '    sMsg &= "Error(" & i & ")=" & Me.error_(i).ToString() & vbLf

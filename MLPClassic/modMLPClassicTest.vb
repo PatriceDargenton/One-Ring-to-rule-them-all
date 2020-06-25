@@ -1,7 +1,8 @@
 ﻿
-Imports Microsoft.VisualStudio.TestTools.UnitTesting
-Imports Perceptron.Util ' Matrix
+Imports Perceptron.Utility ' Matrix
 Imports Perceptron.clsMLPClassic ' enumLearningMode
+
+Imports Microsoft.VisualStudio.TestTools.UnitTesting
 
 Module modMLPClassicTest
 
@@ -23,31 +24,31 @@ Module modMLPClassicTest
 
         Dim nbIterations%
 
-        'mlp.SetActivationFunction(TActivationFunction.Sigmoid, gain:=1, center:=0)
+        'mlp.SetActivationFunction(enumActivationFunction.Sigmoid, gain:=1, center:=0)
         'nbIterations = 10000 ' Sigmoid: works
 
-        mlp.SetActivationFunction(TActivationFunction.HyperbolicTangent, gain:=1, center:=0)
+        mlp.SetActivationFunction(enumActivationFunction.HyperbolicTangent, gain:=1, center:=0)
         nbIterations = 1000 ' Hyperbolic tangent: works fine
 
-        'mlp.SetActivationFunction(TActivationFunction.Gaussian, gain:=1, center:=0)
+        'mlp.SetActivationFunction(enumActivationFunction.Gaussian, gain:=1, center:=0)
         'nbIterations = 1000 ' Gaussian: works fine
 
-        'mlp.SetActivationFunction(TActivationFunction.Sinus, gain:=1, center:=0)
+        'mlp.SetActivationFunction(enumActivationFunction.Sinus, gain:=1, center:=0)
         'nbIterations = 1000 ' Sinus: works fine
 
-        'mlp.SetActivationFunction(TActivationFunction.ArcTangent, gain:=1, center:=0)
+        'mlp.SetActivationFunction(enumActivationFunction.ArcTangent, gain:=1, center:=0)
         'nbIterations = 1000 ' ArcTangent: works fine
 
-        'mlp.SetActivationFunction(TActivationFunction.ELU, gain:=1, center:=0)
+        'mlp.SetActivationFunction(enumActivationFunction.ELU, gain:=1, center:=0)
         'nbIterations = 2000 ' ELU: works
 
-        'mlp.SetActivationFunction(TActivationFunction.ReLu, gain:=0.9, center:=0)
+        'mlp.SetActivationFunction(enumActivationFunction.ReLu, gain:=0.9, center:=0)
         'nbIterations = 1000 ' ReLU: works fine
 
-        'mlp.SetActivationFunction(TActivationFunction.ReLuSigmoid, gain:=1, center:=0)
+        'mlp.SetActivationFunction(enumActivationFunction.ReLuSigmoid, gain:=1, center:=0)
         'nbIterations = 10000 ' ReLUSigmoid: works?
 
-        'mlp.SetActivationFunction(TActivationFunction.DoubleThreshold, gain:=1, center:=0)
+        'mlp.SetActivationFunction(enumActivationFunction.DoubleThreshold, gain:=1, center:=0)
         'nbIterations = 10000 ' DoubleThreshold: works fine
 
         mlp.InitializeStruct(m_neuronCountXOR, addBiasColumn:=True)
@@ -124,7 +125,7 @@ Namespace ClassicMLP
             InitXOR()
 
             m_mlp.nbIterations = 7000
-            m_mlp.SetActivationFunction(TActivationFunction.Sigmoid, gain:=1, center:=0)
+            m_mlp.SetActivationFunction(enumActivationFunction.Sigmoid, gain:=1, center:=0)
 
             m_mlp.InitializeWeights(1, {
                 {0.34, 0.07, 0.92},
@@ -137,8 +138,7 @@ Namespace ClassicMLP
             Dim expectedOutput = m_targetArrayXOR
             Dim expectedMatrix As Matrix = expectedOutput ' Single(,) -> Matrix
 
-            Dim outputMaxtrix As Matrix = m_mlp.outputArraySingle
-            Dim sOutput = outputMaxtrix.ToStringWithFormat(dec:="0.0")
+            Dim sOutput = m_mlp.output.ToStringWithFormat(dec:="0.0")
 
             Dim sExpectedOutput = expectedMatrix.ToStringWithFormat(dec:="0.0")
             Assert.AreEqual(sOutput, sExpectedOutput)
@@ -157,7 +157,7 @@ Namespace ClassicMLP
             InitXOR()
 
             m_mlp.nbIterations = 15000
-            m_mlp.SetActivationFunction(TActivationFunction.Sigmoid, gain:=1, center:=0)
+            m_mlp.SetActivationFunction(enumActivationFunction.Sigmoid, gain:=1, center:=0)
 
             m_mlp.InitializeWeights(1, {
                 {0.8, 0.42, 0.52},
@@ -170,8 +170,7 @@ Namespace ClassicMLP
             Dim expectedOutput = m_targetArrayXOR
             Dim expectedMatrix As Matrix = expectedOutput ' Single(,) -> Matrix
 
-            Dim outputMaxtrix As Matrix = m_mlp.outputArraySingle
-            Dim sOutput = outputMaxtrix.ToStringWithFormat(dec:="0.0")
+            Dim sOutput = m_mlp.output.ToStringWithFormat(dec:="0.0")
 
             Dim sExpectedOutput = expectedMatrix.ToStringWithFormat(dec:="0.0")
             Assert.AreEqual(sOutput, sExpectedOutput)
@@ -190,7 +189,7 @@ Namespace ClassicMLP
             InitXOR()
 
             m_mlp.nbIterations = 1100
-            m_mlp.SetActivationFunction(TActivationFunction.Sigmoid, gain:=1, center:=1)
+            m_mlp.SetActivationFunction(enumActivationFunction.Sigmoid, gain:=1, center:=1)
 
             m_mlp.InitializeWeights(1, {
                 {0.42, 0.82, 0.15},
@@ -203,8 +202,7 @@ Namespace ClassicMLP
             Dim expectedOutput = m_targetArrayXOR
             Dim expectedMatrix As Matrix = expectedOutput ' Single(,) -> Matrix
 
-            Dim outputMaxtrix As Matrix = m_mlp.outputArraySingle
-            Dim sOutput = outputMaxtrix.ToStringWithFormat(dec:="0.0")
+            Dim sOutput = m_mlp.output.ToStringWithFormat(dec:="0.0")
 
             Dim sExpectedOutput = expectedMatrix.ToStringWithFormat(dec:="0.0")
             Assert.AreEqual(sOutput, sExpectedOutput)
@@ -224,7 +222,7 @@ Namespace ClassicMLP
             m_mlp.InitializeStruct(m_neuronCountXOR, addBiasColumn:=False)
 
             m_mlp.nbIterations = 30000
-            m_mlp.SetActivationFunction(TActivationFunction.Sigmoid, gain:=1, center:=0.2!)
+            m_mlp.SetActivationFunction(enumActivationFunction.Sigmoid, gain:=1, center:=0.2!)
 
             m_mlp.InitializeWeights(1, {
                 {0.42, 0.79},
@@ -243,8 +241,7 @@ Namespace ClassicMLP
 
             Dim expectedMatrix As Matrix = expectedOutput ' Single(,) -> Matrix
 
-            Dim outputMaxtrix As Matrix = m_mlp.outputArraySingle
-            Dim sOutput = outputMaxtrix.ToStringWithFormat(dec:="0.0")
+            Dim sOutput = m_mlp.output.ToStringWithFormat(dec:="0.0")
 
             Dim sExpectedOutput = expectedMatrix.ToStringWithFormat(dec:="0.0")
             Assert.AreEqual(sOutput, sExpectedOutput)
@@ -264,7 +261,7 @@ Namespace ClassicMLP
             m_mlp.InitializeStruct(m_neuronCountXOR231, addBiasColumn:=False)
 
             m_mlp.nbIterations = 12000 '10000
-            m_mlp.SetActivationFunction(TActivationFunction.Sigmoid, gain:=1, center:=0.0!)
+            m_mlp.SetActivationFunction(enumActivationFunction.Sigmoid, gain:=1, center:=0.0!)
 
             m_mlp.InitializeWeights(1, {
                 {0.73, 0.38},
@@ -284,8 +281,7 @@ Namespace ClassicMLP
 
             Dim expectedMatrix As Matrix = expectedOutput ' Single(,) -> Matrix
 
-            Dim outputMaxtrix As Matrix = m_mlp.outputArraySingle
-            Dim sOutput = outputMaxtrix.ToStringWithFormat(dec:="0.0")
+            Dim sOutput = m_mlp.output.ToStringWithFormat(dec:="0.0")
 
             Dim sExpectedOutput = expectedMatrix.ToStringWithFormat(dec:="0.0")
             Assert.AreEqual(sOutput, sExpectedOutput)
@@ -304,7 +300,7 @@ Namespace ClassicMLP
             InitXOR()
 
             m_mlp.nbIterations = 1000
-            m_mlp.SetActivationFunction(TActivationFunction.HyperbolicTangent, gain:=1, center:=0)
+            m_mlp.SetActivationFunction(enumActivationFunction.HyperbolicTangent, gain:=1, center:=0)
 
             m_mlp.InitializeWeights(1, {
                 {0.28, 0.28, 0.76},
@@ -326,8 +322,7 @@ Namespace ClassicMLP
             '    {1},
             '    {0}}
 
-            Dim outputMaxtrix As Matrix = m_mlp.outputArraySingle
-            Dim sOutput = outputMaxtrix.ToStringWithFormat(dec:="0.0")
+            Dim sOutput = m_mlp.output.ToStringWithFormat(dec:="0.0")
 
             Dim expectedMatrix As Matrix = expectedOutput1K ' Double(,) -> Matrix
             Dim sExpectedOutput = expectedMatrix.ToStringWithFormat(dec:="0.0")
@@ -347,7 +342,7 @@ Namespace ClassicMLP
             InitXOR()
 
             m_mlp.nbIterations = 700
-            m_mlp.SetActivationFunction(TActivationFunction.ELU, gain:=0.9, center:=0)
+            m_mlp.SetActivationFunction(enumActivationFunction.ELU, gain:=0.9, center:=0)
 
             m_mlp.InitializeWeights(1, {
                 {0.34, 0.05, 0.98},
@@ -360,8 +355,7 @@ Namespace ClassicMLP
             Dim expectedOutput = m_targetArrayXOR
             Dim expectedMatrix As Matrix = expectedOutput ' Single(,) -> Matrix
 
-            Dim outputMaxtrix As Matrix = m_mlp.outputArraySingle
-            Dim sOutput = outputMaxtrix.ToStringWithFormat(dec:="0.0")
+            Dim sOutput = m_mlp.output.ToStringWithFormat(dec:="0.0")
 
             Dim sExpectedOutput = expectedMatrix.ToStringWithFormat(dec:="0.0")
             Assert.AreEqual(sOutput, sExpectedOutput)
@@ -380,7 +374,7 @@ Namespace ClassicMLP
             InitXOR()
 
             m_mlp.nbIterations = 400
-            m_mlp.SetActivationFunction(TActivationFunction.ReLu, gain:=0.9, center:=0)
+            m_mlp.SetActivationFunction(enumActivationFunction.ReLu, gain:=0.9, center:=0)
 
             m_mlp.InitializeWeights(1, {
                 {0.07, 0.79, 0.94},
@@ -393,8 +387,7 @@ Namespace ClassicMLP
             Dim expectedOutput = m_targetArrayXOR
             Dim expectedMatrix As Matrix = expectedOutput ' Single(,) -> Matrix
 
-            Dim outputMaxtrix As Matrix = m_mlp.outputArraySingle
-            Dim sOutput = outputMaxtrix.ToStringWithFormat(dec:="0.0")
+            Dim sOutput = m_mlp.output.ToStringWithFormat(dec:="0.0")
 
             Dim sExpectedOutput = expectedMatrix.ToStringWithFormat(dec:="0.0")
             Assert.AreEqual(sOutput, sExpectedOutput)
@@ -413,7 +406,7 @@ Namespace ClassicMLP
             InitXOR()
 
             m_mlp.nbIterations = 9000
-            m_mlp.SetActivationFunction(TActivationFunction.ReLuSigmoid, gain:=1, center:=0)
+            m_mlp.SetActivationFunction(enumActivationFunction.ReLuSigmoid, gain:=1, center:=0)
 
             m_mlp.InitializeWeights(1, {
                 {0.58, 0.23, 0.25},
@@ -426,8 +419,7 @@ Namespace ClassicMLP
             Dim expectedOutput = m_targetArrayXOR
             Dim expectedMatrix As Matrix = expectedOutput ' Single(,) -> Matrix
 
-            Dim outputMaxtrix As Matrix = m_mlp.outputArraySingle
-            Dim sOutput = outputMaxtrix.ToStringWithFormat(dec:="0.0")
+            Dim sOutput = m_mlp.output.ToStringWithFormat(dec:="0.0")
 
             Dim sExpectedOutput = expectedMatrix.ToStringWithFormat(dec:="0.0")
             Assert.AreEqual(sOutput, sExpectedOutput)
@@ -446,7 +438,7 @@ Namespace ClassicMLP
             InitXOR()
 
             m_mlp.nbIterations = 5000
-            m_mlp.SetActivationFunction(TActivationFunction.DoubleThreshold, gain:=1, center:=0)
+            m_mlp.SetActivationFunction(enumActivationFunction.DoubleThreshold, gain:=1, center:=0)
 
             m_mlp.InitializeWeights(1, {
                 {0.86, 0.37, 0.8},
@@ -459,8 +451,7 @@ Namespace ClassicMLP
             Dim expectedOutput = m_targetArrayXOR
             Dim expectedMatrix As Matrix = expectedOutput ' Single(,) -> Matrix
 
-            Dim outputMaxtrix As Matrix = m_mlp.outputArraySingle
-            Dim sOutput = outputMaxtrix.ToStringWithFormat(dec:="0.0")
+            Dim sOutput = m_mlp.output.ToStringWithFormat(dec:="0.0")
 
             Dim sExpectedOutput = expectedMatrix.ToStringWithFormat(dec:="0.0")
             Assert.AreEqual(sOutput, sExpectedOutput)
@@ -479,7 +470,7 @@ Namespace ClassicMLP
             Init2XOR()
 
             m_mlp.nbIterations = 500
-            m_mlp.SetActivationFunction(TActivationFunction.Sigmoid, gain:=1, center:=1)
+            m_mlp.SetActivationFunction(enumActivationFunction.Sigmoid, gain:=1, center:=1)
 
             m_mlp.InitializeWeights(1, {
                 {0.8, 0.72, 0.13, 0.33, 0.61},
@@ -495,8 +486,7 @@ Namespace ClassicMLP
             Dim expectedOutput = m_targetArray2XOR
             Dim expectedMatrix As Matrix = expectedOutput ' Single(,) -> Matrix
 
-            Dim outputMaxtrix As Matrix = m_mlp.outputArraySingle
-            Dim sOutput = outputMaxtrix.ToStringWithFormat(dec:="0.0")
+            Dim sOutput = m_mlp.output.ToStringWithFormat(dec:="0.0")
 
             Dim sExpectedOutput = expectedMatrix.ToStringWithFormat(dec:="0.0")
             Assert.AreEqual(sOutput, sExpectedOutput)
@@ -515,7 +505,7 @@ Namespace ClassicMLP
             Init2XOR()
 
             m_mlp.nbIterations = 500
-            m_mlp.SetActivationFunction(TActivationFunction.HyperbolicTangent, gain:=1, center:=0)
+            m_mlp.SetActivationFunction(enumActivationFunction.HyperbolicTangent, gain:=1, center:=0)
 
             m_mlp.InitializeWeights(1, {
                 {0.37, 0.11, 0.32, 0.3, 0.2},
@@ -531,8 +521,7 @@ Namespace ClassicMLP
             Dim expectedOutput = m_targetArray2XOR
             Dim expectedMatrix As Matrix = expectedOutput ' Single(,) -> Matrix
 
-            Dim outputMaxtrix As Matrix = m_mlp.outputArraySingle
-            Dim sOutput = outputMaxtrix.ToStringWithFormat(dec:="0.0")
+            Dim sOutput = m_mlp.output.ToStringWithFormat(dec:="0.0")
 
             Dim sExpectedOutput = expectedMatrix.ToStringWithFormat(dec:="0.0")
             Assert.AreEqual(sOutput, sExpectedOutput)
@@ -551,7 +540,7 @@ Namespace ClassicMLP
             Init2XOR()
 
             m_mlp.nbIterations = 200
-            m_mlp.SetActivationFunction(TActivationFunction.ELU, gain:=1, center:=0.4!)
+            m_mlp.SetActivationFunction(enumActivationFunction.ELU, gain:=1, center:=0.4!)
 
             m_mlp.InitializeWeights(1, {
                 {0.15, 0.46, 0.49, 0.28, 0.68},
@@ -567,8 +556,7 @@ Namespace ClassicMLP
             Dim expectedOutput = m_targetArray2XOR
             Dim expectedMatrix As Matrix = expectedOutput ' Single(,) -> Matrix
 
-            Dim outputMaxtrix As Matrix = m_mlp.outputArraySingle
-            Dim sOutput = outputMaxtrix.ToStringWithFormat(dec:="0.0")
+            Dim sOutput = m_mlp.output.ToStringWithFormat(dec:="0.0")
 
             Dim sExpectedOutput = expectedMatrix.ToStringWithFormat(dec:="0.0")
             Assert.AreEqual(sOutput, sExpectedOutput)
@@ -587,7 +575,7 @@ Namespace ClassicMLP
             Init2XOR()
 
             m_mlp.nbIterations = 3000
-            m_mlp.SetActivationFunction(TActivationFunction.DoubleThreshold, gain:=1, center:=0)
+            m_mlp.SetActivationFunction(enumActivationFunction.DoubleThreshold, gain:=1, center:=0)
 
             m_mlp.InitializeWeights(1, {
                 {0.43, 0.21, 0.16, 0.85, 0.2},
@@ -603,8 +591,7 @@ Namespace ClassicMLP
             Dim expectedOutput = m_targetArray2XOR
             Dim expectedMatrix As Matrix = expectedOutput ' Single(,) -> Matrix
 
-            Dim outputMaxtrix As Matrix = m_mlp.outputArraySingle
-            Dim sOutput = outputMaxtrix.ToStringWithFormat(dec:="0.0")
+            Dim sOutput = m_mlp.output.ToStringWithFormat(dec:="0.0")
 
             Dim sExpectedOutput = expectedMatrix.ToStringWithFormat(dec:="0.0")
             Assert.AreEqual(sOutput, sExpectedOutput)
@@ -623,7 +610,7 @@ Namespace ClassicMLP
             Init2XOR()
 
             m_mlp.nbIterations = 200
-            m_mlp.SetActivationFunction(TActivationFunction.ReLu, gain:=0.6, center:=0.4)
+            m_mlp.SetActivationFunction(enumActivationFunction.ReLu, gain:=0.6, center:=0.4)
 
             m_mlp.InitializeWeights(1, {
                 {0.97, 0.65, 0.44, 0.61, 0.73},
@@ -639,8 +626,7 @@ Namespace ClassicMLP
             Dim expectedOutput = m_targetArray2XOR
             Dim expectedMatrix As Matrix = expectedOutput ' Single(,) -> Matrix
 
-            Dim outputMaxtrix As Matrix = m_mlp.outputArraySingle
-            Dim sOutput = outputMaxtrix.ToStringWithFormat(dec:="0.0")
+            Dim sOutput = m_mlp.output.ToStringWithFormat(dec:="0.0")
 
             Dim sExpectedOutput = expectedMatrix.ToStringWithFormat(dec:="0.0")
             Assert.AreEqual(sOutput, sExpectedOutput)
@@ -659,7 +645,7 @@ Namespace ClassicMLP
             Init3XOR()
 
             m_mlp.nbIterations = 200
-            m_mlp.SetActivationFunction(TActivationFunction.Sigmoid, gain:=1, center:=1)
+            m_mlp.SetActivationFunction(enumActivationFunction.Sigmoid, gain:=1, center:=1)
 
             m_mlp.InitializeWeights(1, {
                 {0.71, 0.6, 0.21, 0.85, 0.78, 0.78, 0.2},
@@ -674,8 +660,7 @@ Namespace ClassicMLP
                 {0.27, 0.72, 0.94, 0.59, 0.75, 0.85, 0.21}})
             m_mlp.Train()
 
-            Dim outputMaxtrix As Matrix = m_mlp.outputArraySingle
-            Dim sOutput = outputMaxtrix.ToStringWithFormat(dec:="0.0")
+            Dim sOutput = m_mlp.output.ToStringWithFormat(dec:="0.0")
 
             Dim expectedOutput = m_targetArray3XOR
             Dim expectedMatrix As Matrix = expectedOutput ' Single(,) -> Matrix
@@ -696,7 +681,7 @@ Namespace ClassicMLP
             Init3XOR()
 
             m_mlp.nbIterations = 200
-            m_mlp.SetActivationFunction(TActivationFunction.ELU, gain:=1, center:=0.4!)
+            m_mlp.SetActivationFunction(enumActivationFunction.ELU, gain:=1, center:=0.4!)
 
             m_mlp.InitializeWeights(1, {
                 {0.26, 0.39, 0.79, 0.77, 0.48, 0.65, 0.88},
@@ -711,8 +696,7 @@ Namespace ClassicMLP
                 {0.42, 0.23, 0.63, 0.03, 0.11, 0.51, 0.54}})
             m_mlp.Train()
 
-            Dim outputMaxtrix As Matrix = m_mlp.outputArraySingle
-            Dim sOutput = outputMaxtrix.ToStringWithFormat(dec:="0.0")
+            Dim sOutput = m_mlp.output.ToStringWithFormat(dec:="0.0")
 
             Dim expectedOutput = m_targetArray3XOR
             Dim expectedMatrix As Matrix = expectedOutput ' Single(,) -> Matrix
@@ -733,7 +717,7 @@ Namespace ClassicMLP
             Init3XOR()
 
             m_mlp.nbIterations = 400
-            m_mlp.SetActivationFunction(TActivationFunction.Gaussian, gain:=0.5!, center:=0.3!)
+            m_mlp.SetActivationFunction(enumActivationFunction.Gaussian, gain:=0.5!, center:=0.3!)
 
             m_mlp.InitializeWeights(1, {
                 {0.39, 0.1, 0.21, 0.56, 0.84, 0.37, 0.06},
@@ -748,8 +732,7 @@ Namespace ClassicMLP
                 {0.53, 0.55, 0.77, 0.04, 0.68, 0.15, 0.36}})
             m_mlp.Train()
 
-            Dim outputMaxtrix As Matrix = m_mlp.outputArraySingle
-            Dim sOutput = outputMaxtrix.ToStringWithFormat(dec:="0.0")
+            Dim sOutput = m_mlp.output.ToStringWithFormat(dec:="0.0")
 
             Dim expectedOutput = m_targetArray3XOR
             Dim expectedMatrix As Matrix = expectedOutput ' Single(,) -> Matrix
@@ -770,7 +753,7 @@ Namespace ClassicMLP
             Init3XOR()
 
             m_mlp.nbIterations = 200
-            m_mlp.SetActivationFunction(TActivationFunction.Sinus, gain:=1, center:=0)
+            m_mlp.SetActivationFunction(enumActivationFunction.Sinus, gain:=1, center:=0)
 
             m_mlp.InitializeWeights(1, {
                 {0.41, 0.31, 0.33, 0.61, 0.57, 0.59, 0.73},
@@ -785,8 +768,7 @@ Namespace ClassicMLP
                 {0.85, 1.0, 0.74, 0.13, 0.8, 0.9, 0.21}})
             m_mlp.Train()
 
-            Dim outputMaxtrix As Matrix = m_mlp.outputArraySingle
-            Dim sOutput = outputMaxtrix.ToString() 'WithFormat(dec:="0.0")
+            Dim sOutput = m_mlp.output.ToString() 'WithFormat(dec:="0.0")
 
             Dim expectedOutput = m_targetArray3XOR
             Dim expectedMatrix As Matrix = expectedOutput ' Single(,) -> Matrix
@@ -809,7 +791,7 @@ Namespace ClassicMLP
             Init3XOR()
 
             m_mlp.nbIterations = 100
-            m_mlp.SetActivationFunction(TActivationFunction.DoubleThreshold, gain:=1, center:=2)
+            m_mlp.SetActivationFunction(enumActivationFunction.DoubleThreshold, gain:=1, center:=2)
 
             m_mlp.InitializeWeights(1, {
                 {0.12, 0.3, 0.12, 0.28, 0.12, 0.2, 0.32},
@@ -824,8 +806,7 @@ Namespace ClassicMLP
                 {0.87, 0.67, 0.87, 0.76, 0.64, 0.59, 0.27}})
             m_mlp.Train()
 
-            Dim outputMaxtrix As Matrix = m_mlp.outputArraySingle
-            Dim sOutput = outputMaxtrix.ToString() 'WithFormat(dec:="0.0")
+            Dim sOutput = m_mlp.output.ToString() 'WithFormat(dec:="0.0")
 
             Dim expectedOutput = m_targetArray3XOR
             Dim expectedMatrix As Matrix = expectedOutput ' Single(,) -> Matrix
@@ -846,7 +827,7 @@ Namespace ClassicMLP
             Init3XOR()
 
             m_mlp.nbIterations = 350
-            m_mlp.SetActivationFunction(TActivationFunction.ReLu, gain:=0.5!, center:=0.1!)
+            m_mlp.SetActivationFunction(enumActivationFunction.ReLu, gain:=0.5!, center:=0.1!)
 
             m_mlp.InitializeWeights(1, {
                 {0.13, 0.26, 0.18, 0.05, 0.07, 0.46, 0.96},
@@ -861,8 +842,7 @@ Namespace ClassicMLP
                 {0.52, 0.52, 0.51, 0.36, 0.96, 0.65, 0.41}})
             m_mlp.Train()
 
-            Dim outputMaxtrix As Matrix = m_mlp.outputArraySingle
-            Dim sOutput = outputMaxtrix.ToStringWithFormat(dec:="0.0")
+            Dim sOutput = m_mlp.output.ToStringWithFormat(dec:="0.0")
 
             Dim expectedOutput = m_targetArray3XOR
             Dim expectedMatrix As Matrix = expectedOutput ' Single(,) -> Matrix

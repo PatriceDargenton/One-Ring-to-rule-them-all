@@ -11,7 +11,7 @@
 ' http://patrice.dargenton.free.fr/ia/ialab/perceptron.html (french)
 
 Imports System.Text ' StringBuilder
-Imports Perceptron.Util ' Matrix
+Imports Perceptron.Utility ' Matrix
 
 Friend Class clsMLPClassic : Inherits clsMLPGeneric
 
@@ -307,13 +307,12 @@ Friend Class clsMLPClassic : Inherits clsMLPGeneric
     Public Overrides Sub ComputeError()
         ' Calculate the error: ERROR = TARGETS - OUTPUTS
         Dim m As Matrix = Me.targetArray
-        Dim output As Matrix = Me.outputArray
-        Me.lastError = m - output
+        Me.lastError = m - Me.output
     End Sub
 
     Public Overrides Sub ComputeAverageErrorFromLastError()
         ' Compute first abs then average:
-        Me.averageError = CSng(Me.lastError.abs.average)
+        Me.averageError = CSng(Me.lastError.Abs.Average)
     End Sub
 
 #End Region
@@ -366,9 +365,8 @@ Friend Class clsMLPClassic : Inherits clsMLPGeneric
             Dim nbTargets = Me.targetArray.GetLength(1)
             TestAllSamples(Me.inputArray, nbTargets)
             Dim avErr = ComputeAverageError()
-            Dim outputMaxtrix As Matrix = Me.outputArraySingle
             Dim msg$ = vbLf & "Iteration n°" & iteration + 1 & "/" & nbIterations & vbLf &
-                "Output: " & outputMaxtrix.ToString() & vbLf &
+                "Output: " & Me.output.ToString() & vbLf &
                 "Average error: " & avErr.ToString(format6Dec)
             ShowMessage(msg)
 
