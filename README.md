@@ -60,6 +60,9 @@ From C#: https://github.com/HectorPulido/Machine-learning-Framework-Csharp
 
 # Versions
 
+05/07/2020 V1.09
+- Matrix class using Math.Net (I have not succeeded in using extension methods, only in creating a new class which uses MathNet.Numerics.LinearAlgebra.Matrix(Of Double))
+
 25/06/2020 V1.08
 - Matrix.ToVectorArraySingle() -> ToArraySingle()
 - clsMLPGeneric: output Matrix instead of ouput array

@@ -1,21 +1,16 @@
 ﻿
-' From: https://github.com/nlabiris/perceptrons : C# -> VB .NET conversion
+' Matrix implementation using Math.Net
+' https://numerics.mathdotnet.com/Matrix.html
 
 Imports System.Text ' StringBuilder
-Imports System.Threading.Tasks ' Parallel.For
 
 Namespace Utility
 
-#Const Implementation = 0 ' 0 : Off, 1 : On
+#Const Implementation = 1 ' 0 : Off, 1 : On
 
 #If Implementation Then
 
     Public Class Matrix : Implements ICloneable
-
-        Const parallelLoop As Boolean = True
-        Const parallelMinSize = 64
-
-        Shared rowMax%, columnMax%
 
         Private Function IClone() As Object Implements ICloneable.Clone
             Dim m As Matrix = New Matrix(Me)
@@ -27,32 +22,40 @@ Namespace Utility
             Return m
         End Function
 
-        Private data#(,)
+        Private m_matrix As MathNet.Numerics.LinearAlgebra.Matrix(Of Double)
 
 #Region "Properties"
 
-        ' From https://github.com/HectorPulido/Machine-learning-Framework-Csharp (double this[int i, int j])
         Default Public Property Item#(r%, c%)
             Get
-                Return Me.data(r, c)
+                Return Me.m_matrix(r, c)
             End Get
             Set(value#)
-                Me.data(r, c) = value
+                Me.m_matrix(r, c) = value
             End Set
         End Property
 
         Public Property matrixP As Double(,)
             Get
-                Return CType(Me.data.Clone(), Double(,))
+                Return Me.m_matrix.ToArray
             End Get
-            Set(value As Double(,))
-                Me.data = value
+            Set(matrix0 As Double(,))
+
+                Dim rows = matrix0.GetLength(0)
+                Dim columns = matrix0.GetLength(1)
+                Constructor(rows, columns)
+                For i = 0 To rows - 1
+                    For j = 0 To columns - 1
+                        Me.m_matrix(i, j) = matrix0(i, j)
+                    Next
+                Next
+
             End Set
         End Property
 
         Public ReadOnly Property isDefined As Boolean
             Get
-                Return Not IsNothing(Me.data)
+                Return Not IsNothing(Me.m_matrix)
             End Get
         End Property
 
@@ -61,7 +64,7 @@ Namespace Utility
         ''' </summary>
         Public ReadOnly Property r%
             Get
-                Return Me.data.GetLength(0)
+                Return Me.m_matrix.RowCount
             End Get
         End Property
 
@@ -70,7 +73,7 @@ Namespace Utility
         ''' </summary>
         Public ReadOnly Property c%
             Get
-                Return Me.data.GetLength(1)
+                Return Me.m_matrix.ColumnCount
             End Get
         End Property
 
@@ -109,22 +112,37 @@ Namespace Utility
         End Sub
 
         Public Sub New(rows%, columns%)
-            Me.data = New Double(rows - 1, columns - 1) {}
+            Constructor(rows, columns)
         End Sub
 
         Public Sub New(matrix0#(,))
-            Me.data = matrix0
+            Dim rows = matrix0.GetLength(0)
+            Dim columns = matrix0.GetLength(1)
+            Constructor(rows, columns)
+            For i = 0 To rows - 1
+                For j = 0 To columns - 1
+                    Me.m_matrix(i, j) = matrix0(i, j)
+                Next
+            Next
         End Sub
 
         Public Sub New(matrix0!(,))
             Dim rows = matrix0.GetLength(0)
             Dim columns = matrix0.GetLength(1)
-            ReDim Me.data(rows - 1, columns - 1)
+            Constructor(rows, columns)
             For i = 0 To rows - 1
                 For j = 0 To columns - 1
-                    Me.data(i, j) = matrix0(i, j)
+                    Me.m_matrix(i, j) = matrix0(i, j)
                 Next
             Next
+        End Sub
+
+        Public Sub New(m As MathNet.Numerics.LinearAlgebra.Matrix(Of Double))
+            Me.m_matrix = m
+        End Sub
+
+        Private Sub Constructor(rows%, columns%)
+            Me.m_matrix = MathNet.Numerics.LinearAlgebra.Matrix(Of Double).Build.DenseIdentity(rows, columns)
         End Sub
 
         ''' <summary>
@@ -133,7 +151,7 @@ Namespace Utility
         Public Shared Function FromArraySingle(inputs!()) As Matrix
             Dim m As New Matrix(inputs.Length, 1)
             For i = 0 To inputs.Length - 1
-                m.data(i, 0) = inputs(i)
+                m.m_matrix(i, 0) = inputs(i)
             Next
             Return m
         End Function
@@ -149,7 +167,6 @@ Namespace Utility
 
         ' Implicit conversion operator Matrix -> #(,)
         Public Shared Widening Operator CType(matrix0 As Matrix) As Double(,)
-            'Return matrix0.data
             Return matrix0.matrixP
         End Operator
 
@@ -161,7 +178,7 @@ Namespace Utility
         Public Shared Operator +(m1 As Matrix, m2 As Matrix) As Matrix
 
             Dim m1plusm2 As Matrix = m1.Clone()
-            m1plusm2.Add(m2)
+            m1plusm2.m_matrix += m2.m_matrix
             Return m1plusm2
 
         End Operator
@@ -169,7 +186,7 @@ Namespace Utility
         Public Shared Operator -(m1 As Matrix, m2 As Matrix) As Matrix
 
             Dim m1minusm2 As Matrix = m1.Clone()
-            m1minusm2.Subtract(m2)
+            m1minusm2.m_matrix -= m2.m_matrix
             Return m1minusm2
 
         End Operator
@@ -177,7 +194,7 @@ Namespace Utility
         Public Shared Operator -(m2 As Matrix, m1#) As Matrix
 
             Dim m As Matrix = m2.Clone()
-            m.Subtract(m1)
+            m.m_matrix = m.m_matrix.Add(-m1)
             Return m
 
         End Operator
@@ -185,7 +202,7 @@ Namespace Utility
         Public Shared Operator *(m2 As Matrix, m1#) As Matrix
 
             Dim m As Matrix = m2.Clone()
-            m.Multiply(m1)
+            m.m_matrix *= m1
             Return m
 
         End Operator
@@ -200,8 +217,7 @@ Namespace Utility
 
             End If
 
-            Dim m As Matrix = Multiply(m1, m2)
-            Return m
+            Return New Matrix(m1.m_matrix * m2.m_matrix)
 
         End Operator
 
@@ -211,18 +227,17 @@ Namespace Utility
 
         Public Shared Function Zeros(r%, c%) As Matrix
 
-            Dim zeros0 = New Double(r - 1, c - 1) {}
-            MatrixLoop((Sub(i, j) zeros0(i, j) = 0), r, c)
-            Dim m As Matrix = zeros0
-            Return m
+            Dim MNMatrix = MathNet.Numerics.LinearAlgebra.Matrix(Of Double).Build.DenseIdentity(r, c)
+            MNMatrix.Clear()
+            Dim result As Matrix = New Matrix(MNMatrix)
+            Return result
 
         End Function
 
         Public Shared Function Ones(r%, c%) As Matrix
 
-            Dim ones0 = New Double(r - 1, c - 1) {}
-            MatrixLoop((Sub(i, j) ones0(i, j) = 1), r, c)
-            Dim m As Matrix = ones0
+            Dim m = Zeros(r, c)
+            m.m_matrix += 1
             Return m
 
         End Function
@@ -231,34 +246,21 @@ Namespace Utility
         ''' Transpose a matrix
         ''' </summary>
         Private Shared Function Transpose_(m As Matrix) As Matrix
-
-            Dim c As New Matrix(m.c, m.r)
-            For i = 0 To m.r - 1
-                For j = 0 To m.c - 1
-                    c.data(j, i) = m.data(i, j)
-                Next
-            Next
-            Return c
-
+            Return New Matrix(m.m_matrix.Transpose())
         End Function
 
         ''' <summary>
         ''' Transpose and multiply this transposed matrix by m
         ''' </summary>
         Public Shared Function TransposeAndMultiply1(original As Matrix, m As Matrix) As Matrix
-            'Dim original_t As Matrix = Transpose(original)
-            Dim result As Matrix = Multiply(original.T, m)
-            Return result
+            Return New Matrix(original.T.m_matrix * m.m_matrix)
         End Function
 
         ''' <summary>
         ''' Transpose and multiply a matrix m by this transposed one
         ''' </summary>
-        Public Shared Function TransposeAndMultiply2(
-            original As Matrix, m As Matrix) As Matrix
-            'Dim original_t As Matrix = Transpose(original)
-            Dim result As Matrix = Multiply(m, original.T)
-            Return result
+        Public Shared Function TransposeAndMultiply2(original As Matrix, m As Matrix) As Matrix
+            Return New Matrix(m.m_matrix * original.T.m_matrix)
         End Function
 
         ''' <summary>
@@ -266,8 +268,7 @@ Namespace Utility
         ''' </summary>
         Public Shared Function SubtractFromArraySingle(a_array!(), b As Matrix) As Matrix
             Dim a As Matrix = FromArraySingle(a_array)
-            Dim result As Matrix = Subtract(a, b)
-            Return result
+            Return New Matrix(a.m_matrix - b.m_matrix)
         End Function
 
         ''' <summary>
@@ -278,8 +279,8 @@ Namespace Utility
             a As Matrix, b As Matrix, c As Matrix,
             lambdaFct As Func(Of Double, Double)) As Matrix
 
-            Dim d As Matrix = Multiply(a, b)
-            d.Add(c)
+            Dim d As New Matrix(a.m_matrix * b.m_matrix)
+            d.m_matrix += c.m_matrix
             d.Map(lambdaFct)
             Return d
 
@@ -291,7 +292,7 @@ Namespace Utility
         Public Shared Function MultiplyAndMap(a As Matrix, b As Matrix,
             lambdaFct As Func(Of Double, Double)) As Matrix
 
-            Dim d As Matrix = Multiply(a, b)
+            Dim d As New Matrix(a.m_matrix * b.m_matrix)
             d.Map(lambdaFct)
             Return d
 
@@ -305,7 +306,7 @@ Namespace Utility
             Dim c As New Matrix(m.r, m.c)
             For i = 0 To m.r - 1
                 For j = 0 To m.c - 1
-                    c.data(i, j) = lambdaFct.Invoke(m.data(i, j))
+                    c.m_matrix(i, j) = lambdaFct.Invoke(m.m_matrix(i, j))
                 Next
             Next
             Return c
@@ -328,11 +329,11 @@ Namespace Utility
             End If
 
             If dimension = AxisZero.none Then
-                MatrixLoop((Sub(i, j) output(0, 0) += m.data(i, j)), m.r, m.c)
+                MatrixLoop((Sub(i, j) output(0, 0) += m.m_matrix(i, j)), m.r, m.c)
             ElseIf dimension = AxisZero.horizontal Then
-                MatrixLoop((Sub(i, j) output(i, 0) += m.data(i, j)), m.r, m.c)
+                MatrixLoop((Sub(i, j) output(i, 0) += m.m_matrix(i, j)), m.r, m.c)
             ElseIf dimension = AxisZero.vertical Then
-                MatrixLoop((Sub(i, j) output(0, j) += m.data(i, j)), m.r, m.c)
+                MatrixLoop((Sub(i, j) output(0, j) += m.m_matrix(i, j)), m.r, m.c)
             End If
 
             Dim result As Matrix = output
@@ -342,48 +343,11 @@ Namespace Utility
 
         Public Shared Sub MatrixLoop(e As Action(Of Integer, Integer), r%, c%)
 
-            If r > rowMax Then rowMax = r : Debug.WriteLine("rowMax=" & rowMax)
-            If c > columnMax Then columnMax = c : Debug.WriteLine("columnMax=" & columnMax)
-
-            ' Parallel loop is unstable there?
-            'If parallelLoop AndAlso r >= parallelMinSize AndAlso c >= parallelMinSize Then
-
-            '    Parallel.For(0, r - 1 + 1,
-            '        Sub(i)
-            '            Parallel.For(0, c - 1 + 1,
-            '                Sub(j)
-            '                    e(i, j)
-            '                End Sub)
-            '        End Sub)
-
-            'ElseIf parallelLoop AndAlso r >= parallelMinSize Then
-
-            '    Parallel.For(0, r - 1 + 1,
-            '        Sub(i)
-            '            For j = 0 To c - 1
-            '                e(i, j)
-            '            Next
-            '        End Sub)
-
-            'ElseIf parallelLoop AndAlso c >= parallelMinSize Then
-
-            '    For i = 0 To r - 1
-            '        Dim i0 = i
-            '        Parallel.For(0, c - 1 + 1,
-            '            Sub(j)
-            '                e(i0, j)
-            '            End Sub)
-            '    Next
-
-            'Else
-
-                For i = 0 To r - 1
-                    For j = 0 To c - 1
-                        e(i, j)
-                    Next
+            For i = 0 To r - 1
+                For j = 0 To c - 1
+                    e(i, j)
                 Next
-
-            'End If
+            Next
 
         End Sub
 
@@ -396,12 +360,10 @@ Namespace Utility
             If m2.c <> 1 OrElse m2.r <> Me.r Then Throw New ArgumentException("Invalid dimensions")
 
             Dim newMatrix = New Double(Me.r - 1, Me.c + 1 - 1) {}
-            'Dim m = Me.data
             For i = 0 To Me.r - 1
-                newMatrix(i, 0) = m2.data(i, 0)
+                newMatrix(i, 0) = m2.m_matrix(i, 0)
             Next
-            'MatrixLoop((Sub(i, j) newMatrix(i, j + 1) = m(i, j)), r, c)
-            MatrixLoop((Sub(i, j) newMatrix(i, j + 1) = Me.data(i, j)), r, c)
+            MatrixLoop((Sub(i, j) newMatrix(i, j + 1) = Me.m_matrix(i, j)), r, c)
 
             Dim result As Matrix = newMatrix
             Return result
@@ -415,7 +377,7 @@ Namespace Utility
 
             For i = 0 To Me.r - 1
                 For j = 0 To Me.c - 1
-                    Me.data(i, j) = lambdaFct.Invoke(Me.data(i, j))
+                    Me.m_matrix(i, j) = lambdaFct.Invoke(Me.m_matrix(i, j))
                 Next
             Next
 
@@ -437,7 +399,7 @@ Namespace Utility
             Dim slice0 = New Double(r2 - r1 - 1, c2 - c1 - 1) {}
             For i = r1 To r2 - 1
                 For j = c1 To c2 - 1
-                    slice0(i - r1, j - c1) = Me.data(i, j)
+                    slice0(i - r1, j - c1) = Me.m_matrix(i, j)
                 Next
             Next
 
@@ -451,75 +413,6 @@ Namespace Utility
 #Region "Private operations"
 
         ''' <summary>
-        ''' Add each element of the matrices
-        ''' </summary>
-        Private Sub Add(m As Matrix)
-
-            For i = 0 To Me.r - 1
-                For j = 0 To Me.c - 1
-                    Me.data(i, j) += m.data(i, j)
-                Next
-            Next
-
-        End Sub
-
-        '''' <summary>
-        '''' Subtract a value to each element of the array
-        '''' </summary>
-        Private Overloads Sub Subtract(n#)
-
-            For i = 0 To Me.r - 1
-                For j = 0 To Me.c - 1
-                    Me.data(i, j) -= n
-                Next
-            Next
-
-        End Sub
-
-        ''' <summary>
-        ''' Subtract each element of the matrices
-        ''' </summary>
-        Private Overloads Sub Subtract(m As Matrix)
-
-            For i = 0 To Me.r - 1
-                For j = 0 To Me.c - 1
-                    Me.data(i, j) -= m.data(i, j)
-                Next
-            Next
-
-        End Sub
-
-        ''' <summary>
-        ''' Subtract 2 matrices and return a new matrix
-        ''' </summary>
-        Private Overloads Shared Function Subtract(a As Matrix, b As Matrix) As Matrix
-
-            Dim c As New Matrix(a.r, a.c)
-
-            For i = 0 To c.r - 1
-                For j = 0 To c.c - 1
-                    c.data(i, j) = a.data(i, j) - b.data(i, j)
-                Next
-            Next
-
-            Return c
-
-        End Function
-
-        ''' <summary>
-        ''' Scalar product: Multiply each element of the array with the given number
-        ''' </summary>
-        Private Overloads Sub Multiply(n#)
-
-            For i = 0 To Me.r - 1
-                For j = 0 To Me.c - 1
-                    Me.data(i, j) *= n
-                Next
-            Next
-
-        End Sub
-
-        ''' <summary>
         ''' Hadamard product (element-wise multiplication):
         ''' Multiply each element of the array with each element of the given array
         ''' </summary>
@@ -527,85 +420,11 @@ Namespace Utility
 
             For i = 0 To Me.r - 1
                 For j = 0 To Me.c - 1
-                    Me.data(i, j) *= m.data(i, j)
+                    Me.m_matrix(i, j) *= m.m_matrix(i, j)
                 Next
             Next
 
         End Sub
-
-        ''' <summary>
-        ''' Matrix product
-        ''' </summary>
-        Private Overloads Shared Function Multiply(a As Matrix, b As Matrix) As Matrix
-
-            If a.c <> b.r Then
-                Throw New Exception("Columns of A must match columns of B")
-            End If
-
-            Dim ab As New Matrix(a.r, b.c)
-
-            If ab.r > rowMax Then rowMax = ab.r : Debug.WriteLine("rowMax=" & rowMax)
-            If ab.c > columnMax Then columnMax = ab.c : Debug.WriteLine("columnMax=" & columnMax)
-
-            If parallelLoop AndAlso ab.r >= parallelMinSize AndAlso
-                                    ab.c >= parallelMinSize Then
-
-                Parallel.For(0, ab.r - 1 + 1,
-                    Sub(i)
-                        Parallel.For(0, ab.c - 1 + 1,
-                            Sub(j)
-                                Dim sum# = 0
-                                For k = 0 To a.c - 1
-                                    sum += a.data(i, k) * b.data(k, j)
-                                Next
-                                ab.data(i, j) = sum
-                            End Sub)
-                    End Sub)
-
-            ElseIf parallelLoop AndAlso ab.r >= parallelMinSize Then
-
-                Parallel.For(0, ab.r - 1 + 1,
-                    Sub(i)
-                        For j = 0 To ab.c - 1
-                            Dim sum# = 0
-                            For k = 0 To a.c - 1
-                                sum += a.data(i, k) * b.data(k, j)
-                            Next
-                            ab.data(i, j) = sum
-                        Next
-                    End Sub)
-
-            ElseIf parallelLoop AndAlso ab.c >= parallelMinSize Then
-
-                For i = 0 To ab.r - 1
-                    Dim i0 = i
-                    Parallel.For(0, ab.c - 1 + 1,
-                        Sub(j)
-                            Dim sum# = 0
-                            For k = 0 To a.c - 1
-                                sum += a.data(i0, k) * b.data(k, j)
-                            Next
-                            ab.data(i0, j) = sum
-                        End Sub)
-                Next
-
-            Else
-
-                For i = 0 To ab.r - 1
-                    For j = 0 To ab.c - 1
-                        Dim sum# = 0
-                        For k = 0 To a.c - 1
-                            sum += a.data(i, k) * b.data(k, j)
-                        Next
-                        ab.data(i, j) = sum
-                    Next
-                Next
-
-            End If
-
-            Return ab
-
-        End Function
 
         ''' <summary>
         ''' Compute absolute values of a matrix
@@ -615,7 +434,7 @@ Namespace Utility
             Dim c As New Matrix(Me.r, Me.c)
             For i = 0 To Me.r - 1
                 For j = 0 To Me.c - 1
-                    c.data(i, j) = Math.Abs(Me.data(i, j))
+                    c.m_matrix(i, j) = Math.Abs(Me.m_matrix(i, j))
                 Next
             Next
             Return c
@@ -631,7 +450,7 @@ Namespace Utility
             Dim sum# = 0
             For i = 0 To Me.r - 1
                 For j = 0 To Me.c - 1
-                    sum += Me.data(i, j)
+                    sum += Me.m_matrix(i, j)
                 Next
             Next
 
@@ -664,7 +483,7 @@ Namespace Utility
             For i = 0 To Me.r - 1
                 sb.Append(" {")
                 For j = 0 To Me.c - 1
-                    Dim strVal$ = Me.data(i, j).ToString(dec).ReplaceCommaByDot()
+                    Dim strVal$ = Me.m_matrix(i, j).ToString(dec).ReplaceCommaByDot()
                     sb.Append(strVal)
                     If j < Me.c - 1 Then sb.Append(", ")
                 Next
@@ -683,11 +502,12 @@ Namespace Utility
         ''' </summary>
         Public Function ToArraySingle() As Single()
 
-            Dim array!() = New Single(Me.data.Length - 1) {}
+            Dim length = Me.m_matrix.RowCount * Me.m_matrix.ColumnCount
+            Dim array!() = New Single(length - 1) {}
             Dim k = 0
             For i = 0 To Me.r - 1
                 For j = 0 To Me.c - 1
-                    array(k) = CSng(Me.data(i, j))
+                    array(k) = CSng(Me.m_matrix(i, j))
                     k += 1
                 Next
             Next
@@ -700,14 +520,14 @@ Namespace Utility
 #Region "Miscellaneous"
 
         Public Function GetValue#(r%, c%)
-            Return Me.data(r, c)
+            Return Me.m_matrix(r, c)
         End Function
 
         Public Function GetRow(r%) As Matrix
 
             Dim row = New Double(0, Me.c - 1) {}
             For j = 0 To Me.c - 1
-                row(0, j) = Me.data(r, j)
+                row(0, j) = Me.m_matrix(r, j)
             Next
             Return row
 
@@ -717,7 +537,7 @@ Namespace Utility
 
             Dim column = New Double(Me.r - 1, 0) {}
             For i = 0 To Me.r - 1
-                column(i, 0) = Me.data(i, c)
+                column(i, 0) = Me.m_matrix(i, c)
             Next
             Return column
 
@@ -739,7 +559,7 @@ Namespace Utility
         Public Sub Randomize(rnd As Random,
             Optional minValue! = 0, Optional maxValue! = 1)
 
-            MatrixLoop((Sub(i, j) Me.data(i, j) =
+            MatrixLoop((Sub(i, j) Me.m_matrix(i, j) =
                 Math.Round(rnd.NextDouble(minValue, maxValue),
                 clsMLPGeneric.roundWeights)), Me.r, Me.c)
 
