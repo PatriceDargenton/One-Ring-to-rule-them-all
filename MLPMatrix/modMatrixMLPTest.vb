@@ -26,26 +26,26 @@ Module modMatrixMLPTest
 
         ' Works
         nbIterations = 100000
-        mlp.SetActivationFunctionForMatrix(enumActivationFunctionForMatrix.Sigmoid,
+        mlp.SetActivationFunctionOptimized(enumActivationFunctionOptimized.Sigmoid,
             gain:=1, center:=2)
 
         ' Sometimes works 
         'nbIterations = 100000
-        'mlp.SetActivationFunctionForMatrix(enumActivationFunctionForMatrix.HyperbolicTangent,
+        'mlp.SetActivationFunctionOptimized(enumActivationFunctionOptimized.HyperbolicTangent,
         '    gain:=1, center:=0)
         'mlp.Init(learningRate:=0.05, weightAdjustment:=0.05)
 
         ' Works
         'nbIterations = 10000
-        'mlp.SetActivationFunctionForMatrix(enumActivationFunctionForMatrix.ELU,
+        'mlp.SetActivationFunctionOptimized(enumActivationFunctionOptimized.ELU,
         '    gain:=1, center:=-2)
 
         ' Doesn't work
         'nbIterations = 1000000
-        'mlp.SetActivationFunctionForMatrix(enumActivationFunctionForMatrix.ReLU, gain:=1, center:=0)
+        'mlp.SetActivationFunctionOptimized(enumActivationFunctionOptimized.ReLU, gain:=1, center:=0)
 
         ' Doesn't work
-        'mlp.SetActivationFunctionForMatrix(enumActivationFunctionForMatrix.ReLUSigmoid, gain:=1, center:=0)
+        'mlp.SetActivationFunctionOptimized(enumActivationFunctionOptimized.ReLUSigmoid, gain:=1, center:=0)
 
         mlp.InitializeStruct(m_neuronCountXOR, addBiasColumn:=True)
         mlp.Initialize(learningRate:=0.1, weightAdjustment:=0.1)

@@ -69,11 +69,11 @@ Public Class clsMLPAccord : Inherits clsVectorizedMLPGeneric
 
         Select Case actFnc
             Case enumActivationFunction.Sigmoid _
-              : SetActivationFunctionForMatrix(
-                    enumActivationFunctionForMatrix.Sigmoid, gain, center)
+              : SetActivationFunctionOptimized(
+                    enumActivationFunctionOptimized.Sigmoid, gain, center)
             Case enumActivationFunction.HyperbolicTangent _
-              : SetActivationFunctionForMatrix(
-                    enumActivationFunctionForMatrix.HyperbolicTangent, gain, center)
+              : SetActivationFunctionOptimized(
+                    enumActivationFunctionOptimized.HyperbolicTangent, gain, center)
             Case Else
                 Throw New NotImplementedException(
                     "This activation function is not available!")
@@ -81,24 +81,24 @@ Public Class clsMLPAccord : Inherits clsVectorizedMLPGeneric
 
     End Sub
 
-    Public Overrides Sub SetActivationFunctionForMatrix(
-        fctAct As enumActivationFunctionForMatrix, gain!, center!)
+    Public Overrides Sub SetActivationFunctionOptimized(
+        fctAct As enumActivationFunctionOptimized, gain!, center!)
 
-        MyBase.SetActivationFunctionForMatrix(fctAct, gain, center)
+        MyBase.SetActivationFunctionOptimized(fctAct, gain, center)
 
         Dim sigmoidAlphaValue! = Me.m_gain
         Select Case fctAct
-            Case enumActivationFunctionForMatrix.Sigmoid
+            Case enumActivationFunctionOptimized.Sigmoid
                 Me.m_actFunc = enumActivationFunction.Sigmoid
                 Me.network = New ActivationNetwork(
                     New SigmoidFunction(sigmoidAlphaValue),
                         Me.nbInputNeurons, Me.neuronCountWithoutInputLayer)
-            Case enumActivationFunctionForMatrix.HyperbolicTangent
+            Case enumActivationFunctionOptimized.HyperbolicTangent
                 Me.m_actFunc = enumActivationFunction.HyperbolicTangent
                 Me.network = New ActivationNetwork(
                     New BipolarSigmoidFunction(sigmoidAlphaValue),
                         Me.nbInputNeurons, Me.neuronCountWithoutInputLayer)
-            Case enumActivationFunctionForMatrix.ELU
+            Case enumActivationFunctionOptimized.ELU
                 Me.m_actFunc = Nothing
                 Throw New NotImplementedException(
                     "ELU activation function is not available!")

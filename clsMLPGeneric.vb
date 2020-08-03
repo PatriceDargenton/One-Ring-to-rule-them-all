@@ -161,17 +161,20 @@ Public MustInherit Class clsMLPGeneric
 
     End Sub
 
-    Public Overridable Sub SetActivationFunctionForMatrix(
-        fctAct As enumActivationFunctionForMatrix, gain!, center!)
+    ''' <summary>
+    ''' Activation function using optimised derivative: 
+    ''' </summary>
+    Public Overridable Sub SetActivationFunctionOptimized(
+        fctAct As enumActivationFunctionOptimized, gain!, center!)
 
         Select Case fctAct
-            Case enumActivationFunctionForMatrix.Sigmoid
+            Case enumActivationFunctionOptimized.Sigmoid
                 Me.m_actFunc = enumActivationFunction.Sigmoid
                 Me.activFnc = New SigmoidFunction
-            Case enumActivationFunctionForMatrix.HyperbolicTangent
+            Case enumActivationFunctionOptimized.HyperbolicTangent
                 Me.m_actFunc = enumActivationFunction.HyperbolicTangent
                 Me.activFnc = New HyperbolicTangentFunction
-            Case enumActivationFunctionForMatrix.ELU
+            Case enumActivationFunctionOptimized.ELU
                 Me.m_actFunc = enumActivationFunction.ELU
                 Me.activFnc = New ELUFunction
             Case Else
@@ -186,8 +189,7 @@ Public MustInherit Class clsMLPGeneric
         m_gain = gain
         m_center = center
 
-        ' Matrix implementation requires activation function expressed from 
-        '  its direct function: f'(x)=g(f(x))
+        ' Optimized activation function must be expressed from its direct function: f'(x)=g(f(x))
         If Not IsNothing(Me.activFnc) AndAlso
            Not Me.activFnc.DoesDerivativeDependOnOriginalFunction() Then _
             MsgBox("Activation function must be like this form: f'(x)=g(f(x))",

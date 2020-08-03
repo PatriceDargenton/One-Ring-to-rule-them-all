@@ -55,11 +55,11 @@ Public Module modFctAct
 
     End Enum
 
-    ' Matrix implementation requires activation function expressed from 
-    '  its direct function: f'(x)=g(f(x))
-
-    ' Type for Activation Function for Matrix implementation of MLP
-    Public Enum enumActivationFunctionForMatrix
+    ''' <summary>
+    ''' An activation function expressed from its direct function,, e.g. f'(x)=g(f(x)),
+    '''  can be optimized
+    ''' </summary>
+    Public Enum enumActivationFunctionOptimized
 
         Sigmoid = 1
 
@@ -69,16 +69,6 @@ Public Module modFctAct
         ''' Exponential Linear Units (ELU)
         ''' </summary>
         ELU = 3
-
-        ''' <summary>
-        ''' Rectified Linear Units (ReLU)
-        ''' </summary>
-        ReLU = 4
-
-        ''' <summary>
-        ''' Rectified Linear Units (ReLU) with sigmoid for derivate
-        ''' </summary>
-        ReLUSigmoid = 5
 
     End Enum
 

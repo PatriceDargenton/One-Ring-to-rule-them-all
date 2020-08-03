@@ -42,7 +42,7 @@ Namespace MatrixMLP
         Public Sub MatrixMLP1XORSigmoid()
 
             Dim nbIterations% = 10000
-            m_mlp.SetActivationFunctionForMatrix(enumActivationFunctionForMatrix.Sigmoid,
+            m_mlp.SetActivationFunctionOptimized(enumActivationFunctionOptimized.Sigmoid,
                 gain:=1, center:=2.2)
 
             InitXOR()
@@ -85,7 +85,7 @@ Namespace MatrixMLP
         Public Sub MatrixMLP1XORSigmoidWithoutBias()
 
             Dim nbIterations% = 100000
-            m_mlp.SetActivationFunctionForMatrix(enumActivationFunctionForMatrix.Sigmoid,
+            m_mlp.SetActivationFunctionOptimized(enumActivationFunctionOptimized.Sigmoid,
                 gain:=1, center:=0)
 
             InitXOR()
@@ -124,9 +124,9 @@ Namespace MatrixMLP
         Public Sub MatrixMLP1XORHyperbolicTangent()
 
             Dim nbIterations% = 5000
-            'm_mlp.SetActivationFunctionForMatrix(enumActivationFunctionForMatrix.HyperbolicTangent,
+            'm_mlp.SetActivationFunctionOptimized(enumActivationFunctionOptimized.HyperbolicTangent,
             '   gain:=1, center:=0)
-            m_mlp.SetActivationFunctionForMatrix(enumActivationFunctionForMatrix.HyperbolicTangent,
+            m_mlp.SetActivationFunctionOptimized(enumActivationFunctionOptimized.HyperbolicTangent,
                 gain:=2, center:=0)
 
             InitXOR()
@@ -169,7 +169,7 @@ Namespace MatrixMLP
         Public Sub MatrixMLP1XORELU()
 
             Dim nbIterations% = 300
-            m_mlp.SetActivationFunctionForMatrix(enumActivationFunctionForMatrix.ELU,
+            m_mlp.SetActivationFunctionOptimized(enumActivationFunctionOptimized.ELU,
                 gain:=1, center:=-1.8)
 
             InitXOR()
@@ -212,10 +212,10 @@ Namespace MatrixMLP
         Public Sub MatrixMLP2XORHyperbolicTangent()
 
             Dim nbIterations% = 5000
-            'm_mlp.SetActivationFunctionForMatrix(
-            '   enumActivationFunctionForMatrix.HyperbolicTangent, gain:=1, center:=0.5)
-            m_mlp.SetActivationFunctionForMatrix(
-                enumActivationFunctionForMatrix.HyperbolicTangent, gain:=2, center:=0.5)
+            'm_mlp.SetActivationFunctionOptimized(
+            '   enumActivationFunctionOptimized.HyperbolicTangent, gain:=1, center:=0.5)
+            m_mlp.SetActivationFunctionOptimized(
+                enumActivationFunctionOptimized.HyperbolicTangent, gain:=2, center:=0.5)
 
             Init2XOR()
             m_mlp.Initialize(learningRate:=0.1, weightAdjustment:=0.1)

@@ -69,6 +69,10 @@ Note: do the first compilation in debug mode!
 
 # Versions
 
+03/08/2020 V1.11
+- ActivationFunctionForMatrix ->
+  ActivationFunctionOptimized
+
 03/08/2020 V1.10
 - Sigmoid and Hyperbolic Tangent (Bipolar Sigmoid) activations: optimized also with gain<>1
 - Hyperbolic Tangent (Bipolar Sigmoid) activation: input/2

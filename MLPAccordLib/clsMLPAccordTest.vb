@@ -30,10 +30,10 @@ Module modMLPAccordTest
         mlp.Initialize(learningRate:=0.05!, weightAdjustment:=0.1!)
         mlp.InitializeStruct(m_neuronCountXOR, addBiasColumn:=True)
 
-        'mlp.SetActivationFunctionForMatrix(
-        '    enumActivationFunctionForMatrix.Sigmoid, gain:=2, center:=0)
-        mlp.SetActivationFunctionForMatrix(
-            enumActivationFunctionForMatrix.HyperbolicTangent, gain:=2, center:=0)
+        'mlp.SetActivationFunctionOptimized(
+        '    enumActivationFunctionOptimized.Sigmoid, gain:=2, center:=0)
+        mlp.SetActivationFunctionOptimized(
+            enumActivationFunctionOptimized.HyperbolicTangent, gain:=2, center:=0)
 
         mlp.Randomize()
 
