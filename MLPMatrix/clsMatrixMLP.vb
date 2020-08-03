@@ -75,42 +75,6 @@ Namespace MatrixMLP
 
         End Sub
 
-        Public Sub SetActivationFunctionForMatrix(fctAct As enumActivationFunctionForMatrix,
-            gain!, center!)
-
-            Select Case fctAct
-                Case enumActivationFunctionForMatrix.Sigmoid
-                    Me.m_actFunc = enumActivationFunction.Sigmoid
-                    Me.activFnc = New SigmoidFunction
-                    If gain <> 1.0! Then MsgBox(
-                        "gain must be 1 for Sigmoid activation function for Matrix",
-                        MsgBoxStyle.Exclamation)
-                Case enumActivationFunctionForMatrix.HyperbolicTangent
-                    Me.m_actFunc = enumActivationFunction.HyperbolicTangent
-                    Me.activFnc = New HyperbolicTangentFunction
-                    If gain <> 1.0! Then MsgBox(
-                        "gain must be 1 for hyperbolic tangent activation function for Matrix",
-                        MsgBoxStyle.Exclamation)
-                Case enumActivationFunctionForMatrix.ELU
-                    Me.m_actFunc = enumActivationFunction.ELU
-                    ' gain <> 1 is possible
-                    Me.activFnc = New ELUFunction
-                Case Else
-                    Me.activFnc = Nothing
-            End Select
-
-            Me.lambdaFnc = Function(x#) Me.activFnc.Activation(x, gain, center)
-            Me.lambdaFncD = Function(x#) Me.activFnc.DerivativeFromOriginalFunction(x, gain)
-
-            ' Matrix implementation requires activation function expressed from 
-            '  its direct function: f'(x)=g(f(x))
-            If Not IsNothing(Me.activFnc) AndAlso
-               Not Me.activFnc.DoesDerivativeDependOnOriginalFunction() Then _
-                MsgBox("Activation function must be like this form: f'(x)=g(f(x))",
-                    MsgBoxStyle.Exclamation)
-
-        End Sub
-
         ''' <summary>
         ''' Randomize weights
         ''' </summary>
@@ -214,7 +178,7 @@ Namespace MatrixMLP
             ByRef weight As Matrix, ByRef bias As Matrix)
 
             ' Calculate gradient
-            Dim gradient = Matrix.Map(final, lambdaFncD)
+            Dim gradient = Matrix.Map(final, lambdaFncDFOF) 'lambdaFncD)
             gradient *= error_
             gradient *= adjustment
 

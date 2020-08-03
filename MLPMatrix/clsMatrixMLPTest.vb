@@ -46,7 +46,7 @@ Namespace MatrixMLP
                 gain:=1, center:=2.2)
 
             InitXOR()
-            m_mlp.Init(learningRate:=0.9, weightAdjustment:=0.9)
+            m_mlp.Initialize(learningRate:=0.9, weightAdjustment:=0.9)
 
             m_mlp.weights_ih = {
                 {0.95, 0.82},
@@ -71,13 +71,13 @@ Namespace MatrixMLP
             Dim sOutput = m_mlp.output.ToString()
             Dim expectedMatrix As Matrix = expectedOutput ' Single(,) -> Matrix
             Dim sExpectedOutput = expectedMatrix.ToString()
-            Assert.AreEqual(sOutput, sExpectedOutput)
+            Assert.AreEqual(sExpectedOutput, sOutput)
 
             Dim expectedLoss# = 0.01
             m_mlp.targetArray = m_targetArrayXOR
             Dim loss! = m_mlp.ComputeAverageError()
             Dim lossRounded# = Math.Round(loss, 2)
-            Assert.AreEqual(lossRounded <= expectedLoss, True)
+            Assert.AreEqual(True, lossRounded <= expectedLoss)
 
         End Sub
 
@@ -90,7 +90,7 @@ Namespace MatrixMLP
 
             InitXOR()
             m_mlp.InitializeStruct(m_neuronCountXOR, addBiasColumn:=False)
-            m_mlp.Init(learningRate:=0.1, weightAdjustment:=0.1)
+            m_mlp.Initialize(learningRate:=0.1, weightAdjustment:=0.1)
 
             m_mlp.weights_ih = {
                 {0.76, 0.81},
@@ -110,13 +110,13 @@ Namespace MatrixMLP
             Dim sOutput = m_mlp.output.ToString()
             Dim expectedMatrix As Matrix = expectedOutput ' Single(,) -> Matrix
             Dim sExpectedOutput = expectedMatrix.ToString()
-            Assert.AreEqual(sOutput, sExpectedOutput)
+            Assert.AreEqual(sExpectedOutput, sOutput)
 
             Dim expectedLoss# = 0.06
             m_mlp.targetArray = m_targetArrayXOR
             Dim loss! = m_mlp.ComputeAverageError()
             Dim lossRounded# = Math.Round(loss, 2)
-            Assert.AreEqual(lossRounded <= expectedLoss, True)
+            Assert.AreEqual(True, lossRounded <= expectedLoss)
 
         End Sub
 
@@ -124,11 +124,13 @@ Namespace MatrixMLP
         Public Sub MatrixMLP1XORHyperbolicTangent()
 
             Dim nbIterations% = 5000
+            'm_mlp.SetActivationFunctionForMatrix(enumActivationFunctionForMatrix.HyperbolicTangent,
+            '   gain:=1, center:=0)
             m_mlp.SetActivationFunctionForMatrix(enumActivationFunctionForMatrix.HyperbolicTangent,
-                gain:=1, center:=0)
+                gain:=2, center:=0)
 
             InitXOR()
-            m_mlp.Init(learningRate:=0.05, weightAdjustment:=0.05)
+            m_mlp.Initialize(learningRate:=0.05, weightAdjustment:=0.05)
 
             m_mlp.weights_ih = {
                 {0.79, 0.81},
@@ -153,13 +155,13 @@ Namespace MatrixMLP
             Dim sOutput = m_mlp.output.ToString()
             Dim expectedMatrix As Matrix = expectedOutput ' Single(,) -> Matrix
             Dim sExpectedOutput = expectedMatrix.ToString()
-            Assert.AreEqual(sOutput, sExpectedOutput)
+            Assert.AreEqual(sExpectedOutput, sOutput)
 
             Dim expectedLoss# = 0.01
             m_mlp.targetArray = m_targetArrayXOR
             Dim loss! = m_mlp.ComputeAverageError()
             Dim lossRounded# = Math.Round(loss, 2)
-            Assert.AreEqual(lossRounded <= expectedLoss, True)
+            Assert.AreEqual(True, lossRounded <= expectedLoss)
 
         End Sub
 
@@ -171,7 +173,7 @@ Namespace MatrixMLP
                 gain:=1, center:=-1.8)
 
             InitXOR()
-            m_mlp.Init(learningRate:=0.1, weightAdjustment:=0.1)
+            m_mlp.Initialize(learningRate:=0.1, weightAdjustment:=0.1)
 
             m_mlp.weights_ih = {
                 {0.57, 0.6},
@@ -196,13 +198,13 @@ Namespace MatrixMLP
             Dim sOutput = m_mlp.output.ToString()
             Dim expectedMatrix As Matrix = expectedOutput ' Single(,) -> Matrix
             Dim sExpectedOutput = expectedMatrix.ToString()
-            Assert.AreEqual(sOutput, sExpectedOutput)
+            Assert.AreEqual(sExpectedOutput, sOutput)
 
             Dim expectedLoss# = 0
             m_mlp.targetArray = m_targetArrayXOR
             Dim loss! = m_mlp.ComputeAverageError()
             Dim lossRounded# = Math.Round(loss, 2)
-            Assert.AreEqual(lossRounded <= expectedLoss, True)
+            Assert.AreEqual(True, lossRounded <= expectedLoss)
 
         End Sub
 
@@ -210,11 +212,13 @@ Namespace MatrixMLP
         Public Sub MatrixMLP2XORHyperbolicTangent()
 
             Dim nbIterations% = 5000
+            'm_mlp.SetActivationFunctionForMatrix(
+            '   enumActivationFunctionForMatrix.HyperbolicTangent, gain:=1, center:=0.5)
             m_mlp.SetActivationFunctionForMatrix(
-                enumActivationFunctionForMatrix.HyperbolicTangent, gain:=1, center:=0.5)
+                enumActivationFunctionForMatrix.HyperbolicTangent, gain:=2, center:=0.5)
 
             Init2XOR()
-            m_mlp.Init(learningRate:=0.1, weightAdjustment:=0.1)
+            m_mlp.Initialize(learningRate:=0.1, weightAdjustment:=0.1)
 
             m_mlp.weights_ih = {
                 {0.39, 0.5, 0.3, 0.25},
@@ -241,12 +245,12 @@ Namespace MatrixMLP
             Dim sOutput = m_mlp.output.ToStringWithFormat(dec:="0.0")
             Dim expectedMatrix As Matrix = expectedOutput ' Single(,) -> Matrix
             Dim sExpectedOutput = expectedMatrix.ToStringWithFormat(dec:="0.0")
-            Assert.AreEqual(sOutput, sExpectedOutput)
+            Assert.AreEqual(sExpectedOutput, sOutput)
 
             Dim expectedLoss# = 0.01
             Dim loss! = m_mlp.ComputeAverageError()
             Dim lossRounded# = Math.Round(loss, 2)
-            Assert.AreEqual(lossRounded <= expectedLoss, True)
+            Assert.AreEqual(True, lossRounded <= expectedLoss)
 
         End Sub
 

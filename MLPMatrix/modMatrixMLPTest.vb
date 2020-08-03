@@ -48,7 +48,7 @@ Module modMatrixMLPTest
         'mlp.SetActivationFunctionForMatrix(enumActivationFunctionForMatrix.ReLUSigmoid, gain:=1, center:=0)
 
         mlp.InitializeStruct(m_neuronCountXOR, addBiasColumn:=True)
-        mlp.Init(learningRate:=0.1, weightAdjustment:=0.1)
+        mlp.Initialize(learningRate:=0.1, weightAdjustment:=0.1)
 
         mlp.Randomize(-1, 2)
         mlp.PrintWeights()

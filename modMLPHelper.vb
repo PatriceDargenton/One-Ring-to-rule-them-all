@@ -11,4 +11,17 @@ Public Module modMLPHelper
         Return text.Replace(",", ".")
     End Function
 
+    Public Function isConsoleApp() As Boolean
+
+        'Dim isReallyAConsoleWindow = Console.Read() <> -1
+        'Return isReallyAConsoleWindow
+
+        Try
+            Return Console.WindowHeight > 0
+        Catch 'ex As Exception
+            Return False
+        End Try
+
+    End Function
+
 End Module

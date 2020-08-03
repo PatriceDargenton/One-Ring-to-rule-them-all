@@ -36,16 +36,13 @@ Module modMatrixVecMLPTest
         mlp.SetActivationFunction(enumActivationFunction.Sigmoid, gain:=1, center:=0)
 
         mlp.InitializeStruct(m_neuronCountXOR, addBiasColumn:=True)
-        mlp.Init(learningRate:=0.1, weightAdjustment:=1)
+        mlp.Initialize(learningRate:=0.1, weightAdjustment:=1)
 
         mlp.Randomize()
 
         mlp.PrintWeights()
 
-        Console.WriteLine()
-        Console.WriteLine("Press a key to start.")
-        Console.ReadKey()
-        Console.WriteLine()
+        WaitForKeyToStart()
 
         mlp.printOutput_ = True
         mlp.TrainVector()

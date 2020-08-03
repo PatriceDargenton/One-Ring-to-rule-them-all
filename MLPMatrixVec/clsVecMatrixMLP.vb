@@ -258,7 +258,7 @@ Namespace VectorizedMatrixMLP
                     Dim nbTargets = Me.targetArray.GetLength(1)
                     TestAllSamples(Me.inputArray, nbOutputs:=nbTargets)
                 End If
-                Dim outputArrayDble#(,) = Me.output
+                'Dim outputArrayDble#(,) = Me.output
                 ComputeAverageError()
                 Dim sMsg$ = vbLf & "Iteration n°" & iteration + 1 & "/" & nbIterations & vbLf &
                     "Output: " & Me.output.ToString() & vbLf &

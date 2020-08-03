@@ -16,7 +16,7 @@
     <Deterministic>true</Deterministic>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
-    <PlatformTarget>AnyCPU</PlatformTarget>
+    <PlatformTarget>x64</PlatformTarget>
     <DebugSymbols>true</DebugSymbols>
     <DebugType>full</DebugType>
     <DefineDebug>true</DefineDebug>
@@ -26,7 +26,7 @@
     <NoWarn>42016,41999,42017,42018,42019,42032,42036,42020,42021,42022</NoWarn>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
-    <PlatformTarget>AnyCPU</PlatformTarget>
+    <PlatformTarget>x64</PlatformTarget>
     <DebugType>pdbonly</DebugType>
     <DefineDebug>false</DefineDebug>
     <DefineTrace>true</DefineTrace>
@@ -48,8 +48,20 @@
     <OptionInfer>On</OptionInfer>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="MathNet.Numerics, Version=4.11.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>packages\MathNet.Numerics.4.11.0\lib\net461\MathNet.Numerics.dll</HintPath>
+    <Reference Include="Accord">
+      <HintPath>packages\Accord.3.8.2-alpha\lib\net45\Accord.dll</HintPath>
+    </Reference>
+    <Reference Include="Accord.Math">
+      <HintPath>packages\Accord.Math.3.8.2-alpha\lib\net45\Accord.Math.dll</HintPath>
+    </Reference>
+    <Reference Include="Accord.Math.Core">
+      <HintPath>packages\Accord.Math.3.8.2-alpha\lib\net45\Accord.Math.Core.dll</HintPath>
+    </Reference>
+    <Reference Include="Accord.Neuro">
+      <HintPath>packages\Accord.Neuro.3.8.2-alpha\lib\net45\Accord.Neuro.dll</HintPath>
+    </Reference>
+    <Reference Include="Accord.Statistics">
+      <HintPath>packages\Accord.Statistics.3.8.2-alpha\lib\net45\Accord.Statistics.dll</HintPath>
     </Reference>
     <Reference Include="Microsoft.VisualStudio.QualityTools.UnitTestFramework, Version=10.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
@@ -78,8 +90,6 @@
     <Import Include="System.Threading.Tasks" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="MLPOOP\Activation\ELU.vb" />
-    <Compile Include="MLPTensor\Layer\clsELULayer.vb" />
     <Compile Include="modActivation.vb" />
     <Compile Include="clsMatrixHP.vb" />
     <Compile Include="clsMatrixNL.vb" />
@@ -90,6 +100,8 @@
     <Compile Include="modMLPHelper.vb" />
     <Compile Include="clsRndExtension.vb" />
     <Compile Include="modMLPTest.vb" />
+    <Compile Include="modTests.vb" />
+    <Compile Include="AssemblyInfo.vb" />
     <Compile Include="MLPClassic\clsMLPClassic.vb" />
     <Compile Include="MLPClassic\modMLPClassicTest.vb" />
     <Compile Include="MLPMatrixVec\clsVecMatrixMLP.vb" />
@@ -105,6 +117,7 @@
     <Compile Include="MLPOOP\Activation\HyperbolicTangent.vb" />
     <Compile Include="MLPOOP\Activation\Linear.vb" />
     <Compile Include="MLPOOP\Activation\Sigmoid.vb" />
+    <Compile Include="MLPOOP\Activation\ELU.vb" />
     <Compile Include="MLPOOP\Data\Testing.vb" />
     <Compile Include="MLPOOP\Data\Training.vb" />
     <Compile Include="MLPOOP\Layers\BaseLayer.vb" />
@@ -125,14 +138,15 @@
     <Compile Include="MLPTensor\Layer\clsLinear.vb" />
     <Compile Include="MLPTensor\Layer\clsSequential.vb" />
     <Compile Include="MLPTensor\Layer\clsSigmoidLayer.vb" />
+    <Compile Include="MLPTensor\Layer\clsELULayer.vb" />
     <Compile Include="MLPTensor\clsStochasticGradientDescent.vb" />
     <Compile Include="MLPTensor\clsMLPTensorTest.vb" />
     <Compile Include="MLPTensor\clsMLPTensor.vb" />
     <Compile Include="MLPTensor\clsActivation.vb" />
     <Compile Include="MLPTensor\clsMeanSquaredError.vb" />
     <Compile Include="MLPTensor\clsTensor.vb" />
-    <Compile Include="modTests.vb" />
-    <Compile Include="AssemblyInfo.vb" />
+    <Compile Include="MLPAccordLib\clsMLPAccord.vb" />
+    <Compile Include="MLPAccordLib\clsMLPAccordTest.vb" />
     <Compile Include="My Project\Application.Designer.vb">
       <AutoGen>True</AutoGen>
       <DependentUpon>Application.myapp</DependentUpon>

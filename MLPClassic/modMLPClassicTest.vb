@@ -20,7 +20,7 @@ Module modMLPClassicTest
         mlp.ShowMessage("Classic MLP test")
         mlp.ShowMessage("----------------")
 
-        mlp.Init(learningRate:=0.1!, weightAdjustment:=0.1!)
+        mlp.Initialize(learningRate:=0.1!, weightAdjustment:=0.1!)
 
         Dim nbIterations%
 
@@ -56,10 +56,7 @@ Module modMLPClassicTest
         mlp.Randomize()
         mlp.PrintWeights()
 
-        Console.WriteLine()
-        Console.WriteLine("Press a key to start.")
-        Console.ReadKey()
-        Console.WriteLine()
+        WaitForKeyToStart()
 
         'mlp.InitWeights(1, {
         '     {0.28, 0.28, 0.76},
@@ -90,287 +87,104 @@ Namespace ClassicMLP
         Private m_mlp As New clsMLPClassic
 
         ' Weights are quite the same as MLP Classic, but not exactly:
-        'Private m_mlp As New NetworkOOP.MultilayerPerceptron ' 13/21 fails
+        'Private m_mlp As New NetworkOOP.MultilayerPerceptron ' 10 success, 14 fails
+        'Private m_mlp As New clsMLPAccord ' 10 success, 14 fails
 
         ' Weights are not stored in the same way:
-        'Private m_mlp As New MatrixMLP.MultiLayerPerceptron ' 21/21 fails
-        'Private m_mlp As New VectorizedMatrixMLP.clsVectorizedMatrixMLP ' 21/21 fails
+        'Private m_mlp As New MatrixMLP.MultiLayerPerceptron ' 24/24 fails
+        'Private m_mlp As New VectorizedMatrixMLP.clsVectorizedMatrixMLP ' 24/24 fails
+        'Private m_mlp As New clsMLPTensor ' 24/24 fails
 
         <TestInitialize()>
         Public Sub Init()
         End Sub
 
         Private Sub InitXOR()
-            m_mlp.InitializeStruct(m_neuronCountXOR, addBiasColumn:=True)
             m_mlp.inputArray = m_inputArrayXOR
             m_mlp.targetArray = m_targetArrayXOR
+            m_mlp.InitializeStruct(m_neuronCountXOR, addBiasColumn:=True)
         End Sub
 
         Private Sub Init2XOR()
-            m_mlp.InitializeStruct(m_neuronCount2XOR, addBiasColumn:=True)
             m_mlp.inputArray = m_inputArray2XOR
             m_mlp.targetArray = m_targetArray2XOR
+            m_mlp.InitializeStruct(m_neuronCount2XOR, addBiasColumn:=True)
         End Sub
 
         Private Sub Init3XOR()
-            m_mlp.InitializeStruct(m_neuronCount3XOR, addBiasColumn:=True)
             m_mlp.inputArray = m_inputArray3XOR
             m_mlp.targetArray = m_targetArray3XOR
+            m_mlp.InitializeStruct(m_neuronCount3XOR, addBiasColumn:=True)
+        End Sub
+
+        <TestMethod()>
+        Public Sub MLP1XOR4Layers()
+
+            TestMLP1XOR4Layers(m_mlp)
+
+        End Sub
+
+        <TestMethod()>
+        Public Sub MLP1XOR5Layers()
+
+            TestMLP1XOR5Layers(m_mlp)
+
         End Sub
 
         <TestMethod()>
         Public Sub MLP1XORSemiStochastic()
 
-            m_mlp.Init(learningRate:=0.3!, weightAdjustment:=0.25!)
-            InitXOR()
-
-            m_mlp.nbIterations = 7000
-            m_mlp.SetActivationFunction(enumActivationFunction.Sigmoid, gain:=1, center:=0)
-
-            m_mlp.InitializeWeights(1, {
-                {0.34, 0.07, 0.92},
-                {0.07, 0.04, 0.92}})
-            m_mlp.InitializeWeights(2, {
-                {0.44, 0.58, 0.12}})
-
-            m_mlp.Train(enumLearningMode.SemiStochastic)
-
-            Dim expectedOutput = m_targetArrayXOR
-            Dim expectedMatrix As Matrix = expectedOutput ' Single(,) -> Matrix
-
-            Dim sOutput = m_mlp.output.ToStringWithFormat(dec:="0.0")
-
-            Dim sExpectedOutput = expectedMatrix.ToStringWithFormat(dec:="0.0")
-            Assert.AreEqual(sOutput, sExpectedOutput)
-
-            Dim expectedLoss# = 0.04
-            Dim loss! = m_mlp.ComputeAverageError()
-            Dim lossRounded# = Math.Round(loss, 2)
-            Assert.AreEqual(lossRounded <= expectedLoss, True)
+            TestMLP1XORSemiStochastic(m_mlp)
 
         End Sub
 
         <TestMethod()>
         Public Sub MLP1XORStochastic()
 
-            m_mlp.Init(learningRate:=0.3!, weightAdjustment:=0.25!)
-            InitXOR()
-
-            m_mlp.nbIterations = 15000
-            m_mlp.SetActivationFunction(enumActivationFunction.Sigmoid, gain:=1, center:=0)
-
-            m_mlp.InitializeWeights(1, {
-                {0.8, 0.42, 0.52},
-                {0.04, 0.55, 0.62}})
-            m_mlp.InitializeWeights(2, {
-                {0.99, 0.16, 0.15}})
-
-            m_mlp.Train(enumLearningMode.Stochastic)
-
-            Dim expectedOutput = m_targetArrayXOR
-            Dim expectedMatrix As Matrix = expectedOutput ' Single(,) -> Matrix
-
-            Dim sOutput = m_mlp.output.ToStringWithFormat(dec:="0.0")
-
-            Dim sExpectedOutput = expectedMatrix.ToStringWithFormat(dec:="0.0")
-            Assert.AreEqual(sOutput, sExpectedOutput)
-
-            Dim expectedLoss# = 0.05
-            Dim loss! = m_mlp.ComputeAverageError()
-            Dim lossRounded# = Math.Round(loss, 2)
-            Assert.AreEqual(lossRounded <= expectedLoss, True)
+            TestMLP1XORStochastic(m_mlp)
 
         End Sub
 
         <TestMethod()>
         Public Sub MLP1XORSigmoid()
 
-            m_mlp.Init(learningRate:=1.1!, weightAdjustment:=0.5!)
-            InitXOR()
-
-            m_mlp.nbIterations = 1100
-            m_mlp.SetActivationFunction(enumActivationFunction.Sigmoid, gain:=1, center:=1)
-
-            m_mlp.InitializeWeights(1, {
-                {0.42, 0.82, 0.15},
-                {0.2, 0.8, 0.28}})
-            m_mlp.InitializeWeights(2, {
-                {0.71, 0.25, 0.35}})
-
-            m_mlp.Train()
-
-            Dim expectedOutput = m_targetArrayXOR
-            Dim expectedMatrix As Matrix = expectedOutput ' Single(,) -> Matrix
-
-            Dim sOutput = m_mlp.output.ToStringWithFormat(dec:="0.0")
-
-            Dim sExpectedOutput = expectedMatrix.ToStringWithFormat(dec:="0.0")
-            Assert.AreEqual(sOutput, sExpectedOutput)
-
-            Dim expectedLoss# = 0.04
-            Dim loss! = m_mlp.ComputeAverageError()
-            Dim lossRounded# = Math.Round(loss, 2)
-            Assert.AreEqual(lossRounded <= expectedLoss, True)
+            TestMLP1XORSigmoid(m_mlp)
 
         End Sub
 
         <TestMethod()>
         Public Sub MLP1XORSigmoidWithoutBias()
 
-            m_mlp.Init(learningRate:=0.1!, weightAdjustment:=0.02!)
-            InitXOR()
-            m_mlp.InitializeStruct(m_neuronCountXOR, addBiasColumn:=False)
-
-            m_mlp.nbIterations = 30000
-            m_mlp.SetActivationFunction(enumActivationFunction.Sigmoid, gain:=1, center:=0.2!)
-
-            m_mlp.InitializeWeights(1, {
-                {0.42, 0.79},
-                {0.55, 0.02}})
-            m_mlp.InitializeWeights(2, {
-               {0.51, 0.31}})
-
-            m_mlp.Train()
-
-            'Dim expectedOutput = m_targetArrayXOR
-            Dim expectedOutput = New Double(,) {
-                {0.9},
-                {0.1},
-                {0.9},
-                {0.2}}
-
-            Dim expectedMatrix As Matrix = expectedOutput ' Single(,) -> Matrix
-
-            Dim sOutput = m_mlp.output.ToStringWithFormat(dec:="0.0")
-
-            Dim sExpectedOutput = expectedMatrix.ToStringWithFormat(dec:="0.0")
-            Assert.AreEqual(sOutput, sExpectedOutput)
-
-            Dim expectedLoss# = 0.12
-            Dim loss! = m_mlp.ComputeAverageError()
-            Dim lossRounded# = Math.Round(loss, 2)
-            Assert.AreEqual(lossRounded <= expectedLoss, True)
+            TestMLP1XORWithoutBias(m_mlp)
 
         End Sub
 
         <TestMethod()>
         Public Sub MLP1XORSigmoidWithoutBias231()
 
-            m_mlp.Init(learningRate:=0.08!, weightAdjustment:=0.02!)
-            InitXOR()
-            m_mlp.InitializeStruct(m_neuronCountXOR231, addBiasColumn:=False)
-
-            m_mlp.nbIterations = 12000 '10000
-            m_mlp.SetActivationFunction(enumActivationFunction.Sigmoid, gain:=1, center:=0.0!)
-
-            m_mlp.InitializeWeights(1, {
-                {0.73, 0.38},
-                {0.07, 0.3},
-                {0.99, 0.25}})
-            m_mlp.InitializeWeights(2, {
-               {1.0, 0.98, 0.61}})
-
-            m_mlp.Train()
-
-            'Dim expectedOutput = m_targetArrayXOR
-            Dim expectedOutput = New Double(,) {
-                {0.9},
-                {0.1},
-                {0.9},
-                {0.1}}
-
-            Dim expectedMatrix As Matrix = expectedOutput ' Single(,) -> Matrix
-
-            Dim sOutput = m_mlp.output.ToStringWithFormat(dec:="0.0")
-
-            Dim sExpectedOutput = expectedMatrix.ToStringWithFormat(dec:="0.0")
-            Assert.AreEqual(sOutput, sExpectedOutput)
-
-            Dim expectedLoss# = 0.1
-            Dim loss! = m_mlp.ComputeAverageError()
-            Dim lossRounded# = Math.Round(loss, 2)
-            Assert.AreEqual(lossRounded <= expectedLoss, True)
+            TestMLP1XORWithoutBias231(m_mlp)
+            'TestMLP1XORWithoutBias231b(m_mlp) ' Does not work
 
         End Sub
 
         <TestMethod()>
         Public Sub MLP1XORHTangent()
 
-            m_mlp.Init(learningRate:=0.25!, weightAdjustment:=0.9!)
-            InitXOR()
-
-            m_mlp.nbIterations = 1000
-            m_mlp.SetActivationFunction(enumActivationFunction.HyperbolicTangent, gain:=1, center:=0)
-
-            m_mlp.InitializeWeights(1, {
-                {0.28, 0.28, 0.76},
-                {0.25, 0.88, 0.62}})
-            m_mlp.InitializeWeights(2, {
-                {0.56, 0.92, 0.19}})
-
-            m_mlp.Train()
-
-            Dim expectedOutput1K = New Double(,) {
-                {0.99},
-                {0.02},
-                {0.99},
-                {0}}
-
-            'Dim expectedOutput10K = New Double(,) {
-            '    {1},
-            '    {0},
-            '    {1},
-            '    {0}}
-
-            Dim sOutput = m_mlp.output.ToStringWithFormat(dec:="0.0")
-
-            Dim expectedMatrix As Matrix = expectedOutput1K ' Double(,) -> Matrix
-            Dim sExpectedOutput = expectedMatrix.ToStringWithFormat(dec:="0.0")
-            Assert.AreEqual(sOutput, sExpectedOutput)
-
-            Dim expectedLoss# = 0.01
-            Dim loss! = m_mlp.ComputeAverageError()
-            Dim lossRounded# = Math.Round(loss, 2)
-            Assert.AreEqual(expectedLoss, lossRounded)
+            TestMLP1XORHTangent(m_mlp)
 
         End Sub
 
         <TestMethod()>
         Public Sub MLP1XORELU()
 
-            m_mlp.Init(learningRate:=0.1!, weightAdjustment:=0.15!)
-            InitXOR()
-
-            m_mlp.nbIterations = 700
-            m_mlp.SetActivationFunction(enumActivationFunction.ELU, gain:=0.9, center:=0)
-
-            m_mlp.InitializeWeights(1, {
-                {0.34, 0.05, 0.98},
-                {0.4, 0.76, 0.45}})
-            m_mlp.InitializeWeights(2, {
-                {0.41, 0.41, 0.22}})
-
-            m_mlp.Train()
-
-            Dim expectedOutput = m_targetArrayXOR
-            Dim expectedMatrix As Matrix = expectedOutput ' Single(,) -> Matrix
-
-            Dim sOutput = m_mlp.output.ToStringWithFormat(dec:="0.0")
-
-            Dim sExpectedOutput = expectedMatrix.ToStringWithFormat(dec:="0.0")
-            Assert.AreEqual(sOutput, sExpectedOutput)
-
-            Dim expectedLoss# = 0
-            Dim loss! = m_mlp.ComputeAverageError()
-            Dim lossRounded# = Math.Round(loss, 2)
-            Assert.AreEqual(lossRounded <= expectedLoss, True)
+            TestMLP1XORELU(m_mlp)
 
         End Sub
 
         <TestMethod()>
         Public Sub MLP1XORReLU()
 
-            m_mlp.Init(learningRate:=0.1!, weightAdjustment:=0.1!)
+            m_mlp.Initialize(learningRate:=0.1!, weightAdjustment:=0.1!)
             InitXOR()
 
             m_mlp.nbIterations = 400
@@ -390,19 +204,19 @@ Namespace ClassicMLP
             Dim sOutput = m_mlp.output.ToStringWithFormat(dec:="0.0")
 
             Dim sExpectedOutput = expectedMatrix.ToStringWithFormat(dec:="0.0")
-            Assert.AreEqual(sOutput, sExpectedOutput)
+            Assert.AreEqual(sExpectedOutput, sOutput)
 
             Dim expectedLoss# = 0.04
             Dim loss! = m_mlp.ComputeAverageError()
             Dim lossRounded# = Math.Round(loss, 2)
-            Assert.AreEqual(lossRounded <= expectedLoss, True)
+            Assert.AreEqual(True, lossRounded <= expectedLoss)
 
         End Sub
 
         <TestMethod()>
         Public Sub MLP1XORReLUSigmoid()
 
-            m_mlp.Init(learningRate:=0.1!, weightAdjustment:=0.1!)
+            m_mlp.Initialize(learningRate:=0.1!, weightAdjustment:=0.1!)
             InitXOR()
 
             m_mlp.nbIterations = 9000
@@ -422,19 +236,19 @@ Namespace ClassicMLP
             Dim sOutput = m_mlp.output.ToStringWithFormat(dec:="0.0")
 
             Dim sExpectedOutput = expectedMatrix.ToStringWithFormat(dec:="0.0")
-            Assert.AreEqual(sOutput, sExpectedOutput)
+            Assert.AreEqual(sExpectedOutput, sOutput)
 
             Dim expectedLoss# = 0
             Dim loss! = m_mlp.ComputeAverageError()
             Dim lossRounded# = Math.Round(loss, 2)
-            Assert.AreEqual(lossRounded <= expectedLoss, True)
+            Assert.AreEqual(True, lossRounded <= expectedLoss)
 
         End Sub
 
         <TestMethod()>
         Public Sub MLP1XORDbleThreshold()
 
-            m_mlp.Init(learningRate:=0.1!, weightAdjustment:=0.1!)
+            m_mlp.Initialize(learningRate:=0.1!, weightAdjustment:=0.1!)
             InitXOR()
 
             m_mlp.nbIterations = 5000
@@ -454,89 +268,33 @@ Namespace ClassicMLP
             Dim sOutput = m_mlp.output.ToStringWithFormat(dec:="0.0")
 
             Dim sExpectedOutput = expectedMatrix.ToStringWithFormat(dec:="0.0")
-            Assert.AreEqual(sOutput, sExpectedOutput)
+            Assert.AreEqual(sExpectedOutput, sOutput)
 
             Dim expectedLoss# = 0
             Dim loss! = m_mlp.ComputeAverageError()
             Dim lossRounded# = Math.Round(loss, 2)
-            Assert.AreEqual(lossRounded <= expectedLoss, True)
+            Assert.AreEqual(True, lossRounded <= expectedLoss)
 
         End Sub
 
         <TestMethod()>
         Public Sub MLP2XORSigmoid()
 
-            m_mlp.Init(learningRate:=1.8!, weightAdjustment:=0.04!)
-            Init2XOR()
-
-            m_mlp.nbIterations = 500
-            m_mlp.SetActivationFunction(enumActivationFunction.Sigmoid, gain:=1, center:=1)
-
-            m_mlp.InitializeWeights(1, {
-                {0.8, 0.72, 0.13, 0.33, 0.61},
-                {0.41, 0.82, 0.97, 0.68, 0.22},
-                {0.1, 0.65, 0.14, 0.36, 0.91},
-                {0.93, 0.36, 0.06, 0.35, 0.9}})
-            m_mlp.InitializeWeights(2, {
-                {0.81, 0.09, 0.29, 0.53, 0.98},
-                {0.54, 0.26, 0.25, 0.89, 0.35}})
-
-            m_mlp.Train()
-
-            Dim expectedOutput = m_targetArray2XOR
-            Dim expectedMatrix As Matrix = expectedOutput ' Single(,) -> Matrix
-
-            Dim sOutput = m_mlp.output.ToStringWithFormat(dec:="0.0")
-
-            Dim sExpectedOutput = expectedMatrix.ToStringWithFormat(dec:="0.0")
-            Assert.AreEqual(sOutput, sExpectedOutput)
-
-            Dim expectedLoss# = 0.02
-            Dim loss! = m_mlp.ComputeAverageError()
-            Dim lossRounded# = Math.Round(loss, 2)
-            Assert.AreEqual(lossRounded <= expectedLoss, True)
+            TestMLP2XORSigmoid(m_mlp)
 
         End Sub
 
         <TestMethod()>
         Public Sub MLP2XORHTangent()
 
-            m_mlp.Init(learningRate:=0.1!, weightAdjustment:=0.1!)
-            Init2XOR()
-
-            m_mlp.nbIterations = 500
-            m_mlp.SetActivationFunction(enumActivationFunction.HyperbolicTangent, gain:=1, center:=0)
-
-            m_mlp.InitializeWeights(1, {
-                {0.37, 0.11, 0.32, 0.3, 0.2},
-                {0.44, 0.42, 0.87, 0.24, 0.84},
-                {0.86, 0.68, 0.29, 0.17, 0.68},
-                {0.09, 0.57, 0.98, 0.48, 0.29}})
-            m_mlp.InitializeWeights(2, {
-                {0.5, 0.83, 0.36, 0.23, 0.45},
-                {0.05, 0.37, 0.94, 0.7, 0.82}})
-
-            m_mlp.Train()
-
-            Dim expectedOutput = m_targetArray2XOR
-            Dim expectedMatrix As Matrix = expectedOutput ' Single(,) -> Matrix
-
-            Dim sOutput = m_mlp.output.ToStringWithFormat(dec:="0.0")
-
-            Dim sExpectedOutput = expectedMatrix.ToStringWithFormat(dec:="0.0")
-            Assert.AreEqual(sOutput, sExpectedOutput)
-
-            Dim expectedLoss# = 0.01
-            Dim loss! = m_mlp.ComputeAverageError()
-            Dim lossRounded# = Math.Round(loss, 2)
-            Assert.AreEqual(lossRounded <= expectedLoss, True)
+            TestMLP2XORHTangent(m_mlp)
 
         End Sub
 
         <TestMethod()>
         Public Sub MLP2XORELU()
 
-            m_mlp.Init(learningRate:=0.1!, weightAdjustment:=0.05!)
+            m_mlp.Initialize(learningRate:=0.1!, weightAdjustment:=0.05!)
             Init2XOR()
 
             m_mlp.nbIterations = 200
@@ -559,19 +317,19 @@ Namespace ClassicMLP
             Dim sOutput = m_mlp.output.ToStringWithFormat(dec:="0.0")
 
             Dim sExpectedOutput = expectedMatrix.ToStringWithFormat(dec:="0.0")
-            Assert.AreEqual(sOutput, sExpectedOutput)
+            Assert.AreEqual(sExpectedOutput, sOutput)
 
             Dim expectedLoss# = 0
             Dim loss! = m_mlp.ComputeAverageError()
             Dim lossRounded# = Math.Round(loss, 2)
-            Assert.AreEqual(lossRounded <= expectedLoss, True)
+            Assert.AreEqual(True, lossRounded <= expectedLoss)
 
         End Sub
 
         <TestMethod()>
         Public Sub MLP2XORDbleThreshold()
 
-            m_mlp.Init(learningRate:=0.1!, weightAdjustment:=0.1!)
+            m_mlp.Initialize(learningRate:=0.1!, weightAdjustment:=0.1!)
             Init2XOR()
 
             m_mlp.nbIterations = 3000
@@ -594,19 +352,19 @@ Namespace ClassicMLP
             Dim sOutput = m_mlp.output.ToStringWithFormat(dec:="0.0")
 
             Dim sExpectedOutput = expectedMatrix.ToStringWithFormat(dec:="0.0")
-            Assert.AreEqual(sOutput, sExpectedOutput)
+            Assert.AreEqual(sExpectedOutput, sOutput)
 
             Dim expectedLoss# = 0
             Dim loss! = m_mlp.ComputeAverageError()
             Dim lossRounded# = Math.Round(loss, 2)
-            Assert.AreEqual(lossRounded <= expectedLoss, True)
+            Assert.AreEqual(True, lossRounded <= expectedLoss)
 
         End Sub
 
         <TestMethod()>
         Public Sub MLP2XORReLU()
 
-            m_mlp.Init(learningRate:=0.1!, weightAdjustment:=0.1!)
+            m_mlp.Initialize(learningRate:=0.1!, weightAdjustment:=0.1!)
             Init2XOR()
 
             m_mlp.nbIterations = 200
@@ -629,55 +387,33 @@ Namespace ClassicMLP
             Dim sOutput = m_mlp.output.ToStringWithFormat(dec:="0.0")
 
             Dim sExpectedOutput = expectedMatrix.ToStringWithFormat(dec:="0.0")
-            Assert.AreEqual(sOutput, sExpectedOutput)
+            Assert.AreEqual(sExpectedOutput, sOutput)
 
             Dim expectedLoss# = 0
             Dim loss! = m_mlp.ComputeAverageError()
             Dim lossRounded# = Math.Round(loss, 2)
-            Assert.AreEqual(lossRounded <= expectedLoss, True)
+            Assert.AreEqual(True, lossRounded <= expectedLoss)
 
         End Sub
 
         <TestMethod()>
         Public Sub MLP3XORSigmoid()
 
-            m_mlp.Init(learningRate:=0.6!, weightAdjustment:=0.09!)
-            Init3XOR()
+            TestMLP3XORSigmoid(m_mlp)
 
-            m_mlp.nbIterations = 200
-            m_mlp.SetActivationFunction(enumActivationFunction.Sigmoid, gain:=1, center:=1)
+        End Sub
 
-            m_mlp.InitializeWeights(1, {
-                {0.71, 0.6, 0.21, 0.85, 0.78, 0.78, 0.2},
-                {0.89, 0.61, 0.81, 0.27, 0.77, 0.6, 0.26},
-                {0.07, 0.22, 0.42, 0.53, 0.93, 0.14, 0.07},
-                {0.46, 0.67, 0.44, 0.58, 0.05, 0.84, 0.61},
-                {0.14, 0.76, 0.59, 0.48, 0.04, 0.53, 0.36},
-                {0.59, 0.12, 0.6, 0.13, 0.28, 0.22, 0.38}})
-            m_mlp.InitializeWeights(2, {
-                {0.14, 0.17, 0.82, 0.88, 0.89, 0.49, 0.74},
-                {0.23, 0.31, 0.47, 0.67, 0.25, 0.93, 0.77},
-                {0.27, 0.72, 0.94, 0.59, 0.75, 0.85, 0.21}})
-            m_mlp.Train()
+        <TestMethod()>
+        Public Sub MLP3XORHTangent()
 
-            Dim sOutput = m_mlp.output.ToStringWithFormat(dec:="0.0")
-
-            Dim expectedOutput = m_targetArray3XOR
-            Dim expectedMatrix As Matrix = expectedOutput ' Single(,) -> Matrix
-            Dim sExpectedOutput = expectedMatrix.ToStringWithFormat(dec:="0.0")
-            Assert.AreEqual(sOutput, sExpectedOutput)
-
-            Dim expectedLoss# = 0.03
-            Dim loss! = m_mlp.ComputeAverageError()
-            Dim lossRounded# = Math.Round(loss, 2)
-            Assert.AreEqual(lossRounded <= expectedLoss, True)
+            TestMLP3XORHTangent(m_mlp)
 
         End Sub
 
         <TestMethod()>
         Public Sub MLP3XORELU()
 
-            m_mlp.Init(learningRate:=0.1!, weightAdjustment:=0.05!)
+            m_mlp.Initialize(learningRate:=0.1!, weightAdjustment:=0.05!)
             Init3XOR()
 
             m_mlp.nbIterations = 200
@@ -701,19 +437,19 @@ Namespace ClassicMLP
             Dim expectedOutput = m_targetArray3XOR
             Dim expectedMatrix As Matrix = expectedOutput ' Single(,) -> Matrix
             Dim sExpectedOutput = expectedMatrix.ToStringWithFormat(dec:="0.0")
-            Assert.AreEqual(sOutput, sExpectedOutput)
+            Assert.AreEqual(sExpectedOutput, sOutput)
 
             Dim expectedLoss# = 0
             Dim loss! = m_mlp.ComputeAverageError()
             Dim lossRounded# = Math.Round(loss, 2)
-            Assert.AreEqual(lossRounded <= expectedLoss, True)
+            Assert.AreEqual(True, lossRounded <= expectedLoss)
 
         End Sub
 
         <TestMethod()>
         Public Sub MLP3XORGaussian()
 
-            m_mlp.Init(learningRate:=0.15!, weightAdjustment:=0.25!)
+            m_mlp.Initialize(learningRate:=0.15!, weightAdjustment:=0.25!)
             Init3XOR()
 
             m_mlp.nbIterations = 400
@@ -737,19 +473,19 @@ Namespace ClassicMLP
             Dim expectedOutput = m_targetArray3XOR
             Dim expectedMatrix As Matrix = expectedOutput ' Single(,) -> Matrix
             Dim sExpectedOutput = expectedMatrix.ToStringWithFormat(dec:="0.0")
-            Assert.AreEqual(sOutput, sExpectedOutput)
+            Assert.AreEqual(sExpectedOutput, sOutput)
 
             Dim expectedLoss# = 0.01
             Dim loss! = m_mlp.ComputeAverageError()
             Dim lossRounded# = Math.Round(loss, 2)
-            Assert.AreEqual(lossRounded <= expectedLoss, True)
+            Assert.AreEqual(True, lossRounded <= expectedLoss)
 
         End Sub
 
         <TestMethod()>
         Public Sub MLP3XORSinus()
 
-            m_mlp.Init(learningRate:=0.1!, weightAdjustment:=0.1!)
+            m_mlp.Initialize(learningRate:=0.1!, weightAdjustment:=0.1!)
             Init3XOR()
 
             m_mlp.nbIterations = 200
@@ -773,21 +509,19 @@ Namespace ClassicMLP
             Dim expectedOutput = m_targetArray3XOR
             Dim expectedMatrix As Matrix = expectedOutput ' Single(,) -> Matrix
             Dim sExpectedOutput = expectedMatrix.ToString() 'WithFormat(dec:="0.0")
-            Assert.AreEqual(sOutput, sExpectedOutput)
+            Assert.AreEqual(sExpectedOutput, sOutput)
 
             Dim expectedLoss# = 0
             Dim loss! = m_mlp.ComputeAverageError()
             Dim lossRounded# = Math.Round(loss, 2)
-            Assert.AreEqual(lossRounded <= expectedLoss, True)
+            Assert.AreEqual(True, lossRounded <= expectedLoss)
 
         End Sub
-
-
 
         <TestMethod()>
         Public Sub MLP3XORDbleThreshold()
 
-            m_mlp.Init(learningRate:=2.0!, weightAdjustment:=0.1!)
+            m_mlp.Initialize(learningRate:=2.0!, weightAdjustment:=0.1!)
             Init3XOR()
 
             m_mlp.nbIterations = 100
@@ -811,19 +545,19 @@ Namespace ClassicMLP
             Dim expectedOutput = m_targetArray3XOR
             Dim expectedMatrix As Matrix = expectedOutput ' Single(,) -> Matrix
             Dim sExpectedOutput = expectedMatrix.ToString() 'WithFormat(dec:="0.0")
-            Assert.AreEqual(sOutput, sExpectedOutput)
+            Assert.AreEqual(sExpectedOutput, sOutput)
 
             Dim expectedLoss# = 0
             Dim loss! = m_mlp.ComputeAverageError()
             Dim lossRounded# = Math.Round(loss, 2)
-            Assert.AreEqual(lossRounded <= expectedLoss, True)
+            Assert.AreEqual(True, lossRounded <= expectedLoss)
 
         End Sub
 
         <TestMethod()>
         Public Sub MLP3XORReLU()
 
-            m_mlp.Init(learningRate:=0.1!, weightAdjustment:=0.2!)
+            m_mlp.Initialize(learningRate:=0.1!, weightAdjustment:=0.2!)
             Init3XOR()
 
             m_mlp.nbIterations = 350
@@ -847,12 +581,12 @@ Namespace ClassicMLP
             Dim expectedOutput = m_targetArray3XOR
             Dim expectedMatrix As Matrix = expectedOutput ' Single(,) -> Matrix
             Dim sExpectedOutput = expectedMatrix.ToStringWithFormat(dec:="0.0")
-            Assert.AreEqual(sOutput, sExpectedOutput)
+            Assert.AreEqual(sExpectedOutput, sOutput)
 
             Dim expectedLoss# = 0
             Dim loss! = m_mlp.ComputeAverageError()
             Dim lossRounded# = Math.Round(loss, 2)
-            Assert.AreEqual(lossRounded <= expectedLoss, True)
+            Assert.AreEqual(True, lossRounded <= expectedLoss)
 
         End Sub
 

@@ -1,12 +1,13 @@
 ﻿
 ' Matrix implementation using Math.Net
 ' https://numerics.mathdotnet.com/Matrix.html
+' <package id="MathNet.Numerics" version="4.12.0" targetFramework="net472" />
 
 Imports System.Text ' StringBuilder
 
 Namespace Utility
 
-#Const Implementation = 1 ' 0 : Off, 1 : On
+#Const Implementation = 0 ' 0 : Off, 1 : On
 
 #If Implementation Then
 
@@ -39,14 +40,14 @@ Namespace Utility
             Get
                 Return Me.m_matrix.ToArray
             End Get
-            Set(matrix0 As Double(,))
+            Set(doubleArray As Double(,))
 
-                Dim rows = matrix0.GetLength(0)
-                Dim columns = matrix0.GetLength(1)
+                Dim rows = doubleArray.GetLength(0)
+                Dim columns = doubleArray.GetLength(1)
                 Constructor(rows, columns)
                 For i = 0 To rows - 1
                     For j = 0 To columns - 1
-                        Me.m_matrix(i, j) = matrix0(i, j)
+                        Me.m_matrix(i, j) = doubleArray(i, j)
                     Next
                 Next
 
@@ -115,13 +116,13 @@ Namespace Utility
             Constructor(rows, columns)
         End Sub
 
-        Public Sub New(matrix0#(,))
-            Dim rows = matrix0.GetLength(0)
-            Dim columns = matrix0.GetLength(1)
+        Public Sub New(doubleArray#(,))
+            Dim rows = doubleArray.GetLength(0)
+            Dim columns = doubleArray.GetLength(1)
             Constructor(rows, columns)
             For i = 0 To rows - 1
                 For j = 0 To columns - 1
-                    Me.m_matrix(i, j) = matrix0(i, j)
+                    Me.m_matrix(i, j) = doubleArray(i, j)
                 Next
             Next
         End Sub
@@ -161,8 +162,8 @@ Namespace Utility
 #Region "Operators"
 
         ' Implicit conversion operator #(,) -> Matrix
-        Public Shared Widening Operator CType(matrix0#(,)) As Matrix
-            Return New Matrix(matrix0)
+        Public Shared Widening Operator CType(doubleArray#(,)) As Matrix
+            Return New Matrix(doubleArray)
         End Operator
 
         ' Implicit conversion operator Matrix -> #(,)
@@ -171,8 +172,8 @@ Namespace Utility
         End Operator
 
         ' Implicit conversion operator !(,) -> Matrix
-        Public Shared Widening Operator CType(matrix0!(,)) As Matrix
-            Return New Matrix(matrix0)
+        Public Shared Widening Operator CType(singleArray!(,)) As Matrix
+            Return New Matrix(singleArray)
         End Operator
 
         Public Shared Operator +(m1 As Matrix, m2 As Matrix) As Matrix

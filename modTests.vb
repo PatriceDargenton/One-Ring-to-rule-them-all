@@ -16,6 +16,9 @@ Module modTests
         NextTest()
 
         TensorMLPTest()
+        NextTest()
+
+        AccordMLPTest()
 
         Console.WriteLine("Press a key to quit.")
         Console.ReadKey()
@@ -26,6 +29,12 @@ Module modTests
         Console.WriteLine("Press a key to continue.")
         Console.ReadKey()
         Console.WriteLine()
+    End Sub
+
+    Public Sub WaitForKeyToStart()
+        If Not isConsoleApp() Then Exit Sub
+        Console.WriteLine("Press a key to start.")
+        Console.ReadKey()
     End Sub
 
 End Module

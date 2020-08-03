@@ -20,13 +20,16 @@ Module modMLPTensorTest
         mlp.ShowMessage("Tensor MLP test")
         mlp.ShowMessage("---------------")
 
-        mlp.Init(learningRate:=0.1!, weightAdjustment:=0.05!)
+        mlp.Initialize(learningRate:=0.1!, weightAdjustment:=0.05!)
 
         Dim nbIterations%
 
-        mlp.SetActivationFunction(enumActivationFunction.Sigmoid, gain:=1, center:=0)
-        'mlp.SetActivationFunction(enumActivationFunction.HyperbolicTangent, gain:=1, center:=0)
-        'mlp.SetActivationFunction(enumActivationFunction.ELU, gain:=1, center:=0.4)
+        mlp.SetActivationFunctionForMatrix(
+            enumActivationFunctionForMatrix.Sigmoid, gain:=1, center:=0)
+        'mlp.SetActivationFunctionForMatrix(
+        '    enumActivationFunctionForMatrix.HyperbolicTangent, gain:=1, center:=0)
+        'mlp.SetActivationFunctionForMatrix(
+        '    enumActivationFunctionForMatrix.ELU, gain:=1, center:=0.4)
 
         nbIterations = 5000
 
@@ -36,10 +39,7 @@ Module modMLPTensorTest
 
         mlp.PrintWeights()
 
-        Console.WriteLine()
-        Console.WriteLine("Press a key to start.")
-        Console.ReadKey()
-        Console.WriteLine()
+        WaitForKeyToStart()
 
         mlp.targetArray = m_targetArrayXOR
 
@@ -58,7 +58,7 @@ Module modMLPTensorTest
 
 End Module
 
-Namespace MLPTensorTests
+Namespace TensorMLP
 
     <TestClass()>
     Public Class clsMLPTensorTest
@@ -77,19 +77,19 @@ Namespace MLPTensorTests
         End Sub
 
         Private Sub InitXOR()
-            m_mlp.Init(learningRate:=0.1!, weightAdjustment:=0)
+            m_mlp.Initialize(learningRate:=0.1!, weightAdjustment:=0)
             m_mlp.inputArray = m_inputArrayXOR
             m_mlp.targetArray = m_targetArrayXOR
         End Sub
 
         Private Sub Init2XOR()
-            m_mlp.Init(learningRate:=0.1!, weightAdjustment:=0)
+            m_mlp.Initialize(learningRate:=0.1!, weightAdjustment:=0)
             m_mlp.inputArray = m_inputArray2XOR
             m_mlp.targetArray = m_targetArray2XOR
         End Sub
 
         Private Sub Init3XOR()
-            m_mlp.Init(learningRate:=0.1!, weightAdjustment:=0)
+            m_mlp.Initialize(learningRate:=0.1!, weightAdjustment:=0)
             m_mlp.inputArray = m_inputArray3XOR
             m_mlp.targetArray = m_targetArray3XOR
         End Sub
@@ -101,7 +101,8 @@ Namespace MLPTensorTests
             m_mlp.learningRate = 0.3
             m_mlp.weightAdjustment = 0.25
             m_mlp.nbIterations = 2000
-            m_mlp.SetActivationFunction(enumActivationFunction.Sigmoid, gain:=1, center:=0)
+            m_mlp.SetActivationFunctionForMatrix(
+                enumActivationFunctionForMatrix.Sigmoid, gain:=1, center:=0)
 
             m_mlp.InitializeStruct(m_neuronCountXOR, addBiasColumn:=True)
 
@@ -136,13 +137,13 @@ Namespace MLPTensorTests
             Dim sOutput$ = m_mlp.output.ToStringWithFormat(dec:="0.0")
             Dim expectedMatrix As Matrix = expectedOutput ' Single(,) -> Matrix
             Dim sExpectedOutput = expectedMatrix.ToStringWithFormat(dec:="0.0")
-            Assert.AreEqual(sOutput, sExpectedOutput)
+            Assert.AreEqual(sExpectedOutput, sOutput)
 
             Dim expectedLoss# = 0.03
             'Dim loss! = m_mlp.ComputeAverageError() ' Vector learning mode only
             Dim loss! = m_mlp.ComputeAverageErrorFromAllSamples!()
             Dim lossRounded# = Math.Round(loss, 2)
-            Assert.AreEqual(lossRounded <= expectedLoss, True)
+            Assert.AreEqual(True, lossRounded <= expectedLoss)
 
         End Sub
 
@@ -153,7 +154,8 @@ Namespace MLPTensorTests
             m_mlp.learningRate = 0.3
             m_mlp.weightAdjustment = 0.25
             m_mlp.nbIterations = 2000
-            m_mlp.SetActivationFunction(enumActivationFunction.Sigmoid, gain:=1, center:=0)
+            m_mlp.SetActivationFunctionForMatrix(
+                enumActivationFunctionForMatrix.Sigmoid, gain:=1, center:=0)
 
             m_mlp.InitializeStruct(m_neuronCountXOR, addBiasColumn:=True)
 
@@ -188,13 +190,13 @@ Namespace MLPTensorTests
             Dim sOutput$ = m_mlp.output.ToStringWithFormat(dec:="0.0")
             Dim expectedMatrix As Matrix = expectedOutput ' Single(,) -> Matrix
             Dim sExpectedOutput = expectedMatrix.ToStringWithFormat(dec:="0.0")
-            Assert.AreEqual(sOutput, sExpectedOutput)
+            Assert.AreEqual(sExpectedOutput, sOutput)
 
             Dim expectedLoss# = 0.03
             'Dim loss! = m_mlp.ComputeAverageError() ' Vector learning mode only
             Dim loss! = m_mlp.ComputeAverageErrorFromAllSamples!()
             Dim lossRounded# = Math.Round(loss, 2)
-            Assert.AreEqual(lossRounded <= expectedLoss, True)
+            Assert.AreEqual(True, lossRounded <= expectedLoss)
 
         End Sub
 
@@ -205,7 +207,8 @@ Namespace MLPTensorTests
             m_mlp.learningRate = 0.3
             m_mlp.weightAdjustment = 0.25
             m_mlp.nbIterations = 20000
-            m_mlp.SetActivationFunction(enumActivationFunction.Sigmoid, gain:=1, center:=0)
+            m_mlp.SetActivationFunctionForMatrix(
+                enumActivationFunctionForMatrix.Sigmoid, gain:=1, center:=0)
 
             m_mlp.InitializeStruct(m_neuronCountXOR, addBiasColumn:=True)
 
@@ -240,13 +243,13 @@ Namespace MLPTensorTests
             Dim sOutput$ = m_mlp.output.ToStringWithFormat(dec:="0.0")
             Dim expectedMatrix As Matrix = expectedOutput ' Single(,) -> Matrix
             Dim sExpectedOutput = expectedMatrix.ToStringWithFormat(dec:="0.0")
-            Assert.AreEqual(sOutput, sExpectedOutput)
+            Assert.AreEqual(sExpectedOutput, sOutput)
 
             Dim expectedLoss# = 0.02
             'Dim loss! = m_mlp.ComputeAverageError() ' Vector learning mode only
             Dim loss! = m_mlp.ComputeAverageErrorFromAllSamples!()
             Dim lossRounded# = Math.Round(loss, 2)
-            Assert.AreEqual(lossRounded <= expectedLoss, True)
+            Assert.AreEqual(True, lossRounded <= expectedLoss)
 
         End Sub
 
@@ -257,7 +260,8 @@ Namespace MLPTensorTests
             m_mlp.learningRate = 0.1
             m_mlp.weightAdjustment = 0.2
             m_mlp.nbIterations = 5000 ' Sigmoid: works
-            m_mlp.SetActivationFunction(enumActivationFunction.Sigmoid, gain:=1, center:=0)
+            m_mlp.SetActivationFunctionForMatrix(
+                enumActivationFunctionForMatrix.Sigmoid, gain:=1, center:=0)
 
             m_mlp.InitializeStruct(m_neuronCountXOR, addBiasColumn:=True)
 
@@ -294,12 +298,12 @@ Namespace MLPTensorTests
             Dim sOutput$ = m_mlp.output.ToStringWithFormat(dec:="0.0")
             Dim expectedMatrix As Matrix = expectedOutput ' Single(,) -> Matrix
             Dim sExpectedOutput = expectedMatrix.ToStringWithFormat(dec:="0.0")
-            Assert.AreEqual(sOutput, sExpectedOutput)
+            Assert.AreEqual(sExpectedOutput, sOutput)
 
             Dim expectedLoss# = 0.01
             Dim loss! = m_mlp.ComputeAverageError()
             Dim lossRounded# = Math.Round(loss, 2)
-            Assert.AreEqual(lossRounded <= expectedLoss, True)
+            Assert.AreEqual(True, lossRounded <= expectedLoss)
 
         End Sub
 
@@ -307,10 +311,11 @@ Namespace MLPTensorTests
         '<TestMethod()>
         Public Sub TensorMLP1XORSigmoidWithoutBias()
 
-            m_mlp.Init(learningRate:=0.1!, weightAdjustment:=0)
+            m_mlp.Initialize(learningRate:=0.1!, weightAdjustment:=0)
             InitXOR()
             m_mlp.nbIterations = 5000
-            m_mlp.SetActivationFunction(enumActivationFunction.Sigmoid, gain:=1, center:=0)
+            m_mlp.SetActivationFunctionForMatrix(
+                enumActivationFunctionForMatrix.Sigmoid, gain:=1, center:=0)
 
             m_mlp.InitializeStruct(m_neuronCountXOR, addBiasColumn:=False)
 
@@ -343,12 +348,12 @@ Namespace MLPTensorTests
             Dim expectedMatrix As Matrix = expectedOutput ' Single(,) -> Matrix
             Dim sOutput = m_mlp.output.ToStringWithFormat(dec:="0.0")
             Dim sExpectedOutput = expectedMatrix.ToStringWithFormat(dec:="0.0")
-            Assert.AreEqual(sOutput, sExpectedOutput)
+            Assert.AreEqual(sExpectedOutput, sOutput)
 
             Dim expectedLoss# = 0
             Dim loss! = m_mlp.ComputeAverageError()
             Dim lossRounded# = Math.Round(loss, 2)
-            Assert.AreEqual(lossRounded <= expectedLoss, True)
+            Assert.AreEqual(True, lossRounded <= expectedLoss)
 
         End Sub
 
@@ -359,7 +364,8 @@ Namespace MLPTensorTests
             m_mlp.learningRate = 0.1
             m_mlp.weightAdjustment = 0.2
             m_mlp.nbIterations = 900 ' Sigmoid: works
-            m_mlp.SetActivationFunction(enumActivationFunction.Sigmoid, gain:=1, center:=0)
+            m_mlp.SetActivationFunctionForMatrix(
+                enumActivationFunctionForMatrix.Sigmoid, gain:=1, center:=0)
 
             m_mlp.InitializeStruct(m_neuronCount2XOR, addBiasColumn:=True)
 
@@ -411,12 +417,12 @@ Namespace MLPTensorTests
             Dim sOutput$ = m_mlp.output.ToStringWithFormat(dec:="0.0")
             Dim expectedMatrix As Matrix = expectedOutput ' Single(,) -> Matrix
             Dim sExpectedOutput = expectedMatrix.ToStringWithFormat(dec:="0.0")
-            Assert.AreEqual(sOutput, sExpectedOutput)
+            Assert.AreEqual(sExpectedOutput, sOutput)
 
             Dim expectedLoss# = 0.02
             Dim loss! = m_mlp.ComputeAverageError()
             Dim lossRounded# = Math.Round(loss, 2)
-            Assert.AreEqual(lossRounded <= expectedLoss, True)
+            Assert.AreEqual(True, lossRounded <= expectedLoss)
 
         End Sub
 
@@ -427,7 +433,8 @@ Namespace MLPTensorTests
             m_mlp.learningRate = 0.05
             m_mlp.weightAdjustment = 0.07
             m_mlp.nbIterations = 3000 ' 400 : Train, 3000 : TrainVector
-            m_mlp.SetActivationFunction(enumActivationFunction.HyperbolicTangent, gain:=1, center:=-0.05)
+            m_mlp.SetActivationFunctionForMatrix(
+                enumActivationFunctionForMatrix.HyperbolicTangent, gain:=1, center:=-0.05)
 
             m_mlp.InitializeStruct(m_neuronCount2XOR, addBiasColumn:=True)
 
@@ -479,12 +486,12 @@ Namespace MLPTensorTests
             Dim sOutput$ = m_mlp.output.ToStringWithFormat(dec:="0.0")
             Dim expectedMatrix As Matrix = expectedOutput ' Single(,) -> Matrix
             Dim sExpectedOutput = expectedMatrix.ToStringWithFormat(dec:="0.0")
-            Assert.AreEqual(sOutput, sExpectedOutput)
+            Assert.AreEqual(sExpectedOutput, sOutput)
 
             Dim expectedLoss# = 0.01
             Dim loss! = m_mlp.ComputeAverageError()
             Dim lossRounded# = Math.Round(loss, 2)
-            Assert.AreEqual(lossRounded <= expectedLoss, True)
+            Assert.AreEqual(True, lossRounded <= expectedLoss)
 
         End Sub
 
@@ -495,7 +502,8 @@ Namespace MLPTensorTests
             m_mlp.learningRate = 0.1
             m_mlp.weightAdjustment = 0.05
             m_mlp.nbIterations = 200
-            m_mlp.SetActivationFunction(enumActivationFunction.ELU, gain:=1, center:=0.4)
+            m_mlp.SetActivationFunctionForMatrix(
+                enumActivationFunctionForMatrix.ELU, gain:=1, center:=0.4)
 
             m_mlp.InitializeStruct(m_neuronCount2XOR, addBiasColumn:=True)
 
@@ -547,12 +555,12 @@ Namespace MLPTensorTests
             Dim sOutput$ = m_mlp.output.ToStringWithFormat(dec:="0.0")
             Dim expectedMatrix As Matrix = expectedOutput ' Single(,) -> Matrix
             Dim sExpectedOutput = expectedMatrix.ToStringWithFormat(dec:="0.0")
-            Assert.AreEqual(sOutput, sExpectedOutput)
+            Assert.AreEqual(sExpectedOutput, sOutput)
 
             Dim expectedLoss# = 0
             Dim loss! = m_mlp.ComputeAverageError()
             Dim lossRounded# = Math.Round(loss, 2)
-            Assert.AreEqual(lossRounded <= expectedLoss, True)
+            Assert.AreEqual(True, lossRounded <= expectedLoss)
 
         End Sub
 
@@ -563,7 +571,8 @@ Namespace MLPTensorTests
             m_mlp.learningRate = 0.1
             m_mlp.weightAdjustment = 0.2
             m_mlp.nbIterations = 400 ' Sigmoid: works
-            m_mlp.SetActivationFunction(enumActivationFunction.Sigmoid, gain:=1, center:=0)
+            m_mlp.SetActivationFunctionForMatrix(
+                enumActivationFunctionForMatrix.Sigmoid, gain:=1, center:=0)
 
             m_mlp.InitializeStruct(m_neuronCount3XOR, addBiasColumn:=True)
 
@@ -629,12 +638,12 @@ Namespace MLPTensorTests
             Dim sOutput$ = m_mlp.output.ToStringWithFormat(dec:="0.0")
             Dim expectedMatrix As Matrix = expectedOutput ' Single(,) -> Matrix
             Dim sExpectedOutput = expectedMatrix.ToStringWithFormat(dec:="0.0")
-            Assert.AreEqual(sOutput, sExpectedOutput)
+            Assert.AreEqual(sExpectedOutput, sOutput)
 
             Dim expectedLoss# = 0.04
             Dim loss! = m_mlp.ComputeAverageError()
             Dim lossRounded# = Math.Round(loss, 2)
-            Assert.AreEqual(lossRounded <= expectedLoss, True)
+            Assert.AreEqual(True, lossRounded <= expectedLoss)
 
         End Sub
 
@@ -646,7 +655,8 @@ Namespace MLPTensorTests
             m_mlp.learningRate = 0.1
             m_mlp.weightAdjustment = 0.05
             m_mlp.nbIterations = 700
-            m_mlp.SetActivationFunction(enumActivationFunction.ELU, gain:=1, center:=2)
+            m_mlp.SetActivationFunctionForMatrix(
+                enumActivationFunctionForMatrix.ELU, gain:=1, center:=2)
 
             m_mlp.InitializeStruct(m_neuronCount3XOR, addBiasColumn:=True)
 
@@ -712,12 +722,12 @@ Namespace MLPTensorTests
             Dim sOutput$ = m_mlp.output.ToStringWithFormat(dec:="0.0")
             Dim expectedMatrix As Matrix = expectedOutput ' Single(,) -> Matrix
             Dim sExpectedOutput = expectedMatrix.ToStringWithFormat(dec:="0.0")
-            Assert.AreEqual(sOutput, sExpectedOutput)
+            Assert.AreEqual(sExpectedOutput, sOutput)
 
             Dim expectedLoss# = 0
             Dim loss! = m_mlp.ComputeAverageError()
             Dim lossRounded# = Math.Round(loss, 2)
-            Assert.AreEqual(lossRounded <= expectedLoss, True)
+            Assert.AreEqual(True, lossRounded <= expectedLoss)
 
         End Sub
 

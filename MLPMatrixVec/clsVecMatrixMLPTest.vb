@@ -20,19 +20,19 @@ Namespace VectorizedMatrixMLP
         End Sub
 
         Private Sub InitXOR()
-            m_mlp.Init(learningRate:=0.1!, weightAdjustment:=0)
+            m_mlp.Initialize(learningRate:=0.1!, weightAdjustment:=0)
             m_mlp.inputArray = m_inputArrayXOR
             m_mlp.targetArray = m_targetArrayXOR
         End Sub
 
         Private Sub Init2XOR()
-            m_mlp.Init(learningRate:=0.1!, weightAdjustment:=0)
+            m_mlp.Initialize(learningRate:=0.1!, weightAdjustment:=0)
             m_mlp.inputArray = m_inputArray2XOR
             m_mlp.targetArray = m_targetArray2XOR
         End Sub
 
         Private Sub Init3XOR()
-            m_mlp.Init(learningRate:=0.1!, weightAdjustment:=0)
+            m_mlp.Initialize(learningRate:=0.1!, weightAdjustment:=0)
             m_mlp.inputArray = m_inputArray3XOR
             m_mlp.targetArray = m_targetArray3XOR
         End Sub
@@ -64,12 +64,12 @@ Namespace VectorizedMatrixMLP
             Dim sOutput$ = m_mlp.output.ToStringWithFormat(dec:="0.0")
             Dim expectedMatrix As Matrix = expectedOutput ' Single(,) -> Matrix
             Dim sExpectedOutput = expectedMatrix.ToStringWithFormat(dec:="0.0")
-            Assert.AreEqual(sOutput, sExpectedOutput)
+            Assert.AreEqual(sExpectedOutput, sOutput)
 
             Dim expectedLoss# = 0.04
             Dim loss! = m_mlp.ComputeAverageError()
             Dim lossRounded# = Math.Round(loss, 2)
-            Assert.AreEqual(lossRounded <= expectedLoss, True)
+            Assert.AreEqual(True, lossRounded <= expectedLoss)
 
         End Sub
 
@@ -100,12 +100,12 @@ Namespace VectorizedMatrixMLP
             Dim sOutput$ = m_mlp.output.ToStringWithFormat(dec:="0.0")
             Dim expectedMatrix As Matrix = expectedOutput ' Single(,) -> Matrix
             Dim sExpectedOutput = expectedMatrix.ToStringWithFormat(dec:="0.0")
-            Assert.AreEqual(sOutput, sExpectedOutput)
+            Assert.AreEqual(sExpectedOutput, sOutput)
 
             Dim expectedLoss# = 0.04
             Dim loss! = m_mlp.ComputeAverageError()
             Dim lossRounded# = Math.Round(loss, 2)
-            Assert.AreEqual(lossRounded <= expectedLoss, True)
+            Assert.AreEqual(True, lossRounded <= expectedLoss)
 
         End Sub
 
@@ -136,12 +136,12 @@ Namespace VectorizedMatrixMLP
             Dim sOutput$ = m_mlp.output.ToStringWithFormat(dec:="0.0")
             Dim expectedMatrix As Matrix = expectedOutput ' Single(,) -> Matrix
             Dim sExpectedOutput = expectedMatrix.ToStringWithFormat(dec:="0.0")
-            Assert.AreEqual(sOutput, sExpectedOutput)
+            Assert.AreEqual(sExpectedOutput, sOutput)
 
             Dim expectedLoss# = 0.15
             Dim loss! = m_mlp.ComputeAverageError()
             Dim lossRounded# = Math.Round(loss, 2)
-            Assert.AreEqual(lossRounded <= expectedLoss, True)
+            Assert.AreEqual(True, lossRounded <= expectedLoss)
 
         End Sub
 
@@ -174,19 +174,19 @@ Namespace VectorizedMatrixMLP
             Dim sOutput$ = m_mlp.output.ToStringWithFormat(dec:="0.0")
             Dim expectedMatrix As Matrix = expectedOutput ' Single(,) -> Matrix
             Dim sExpectedOutput = expectedMatrix.ToStringWithFormat(dec:="0.0")
-            Assert.AreEqual(sOutput, sExpectedOutput)
+            Assert.AreEqual(sExpectedOutput, sOutput)
 
             Dim expectedLoss# = 0.04
             Dim loss! = m_mlp.ComputeAverageError()
             Dim lossRounded# = Math.Round(loss, 2)
-            Assert.AreEqual(lossRounded <= expectedLoss, True)
+            Assert.AreEqual(True, lossRounded <= expectedLoss)
 
         End Sub
 
         <TestMethod()>
         Public Sub VecMatrixMLP1XORSigmoidWithoutBias()
 
-            m_mlp.Init(learningRate:=0.1!, weightAdjustment:=0.02!)
+            m_mlp.Initialize(learningRate:=0.1!, weightAdjustment:=0.02!)
             InitXOR()
             m_mlp.InitializeStruct(m_neuronCountXOR, addBiasColumn:=False)
 
@@ -214,19 +214,19 @@ Namespace VectorizedMatrixMLP
             Dim sOutput = m_mlp.output.ToStringWithFormat(dec:="0.0")
 
             Dim sExpectedOutput = expectedMatrix.ToStringWithFormat(dec:="0.0")
-            Assert.AreEqual(sOutput, sExpectedOutput)
+            Assert.AreEqual(sExpectedOutput, sOutput)
 
             Dim expectedLoss# = 0.12
             Dim loss! = m_mlp.ComputeAverageError()
             Dim lossRounded# = Math.Round(loss, 2)
-            Assert.AreEqual(lossRounded <= expectedLoss, True)
+            Assert.AreEqual(True, lossRounded <= expectedLoss)
 
         End Sub
 
         <TestMethod()>
         Public Sub VecMatrixMLP1XORSigmoidWithoutBias231()
 
-            m_mlp.Init(learningRate:=0.1!, weightAdjustment:=0.02!)
+            m_mlp.Initialize(learningRate:=0.1!, weightAdjustment:=0.02!)
             InitXOR()
             m_mlp.InitializeStruct(m_neuronCountXOR231, addBiasColumn:=False)
 
@@ -255,12 +255,12 @@ Namespace VectorizedMatrixMLP
             Dim sOutput = m_mlp.output.ToStringWithFormat(dec:="0.0")
 
             Dim sExpectedOutput = expectedMatrix.ToStringWithFormat(dec:="0.0")
-            Assert.AreEqual(sOutput, sExpectedOutput)
+            Assert.AreEqual(sExpectedOutput, sOutput)
 
             Dim expectedLoss# = 0.1
             Dim loss! = m_mlp.ComputeAverageError()
             Dim lossRounded# = Math.Round(loss, 2)
-            Assert.AreEqual(lossRounded <= expectedLoss, True)
+            Assert.AreEqual(True, lossRounded <= expectedLoss)
 
         End Sub
 
@@ -290,12 +290,12 @@ Namespace VectorizedMatrixMLP
             Dim sOutput$ = m_mlp.output.ToStringWithFormat(dec:="0.0")
             Dim expectedMatrix As Matrix = expectedOutput ' Single(,) -> Matrix
             Dim sExpectedOutput = expectedMatrix.ToStringWithFormat(dec:="0.0")
-            Assert.AreEqual(sOutput, sExpectedOutput)
+            Assert.AreEqual(sExpectedOutput, sOutput)
 
             Dim expectedLoss# = 0.04
             Dim loss! = m_mlp.ComputeAverageError()
             Dim lossRounded# = Math.Round(loss, 2)
-            Assert.AreEqual(lossRounded <= expectedLoss, True)
+            Assert.AreEqual(True, lossRounded <= expectedLoss)
 
         End Sub
 
@@ -304,7 +304,8 @@ Namespace VectorizedMatrixMLP
 
             InitXOR()
             m_mlp.nbIterations = 600 ' Hyperbolic tangent: works
-            m_mlp.SetActivationFunction(enumActivationFunction.HyperbolicTangent, gain:=1, center:=1)
+            'm_mlp.SetActivationFunction(enumActivationFunction.HyperbolicTangent, gain:=1, center:=1)
+            m_mlp.SetActivationFunction(enumActivationFunction.HyperbolicTangent, gain:=2, center:=1)
 
             m_mlp.InitializeStruct(m_neuronCountXOR, addBiasColumn:=True)
 
@@ -327,12 +328,12 @@ Namespace VectorizedMatrixMLP
             Dim sOutput$ = m_mlp.output.ToStringWithFormat(dec:="0.0")
             Dim expectedMatrix As Matrix = expectedOutput ' Single(,) -> Matrix
             Dim sExpectedOutput = expectedMatrix.ToStringWithFormat(dec:="0.0")
-            Assert.AreEqual(sOutput, sExpectedOutput)
+            Assert.AreEqual(sExpectedOutput, sOutput)
 
             Dim expectedLoss# = 0.02
             Dim loss! = m_mlp.ComputeAverageError()
             Dim lossRounded# = Math.Round(loss, 2)
-            Assert.AreEqual(lossRounded <= expectedLoss, True)
+            Assert.AreEqual(True, lossRounded <= expectedLoss)
 
         End Sub
 
@@ -368,12 +369,12 @@ Namespace VectorizedMatrixMLP
             Dim sOutput$ = m_mlp.output.ToString()
             Dim expectedMatrix As Matrix = expectedOutput ' Single(,) -> Matrix
             Dim sExpectedOutput = expectedMatrix.ToString()
-            Assert.AreEqual(sOutput, sExpectedOutput)
+            Assert.AreEqual(sExpectedOutput, sOutput)
 
             Dim expectedLoss# = 0.02 '0.08
             Dim loss! = m_mlp.ComputeAverageError()
             Dim lossRounded# = Math.Round(loss, 2)
-            Assert.AreEqual(lossRounded <= expectedLoss, True)
+            Assert.AreEqual(True, lossRounded <= expectedLoss)
 
         End Sub
 
@@ -406,12 +407,12 @@ Namespace VectorizedMatrixMLP
             Dim sOutput$ = m_mlp.output.ToString()
             Dim expectedMatrix As Matrix = expectedOutput ' Single(,) -> Matrix
             Dim sExpectedOutput = expectedMatrix.ToString()
-            Assert.AreEqual(sOutput, sExpectedOutput)
+            Assert.AreEqual(sExpectedOutput, sOutput)
 
             Dim expectedLoss# = 0.01 '0.02
             Dim loss! = m_mlp.ComputeAverageError()
             Dim lossRounded# = Math.Round(loss, 2)
-            Assert.AreEqual(lossRounded <= expectedLoss, True)
+            Assert.AreEqual(True, lossRounded <= expectedLoss)
 
         End Sub
 
@@ -447,12 +448,12 @@ Namespace VectorizedMatrixMLP
             Dim sOutput$ = m_mlp.output.ToString()
             Dim expectedMatrix As Matrix = expectedOutput ' Single(,) -> Matrix
             Dim sExpectedOutput = expectedMatrix.ToString()
-            Assert.AreEqual(sOutput, sExpectedOutput)
+            Assert.AreEqual(sExpectedOutput, sOutput)
 
             Dim expectedLoss# = 0.01 '0.03
             Dim loss! = m_mlp.ComputeAverageError()
             Dim lossRounded# = Math.Round(loss, 2)
-            Assert.AreEqual(lossRounded <= expectedLoss, True)
+            Assert.AreEqual(True, lossRounded <= expectedLoss)
 
         End Sub
 
@@ -462,7 +463,7 @@ Namespace VectorizedMatrixMLP
             InitXOR()
             m_mlp.nbIterations = 500 '400 ' ELU: works
             m_mlp.SetActivationFunction(enumActivationFunction.ELU, gain:=0.1, center:=0.4)
-            m_mlp.Init(learningRate:=0.07!, weightAdjustment:=0)
+            m_mlp.Initialize(learningRate:=0.07!, weightAdjustment:=0)
 
             m_mlp.InitializeStruct(m_neuronCountXOR, addBiasColumn:=True)
 
@@ -485,12 +486,12 @@ Namespace VectorizedMatrixMLP
             Dim sOutput$ = m_mlp.output.ToString()
             Dim expectedMatrix As Matrix = expectedOutput ' Single(,) -> Matrix
             Dim sExpectedOutput = expectedMatrix.ToString()
-            Assert.AreEqual(sOutput, sExpectedOutput)
+            Assert.AreEqual(sExpectedOutput, sOutput)
 
             Dim expectedLoss# = 0
             Dim loss! = m_mlp.ComputeAverageError()
             Dim lossRounded# = Math.Round(loss, 2)
-            Assert.AreEqual(lossRounded <= expectedLoss, True)
+            Assert.AreEqual(True, lossRounded <= expectedLoss)
 
         End Sub
 
@@ -522,12 +523,12 @@ Namespace VectorizedMatrixMLP
             Dim sOutput$ = m_mlp.output.ToString()
             Dim expectedMatrix As Matrix = expectedOutput ' Single(,) -> Matrix
             Dim sExpectedOutput = expectedMatrix.ToString()
-            Assert.AreEqual(sOutput, sExpectedOutput)
+            Assert.AreEqual(sExpectedOutput, sOutput)
 
             Dim expectedLoss# = 0
             Dim loss! = m_mlp.ComputeAverageError()
             Dim lossRounded# = Math.Round(loss, 2)
-            Assert.AreEqual(lossRounded <= expectedLoss, True)
+            Assert.AreEqual(True, lossRounded <= expectedLoss)
 
         End Sub
 
@@ -559,12 +560,12 @@ Namespace VectorizedMatrixMLP
             Dim sOutput$ = m_mlp.output.ToStringWithFormat(dec:="0.0")
             Dim expectedMatrix As Matrix = expectedOutput ' Single(,) -> Matrix
             Dim sExpectedOutput = expectedMatrix.ToStringWithFormat(dec:="0.0")
-            Assert.AreEqual(sOutput, sExpectedOutput)
+            Assert.AreEqual(sExpectedOutput, sOutput)
 
             Dim expectedLoss# = 0.04
             Dim loss! = m_mlp.ComputeAverageError()
             Dim lossRounded# = Math.Round(loss, 2)
-            Assert.AreEqual(lossRounded <= expectedLoss, True)
+            Assert.AreEqual(True, lossRounded <= expectedLoss)
 
         End Sub
 
@@ -600,12 +601,12 @@ Namespace VectorizedMatrixMLP
             Dim sOutput$ = m_mlp.output.ToString()
             Dim expectedMatrix As Matrix = expectedOutput ' Single(,) -> Matrix
             Dim sExpectedOutput = expectedMatrix.ToString()
-            Assert.AreEqual(sOutput, sExpectedOutput)
+            Assert.AreEqual(sExpectedOutput, sOutput)
 
             Dim expectedLoss# = 0
             Dim loss! = m_mlp.ComputeAverageError()
             Dim lossRounded# = Math.Round(loss, 2)
-            Assert.AreEqual(lossRounded <= expectedLoss, True)
+            Assert.AreEqual(True, lossRounded <= expectedLoss)
 
         End Sub
 
@@ -641,12 +642,12 @@ Namespace VectorizedMatrixMLP
             Dim sOutput$ = m_mlp.output.ToStringWithFormat(dec:="0.0")
             Dim expectedMatrix As Matrix = expectedOutput ' Single(,) -> Matrix
             Dim sExpectedOutput = expectedMatrix.ToStringWithFormat(dec:="0.0")
-            Assert.AreEqual(sOutput, sExpectedOutput)
+            Assert.AreEqual(sExpectedOutput, sOutput)
 
             Dim expectedLoss# = 0.01
             Dim loss! = m_mlp.ComputeAverageError()
             Dim lossRounded# = Math.Round(loss, 2)
-            Assert.AreEqual(lossRounded <= expectedLoss, True)
+            Assert.AreEqual(True, lossRounded <= expectedLoss)
 
         End Sub
 
@@ -655,7 +656,8 @@ Namespace VectorizedMatrixMLP
 
             Init2XOR()
             m_mlp.nbIterations = 300 ' HTan: works
-            m_mlp.SetActivationFunction(enumActivationFunction.HyperbolicTangent, gain:=1, center:=0.5)
+            'm_mlp.SetActivationFunction(enumActivationFunction.HyperbolicTangent, gain:=1, center:=0.5)
+            m_mlp.SetActivationFunction(enumActivationFunction.HyperbolicTangent, gain:=2, center:=0.5)
 
             m_mlp.InitializeStruct(m_neuronCount2XOR, addBiasColumn:=True)
 
@@ -682,12 +684,12 @@ Namespace VectorizedMatrixMLP
             Dim sOutput$ = m_mlp.output.ToStringWithFormat(dec:="0.0")
             Dim expectedMatrix As Matrix = expectedOutput ' Single(,) -> Matrix
             Dim sExpectedOutput = expectedMatrix.ToStringWithFormat(dec:="0.0")
-            Assert.AreEqual(sOutput, sExpectedOutput)
+            Assert.AreEqual(sExpectedOutput, sOutput)
 
             Dim expectedLoss# = 0.02
             Dim loss! = m_mlp.ComputeAverageError()
             Dim lossRounded# = Math.Round(loss, 2)
-            Assert.AreEqual(lossRounded <= expectedLoss, True)
+            Assert.AreEqual(True, lossRounded <= expectedLoss)
 
         End Sub
 
@@ -724,12 +726,12 @@ Namespace VectorizedMatrixMLP
             Dim sOutput$ = m_mlp.output.ToStringWithFormat(dec:="0.0")
             Dim expectedMatrix As Matrix = expectedOutput ' Single(,) -> Matrix
             Dim sExpectedOutput = expectedMatrix.ToStringWithFormat(dec:="0.0")
-            Assert.AreEqual(sOutput, sExpectedOutput)
+            Assert.AreEqual(sExpectedOutput, sOutput)
 
             Dim expectedLoss# = 0.02
             Dim loss! = m_mlp.ComputeAverageError()
             Dim lossRounded# = Math.Round(loss, 2)
-            Assert.AreEqual(lossRounded <= expectedLoss, True)
+            Assert.AreEqual(True, lossRounded <= expectedLoss)
 
         End Sub
 
@@ -766,12 +768,12 @@ Namespace VectorizedMatrixMLP
             Dim sOutput$ = m_mlp.output.ToStringWithFormat(dec:="0.0")
             Dim expectedMatrix As Matrix = expectedOutput ' Single(,) -> Matrix
             Dim sExpectedOutput = expectedMatrix.ToStringWithFormat(dec:="0.0")
-            Assert.AreEqual(sOutput, sExpectedOutput)
+            Assert.AreEqual(sExpectedOutput, sOutput)
 
             Dim expectedLoss# = 0 '0.17
             Dim loss! = m_mlp.ComputeAverageError()
             Dim lossRounded# = Math.Round(loss, 2)
-            Assert.AreEqual(lossRounded <= expectedLoss, True)
+            Assert.AreEqual(True, lossRounded <= expectedLoss)
 
         End Sub
 
@@ -810,12 +812,12 @@ Namespace VectorizedMatrixMLP
             Dim sOutput$ = m_mlp.output.ToStringWithFormat(dec:="0.0")
             Dim expectedMatrix As Matrix = expectedOutput ' Single(,) -> Matrix
             Dim sExpectedOutput = expectedMatrix.ToStringWithFormat(dec:="0.0")
-            Assert.AreEqual(sOutput, sExpectedOutput)
+            Assert.AreEqual(sExpectedOutput, sOutput)
 
             Dim expectedLoss# = 0.01
             Dim loss! = m_mlp.ComputeAverageError()
             Dim lossRounded# = Math.Round(loss, 2)
-            Assert.AreEqual(lossRounded <= expectedLoss, True)
+            Assert.AreEqual(True, lossRounded <= expectedLoss)
 
         End Sub
 
@@ -856,12 +858,12 @@ Namespace VectorizedMatrixMLP
             Dim sOutput$ = m_mlp.output.ToStringWithFormat(dec:="0.0")
             Dim expectedMatrix As Matrix = expectedOutput ' Single(,) -> Matrix
             Dim sExpectedOutput = expectedMatrix.ToStringWithFormat(dec:="0.0")
-            Assert.AreEqual(sOutput, sExpectedOutput)
+            Assert.AreEqual(sExpectedOutput, sOutput)
 
             Dim expectedLoss# = 0.02
             Dim loss! = m_mlp.ComputeAverageError()
             Dim lossRounded# = Math.Round(loss, 2)
-            Assert.AreEqual(lossRounded <= expectedLoss, True)
+            Assert.AreEqual(True, lossRounded <= expectedLoss)
 
         End Sub
 
@@ -902,12 +904,12 @@ Namespace VectorizedMatrixMLP
             Dim sOutput$ = m_mlp.output.ToStringWithFormat(dec:="0.0")
             Dim expectedMatrix As Matrix = expectedOutput ' Single(,) -> Matrix
             Dim sExpectedOutput = expectedMatrix.ToStringWithFormat(dec:="0.0")
-            Assert.AreEqual(sOutput, sExpectedOutput)
+            Assert.AreEqual(sExpectedOutput, sOutput)
 
             Dim expectedLoss# = 0.01
             Dim loss! = m_mlp.ComputeAverageError()
             Dim lossRounded# = Math.Round(loss, 2)
-            Assert.AreEqual(lossRounded <= expectedLoss, True)
+            Assert.AreEqual(True, lossRounded <= expectedLoss)
 
         End Sub
 
@@ -948,12 +950,12 @@ Namespace VectorizedMatrixMLP
             Dim sOutput$ = m_mlp.output.ToStringWithFormat(dec:="0.0")
             Dim expectedMatrix As Matrix = expectedOutput ' Single(,) -> Matrix
             Dim sExpectedOutput = expectedMatrix.ToStringWithFormat(dec:="0.0")
-            Assert.AreEqual(sOutput, sExpectedOutput)
+            Assert.AreEqual(sExpectedOutput, sOutput)
 
             Dim expectedLoss# = 0.01
             Dim loss! = m_mlp.ComputeAverageError()
             Dim lossRounded# = Math.Round(loss, 2)
-            Assert.AreEqual(lossRounded <= expectedLoss, True)
+            Assert.AreEqual(True, lossRounded <= expectedLoss)
 
         End Sub
 

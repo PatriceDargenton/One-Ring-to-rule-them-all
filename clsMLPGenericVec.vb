@@ -8,6 +8,9 @@ Public MustInherit Class clsVectorizedMLPGeneric : Inherits clsMLPGeneric
 
     Protected neuronCount%()
 
+    ''' <summary>
+    ''' Train all samples at once (run epoch for one iteration: all samples ordered in one vector)
+    ''' </summary>
     Public MustOverride Sub TrainVector()
 
     Public Overrides Sub TrainSystematic(inputs!(,), targets!(,),

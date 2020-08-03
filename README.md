@@ -15,6 +15,7 @@ This is the classical XOR test.
     - [Matrix MLP: implementation using matrix products](#matrix-mlp-implementation-using-matrix-products)
     - [Vectorized Matrix MLP: implementation using matrix products, including samples vector](#vectorized-matrix-mlp-implementation-using-matrix-products-including-samples-vector)
     - [Tensor MLP: implementation using tensor](#tensor-mlp-implementation-using-tensor)
+    - [Accord.NET MLP: implementation using Accord.NET Framework](#accordnet-mlp-implementation-using-accordnet-framework)
 - [Versions](#versions)
 
 <!-- /TOC -->
@@ -57,8 +58,23 @@ From C#: https://github.com/HectorPulido/Vectorized-multilayer-neural-network
 
 From C#: https://github.com/HectorPulido/Machine-learning-Framework-Csharp
 
+## Accord.NET MLP: implementation using Accord.NET Framework
+
+From C#: http://accord-framework.net/docs/html/T_Accord_Neuro_Learning_BackPropagationLearning.htm
+
+See: https://github.com/accord-net/framework
+
+Note: do the first compilation in debug mode!
+
 
 # Versions
+
+03/08/2020 V1.10
+- Sigmoid and Hyperbolic Tangent (Bipolar Sigmoid) activations: optimized also with gain<>1
+- Hyperbolic Tangent (Bipolar Sigmoid) activation: input/2
+- Tests added for 4 and 5 layers
+- Standard tests for 3 implementations
+- Accord.NET MLP added (PlatformTarget: AnyCPU -> x64)
 
 05/07/2020 V1.09
 - Matrix class using Math.Net (I have not succeeded in using extension methods, only in creating a new class which uses MathNet.Numerics.LinearAlgebra.Matrix(Of Double))

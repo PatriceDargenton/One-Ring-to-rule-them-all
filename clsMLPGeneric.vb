@@ -78,7 +78,7 @@ Public MustInherit Class clsMLPGeneric
     ''' </summary>
     Public weightAdjustment!
 
-    Public Sub Init(learningRate!, weightAdjustment!)
+    Public Sub Initialize(learningRate!, weightAdjustment!)
 
         Me.learningRate = learningRate
         Me.weightAdjustment = weightAdjustment
@@ -125,14 +125,14 @@ Public MustInherit Class clsMLPGeneric
     ''' </summary>
     Protected activFnc As MLP.ActivationFunction.IActivationFunction
 
-    Private m_gain!
+    Protected m_gain!
     Protected m_center!
     Protected m_actFunc As enumActivationFunction = enumActivationFunction.Undefined
 
     ''' <summary>
     ''' Set registered activation function
     ''' </summary>
-    Public Sub SetActivationFunction(actFnc As enumActivationFunction, gain!, center!)
+    Public Overridable Sub SetActivationFunction(actFnc As enumActivationFunction, gain!, center!)
 
         Select Case actFnc
             Case enumActivationFunction.Undefined : Me.activFnc = Nothing
@@ -158,6 +158,40 @@ Public MustInherit Class clsMLPGeneric
         m_gain = gain
         m_center = center
         m_actFunc = actFnc
+
+    End Sub
+
+    Public Overridable Sub SetActivationFunctionForMatrix(
+        fctAct As enumActivationFunctionForMatrix, gain!, center!)
+
+        Select Case fctAct
+            Case enumActivationFunctionForMatrix.Sigmoid
+                Me.m_actFunc = enumActivationFunction.Sigmoid
+                Me.activFnc = New SigmoidFunction
+            Case enumActivationFunctionForMatrix.HyperbolicTangent
+                Me.m_actFunc = enumActivationFunction.HyperbolicTangent
+                Me.activFnc = New HyperbolicTangentFunction
+            Case enumActivationFunctionForMatrix.ELU
+                Me.m_actFunc = enumActivationFunction.ELU
+                Me.activFnc = New ELUFunction
+            Case Else
+                Me.activFnc = Nothing
+        End Select
+
+        Me.lambdaFnc = Function(x#) Me.activFnc.Activation(x, gain, center)
+        Me.lambdaFncD = Function(x#) Me.activFnc.Derivative(x, gain, center)
+        'Me.lambdaFncD = Function(x#) Me.activFnc.DerivativeFromOriginalFunction(x, gain)
+        Me.lambdaFncDFOF = Function(x#) Me.activFnc.DerivativeFromOriginalFunction(x, gain)
+
+        m_gain = gain
+        m_center = center
+
+        ' Matrix implementation requires activation function expressed from 
+        '  its direct function: f'(x)=g(f(x))
+        If Not IsNothing(Me.activFnc) AndAlso
+           Not Me.activFnc.DoesDerivativeDependOnOriginalFunction() Then _
+            MsgBox("Activation function must be like this form: f'(x)=g(f(x))",
+                MsgBoxStyle.Exclamation)
 
     End Sub
 
@@ -198,10 +232,13 @@ Public MustInherit Class clsMLPGeneric
 #Region "Train"
 
     ''' <summary>
-    ''' Train one sample
+    ''' Train one sample (run one iteration)
     ''' </summary>
     Public MustOverride Sub TrainOneSample(input!(), target!())
 
+    ''' <summary>
+    ''' Train all samples (run epoch for one iteration)
+    ''' </summary>
     Public Sub Train(Optional learningMode As enumLearningMode = enumLearningMode.Defaut)
         Train(Me.inputArray, Me.targetArray, Me.nbIterations, learningMode)
     End Sub

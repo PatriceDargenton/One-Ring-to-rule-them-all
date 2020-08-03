@@ -6,7 +6,7 @@ Imports System.Threading.Tasks ' Parallel.For
 
 Namespace Utility
 
-#Const Implementation = 0 ' 0 : Off, 1 : On
+#Const Implementation = 1 ' 0 : Off, 1 : On
 
 #If Implementation Then
 
@@ -112,17 +112,17 @@ Namespace Utility
             Me.data = New Double(rows - 1, columns - 1) {}
         End Sub
 
-        Public Sub New(matrix0#(,))
-            Me.data = matrix0
+        Public Sub New(doubleArray#(,))
+            Me.data = doubleArray
         End Sub
 
-        Public Sub New(matrix0!(,))
-            Dim rows = matrix0.GetLength(0)
-            Dim columns = matrix0.GetLength(1)
+        Public Sub New(singleArray!(,))
+            Dim rows = singleArray.GetLength(0)
+            Dim columns = singleArray.GetLength(1)
             ReDim Me.data(rows - 1, columns - 1)
             For i = 0 To rows - 1
                 For j = 0 To columns - 1
-                    Me.data(i, j) = matrix0(i, j)
+                    Me.data(i, j) = singleArray(i, j)
                 Next
             Next
         End Sub
@@ -143,8 +143,8 @@ Namespace Utility
 #Region "Operators"
 
         ' Implicit conversion operator #(,) -> Matrix
-        Public Shared Widening Operator CType(matrix0#(,)) As Matrix
-            Return New Matrix(matrix0)
+        Public Shared Widening Operator CType(doubleArray#(,)) As Matrix
+            Return New Matrix(doubleArray)
         End Operator
 
         ' Implicit conversion operator Matrix -> #(,)
@@ -154,8 +154,8 @@ Namespace Utility
         End Operator
 
         ' Implicit conversion operator !(,) -> Matrix
-        Public Shared Widening Operator CType(matrix0!(,)) As Matrix
-            Return New Matrix(matrix0)
+        Public Shared Widening Operator CType(singleArray!(,)) As Matrix
+            Return New Matrix(singleArray)
         End Operator
 
         Public Shared Operator +(m1 As Matrix, m2 As Matrix) As Matrix

@@ -222,7 +222,7 @@ Friend Class clsMLPClassic : Inherits clsMLPGeneric
                 sumError = 0
                 For k = 0 To Me.Layers(i + 1).nbNeurons - 1
                     sumError += Me.Layers(i + 1).Neurons(k).w(j) *
-                    Me.Layers(i + 1).Neurons(k).err
+                        Me.Layers(i + 1).Neurons(k).err
                 Next k
 
                 Dim signalCopy! = Layers(i).Neurons(j).signalCopy
@@ -282,13 +282,12 @@ Friend Class clsMLPClassic : Inherits clsMLPGeneric
             Dim signal = Me.Layers(outputLayerIndex).Neurons(i).signal
             Dim delta = target(i) - signal
 
-            Dim signalCopy = Me.Layers(outputLayerIndex).Neurons(i).signalCopy
-
             Dim deriv#
             If Me.activFnc.DoesDerivativeDependOnOriginalFunction Then
                 ' Optimization is possible in this case
                 deriv = Me.lambdaFncDFOF.Invoke(signal)
             Else
+                Dim signalCopy = Me.Layers(outputLayerIndex).Neurons(i).signalCopy
                 deriv = Me.lambdaFncD.Invoke(signalCopy)
             End If
 

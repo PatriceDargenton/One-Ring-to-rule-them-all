@@ -189,22 +189,32 @@ Namespace MLP.ActivationFunction
         Public Shared Function CommonDerivative#(x#, gain#, center#)
 
             Dim xc# = x - center
-            Dim y#
-            If gain = 1 Then
-                Dim fx# = CommonActivation(x, gain, center)
-                y = fx * (1 - fx)
-            Else
-                Dim c# = -gain
-                Dim exp# = Math.Exp(c * xc)
-                Dim expP1# = 1 + exp
-                y = -c * exp / (expP1 * expP1)
-            End If
+            Dim fx# = CommonActivation(x, gain, center)
+            Dim y# = gain * fx * (1 - fx) ' 31/07/2020
+
+            'If gain = 1 Then
+            '    Dim fx# = CommonActivation(x, gain, center)
+            '    y = fx * (1 - fx)
+            'Else
+            '    Dim c# = -gain
+            '    Dim exp# = Math.Exp(c * xc)
+            '    Dim expP1# = 1 + exp
+            '    y = -c * exp / (expP1 * expP1)
+            'End If
 
             ' https://www.wolframalpha.com/input/?i=sigmoid+(alpha+*+x)+derivate
             If debugActivationFunction Then
+
                 Dim cosH# = Math.Cosh(gain * xc)
                 Dim y2# = gain / ((2 * cosH) + 2)
-                If Not clsMLPHelper.compare(y, y2, dec:=5) Then Stop
+                If Not clsMLPHelper.Compare(y, y2, dec:=5) Then Stop
+
+                Dim c# = -gain
+                Dim exp# = Math.Exp(c * xc)
+                Dim expP1# = 1 + exp
+                Dim y3 = -c * exp / (expP1 * expP1)
+                If Not clsMLPHelper.Compare(y, y3, dec:=5) Then Stop
+
             End If
 
             Return y
@@ -212,8 +222,10 @@ Namespace MLP.ActivationFunction
         End Function
 
         Public Function DerivativeFromOriginalFunction#(fx#, gain#) Implements IActivationFunction.DerivativeFromOriginalFunction
-            If gain <> 1 Then Return 0
-            Return CommonDerivativeFromOriginalFunction(fx)
+            'If gain <> 1 Then Return 0
+            'Dim y# = CommonDerivativeFromOriginalFunction(fx)
+            Dim y# = gain * CommonDerivativeFromOriginalFunction(fx) ' 31/07/2020
+            Return y
         End Function
 
         Public Shared Function CommonDerivativeFromOriginalFunction#(fx#)
@@ -224,7 +236,7 @@ Namespace MLP.ActivationFunction
     End Class
 
     ''' <summary>
-    ''' Implements f(x) = Hyperbolic Tangent
+    ''' Implements f(x) = Hyperbolic Tangent (Bipolar Sigmoid)
     ''' </summary>
     Public Class HyperbolicTangentFunction : Implements IActivationFunction
 
@@ -240,7 +252,8 @@ Namespace MLP.ActivationFunction
 
             Const expMax As Boolean = False
             Dim xc# = x - center
-            Dim xg# = -2 * gain * xc
+            'Dim xg# = -2 * gain * xc
+            Dim xg# = -gain * xc ' 31/07/2020
             Dim y#
             If xg > clsMLPGeneric.expMax Then
                 y = 1
@@ -249,11 +262,10 @@ Namespace MLP.ActivationFunction
                 y = 0
                 If expMax Then y = -clsMLPGeneric.expMax
             Else
-                y = 2 / (1 + Math.Exp(xg)) - 1 ' = Math.Tanh(-xg / 2)
+                y = 2 / (1 + Math.Exp(xg)) - 1 '  = Math.Tanh(-xg / 2)
 
                 ' https://www.wolframalpha.com/input/?i=HyperbolicTangent
                 If debugActivationFunction Then
-                    'Dim th# = Math.Tanh(gain * xc)
                     Dim th# = Math.Tanh(-xg / 2)
                     If Not clsMLPHelper.Compare(y, th, dec:=5) Then Stop
                 End If
@@ -266,22 +278,36 @@ Namespace MLP.ActivationFunction
         Public Function Derivative#(x#, gain#, center#) Implements IActivationFunction.Derivative
 
             Dim xc# = x - center
-            Dim y#
-            If gain = 1 Then
-                Dim fx# = Activation(x, gain, center)
-                y = 1 - fx * fx
-            Else
-                Dim xg# = -2 * gain
+            Dim fx# = Activation(x, gain, center)
+            Dim y# = gain * (1 - fx * fx) / 2 ' 31/07/2020
+
+            'Dim y#
+            'If gain = 1 Then
+            '    Dim fx# = Activation(x, gain, center)
+            '    y = 1 - fx * fx
+            'Else
+            '    Dim xg# = -2 * gain
+            '    Dim exp# = Math.Exp(xg * xc)
+            '    Dim expP1# = 1 + exp
+            '    y = -2 * xg * exp / (expP1 * expP1)
+            'End If
+
+            ' https://www.wolframalpha.com/input/?i=2+%2F+%281+%2B+Exp%28alpha+x%29%29+-+1+derivative
+            If debugActivationFunction Then
+                'Dim xg# = -2 * gain
+                Dim xg# = -gain ' 31/07/2020
                 Dim exp# = Math.Exp(xg * xc)
                 Dim expP1# = 1 + exp
-                y = -2 * xg * exp / (expP1 * expP1)
+                Dim y2 = -2 * xg * exp / (expP1 * expP1)
+                If Not clsMLPHelper.Compare(y, y2, dec:=5) Then Stop
             End If
+
             Return y
 
         End Function
 
         Public Function DerivativeFromOriginalFunction#(x#, gain#) Implements IActivationFunction.DerivativeFromOriginalFunction
-            If gain <> 1 Then Return 0
+            'If gain <> 1 Then Return 0
             Dim y# = 1 - x * x
             Return y
         End Function
