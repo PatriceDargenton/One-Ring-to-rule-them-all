@@ -10,13 +10,15 @@ This is the classical XOR test.
 - [Documentation](#documentation)
     - [Why 2 XOR and 3 XOR?](#why-2-xor-and-3-xor)
 - [MLP implementations](#mlp-implementations)
-    - [Classic MLP](#classic-mlp)
-    - [Object-oriented programming MLP](#object-oriented-programming-mlp)
-    - [Matrix MLP: implementation using matrix products](#matrix-mlp-implementation-using-matrix-products)
-    - [Vectorized Matrix MLP: implementation using matrix products, including samples vector](#vectorized-matrix-mlp-implementation-using-matrix-products-including-samples-vector)
-    - [Tensor MLP: implementation using tensor](#tensor-mlp-implementation-using-tensor)
-    - [Accord.NET MLP: implementation using Accord.NET Framework](#accordnet-mlp-implementation-using-accordnet-framework)
-    - [Encog MLP: implementation using Encog Framework](#encog-mlp-implementation-using-encog-framework)
+    - [MLP implementations in VB .Net](#mlp-implementations-in-vb-net)
+        - [Classic MLP](#classic-mlp)
+        - [Object-oriented programming MLP](#object-oriented-programming-mlp)
+        - [Matrix MLP: implementation using matrix products](#matrix-mlp-implementation-using-matrix-products)
+        - [Vectorized Matrix MLP: implementation using matrix products, including samples vector](#vectorized-matrix-mlp-implementation-using-matrix-products-including-samples-vector)
+        - [Tensor MLP: implementation using tensor](#tensor-mlp-implementation-using-tensor)
+    - [MLP implementations using frameworks and libraries](#mlp-implementations-using-frameworks-and-libraries)
+        - [Accord.NET MLP: implementation using Accord.NET Framework](#accordnet-mlp-implementation-using-accordnet-framework)
+        - [Encog MLP: implementation using Encog Framework](#encog-mlp-implementation-using-encog-framework)
 - [Versions](#versions)
 
 <!-- /TOC -->
@@ -29,17 +31,21 @@ This is the classical XOR test.
 
 # MLP implementations
 
-## Classic MLP
+## MLP implementations in VB .Net
+
+### Classic MLP
 http://patrice.dargenton.free.fr/ia/ialab/perceptron.html (french)
 
 From C++ (at 22/08/2000): https://github.com/sylbarth/mlp
 
-## Object-oriented programming MLP
+
+### Object-oriented programming MLP
 https://github.com/PatriceDargenton/multilayer-perceptron-vb (VB .Net)
 
 From : https://github.com/RutledgePaulV/multilayer-perceptron-vb (VB .Net)
 
-## Matrix MLP: implementation using matrix products
+
+### Matrix MLP: implementation using matrix products
 https://github.com/PatriceDargenton/Matrix-MultiLayerPerceptron (VB .Net)
 
 From C#: https://github.com/PatriceDargenton/perceptrons
@@ -47,7 +53,7 @@ From C#: https://github.com/PatriceDargenton/perceptrons
 From C#: https://github.com/nlabiris/perceptrons
 
 
-## Vectorized Matrix MLP: implementation using matrix products, including samples vector
+### Vectorized Matrix MLP: implementation using matrix products, including samples vector
 https://github.com/PatriceDargenton/Vectorized_MultilayerPerceptron (VB .Net)
 
 From C#: https://github.com/PatriceDargenton/Vectorized-multilayer-neural-network
@@ -55,19 +61,23 @@ From C#: https://github.com/PatriceDargenton/Vectorized-multilayer-neural-networ
 From C#: https://github.com/HectorPulido/Vectorized-multilayer-neural-network
 
 
-## Tensor MLP: implementation using tensor
+### Tensor MLP: implementation using tensor
 
 From C#: https://github.com/HectorPulido/Machine-learning-Framework-Csharp
 
-## Accord.NET MLP: implementation using Accord.NET Framework
+
+## MLP implementations using frameworks and libraries
+
+Note: do the first compilation in debug mode! (there is actually a bug in VS 2019 if you do the first compilation in release mode, the packages will not be referenced in debug mode after!)
+
+### Accord.NET MLP: implementation using Accord.NET Framework
 
 From C#: http://accord-framework.net/docs/html/T_Accord_Neuro_Learning_BackPropagationLearning.htm
 
 See: https://github.com/accord-net/framework
 
-Note: do the first compilation in debug mode!
 
-## Encog MLP: implementation using Encog Framework
+### Encog MLP: implementation using Encog Framework
 
 From C#: https://github.com/encog/encog-dotnet-core
 
