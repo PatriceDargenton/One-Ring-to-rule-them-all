@@ -10,7 +10,6 @@
 Imports Accord.Neuro
 Imports Accord.Neuro.Learning
 
-Imports System.IO
 Imports Perceptron.Utility ' Matrix
 Imports System.Text
 
@@ -40,10 +39,10 @@ Public Class clsMLPAccord : Inherits clsVectorizedMLPGeneric
                 "useBias=False is not implemented for clsAccordMLP!")
         End If
 
-        Dim inputArrayDbl = clsMLPHelper.ConvertSingleToDouble(Me.inputArray)
-        Me.inputJaggedDblArray = clsMLPHelper.TransformDoubleArrayToJaggedArray(inputArrayDbl)
-        Dim targetArrayDbl = clsMLPHelper.ConvertSingleToDouble(Me.targetArray)
-        Me.targetJaggedDblArray = clsMLPHelper.TransformDoubleArrayToJaggedArray(targetArrayDbl)
+        Dim inputArrayDbl = clsMLPHelper.Convert2DArrayOfSingleToDouble(Me.inputArray)
+        Me.inputJaggedDblArray = clsMLPHelper.Transform2DArrayToJaggedArray(inputArrayDbl)
+        Dim targetArrayDbl = clsMLPHelper.Convert2DArrayOfSingleToDouble(Me.targetArray)
+        Me.targetJaggedDblArray = clsMLPHelper.Transform2DArrayToJaggedArray(targetArrayDbl)
 
         Dim sigmoidAlphaValue! = Me.m_gain
 
@@ -82,12 +81,12 @@ Public Class clsMLPAccord : Inherits clsVectorizedMLPGeneric
     End Sub
 
     Public Overrides Sub SetActivationFunctionOptimized(
-        fctAct As enumActivationFunctionOptimized, gain!, center!)
+        actFnc As enumActivationFunctionOptimized, gain!, center!)
 
-        MyBase.SetActivationFunctionOptimized(fctAct, gain, center)
+        MyBase.SetActivationFunctionOptimized(actFnc, gain, center)
 
         Dim sigmoidAlphaValue! = Me.m_gain
-        Select Case fctAct
+        Select Case actFnc
             Case enumActivationFunctionOptimized.Sigmoid
                 Me.m_actFunc = enumActivationFunction.Sigmoid
                 Me.network = New ActivationNetwork(
@@ -166,13 +165,13 @@ Public Class clsMLPAccord : Inherits clsVectorizedMLPGeneric
                 Dim neuron = CType(layer.Neurons(j), ActivationNeuron)
                 Dim nbWeights = neuron.Weights.Count
                 For k = 0 To nbWeights - 1
-                    Dim r# = neuron.Weights(k)
-                    Dim rounded# = Math.Round(r, clsMLPGeneric.roundWeights)
+                    Dim r = neuron.Weights(k)
+                    Dim rounded = Math.Round(r, clsMLPGeneric.roundWeights)
                     neuron.Weights(k) = rounded
                 Next k
                 If Me.useBias Then
-                    Dim r# = neuron.Threshold
-                    Dim rounded# = Math.Round(r, clsMLPGeneric.roundWeights)
+                    Dim r = neuron.Threshold
+                    Dim rounded = Math.Round(r, clsMLPGeneric.roundWeights)
                     neuron.Threshold = rounded
                 Else
                     neuron.Threshold = 0
@@ -180,17 +179,6 @@ Public Class clsMLPAccord : Inherits clsVectorizedMLPGeneric
             Next j
         Next i
 
-    End Sub
-
-    Public Overrides Sub ComputeError()
-        ' Calculate the error: ERROR = TARGETS - OUTPUTS
-        Dim m As Matrix = Me.targetArray
-        Me.lastError = m - Me.output
-    End Sub
-
-    Public Overrides Sub ComputeAverageErrorFromLastError()
-        ' Compute first abs then average:
-        Me.averageError = CSng(Me.lastError.Abs.Average)
     End Sub
 
     Public Overrides Sub TrainVector()
@@ -235,15 +223,15 @@ Public Class clsMLPAccord : Inherits clsVectorizedMLPGeneric
             Next
         Next
 
-        Me.lastOutputArray1DSingle = clsMLPHelper.ConvertDoubleToSingle(outputs1D)
+        Me.lastOutputArray1DSingle = clsMLPHelper.Convert1DArrayOfDoubleToSingle(outputs1D)
         Me.output = outputs2D
 
     End Sub
 
     Public Overrides Sub TrainOneSample(input!(), target!())
 
-        Dim inputArrayDbl = clsMLPHelper.ConvertSingleToDouble1D(input)
-        Dim targetArrayDbl = clsMLPHelper.ConvertSingleToDouble1D(target)
+        Dim inputArrayDbl = clsMLPHelper.Convert1DArrayOfSingleToDouble(input)
+        Dim targetArrayDbl = clsMLPHelper.Convert1DArrayOfSingleToDouble(target)
 
         Dim avgError#
         If PRBPLAlgo Then
@@ -254,7 +242,7 @@ Public Class clsMLPAccord : Inherits clsVectorizedMLPGeneric
         'Me.averageError = CSng(avgError)
 
         Dim outputs#() = Me.network.Compute(inputArrayDbl)
-        Me.lastOutputArray1DSingle = clsMLPHelper.ConvertDoubleToSingle(outputs)
+        Me.lastOutputArray1DSingle = clsMLPHelper.Convert1DArrayOfDoubleToSingle(outputs)
 
         Dim sum# = 0
         For i = 0 To Me.nbOutputNeurons - 1
@@ -268,21 +256,21 @@ Public Class clsMLPAccord : Inherits clsVectorizedMLPGeneric
 
     Public Overrides Sub TestOneSample(input!())
 
-        Dim inputsDbl#() = clsMLPHelper.ConvertSingleToDouble1D(input)
+        Dim inputsDbl#() = clsMLPHelper.Convert1DArrayOfSingleToDouble(input)
         Dim outputs#() = Me.network.Compute(inputsDbl)
-        Dim outputSng!() = clsMLPHelper.ConvertDoubleToSingle(outputs)
-        Me.lastOutputArray1DSingle = outputSng
+        Me.lastOutputArray1DSingle = clsMLPHelper.Convert1DArrayOfDoubleToSingle(outputs)
 
     End Sub
 
-    Public Overrides Sub TestOneSample(input!(), ByRef ouput!())
+    'Public Overrides Sub TestOneSample(input!(), ByRef ouput!())
 
-        Dim inputsDbl#() = clsMLPHelper.ConvertSingleToDouble1D(input)
-        Dim outputs#() = Me.network.Compute(inputsDbl)
-        Dim outputSng!() = clsMLPHelper.ConvertDoubleToSingle(outputs)
-        Me.lastOutputArray1DSingle = ouput
+    '    'Dim inputsDbl#() = clsMLPHelper.Convert1DArrayOfSingleToDouble(input)
+    '    'Dim outputs#() = Me.network.Compute(inputsDbl)
+    '    'Me.lastOutputArray1DSingle = clsMLPHelper.Convert1DArrayOfDoubleToSingle(outputs)
+    '    TestOneSample(input)
+    '    ouput = Me.lastOutputArray1DSingle
 
-    End Sub
+    'End Sub
 
     Public Overrides Sub PrintWeights()
 
@@ -323,7 +311,7 @@ Public Class clsMLPAccord : Inherits clsVectorizedMLPGeneric
             Next j
             sb.Append("}" & vbLf)
 
-            If i < Me.network.Layers.Count - 1 Then sb.AppendLine()
+            If i < Me.layerCount - 1 Then sb.AppendLine()
 
         Next i
 

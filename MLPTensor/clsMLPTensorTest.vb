@@ -34,6 +34,9 @@ Module modMLPTensorTest
         nbIterations = 5000
 
         mlp.InitializeStruct(m_neuronCountXOR, addBiasColumn:=True)
+        'mlp.InitializeStruct(m_neuronCountXOR231, addBiasColumn:=True)
+        'mlp.InitializeStruct(m_neuronCountXOR4Layers2331, addBiasColumn:=True)
+        'mlp.InitializeStruct(m_neuronCountXOR5Layers23331, addBiasColumn:=True)
 
         mlp.Randomize()
 

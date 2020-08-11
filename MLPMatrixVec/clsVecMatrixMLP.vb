@@ -165,26 +165,14 @@ Namespace VectorizedMatrixMLP
 
         End Sub
 
-        Public Overrides Sub ComputeError()
-            ' Calculate the error: ERROR = TARGETS - OUTPUTS
-            Dim m As Matrix = Me.targetArray
-            'Me.lastError = m - Me.outputMatrix
-            Me.lastError = m - Me.output
-        End Sub
-
         Public Sub SetLastError()
             Me.lastError = Me.error_(Me.layerCount - 1)
         End Sub
 
-        Public Overrides Sub ComputeAverageErrorFromLastError()
-            ' Compute first abs then average:
-            Me.averageError = CSng(Me.lastError.Abs.Average * Me.exampleCount)
-        End Sub
-
-        Public Overrides Function ComputeAverageError!()
-            MyBase.ComputeAverageError()
-            Return Me.averageError
-        End Function
+        'Public Overrides Sub ComputeAverageErrorFromLastError()
+        '    ' Compute first abs then average:
+        '    Me.averageError = CSng(Me.lastError.Abs.Average * Me.exampleCount)
+        'End Sub
 
         Public Sub ComputeErrorOneSample()
             ' Calculate the error: ERROR = TARGETS - OUTPUTS
@@ -212,26 +200,37 @@ Namespace VectorizedMatrixMLP
 
         Private Sub SetInputOneSample(input!())
             Dim inputDble#(0, input.Length - 1)
-            inputDble = clsMLPHelper.FillArray2(inputDble, input, 0)
+            'inputDble = clsMLPHelper.FillArray2(inputDble, input, 0)
+            clsMLPHelper.Fill2DArrayOfDoubleByArrayOfSingle(inputDble, input, 0)
             Dim matrixInput As Matrix = inputDble
             Me.input = matrixInput
         End Sub
 
         Private Sub SetTargetOneSample(target!())
             Dim targetsDble#(0, target.Length - 1)
-            targetsDble = clsMLPHelper.FillArray2(targetsDble, target, 0)
+            'targetsDble = clsMLPHelper.FillArray2(targetsDble, target, 0)
+            clsMLPHelper.Fill2DArrayOfDoubleByArrayOfSingle(targetsDble, target, 0)
             Me.target = targetsDble
         End Sub
 
         Public Sub SetOuput1D()
-            'Me.lastOutputArray1DSingle = Me.outputMatrix.ToArraySingle()
             Me.lastOutputArray1DSingle = Me.output.ToArraySingle()
         End Sub
 
         Public Overrides Sub TestOneSample(input!())
+
+            ' Resize output to one sample
+            If Me.exampleCount > 1 Then
+                Me.exampleCount = 1
+                Dim nbOutputs% = Me.neuronCount(Me.layerCount - 1)
+                Dim target!(nbOutputs - 1)
+                SetTargetOneSample(target)
+            End If
+
             SetInputOneSample(input)
             ForwardPropagateSignal()
             SetOuput1D()
+
         End Sub
 
         Public Overrides Sub PrintWeights()
@@ -258,7 +257,6 @@ Namespace VectorizedMatrixMLP
                     Dim nbTargets = Me.targetArray.GetLength(1)
                     TestAllSamples(Me.inputArray, nbOutputs:=nbTargets)
                 End If
-                'Dim outputArrayDble#(,) = Me.output
                 ComputeAverageError()
                 Dim sMsg$ = vbLf & "Iteration n°" & iteration + 1 & "/" & nbIterations & vbLf &
                     "Output: " & Me.output.ToString() & vbLf &

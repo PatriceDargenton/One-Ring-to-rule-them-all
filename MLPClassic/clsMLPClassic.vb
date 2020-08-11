@@ -303,17 +303,6 @@ Friend Class clsMLPClassic : Inherits clsMLPGeneric
 
     End Function
 
-    Public Overrides Sub ComputeError()
-        ' Calculate the error: ERROR = TARGETS - OUTPUTS
-        Dim m As Matrix = Me.targetArray
-        Me.lastError = m - Me.output
-    End Sub
-
-    Public Overrides Sub ComputeAverageErrorFromLastError()
-        ' Compute first abs then average:
-        Me.averageError = CSng(Me.lastError.Abs.Average)
-    End Sub
-
 #End Region
 
 #Region "Print"

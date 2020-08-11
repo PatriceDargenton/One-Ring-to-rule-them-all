@@ -16,6 +16,7 @@ This is the classical XOR test.
     - [Vectorized Matrix MLP: implementation using matrix products, including samples vector](#vectorized-matrix-mlp-implementation-using-matrix-products-including-samples-vector)
     - [Tensor MLP: implementation using tensor](#tensor-mlp-implementation-using-tensor)
     - [Accord.NET MLP: implementation using Accord.NET Framework](#accordnet-mlp-implementation-using-accordnet-framework)
+    - [Encog MLP: implementation using Encog Framework](#encog-mlp-implementation-using-encog-framework)
 - [Versions](#versions)
 
 <!-- /TOC -->
@@ -66,8 +67,19 @@ See: https://github.com/accord-net/framework
 
 Note: do the first compilation in debug mode!
 
+## Encog MLP: implementation using Encog Framework
+
+From C#: https://github.com/encog/encog-dotnet-core
+
+See: https://www.heatonresearch.com/encog
+
 
 # Versions
+
+11/08/2020 V1.12
+- Factorized in clsMLPGeneric: ComputeError(), ComputeAverageErrorFromLastError(), ComputeAverageError() and TestOneSample(input!(), ByRef ouput!())
+- Standard test TestMLP3XORHTangent fixed
+- Encog MLP added
 
 03/08/2020 V1.11
 - ActivationFunctionForMatrix ->

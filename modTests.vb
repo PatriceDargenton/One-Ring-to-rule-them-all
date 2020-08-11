@@ -19,6 +19,9 @@ Module modTests
         NextTest()
 
         AccordMLPTest()
+        NextTest()
+
+        EncogMLPTest()
 
         Console.WriteLine("Press a key to quit.")
         Console.ReadKey()

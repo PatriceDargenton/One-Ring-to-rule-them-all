@@ -29,6 +29,9 @@ Module modMLPAccordTest
 
         mlp.Initialize(learningRate:=0.05!, weightAdjustment:=0.1!)
         mlp.InitializeStruct(m_neuronCountXOR, addBiasColumn:=True)
+        'mlp.InitializeStruct(m_neuronCountXOR231, addBiasColumn:=True)
+        'mlp.InitializeStruct(m_neuronCountXOR4Layers2331, addBiasColumn:=True)
+        'mlp.InitializeStruct(m_neuronCountXOR5Layers23331, addBiasColumn:=True)
 
         'mlp.SetActivationFunctionOptimized(
         '    enumActivationFunctionOptimized.Sigmoid, gain:=2, center:=0)

@@ -2,7 +2,7 @@
 Imports Perceptron.MLP.ActivationFunction
 Imports Perceptron.Utility ' Matrix
 
-Public MustInherit Class clsMLPGeneric
+Public MustInherit Class clsMLPGeneric ' MultiLayer Perceptron (MLP) generic class
 
 #Region "Declaration"
 
@@ -213,12 +213,19 @@ Public MustInherit Class clsMLPGeneric
     ''' <summary>
     ''' Compute error of the output matrix for all samples
     ''' </summary>
-    Public MustOverride Sub ComputeError()
+    Public Overridable Sub ComputeError()
+        ' Calculate the error: ERROR = TARGETS - OUTPUTS
+        Dim m As Matrix = Me.targetArray
+        Me.lastError = m - Me.output
+    End Sub
 
     ''' <summary>
     ''' Compute average error of the output matrix for all samples from last error layer
     ''' </summary>
-    Public MustOverride Sub ComputeAverageErrorFromLastError()
+    Public Overridable Sub ComputeAverageErrorFromLastError()
+        ' Compute first abs then average:
+        Me.averageError = CSng(Me.lastError.Abs.Average)
+    End Sub
 
     ''' <summary>
     ''' Compute average error of the output matrix for all samples
@@ -368,7 +375,10 @@ Public MustInherit Class clsMLPGeneric
     ''' <summary>
     ''' Test one sample: Propagate the input signal into the MLP and return the ouput
     ''' </summary>
-    Public MustOverride Sub TestOneSample(input!(), ByRef ouput!())
+    Public Overridable Sub TestOneSample(input!(), ByRef ouput!())
+        TestOneSample(input)
+        ouput = Me.lastOutputArray1DSingle
+    End Sub
 
     ''' <summary>
     ''' Test all samples

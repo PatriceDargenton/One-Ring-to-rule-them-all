@@ -36,6 +36,10 @@ Module modMatrixVecMLPTest
         mlp.SetActivationFunction(enumActivationFunction.Sigmoid, gain:=1, center:=0)
 
         mlp.InitializeStruct(m_neuronCountXOR, addBiasColumn:=True)
+        'mlp.InitializeStruct(m_neuronCountXOR231, addBiasColumn:=True)
+        'mlp.InitializeStruct(m_neuronCountXOR4Layers2331, addBiasColumn:=True)
+        'mlp.InitializeStruct(m_neuronCountXOR5Layers23331, addBiasColumn:=True)
+
         mlp.Initialize(learningRate:=0.1, weightAdjustment:=1)
 
         mlp.Randomize()

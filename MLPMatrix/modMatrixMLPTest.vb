@@ -40,14 +40,13 @@ Module modMatrixMLPTest
         'mlp.SetActivationFunctionOptimized(enumActivationFunctionOptimized.ELU,
         '    gain:=1, center:=-2)
 
-        ' Doesn't work
-        'nbIterations = 1000000
-        'mlp.SetActivationFunctionOptimized(enumActivationFunctionOptimized.ReLU, gain:=1, center:=0)
-
-        ' Doesn't work
-        'mlp.SetActivationFunctionOptimized(enumActivationFunctionOptimized.ReLUSigmoid, gain:=1, center:=0)
-
         mlp.InitializeStruct(m_neuronCountXOR, addBiasColumn:=True)
+        'mlp.InitializeStruct(m_neuronCountXOR231, addBiasColumn:=True)
+
+        ' Not implemented:
+        'mlp.InitializeStruct(m_neuronCountXOR4Layers2331, addBiasColumn:=True)
+        'mlp.InitializeStruct(m_neuronCountXOR5Layers23331, addBiasColumn:=True)
+
         mlp.Initialize(learningRate:=0.1, weightAdjustment:=0.1)
 
         mlp.Randomize(-1, 2)

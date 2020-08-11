@@ -3,114 +3,80 @@ Imports System.ComponentModel ' DescriptionAttribute
 
 Public Class clsMLPHelper
 
-    Public Shared Function GetVector(singleArray!(,), index%) As Single()
+    Public Shared Function GetVector(array1D!(,), index%) As Single()
 
-        Dim length = singleArray.GetLength(1)
+        Dim length = array1D.GetLength(1)
         Dim vect!(0 To length - 1)
         For k = 0 To length - 1
-            vect(k) = singleArray(index, k)
+            vect(k) = array1D(index, k)
         Next
         Return vect
 
     End Function
 
-    Public Shared Function FillArray(singleArray2D!(,), singleArray1D!(), index%) As Single(,)
-        Dim nbItems = singleArray1D.GetLength(0)
+    Public Shared Sub Fill2DArrayOfSingle(array2D!(,), array1D!(), index%)
+        Dim nbItems = array1D.GetLength(0)
         For j = 0 To nbItems - 1
-            singleArray2D(index, j) = singleArray1D(j)
+            array2D(index, j) = array1D(j)
         Next
-        Return singleArray2D
-    End Function
+    End Sub
 
-    Public Shared Function FillArray(doubleArray2D#(,), singleArray1D!(), index%) As Double(,)
-        Dim nbItems = singleArray1D.GetLength(0)
+    Public Shared Sub Fill2DArrayOfDoubleByArrayOfSingle(array2D#(,), array1D!(), index%)
+        Dim nbItems = array1D.GetLength(0)
         For j = 0 To nbItems - 1
-            doubleArray2D(j, index) = singleArray1D(j)
+            array2D(index, j) = array1D(j)
         Next
-        Return doubleArray2D
-    End Function
+    End Sub
 
-    Public Shared Function FillArray2(doubleArray2D#(,), singleArray1D!(), index%) As Double(,)
-        Dim nbItems = singleArray1D.GetLength(0)
+    Public Shared Sub Fill2DArrayOfDouble(array2D#(,), array1D#(), index%)
+        Dim nbItems = array2D.GetLength(0)
         For j = 0 To nbItems - 1
-            doubleArray2D(index, j) = singleArray1D(j)
+            array2D(index, j) = array1D(j)
         Next
-        Return doubleArray2D
-    End Function
+    End Sub
 
-    Public Shared Function ConvertSingleToDouble(inputs!(,)) As Double(,)
-        Dim length0 = inputs.GetLength(0)
-        Dim length1 = inputs.GetLength(1)
+    Public Shared Function Convert2DArrayOfSingleToDouble(array2D!(,)) As Double(,)
+        Dim length0 = array2D.GetLength(0)
+        Dim length1 = array2D.GetLength(1)
         Dim arr#(0 To length0 - 1, 0 To length1 - 1)
         For i = 0 To length0 - 1
             For j = 0 To length1 - 1
-                arr(i, j) = inputs(i, j)
+                arr(i, j) = array2D(i, j)
             Next
         Next
         Return arr
     End Function
 
-    Public Shared Function ConvertSingleToDouble1D(inputs!()) As Double()
-        Dim length0 = inputs.GetLength(0)
+    Public Shared Function Convert1DArrayOfSingleToDouble(array1D!()) As Double()
+        Dim length0 = array1D.GetLength(0)
         Dim arr#(0 To length0 - 1)
         For i = 0 To length0 - 1
-            arr(i) = inputs(i)
+            arr(i) = array1D(i)
         Next
         Return arr
     End Function
 
-    Public Shared Function ConvertDoubleToSingle(inputs#()) As Single()
-        Dim length0 = inputs.GetLength(0)
+    Public Shared Function Convert1DArrayOfDoubleToSingle(array1D#()) As Single()
+        Dim length0 = array1D.GetLength(0)
         Dim arr!(0 To length0 - 1)
         For i = 0 To length0 - 1
-            arr(i) = CSng(inputs(i))
+            arr(i) = CSng(array1D(i))
         Next
         Return arr
     End Function
 
-    Public Shared Function ConvertDoubleToSingle2D(inputs#(,)) As Single(,)
-        Dim length0 = inputs.GetLength(0)
-        Dim length1 = inputs.GetLength(1)
-        Dim arr!(0 To length0 - 1, 0 To length1 - 1)
-        For i = 0 To length0 - 1
-            For j = 0 To length1 - 1
-                arr(i, j) = CSng(inputs(i, j))
-            Next
-        Next
-        Return arr
-    End Function
-
-    Public Shared Function TransformDoubleArrayToJaggedArray(inputs#(,)) As Double()()
+    Public Shared Function Transform2DArrayToJaggedArray(array2D#(,)) As Double()()
 
         ' Transform a 2D array into a jagged array
 
-        Dim length0 = inputs.GetLength(0)
-        Dim length1 = inputs.GetLength(1)
+        Dim length0 = array2D.GetLength(0)
+        Dim length1 = array2D.GetLength(1)
         Dim arr As Double()() = New Double(length0 - 1)() {}
         For i = 0 To length0 - 1
             arr(i) = New Double() {}
             ReDim arr(i)(length1 - 1)
             For j = 0 To length1 - 1
-                arr(i)(j) = inputs(i, j)
-            Next j
-        Next i
-
-        Return arr
-
-    End Function
-
-    Public Shared Function TransformDoubleArrayToJaggedArray1D(inputs#()) As Double()()
-
-        ' Transform a 1D array into a jagged array
-
-        Dim length0 = 1
-        Dim length1 = inputs.GetLength(0)
-        Dim arr As Double()() = New Double(length0 - 1)() {}
-        For i = 0 To length0 - 1
-            arr(i) = New Double() {}
-            ReDim arr(i)(length1 - 1)
-            For j = 0 To length1 - 1
-                arr(i)(j) = inputs(j)
+                arr(i)(j) = array2D(i, j)
             Next j
         Next i
 
@@ -127,17 +93,27 @@ Public Class clsMLPHelper
 
     End Function
 
-    Public Shared Function CompareArray(inputa!(,), inputb!(,)) As Boolean
-        Dim length0a = inputa.GetLength(0)
-        Dim length1a = inputa.GetLength(1)
-        Dim length0b = inputb.GetLength(0)
-        Dim length1b = inputb.GetLength(1)
+    Public Shared Function CompareArray(array2Da!(,), array2Db!(,)) As Boolean
+        Dim length0a = array2Da.GetLength(0)
+        Dim length1a = array2Da.GetLength(1)
+        Dim length0b = array2Db.GetLength(0)
+        Dim length1b = array2Db.GetLength(1)
         If length0a <> length0b Then Return False
         If length1a <> length1b Then Return False
         For i = 0 To length0a - 1
             For j = 0 To length1a - 1
-                If inputa(i, j) <> inputb(i, j) Then Return False
+                If array2Da(i, j) <> array2Db(i, j) Then Return False
             Next
+        Next
+        Return True
+    End Function
+
+    Public Shared Function CompareArray1D(array1Da#(), array1Db#()) As Boolean
+        Dim length0a = array1Da.GetLength(0)
+        Dim length0b = array1Db.GetLength(0)
+        If length0a <> length0b Then Return False
+        For i = 0 To length0a - 1
+            If array1Da(i) <> array1Db(i) Then Return False
         Next
         Return True
     End Function

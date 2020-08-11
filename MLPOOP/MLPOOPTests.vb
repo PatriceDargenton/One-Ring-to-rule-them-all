@@ -32,8 +32,11 @@ Module Main
         mlp.ShowMessage("------------------------------------")
 
         'num_input:=2, num_hidden:={5}, num_output:=1
-        mlp.InitializeStruct({2, 5, 1}, addBiasColumn:=True)
-        'mlp.InitializeStruct({4, 4, 2}, addBiasColumn:=True)
+        'mlp.InitializeStruct({2, 5, 1}, addBiasColumn:=True)
+        mlp.InitializeStruct(m_neuronCountXOR, addBiasColumn:=True)
+        'mlp.InitializeStruct(m_neuronCountXOR231, addBiasColumn:=True)
+        'mlp.InitializeStruct(m_neuronCountXOR4Layers2331, addBiasColumn:=True)
+        'mlp.InitializeStruct(m_neuronCountXOR5Layers23331, addBiasColumn:=True)
         mlp.Randomize()
         mlp.PrintWeights()
 

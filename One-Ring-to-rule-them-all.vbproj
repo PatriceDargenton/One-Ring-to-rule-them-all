@@ -63,6 +63,9 @@
     <Reference Include="Accord.Statistics">
       <HintPath>packages\Accord.Statistics.3.8.2-alpha\lib\net45\Accord.Statistics.dll</HintPath>
     </Reference>
+    <Reference Include="encog-core-cs">
+      <HintPath>packages\encog-dotnet-core.3.4.0\lib\encog-core-cs.dll</HintPath>
+    </Reference>
     <Reference Include="Microsoft.VisualStudio.QualityTools.UnitTestFramework, Version=10.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>.\Microsoft.VisualStudio.QualityTools.UnitTestFramework.dll</HintPath>
@@ -147,6 +150,8 @@
     <Compile Include="MLPTensor\clsTensor.vb" />
     <Compile Include="MLPAccordLib\clsMLPAccord.vb" />
     <Compile Include="MLPAccordLib\clsMLPAccordTest.vb" />
+    <Compile Include="MLPEncogLib\clsMLPEncog.vb" />
+    <Compile Include="MLPEncogLib\clsMLPEncogTest.vb" />
     <Compile Include="My Project\Application.Designer.vb">
       <AutoGen>True</AutoGen>
       <DependentUpon>Application.myapp</DependentUpon>

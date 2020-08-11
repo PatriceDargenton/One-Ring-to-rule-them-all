@@ -142,7 +142,7 @@ Namespace NetworkOOP
 
         Private Sub SetInputOneSample(input!())
 
-            Dim inputDble#() = clsMLPHelper.ConvertSingleToDouble1D(input)
+            Dim inputDble#() = clsMLPHelper.Convert1DArrayOfSingleToDouble(input)
             Dim lst As List(Of Double) = inputDble.ToList
             Dim data As New Testing(lst)
             Me.InputLayer.SetInput(data.Input)
@@ -152,8 +152,8 @@ Namespace NetworkOOP
         Private Function SetInputAndTargetOneSample(input!(), target!()) As List(Of Training)
 
             Dim data As New List(Of Training)
-            Dim inputDble#() = clsMLPHelper.ConvertSingleToDouble1D(input)
-            Dim targetDble#() = clsMLPHelper.ConvertSingleToDouble1D(target)
+            Dim inputDble#() = clsMLPHelper.Convert1DArrayOfSingleToDouble(input)
+            Dim targetDble#() = clsMLPHelper.Convert1DArrayOfSingleToDouble(target)
             data.Add(New Training(inputDble, targetDble))
             Return data
 
@@ -171,14 +171,7 @@ Namespace NetworkOOP
         Public Sub SetOuput1D()
             Dim lst = Me.OutputLayer.ExtractOutputs()
             Dim lastOutputArray1D#() = lst.ToArray()
-            Me.lastOutputArray1DSingle = clsMLPHelper.ConvertDoubleToSingle(lastOutputArray1D)
-        End Sub
-
-        Public Overrides Sub TestOneSample(input!(), ByRef ouput!())
-
-            TestOneSample(input)
-            ouput = Me.lastOutputArray1DSingle
-
+            Me.lastOutputArray1DSingle = clsMLPHelper.Convert1DArrayOfDoubleToSingle(lastOutputArray1D)
         End Sub
 
         Public Overrides Sub TestOneSample(input!())
@@ -268,23 +261,6 @@ Namespace NetworkOOP
             Next
 
         End Sub
-
-        Public Overrides Sub ComputeError()
-            ' Calculate the error: ERROR = TARGETS - OUTPUTS
-            Dim m As Matrix = Me.targetArray
-            Me.lastError = m - Me.output
-        End Sub
-
-        Public Overrides Sub ComputeAverageErrorFromLastError()
-            ' Compute first abs then average:
-            Me.averageError = CSng(Me.lastError.Abs.Average)
-        End Sub
-
-        Public Overrides Function ComputeAverageError!()
-            Me.ComputeError()
-            Me.ComputeAverageErrorFromLastError()
-            Return Me.averageError
-        End Function
 
         Public Overrides Sub PrintWeights()
 

@@ -146,7 +146,8 @@ Public Class clsMLPTensor : Inherits clsVectorizedMLPGeneric
     Private Sub SetInputOneSample(input!())
 
         Dim inputsDble#(0, input.Length - 1)
-        inputsDble = clsMLPHelper.FillArray2(inputsDble, input, 0)
+        'inputsDble = clsMLPHelper.FillArray2(inputsDble, input, 0)
+        clsMLPHelper.Fill2DArrayOfDoubleByArrayOfSingle(inputsDble, input, 0)
         Dim inputMatrix As Matrix = inputsDble
         Me.input = New Tensor(inputMatrix, autoGrad:=True)
 
@@ -154,7 +155,7 @@ Public Class clsMLPTensor : Inherits clsVectorizedMLPGeneric
 
     Private Sub SetInputAllSamples()
 
-        Dim inputArrayDble#(,) = clsMLPHelper.ConvertSingleToDouble(Me.inputArray)
+        Dim inputArrayDble#(,) = clsMLPHelper.Convert2DArrayOfSingleToDouble(Me.inputArray)
         Dim inputMatrix As Matrix = inputArrayDble
         Me.input = New Tensor(inputMatrix, autoGrad:=True)
 
@@ -163,7 +164,8 @@ Public Class clsMLPTensor : Inherits clsVectorizedMLPGeneric
     Private Sub SetTargetOneSample(target!())
 
         Dim targetsDble#(0, target.Length - 1)
-        targetsDble = clsMLPHelper.FillArray2(targetsDble, target, 0)
+        'targetsDble = clsMLPHelper.FillArray2(targetsDble, target, 0)
+        clsMLPHelper.Fill2DArrayOfDoubleByArrayOfSingle(targetsDble, target, 0)
         Dim targetMatrix As Matrix = targetsDble
         Me.target = New Tensor(targetMatrix, autoGrad:=True)
 
@@ -171,7 +173,7 @@ Public Class clsMLPTensor : Inherits clsVectorizedMLPGeneric
 
     Private Sub SetTargetAllSamples()
 
-        Dim targetArrayDble#(,) = clsMLPHelper.ConvertSingleToDouble(Me.targetArray)
+        Dim targetArrayDble#(,) = clsMLPHelper.Convert2DArrayOfSingleToDouble(Me.targetArray)
         Dim targetMatrix As Matrix = targetArrayDble
         Me.target = New Tensor(targetMatrix, autoGrad:=True)
 
@@ -240,11 +242,6 @@ Public Class clsMLPTensor : Inherits clsVectorizedMLPGeneric
         ' Calculate the error: ERROR = TARGETS - OUTPUTS
         Me.loss = Me.mse.Forward(Me.pred, Me.target)
         Me.lastError = Me.loss.Data
-    End Sub
-
-    Public Overrides Sub ComputeAverageErrorFromLastError()
-        ' Compute first abs then average:
-        Me.averageError = CSng(Me.lastError.Abs.Average)
     End Sub
 
     Public Function ComputeAverageErrorFromAllSamples!()

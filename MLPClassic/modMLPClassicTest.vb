@@ -52,6 +52,9 @@ Module modMLPClassicTest
         'nbIterations = 10000 ' DoubleThreshold: works fine
 
         mlp.InitializeStruct(m_neuronCountXOR, addBiasColumn:=True)
+        'mlp.InitializeStruct(m_neuronCountXOR231, addBiasColumn:=True)
+        'mlp.InitializeStruct(m_neuronCountXOR4Layers2331, addBiasColumn:=True)
+        'mlp.InitializeStruct(m_neuronCountXOR5Layers23331, addBiasColumn:=True)
 
         mlp.Randomize()
         mlp.PrintWeights()
@@ -89,6 +92,7 @@ Namespace ClassicMLP
         ' Weights are quite the same as MLP Classic, but not exactly:
         'Private m_mlp As New NetworkOOP.MultilayerPerceptron ' 10 success, 14 fails
         'Private m_mlp As New clsMLPAccord ' 10 success, 14 fails
+        'Private m_mlp As New clsMLPEncog  ' 4 success, 20 fails
 
         ' Weights are not stored in the same way:
         'Private m_mlp As New MatrixMLP.MultiLayerPerceptron ' 24/24 fails
@@ -406,7 +410,7 @@ Namespace ClassicMLP
         <TestMethod()>
         Public Sub MLP3XORHTangent()
 
-            TestMLP3XORHTangent(m_mlp)
+            TestMLP3XORHTangent(m_mlp, nbIterations:=1100)
 
         End Sub
 
