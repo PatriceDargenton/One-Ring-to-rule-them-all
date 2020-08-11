@@ -87,7 +87,7 @@ See: https://www.heatonresearch.com/encog
 # Versions
 
 11/08/2020 V1.12
-- Factorized in clsMLPGeneric: ComputeError(), ComputeAverageErrorFromLastError(), ComputeAverageError() and TestOneSample(input!(), ByRef ouput!())
+- Refactored code in clsMLPGeneric: ComputeError(), ComputeAverageErrorFromLastError(), ComputeAverageError() and TestOneSample(input!(), ByRef ouput!())
 - Standard test TestMLP3XORHTangent fixed
 - Encog MLP added
 
