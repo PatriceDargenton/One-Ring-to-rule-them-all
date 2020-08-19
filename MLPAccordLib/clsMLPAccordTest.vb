@@ -65,7 +65,9 @@ Namespace AccordMLP
         Private m_mlp As New clsMLPAccord
 
         'Private m_mlp As New clsMLPClassic ' 18/18 success
-        'Private m_mlp As New NetworkOOP.MultilayerPerceptron ' 12/18 success
+        'Private m_mlp As New NetworkOOP.MultilayerPerceptron ' 14 success, 4 fails
+        'Private m_mlp As New clsMLPEncog ' 8 success, 10 fails
+        'Private m_mlp As New clsMLPTensorFlow  ' 0 success, 18 fails
 
         <TestInitialize()>
         Public Sub Init()
@@ -159,6 +161,15 @@ Namespace AccordMLP
 
         End Sub
 
+        ' useBias=False not implemented
+        '<TestMethod()>
+        'Public Sub MLP1XORHTangent261()
+
+        '    TestMLP1XORHTangent261(m_mlp, nbIterations:=500,
+        '        learningMode:=enumLearningMode.Vectorial)
+
+        'End Sub
+
         <TestMethod()>
         Public Sub AccordMLP2XORSigmoid()
 
@@ -187,6 +198,14 @@ Namespace AccordMLP
 
         End Sub
 
+        ' useBias=False not implemented
+        '<TestMethod()>
+        'Public Sub AccordMLP2XORHTangent462()
+
+        '    TestMLP2XORHTangent462(m_mlp)
+
+        'End Sub
+
         <TestMethod()>
         Public Sub AccordMLP2XORHTangentVectAlgo2()
 
@@ -208,7 +227,8 @@ Namespace AccordMLP
                 {0.76, 0.13, -0.57, 0.2, -0.16},
                 {-0.78, 0.18, -0.3, 0.18, -0.47}})
 
-            m_mlp.TrainVector()
+            'm_mlp.TrainVector()
+            m_mlp.Train(learningMode:=enumLearningMode.Vectorial)
             'm_mlp.Train() Does not work
 
             Dim expectedOutput = m_targetArray2XOR

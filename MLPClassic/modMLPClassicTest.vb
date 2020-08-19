@@ -90,9 +90,10 @@ Namespace ClassicMLP
         Private m_mlp As New clsMLPClassic
 
         ' Weights are quite the same as MLP Classic, but not exactly:
-        'Private m_mlp As New NetworkOOP.MultilayerPerceptron ' 10 success, 14 fails
-        'Private m_mlp As New clsMLPAccord ' 10 success, 14 fails
-        'Private m_mlp As New clsMLPEncog  ' 4 success, 20 fails
+        'Private m_mlp As New NetworkOOP.MultilayerPerceptron ' 13 success, 13 fails
+        'Private m_mlp As New clsMLPAccord ' 10 success, 16 fails
+        'Private m_mlp As New clsMLPEncog  ' 6 success, 20 fails
+        'Private m_mlp As New clsMLPTensorFlow ' 1 success, 25 fails
 
         ' Weights are not stored in the same way:
         'Private m_mlp As New MatrixMLP.MultiLayerPerceptron ' 24/24 fails
@@ -175,6 +176,13 @@ Namespace ClassicMLP
         Public Sub MLP1XORHTangent()
 
             TestMLP1XORHTangent(m_mlp)
+
+        End Sub
+
+        <TestMethod()>
+        Public Sub MLP1XORHTangent261()
+
+            TestMLP1XORHTangent261(m_mlp, nbIterations:=600)
 
         End Sub
 
@@ -292,6 +300,13 @@ Namespace ClassicMLP
         Public Sub MLP2XORHTangent()
 
             TestMLP2XORHTangent(m_mlp)
+
+        End Sub
+
+        <TestMethod()>
+        Public Sub MLP2XORHTangent462()
+
+            TestMLP2XORHTangent462(m_mlp, nbIterations:=5000)
 
         End Sub
 

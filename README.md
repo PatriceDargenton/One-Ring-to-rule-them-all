@@ -19,6 +19,7 @@ This is the classical XOR test.
     - [MLP implementations using frameworks and libraries](#mlp-implementations-using-frameworks-and-libraries)
         - [Accord.NET MLP: implementation using Accord.NET Framework](#accordnet-mlp-implementation-using-accordnet-framework)
         - [Encog MLP: implementation using Encog Framework](#encog-mlp-implementation-using-encog-framework)
+        - [TensorFlow MLP: implementation using TensorFlow.NET Framework](#tensorflow-mlp-implementation-using-tensorflownet-framework)
 - [Versions](#versions)
 
 <!-- /TOC -->
@@ -76,6 +77,15 @@ From C#: http://accord-framework.net/docs/html/T_Accord_Neuro_Learning_BackPropa
 
 See: https://github.com/accord-net/framework
 
+Packages added:
+```
+  <package id="Accord" version="3.8.2-alpha" targetFramework="net452" />
+  <package id="Accord.Genetic" version="3.8.2-alpha" targetFramework="net452" />
+  <package id="Accord.MachineLearning" version="3.8.2-alpha" targetFramework="net452" />
+  <package id="Accord.Math" version="3.8.2-alpha" targetFramework="net452" />
+  <package id="Accord.Neuro" version="3.8.2-alpha" targetFramework="net452" />
+  <package id="Accord.Statistics" version="3.8.2-alpha" targetFramework="net452" />
+```
 
 ### Encog MLP: implementation using Encog Framework
 
@@ -83,8 +93,36 @@ From C#: https://github.com/encog/encog-dotnet-core
 
 See: https://www.heatonresearch.com/encog
 
+Package added:
+```
+  <package id="encog-dotnet-core" version="3.4.0" targetFramework="net472" />
+```
+
+### TensorFlow MLP: implementation using TensorFlow.NET Framework
+
+From C#: https://github.com/SciSharp/SciSharp-Stack-Examples/blob/master/src/TensorFlowNET.Examples/NeuralNetworks/NeuralNetXor.cs
+
+See: https://github.com/SciSharp/TensorFlow.NET
+
+and: https://tensorflownet.readthedocs.io/en/latest
+
+Packages added:
+```
+  <package id="Google.Protobuf" version="3.11.4" targetFramework="net472" />
+  <package id="Microsoft.ML.TensorFlow.Redist" version="0.14.0" targetFramework="net472" />
+  <package id="NumSharp.Lite" version="0.1.7" targetFramework="net472" />
+  <package id="Protobuf.Text" version="0.4.0" targetFramework="net472" />
+  <package id="System.Buffers" version="4.4.0" targetFramework="net472" />
+  <package id="System.Memory" version="4.5.3" targetFramework="net472" />
+  <package id="System.Numerics.Vectors" version="4.4.0" targetFramework="net472" />
+  <package id="System.Runtime.CompilerServices.Unsafe" version="4.5.2" targetFramework="net472" />
+  <package id="TensorFlow.NET" version="0.15.1" targetFramework="net472" />
+```
 
 # Versions
+
+19/08/2020 V1.13
+- TensorFlow MLP added
 
 11/08/2020 V1.12
 - Refactored code in clsMLPGeneric: ComputeError(), ComputeAverageErrorFromLastError(), ComputeAverageError() and TestOneSample(input!(), ByRef ouput!())

@@ -1,5 +1,6 @@
 ﻿
 Imports System.ComponentModel ' DescriptionAttribute
+Imports System.Text ' StringBuilder
 
 Public Class clsMLPHelper
 
@@ -9,6 +10,17 @@ Public Class clsMLPHelper
         Dim vect!(0 To length - 1)
         For k = 0 To length - 1
             vect(k) = array1D(index, k)
+        Next
+        Return vect
+
+    End Function
+
+    Public Shared Function GetColumn(array1D!(,), index%) As Single()
+
+        Dim length = array1D.GetLength(0)
+        Dim vect!(0 To length - 1)
+        For k = 0 To length - 1
+            vect(k) = array1D(k, index)
         Next
         Return vect
 
@@ -130,6 +142,14 @@ Public Class clsMLPHelper
             Return myEnum.ToString()
         End If
 
+    End Function
+
+    Public Shared Function ArrayToString$(singleArray!())
+        Dim sb As New StringBuilder
+        For i = 0 To singleArray.GetUpperBound(0)
+            sb.Append(singleArray(i).ToString("0.00") & " ")
+        Next
+        Return sb.ToString
     End Function
 
 End Class

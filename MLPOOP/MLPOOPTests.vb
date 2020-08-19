@@ -100,8 +100,9 @@ Namespace OOPMLP
         Private m_mlp As New MultilayerPerceptron
 
         ' Weights are quite the same as MLP Classic, but not exactly:
-        'Private m_mlp As New clsMLPClassic ' 13 success, 2 fails
-        'Private m_mlp As New clsMLPAccord ' 9 success, 6 fails
+        'Private m_mlp As New clsMLPClassic ' 13 success, 4 fails
+        'Private m_mlp As New clsMLPAccord ' 10 success, 7 fails
+        'Private m_mlp As New clsMLPTensorFlow  ' 1 success, 16 fails
 
         ' Weights are not stored in the same way:
         'Private m_mlp As New MatrixMLP.MultiLayerPerceptron ' 15/15 fails
@@ -225,12 +226,19 @@ Namespace OOPMLP
         End Sub
 
         <TestMethod()>
-        Public Sub MLP1XORHTangent()
+        Public Sub MLPOOP1XORHTangent()
 
             ' OOP activation function: before Initialize()
             'm_mlp.ActivationFunction = New BipolarSigmoid(alpha:=2.4!)
 
             TestMLP1XORHTangent(m_mlp)
+
+        End Sub
+
+        <TestMethod()>
+        Public Sub MLPOOP1XORHTangent261()
+
+            TestMLP1XORHTangent261(m_mlp, nbIterations:=500)
 
         End Sub
 
@@ -255,6 +263,13 @@ Namespace OOPMLP
         Public Sub MLPOOP2XORHTangent()
 
             TestMLP2XORHTangent(m_mlp)
+
+        End Sub
+
+        <TestMethod()>
+        Public Sub MLPOOP2XORHTangent462()
+
+            TestMLP2XORHTangent462(m_mlp, nbIterations:=9000)
 
         End Sub
 

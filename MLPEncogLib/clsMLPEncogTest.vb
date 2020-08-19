@@ -59,9 +59,10 @@ Namespace EncogMLP
 
         Private m_mlp As New clsMLPEncog
 
-        'Private m_mlp As New clsMLPClassic ' 1/12 success
+        'Private m_mlp As New clsMLPClassic ' 1/13 success
         'Private m_mlp As New NetworkOOP.MultilayerPerceptron ' 2/12 success
-        'Private m_mlp As New clsMLPAccord ' 1/12 success
+        'Private m_mlp As New clsMLPAccord ' 1/13 success
+        'Private m_mlp As New clsMLPTensorFlow  ' 0/14 success
 
         <TestInitialize()>
         Public Sub Init()
@@ -348,6 +349,14 @@ Namespace EncogMLP
         End Sub
 
         <TestMethod()>
+        Public Sub EncogMLP1XORHTangent261()
+
+            TestMLP1XORHTangent261(m_mlp, nbIterations:=200,
+                learningMode:=enumLearningMode.Vectorial)
+
+        End Sub
+
+        <TestMethod()>
         Public Sub EncogMLP2XORSigmoid()
 
             m_mlp.Initialize(learningRate:=0.05!, weightAdjustment:=0)
@@ -396,6 +405,13 @@ Namespace EncogMLP
 
             TestMLP2XORHTangent(m_mlp, weightAdjustment:=0, gain:=1,
                 learningMode:=enumLearningMode.Vectorial)
+
+        End Sub
+
+        <TestMethod()>
+        Public Sub EncogMLP2XORHTangent462()
+
+            TestMLP2XORHTangent462(m_mlp, learningMode:=enumLearningMode.Vectorial)
 
         End Sub
 

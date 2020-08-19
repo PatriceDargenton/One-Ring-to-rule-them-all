@@ -22,6 +22,9 @@ Module modTests
         NextTest()
 
         EncogMLPTest()
+        NextTest()
+
+        TensorFlowMLPTest()
 
         Console.WriteLine("Press a key to quit.")
         Console.ReadKey()

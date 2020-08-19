@@ -236,7 +236,6 @@ Namespace MatrixMLP
         Public Overrides Sub PrintOutput(iteration%)
 
             If ShowThisIteration(iteration) Then
-
                 Dim nbTargets = Me.targetArray.GetLength(1)
                 TestAllSamples(Me.inputArray, nbTargets)
                 ComputeAverageError()
@@ -244,7 +243,6 @@ Namespace MatrixMLP
                     "Output: " & Me.output.ToString() & vbLf &
                     "Average error: " & Me.averageError.ToString(format6Dec)
                 ShowMessage(sMsg)
-
             End If
 
         End Sub

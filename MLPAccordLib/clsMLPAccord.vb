@@ -331,7 +331,6 @@ Public Class clsMLPAccord : Inherits clsVectorizedMLPGeneric
             Dim sMsg$ = vbLf & "Iteration n°" & iteration + 1 & "/" & nbIterations & vbLf &
                 "Output: " & Me.output.ToString() & vbLf &
                 "Average error: " & Me.averageError.ToString(format6Dec)
-
             ShowMessage(sMsg)
         End If
 

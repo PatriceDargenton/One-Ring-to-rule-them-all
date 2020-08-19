@@ -363,6 +363,12 @@ Public MustInherit Class clsMLPGeneric ' MultiLayer Perceptron (MLP) generic cla
 
     End Sub
 
+    ''' <summary>
+    ''' Close the training session
+    ''' </summary>
+    Public Overridable Sub CloseSession()
+    End Sub
+
 #End Region
 
 #Region "Test"
@@ -434,7 +440,7 @@ Public MustInherit Class clsMLPGeneric ' MultiLayer Perceptron (MLP) generic cla
     End Function
 
     Public Sub ShowMessage(msg$)
-        Console.WriteLine(msg)
+        If isConsoleApp() Then Console.WriteLine(msg)
         Debug.WriteLine(msg)
     End Sub
 
