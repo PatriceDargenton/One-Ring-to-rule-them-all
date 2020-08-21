@@ -13,7 +13,7 @@ Module modMLPAccordTest
         Console.ReadKey()
     End Sub
 
-    Public Sub AccordMLPTest()
+    Public Sub AccordMLPTest(Optional nbXor% = 1)
 
         Dim mlp As New clsMLPAccord
 
@@ -23,15 +23,34 @@ Module modMLPAccordTest
         mlp.inputArray = m_inputArrayXOR
         mlp.targetArray = m_targetArrayXOR
 
-        mlp.nbIterations = 5000 ' Sigmoid: works
-        mlp.nbIterations = 5000 ' Hyperbolic tangent: works fine
+        'mlp.nbIterations = 5000 ' Sigmoid: works
+        mlp.nbIterations = 2000 ' Hyperbolic tangent: works fine
         'mlp.nbIterations = 20000 ' Stochastic
 
         mlp.Initialize(learningRate:=0.05!, weightAdjustment:=0.1!)
-        mlp.InitializeStruct(m_neuronCountXOR, addBiasColumn:=True)
-        'mlp.InitializeStruct(m_neuronCountXOR231, addBiasColumn:=True)
-        'mlp.InitializeStruct(m_neuronCountXOR4Layers2331, addBiasColumn:=True)
-        'mlp.InitializeStruct(m_neuronCountXOR5Layers23331, addBiasColumn:=True)
+
+        mlp.printOutput_ = True
+        mlp.printOutputMatrix = False
+
+        If nbXor = 1 Then
+            'num_input:=2, num_hidden:={5}, num_output:=1
+            'mlp.InitializeStruct({2, 5, 1}, addBiasColumn:=True)
+            mlp.InitializeStruct(m_neuronCountXOR, addBiasColumn:=True)
+            'mlp.InitializeStruct(m_neuronCountXOR231, addBiasColumn:=True)
+            'mlp.InitializeStruct(m_neuronCountXOR4Layers2331, addBiasColumn:=True)
+            'mlp.InitializeStruct(m_neuronCountXOR5Layers23331, addBiasColumn:=True)
+            mlp.printOutputMatrix = True
+            mlp.inputArray = m_inputArrayXOR
+            mlp.targetArray = m_targetArrayXOR
+        ElseIf nbXor = 2 Then
+            mlp.inputArray = m_inputArray2XOR
+            mlp.targetArray = m_targetArray2XOR
+            mlp.InitializeStruct(m_neuronCount2XOR462, addBiasColumn:=True)
+        ElseIf nbXor = 3 Then
+            mlp.inputArray = m_inputArray3XOR
+            mlp.targetArray = m_targetArray3XOR
+            mlp.InitializeStruct(m_neuronCount3XOR, addBiasColumn:=True)
+        End If
 
         'mlp.SetActivationFunctionOptimized(
         '    enumActivationFunctionOptimized.Sigmoid, gain:=2, center:=0)
@@ -44,7 +63,6 @@ Module modMLPAccordTest
 
         WaitForKeyToStart()
 
-        mlp.printOutput_ = True
         mlp.TrainVector() ' Works fine
         'mlp.Train() ' Works fine
         'mlp.Train(enumLearningMode.Systematic) ' Works fine

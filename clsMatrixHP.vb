@@ -708,6 +708,24 @@ Namespace Utility
 
         End Sub
 
+        ''' <summary>
+        ''' Set 1 or 0 for each value of the matrix whether it is inferior
+        '''  to the threshold, and return a new matrix
+        ''' </summary>
+        Public Function Threshold(minThreshold!) As Matrix
+
+            Dim c As New Matrix(Me.r, Me.c)
+
+            For i = 0 To c.r - 1
+                For j = 0 To c.c - 1
+                    c.data(i, j) = CDbl(IIf(Math.Abs(Me.data(i, j)) <= minThreshold, 1.0#, 0.0#))
+                Next
+            Next
+
+            Return c
+
+        End Function
+
 #End Region
 
     End Class

@@ -143,7 +143,7 @@ Public Class clsMLPEncog : Inherits clsVectorizedMLPGeneric
 
     End Sub
 
-    Public Sub SetOuput1D()
+    Public Overrides Sub SetOuput1D()
 
         Dim nbInputs = Me.inputArray.GetLength(0)
         Dim nbTargets = Me.targetArray.GetLength(0)
@@ -250,23 +250,6 @@ Public Class clsMLPEncog : Inherits clsVectorizedMLPGeneric
         Next i
 
         ShowMessage(sb.ToString())
-
-    End Sub
-
-    Public Overrides Sub PrintOutput(iteration%)
-
-        If ShowThisIteration(iteration) Then
-            If Not Me.vectorizedLearningMode Then
-                Dim nbTargets = Me.targetArray.GetLength(1)
-                TestAllSamples(Me.inputArray, nbOutputs:=nbTargets)
-            End If
-            SetOuput1D()
-            ComputeAverageError()
-            Dim sMsg$ = vbLf & "Iteration n°" & iteration + 1 & "/" & nbIterations & vbLf &
-                "Output: " & Me.output.ToString() & vbLf &
-                "Average error: " & Me.averageError.ToString(format6Dec)
-            ShowMessage(sMsg)
-        End If
 
     End Sub
 

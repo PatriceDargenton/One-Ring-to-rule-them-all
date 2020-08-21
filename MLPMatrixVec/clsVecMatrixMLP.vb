@@ -213,7 +213,7 @@ Namespace VectorizedMatrixMLP
             Me.target = targetsDble
         End Sub
 
-        Public Sub SetOuput1D()
+        Public Overrides Sub SetOuput1D()
             Me.lastOutputArray1DSingle = Me.output.ToArraySingle()
         End Sub
 
@@ -258,15 +258,12 @@ Namespace VectorizedMatrixMLP
                     TestAllSamples(Me.inputArray, nbOutputs:=nbTargets)
                 End If
                 ComputeAverageError()
-                Dim sMsg$ = vbLf & "Iteration n°" & iteration + 1 & "/" & nbIterations & vbLf &
-                    "Output: " & Me.output.ToString() & vbLf &
-                    "Average error: " & Me.averageError.ToString(format6Dec)
-                'For i = 0 To Me.LayerCount - 1
-                '    sMsg &= "Error(" & i & ")=" & Me.error_(i).ToString() & vbLf
-                '    sMsg &= "A(" & i & ")=" & A(i).ToString() & vbLf
-                'Next
+                PrintSuccess(iteration)
 
-                ShowMessage(sMsg)
+                'For i = 0 To Me.LayerCount - 1
+                '    msg &= "Error(" & i & ")=" & Me.error_(i).ToString() & vbLf
+                '    msg &= "A(" & i & ")=" & A(i).ToString() & vbLf
+                'Next
 
             End If
 

@@ -179,7 +179,7 @@ Public Class clsMLPTensor : Inherits clsVectorizedMLPGeneric
 
     End Sub
 
-    Public Sub SetOuput1D()
+    Public Overrides Sub SetOuput1D()
 
         Dim output As Matrix = Me.pred.Data
         Me.lastOutputArray1DSingle = output.ToArraySingle()
@@ -208,7 +208,8 @@ Public Class clsMLPTensor : Inherits clsVectorizedMLPGeneric
         SetInputAllSamples()
         ForwardPropogateSignal()
         SetTargetAllSamples()
-        ComputeError()
+        'ComputeError()
+        ComputeErrorInternal()
         BackwardPropagateError()
 
     End Sub
@@ -223,7 +224,7 @@ Public Class clsMLPTensor : Inherits clsVectorizedMLPGeneric
 
         TestOneSample(input)
         SetTargetOneSample(target)
-        ComputeError()
+        ComputeErrorInternal()
         BackwardPropagateError()
         ComputeAverageErrorFromLastError()
 
@@ -238,7 +239,7 @@ Public Class clsMLPTensor : Inherits clsVectorizedMLPGeneric
         Me.sgd.Step_()
     End Sub
 
-    Public Overrides Sub ComputeError()
+    Private Sub ComputeErrorInternal()
         ' Calculate the error: ERROR = TARGETS - OUTPUTS
         Me.loss = Me.mse.Forward(Me.pred, Me.target)
         Me.lastError = Me.loss.Data
@@ -293,10 +294,7 @@ Public Class clsMLPTensor : Inherits clsVectorizedMLPGeneric
                 SetOuputAllSamples()
             End If
             ComputeAverageError()
-            Dim sMsg$ = vbLf & "Iteration n°" & iteration + 1 & "/" & nbIterations & vbLf &
-                "Output: " & Me.output.ToString() & vbLf &
-                "Average error: " & Me.averageError.ToString(format6Dec)
-            ShowMessage(sMsg)
+            PrintSuccess(iteration)
 
             'ShowMessage("pred=" & Me.pred.ToString)
             'ShowMessage("loss=" & Me.loss.ToString)

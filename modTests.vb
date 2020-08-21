@@ -3,28 +3,32 @@ Module modTests
 
     Sub Main()
 
-        ClassicMLPTest()
-        NextTest()
+        For nbXor = 1 To 3
 
-        OOPMLPTest()
-        NextTest()
+            ClassicMLPTest(nbXor)
+            NextTest()
 
-        MatrixMLPTest()
-        NextTest()
+            OOPMLPTest(nbXor)
+            NextTest()
 
-        VectorizedMatrixMLPTest()
-        NextTest()
+            MatrixMLPTest(nbXor)
+            NextTest()
 
-        TensorMLPTest()
-        NextTest()
+            VectorizedMatrixMLPTest(nbXor)
+            NextTest()
 
-        AccordMLPTest()
-        NextTest()
+            TensorMLPTest(nbXor)
+            NextTest()
 
-        EncogMLPTest()
-        NextTest()
+            AccordMLPTest(nbXor)
+            NextTest()
 
-        TensorFlowMLPTest()
+            EncogMLPTest(nbXor)
+            NextTest()
+
+            TensorFlowMLPTest(nbXor) ' Works only with 1XOR?
+            NextTest()
+        Next
 
         Console.WriteLine("Press a key to quit.")
         Console.ReadKey()

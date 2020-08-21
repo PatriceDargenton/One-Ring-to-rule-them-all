@@ -19,6 +19,8 @@ Imports System.Text
 
 Public Class clsMLPTensorFlow : Inherits clsVectorizedMLPGeneric
 
+    Const computeScoreOneByOne = False
+
     Private sess As Session
     Private data As NDArray
     Private target As NDArray
@@ -74,7 +76,7 @@ Public Class clsMLPTensorFlow : Inherits clsVectorizedMLPGeneric
         Dim dllPath = exePath & "\tensorflow.dll"
         If Not System.IO.File.Exists(dllPath) Then
             Const TFDllPath = "\packages\Microsoft.ML.TensorFlow.Redist.0.14.0\runtimes\win-x64\native\tensorflow.dll"
-            Dim srcDllPath = exePath & TFDllPath
+            Dim srcDllPath = System.IO.Path.GetDirectoryName(exePath) & TFDllPath
             ' If \bin\Debug directory:
             Dim srcDllPath2 = System.IO.Path.GetDirectoryName(
                 System.IO.Path.GetDirectoryName(exePath)) & TFDllPath
@@ -231,7 +233,15 @@ Public Class clsMLPTensorFlow : Inherits clsVectorizedMLPGeneric
             TrainVectorOneIteration()
             If Me.printOutput_ Then PrintOutput(iteration)
         Next
-        SetOuput1D()
+
+        If computeScoreOneByOne Then
+            Dim nbTargets = Me.targetArray.GetLength(1)
+            TestAllSamples(Me.inputArray, nbOutputs:=nbTargets)
+            ComputeAverageError()
+        Else
+            SetOuput1D()
+        End If
+
         CloseSession()
 
     End Sub
@@ -291,7 +301,7 @@ Public Class clsMLPTensorFlow : Inherits clsVectorizedMLPGeneric
 
     End Function
 
-    Public Sub SetOuput1D()
+    Public Overrides Sub SetOuput1D()
 
         If IsNothing(Me.outputs1D) Then Exit Sub
         Dim nbInputs = Me.inputArray.GetLength(0)
@@ -311,8 +321,8 @@ Public Class clsMLPTensorFlow : Inherits clsVectorizedMLPGeneric
             Optional learningMode As enumLearningMode = enumLearningMode.Defaut)
 
         'If learningMode = enumLearningMode.Vectorial Then
-             ' This is the unique learning mode for this MLP
-             TrainVector()
+        ' This is the unique learning mode for this MLP
+        TrainVector()
         '    Exit Sub
         'End If
 
@@ -401,7 +411,7 @@ Public Class clsMLPTensorFlow : Inherits clsVectorizedMLPGeneric
         ShowMessage("")
 
         Dim sb As New StringBuilder
-        Dim lMax = Me.hiddenWeights.GetUpperBound(0)
+
 
         For i = 1 To Me.layerCount - 1
 
@@ -409,10 +419,13 @@ Public Class clsMLPTensorFlow : Inherits clsVectorizedMLPGeneric
 
             Dim nbNeuronsLayer = Me.nbHiddenNeurons
             Dim nbNeuronsPreviousLayer = Me.nbHiddenNeurons
+            Dim lMax%
             If i = 1 Then
                 nbNeuronsPreviousLayer = Me.nbInputNeurons
+                lMax = Me.hiddenWeights.GetUpperBound(0)
             ElseIf i = Me.layerCount - 1 Then
                 nbNeuronsLayer = Me.nbOutputNeurons
+                lMax = Me.outputWeights.GetUpperBound(0)
             End If
 
             Dim l = 0
@@ -424,10 +437,10 @@ Public Class clsMLPTensorFlow : Inherits clsVectorizedMLPGeneric
                     Dim weight# = 0
                     If i = 1 Then
                         If l <= lMax Then weight = Me.hiddenWeights(l)
-                        l += 1
                     ElseIf i = Me.layerCount - 1 Then
-                        weight = Me.outputWeights(k)
+                        If l <= lMax Then weight = Me.outputWeights(l)
                     End If
+                    l += 1
                     Dim sVal$ = weight.ToString(format2Dec).ReplaceCommaByDot()
                     sb.Append(sVal)
                     If Me.useBias OrElse k < nbWeights - 1 Then sb.Append(", ")
@@ -455,21 +468,29 @@ Public Class clsMLPTensorFlow : Inherits clsVectorizedMLPGeneric
     Public Overrides Sub PrintOutput(iteration%)
 
         If ShowThisIteration(iteration) Then
-            If Not Me.vectorizedLearningMode Then
+
+            If computeScoreOneByOne Then
                 Dim nbTargets = Me.targetArray.GetLength(1)
                 TestAllSamples(Me.inputArray, nbOutputs:=nbTargets)
+                If IsNothing(Me.outputs1D) Then
+                    ShowMessage(vbLf & "Iteration n°" & iteration + 1 & "/" & nbIterations & vbLf &
+                        "Output: nothing!")
+                    Exit Sub
+                End If
+            Else
+                If Not Me.vectorizedLearningMode Then
+                    Dim nbTargets = Me.targetArray.GetLength(1)
+                    TestAllSamples(Me.inputArray, nbOutputs:=nbTargets)
+                End If
+                If IsNothing(Me.outputs1D) Then
+                    ShowMessage(vbLf & "Iteration n°" & iteration + 1 & "/" & nbIterations & vbLf &
+                        "Output: nothing!")
+                    Exit Sub
+                End If
+                SetOuput1D()
             End If
-            If IsNothing(Me.outputs1D) Then
-                ShowMessage(vbLf & "Iteration n°" & iteration + 1 & "/" & nbIterations & vbLf &
-                    "Output: nothing!")
-                Exit Sub
-            End If
-            SetOuput1D()
             ComputeAverageError()
-            Dim sMsg$ = vbLf & "Iteration n°" & iteration + 1 & "/" & nbIterations & vbLf &
-                "Output: " & Me.output.ToString() & vbLf &
-                "Average error: " & Me.averageError.ToString(format6Dec)
-            ShowMessage(sMsg)
+            PrintSuccess(iteration)
         End If
 
     End Sub

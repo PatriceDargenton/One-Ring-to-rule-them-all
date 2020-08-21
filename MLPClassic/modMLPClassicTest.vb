@@ -13,7 +13,7 @@ Module modMLPClassicTest
         Console.ReadKey()
     End Sub
 
-    Public Sub ClassicMLPTest()
+    Public Sub ClassicMLPTest(Optional nbXor% = 1)
 
         Dim mlp As New clsMLPClassic
 
@@ -28,7 +28,7 @@ Module modMLPClassicTest
         'nbIterations = 10000 ' Sigmoid: works
 
         mlp.SetActivationFunction(enumActivationFunction.HyperbolicTangent, gain:=1, center:=0)
-        nbIterations = 1000 ' Hyperbolic tangent: works fine
+        nbIterations = 2000 ' Hyperbolic tangent: works fine
 
         'mlp.SetActivationFunction(enumActivationFunction.Gaussian, gain:=1, center:=0)
         'nbIterations = 1000 ' Gaussian: works fine
@@ -51,10 +51,27 @@ Module modMLPClassicTest
         'mlp.SetActivationFunction(enumActivationFunction.DoubleThreshold, gain:=1, center:=0)
         'nbIterations = 10000 ' DoubleThreshold: works fine
 
-        mlp.InitializeStruct(m_neuronCountXOR, addBiasColumn:=True)
-        'mlp.InitializeStruct(m_neuronCountXOR231, addBiasColumn:=True)
-        'mlp.InitializeStruct(m_neuronCountXOR4Layers2331, addBiasColumn:=True)
-        'mlp.InitializeStruct(m_neuronCountXOR5Layers23331, addBiasColumn:=True)
+        mlp.printOutput_ = True
+        mlp.printOutputMatrix = False
+        mlp.nbIterations = nbIterations
+
+        If nbXor = 1 Then
+            mlp.InitializeStruct(m_neuronCountXOR, addBiasColumn:=True)
+            'mlp.InitializeStruct(m_neuronCountXOR231, addBiasColumn:=True)
+            'mlp.InitializeStruct(m_neuronCountXOR4Layers2331, addBiasColumn:=True)
+            'mlp.InitializeStruct(m_neuronCountXOR5Layers23331, addBiasColumn:=True)
+            mlp.printOutputMatrix = True
+            mlp.inputArray = m_inputArrayXOR
+            mlp.targetArray = m_targetArrayXOR
+        ElseIf nbXor = 2 Then
+            mlp.inputArray = m_inputArray2XOR
+            mlp.targetArray = m_targetArray2XOR
+            mlp.InitializeStruct(m_neuronCount2XOR462, addBiasColumn:=True)
+        ElseIf nbXor = 3 Then
+            mlp.inputArray = m_inputArray3XOR
+            mlp.targetArray = m_targetArray3XOR
+            mlp.InitializeStruct(m_neuronCount3XOR, addBiasColumn:=True)
+        End If
 
         mlp.Randomize()
         mlp.PrintWeights()
@@ -67,11 +84,6 @@ Module modMLPClassicTest
         'mlp.InitWeights(2, {
         '     {0.56, 0.92, 0.19}})
 
-        mlp.targetArray = m_targetArrayXOR
-
-        mlp.printOutput_ = True
-        mlp.nbIterations = nbIterations
-        mlp.inputArray = m_inputArrayXOR
         mlp.Train()
         'mlp.Train(enumLearningMode.SemiStochastic)
         'mlp.Train(enumLearningMode.Stochastic)

@@ -41,6 +41,7 @@ Public MustInherit Class clsMLPGeneric ' MultiLayer Perceptron (MLP) generic cla
     End Enum
 
     Public printOutput_ As Boolean = False
+    Public printOutputMatrix As Boolean = False
     Public useBias As Boolean = False
 
     Public inputArray!(,)
@@ -62,6 +63,26 @@ Public MustInherit Class clsMLPGeneric ' MultiLayer Perceptron (MLP) generic cla
     ''' Last error of the output matrix
     ''' </summary>
     Protected lastError As Matrix
+
+    ''' <summary>
+    ''' Result success matrix (1: success, 0: fail)
+    ''' </summary>
+    Protected success As Matrix
+
+    ''' <summary>
+    ''' Number of success according to the treshold between target and output
+    ''' </summary>
+    Protected nbSuccess%
+
+    ''' <summary>
+    ''' Percentage of success according to the number of ouputs 
+    ''' </summary>
+    Protected successPC!
+
+    ''' <summary>
+    ''' Output must be 10% close to target to be considered successful
+    ''' </summary>
+    Protected Const minimalSuccessTreshold! = 0.1 ' 10%
 
     Public nbIterations%
 
@@ -217,6 +238,14 @@ Public MustInherit Class clsMLPGeneric ' MultiLayer Perceptron (MLP) generic cla
         ' Calculate the error: ERROR = TARGETS - OUTPUTS
         Dim m As Matrix = Me.targetArray
         Me.lastError = m - Me.output
+        ComputeSuccess()
+    End Sub
+
+    Public Overridable Sub ComputeSuccess()
+        Me.success = Me.lastError.Threshold(minimalSuccessTreshold)
+        Dim sum# = Me.success.Sumatory()(0, 0)
+        Me.nbSuccess = CInt(Math.Round(sum))
+        Me.successPC = CSng(Me.nbSuccess / (Me.success.r * Me.success.c))
     End Sub
 
     ''' <summary>
@@ -413,7 +442,16 @@ Public MustInherit Class clsMLPGeneric ' MultiLayer Perceptron (MLP) generic cla
     ''' </summary>
     Public MustOverride Sub PrintWeights()
 
-    Public MustOverride Sub PrintOutput(iteration%)
+    Public Overridable Sub PrintOutput(iteration%)
+
+        If ShowThisIteration(iteration) Then
+            Dim nbTargets = Me.targetArray.GetLength(1)
+            TestAllSamples(Me.inputArray, nbTargets)
+            ComputeAverageError()
+            PrintSuccess(iteration)
+        End If
+
+    End Sub
 
     Public Sub PrintParameters()
 
@@ -442,6 +480,17 @@ Public MustInherit Class clsMLPGeneric ' MultiLayer Perceptron (MLP) generic cla
     Public Sub ShowMessage(msg$)
         If isConsoleApp() Then Console.WriteLine(msg)
         Debug.WriteLine(msg)
+    End Sub
+
+    Protected Sub PrintSuccess(iteration%)
+        Dim msg$ = vbLf & "Iteration n°" & iteration + 1 & "/" & nbIterations & vbLf
+        If Me.printOutputMatrix Then msg &= "Output: " & Me.output.ToString() & vbLf
+        msg &=
+            "Average error: " & Me.averageError.ToString(format6Dec) & vbLf &
+            "Success (" & (minimalSuccessTreshold).ToString("0%") & "): " &
+            Me.nbSuccess & "/" & Me.success.r * Me.success.c & ": " &
+            Me.successPC.ToString("0.0%")
+        ShowMessage(msg)
     End Sub
 
 #End Region

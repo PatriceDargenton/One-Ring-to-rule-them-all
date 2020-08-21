@@ -346,20 +346,6 @@ Friend Class clsMLPClassic : Inherits clsMLPGeneric
 
     End Sub
 
-    Public Overrides Sub PrintOutput(iteration%)
-
-        If ShowThisIteration(iteration) Then
-            Dim nbTargets = Me.targetArray.GetLength(1)
-            TestAllSamples(Me.inputArray, nbTargets)
-            Dim avErr = ComputeAverageError()
-            Dim msg$ = vbLf & "Iteration n°" & iteration + 1 & "/" & nbIterations & vbLf &
-                "Output: " & Me.output.ToString() & vbLf &
-                "Average error: " & avErr.ToString(format6Dec)
-            ShowMessage(msg)
-        End If
-
-    End Sub
-
 #End Region
 
 End Class

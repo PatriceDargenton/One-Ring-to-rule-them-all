@@ -15,7 +15,7 @@ Module Main
 
     End Sub
 
-    Public Sub OOPMLPTest()
+    Public Sub OOPMLPTest(Optional nbXor% = 1)
 
         Dim standard As New Randoms.Standard(
             New Range(-1, 1), seed:=DateTime.Now.Millisecond)
@@ -31,12 +31,30 @@ Module Main
         mlp.ShowMessage("Object-oriented programming MLP test")
         mlp.ShowMessage("------------------------------------")
 
-        'num_input:=2, num_hidden:={5}, num_output:=1
-        'mlp.InitializeStruct({2, 5, 1}, addBiasColumn:=True)
-        mlp.InitializeStruct(m_neuronCountXOR, addBiasColumn:=True)
-        'mlp.InitializeStruct(m_neuronCountXOR231, addBiasColumn:=True)
-        'mlp.InitializeStruct(m_neuronCountXOR4Layers2331, addBiasColumn:=True)
-        'mlp.InitializeStruct(m_neuronCountXOR5Layers23331, addBiasColumn:=True)
+        mlp.printOutput_ = True
+        mlp.printOutputMatrix = False
+        mlp.nbIterations = 2000
+
+        If nbXor = 1 Then
+            'num_input:=2, num_hidden:={5}, num_output:=1
+            'mlp.InitializeStruct({2, 5, 1}, addBiasColumn:=True)
+            mlp.InitializeStruct(m_neuronCountXOR, addBiasColumn:=True)
+            'mlp.InitializeStruct(m_neuronCountXOR231, addBiasColumn:=True)
+            'mlp.InitializeStruct(m_neuronCountXOR4Layers2331, addBiasColumn:=True)
+            'mlp.InitializeStruct(m_neuronCountXOR5Layers23331, addBiasColumn:=True)
+            mlp.printOutputMatrix = True
+            mlp.inputArray = m_inputArrayXOR
+            mlp.targetArray = m_targetArrayXOR
+        ElseIf nbXor = 2 Then
+            mlp.inputArray = m_inputArray2XOR
+            mlp.targetArray = m_targetArray2XOR
+            mlp.InitializeStruct(m_neuronCount2XOR462, addBiasColumn:=True)
+        ElseIf nbXor = 3 Then
+            mlp.inputArray = m_inputArray3XOR
+            mlp.targetArray = m_targetArray3XOR
+            mlp.InitializeStruct(m_neuronCount3XOR, addBiasColumn:=True)
+        End If
+
         mlp.Randomize()
         mlp.PrintWeights()
 
@@ -78,10 +96,6 @@ Module Main
         'Console.WriteLine("Press a key to quit.")
         'Console.ReadLine()
 
-        mlp.nbIterations = 10000
-        mlp.inputArray = m_inputArrayXOR
-        mlp.targetArray = m_targetArrayXOR
-        mlp.printOutput_ = True
         mlp.Train()
         'mlp.Train(enumLearningMode.SemiStochastic) ' Works
         'mlp.Train(enumLearningMode.Stochastic) ' Works

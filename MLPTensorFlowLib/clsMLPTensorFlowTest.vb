@@ -13,25 +13,39 @@ Module modMLPTensorFlowTest
         Console.ReadKey()
     End Sub
 
-    Public Sub TensorFlowMLPTest()
+    Public Sub TensorFlowMLPTest(Optional nbXor% = 1)
 
         Dim mlp As New clsMLPTensorFlow
 
         mlp.ShowMessage("TensorFlow MLP test")
         mlp.ShowMessage("-------------------")
 
-        mlp.Initialize(learningRate:=0.2!, weightAdjustment:=0)
+        mlp.nbIterations = 5000 ' Hyperbolic tangent: works
+        mlp.printOutput_ = True
+        mlp.printOutputMatrix = False
 
-        mlp.nbIterations = 500 ' Hyperbolic tangent: works fine
-        mlp.inputArray = m_inputArrayXOR
-        mlp.targetArray = m_targetArrayXOR
-        mlp.InitializeStruct(m_neuronCountXOR261, addBiasColumn:=False)
-
-        ' Does not work yet:
-        'mlp.nbIterations = 2000
-        'mlp.inputArray = m_inputArray2XOR
-        'mlp.targetArray = m_targetArray2XOR
-        'mlp.InitializeStruct(m_neuronCount2XOR462, addBiasColumn:=False)
+        If nbXor = 1 Then
+            mlp.nbIterations = 500
+            mlp.Initialize(learningRate:=0.2!, weightAdjustment:=0)
+            mlp.printOutputMatrix = True
+            mlp.inputArray = m_inputArrayXOR
+            mlp.targetArray = m_targetArrayXOR
+            mlp.InitializeStruct(m_neuronCountXOR261, addBiasColumn:=False)
+        ElseIf nbXor = 2 Then
+            ' 75% success
+            mlp.nbIterations = 5000
+            mlp.Initialize(learningRate:=0.1!, weightAdjustment:=0)
+            mlp.inputArray = m_inputArray2XOR
+            mlp.targetArray = m_targetArray2XOR
+            mlp.InitializeStruct(m_neuronCount2XOR462, addBiasColumn:=False)
+        ElseIf nbXor = 3 Then
+            ' 190/192: 99% success
+            mlp.nbIterations = 10000
+            mlp.Initialize(learningRate:=0.05!, weightAdjustment:=0)
+            mlp.inputArray = m_inputArray3XOR
+            mlp.targetArray = m_targetArray3XOR
+            mlp.InitializeStruct(m_neuronCount3XOR673, addBiasColumn:=False)
+        End If
 
         mlp.SetActivationFunction(enumActivationFunction.HyperbolicTangent, gain:=2, center:=0)
 
@@ -41,7 +55,6 @@ Module modMLPTensorFlowTest
 
         WaitForKeyToStart()
 
-        mlp.printOutput_ = True
         mlp.TrainVector() ' Works fine
 
         mlp.ShowMessage("TensorFlow MLP test: Done.")

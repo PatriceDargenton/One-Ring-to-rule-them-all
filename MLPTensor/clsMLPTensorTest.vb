@@ -13,7 +13,7 @@ Module modMLPTensorTest
         Console.ReadKey()
     End Sub
 
-    Public Sub TensorMLPTest()
+    Public Sub TensorMLPTest(Optional nbXor% = 1)
 
         Dim mlp As New clsMLPTensor
 
@@ -31,12 +31,34 @@ Module modMLPTensorTest
         'mlp.SetActivationFunctionOptimized(
         '    enumActivationFunctionOptimized.ELU, gain:=1, center:=0.4)
 
-        nbIterations = 5000
+        nbIterations = 2000
 
         mlp.InitializeStruct(m_neuronCountXOR, addBiasColumn:=True)
         'mlp.InitializeStruct(m_neuronCountXOR231, addBiasColumn:=True)
         'mlp.InitializeStruct(m_neuronCountXOR4Layers2331, addBiasColumn:=True)
         'mlp.InitializeStruct(m_neuronCountXOR5Layers23331, addBiasColumn:=True)
+
+        mlp.printOutput_ = True
+        mlp.printOutputMatrix = False
+        mlp.nbIterations = nbIterations
+
+        If nbXor = 1 Then
+            mlp.InitializeStruct(m_neuronCountXOR, addBiasColumn:=True)
+            'mlp.InitializeStruct(m_neuronCountXOR231, addBiasColumn:=True)
+            'mlp.InitializeStruct(m_neuronCountXOR4Layers2331, addBiasColumn:=True)
+            'mlp.InitializeStruct(m_neuronCountXOR5Layers23331, addBiasColumn:=True)
+            mlp.printOutputMatrix = True
+            mlp.inputArray = m_inputArrayXOR
+            mlp.targetArray = m_targetArrayXOR
+        ElseIf nbXor = 2 Then
+            mlp.inputArray = m_inputArray2XOR
+            mlp.targetArray = m_targetArray2XOR
+            mlp.InitializeStruct(m_neuronCount2XOR462, addBiasColumn:=True)
+        ElseIf nbXor = 3 Then
+            mlp.inputArray = m_inputArray3XOR
+            mlp.targetArray = m_targetArray3XOR
+            mlp.InitializeStruct(m_neuronCount3XOR, addBiasColumn:=True)
+        End If
 
         mlp.Randomize()
 
@@ -44,11 +66,6 @@ Module modMLPTensorTest
 
         WaitForKeyToStart()
 
-        mlp.targetArray = m_targetArrayXOR
-
-        mlp.printOutput_ = True
-        mlp.nbIterations = nbIterations
-        mlp.inputArray = m_inputArrayXOR
         mlp.TrainVector() ' Works fine
         'mlp.Train()
         'mlp.Train(enumLearningMode.Systematic) ' Works fine
@@ -262,7 +279,7 @@ Namespace TensorMLP
             InitXOR()
             m_mlp.learningRate = 0.1
             m_mlp.weightAdjustment = 0.2
-            m_mlp.nbIterations = 5000 ' Sigmoid: works
+            m_mlp.nbIterations = 7000 '5000 ' Sigmoid: works
             m_mlp.SetActivationFunctionOptimized(
                 enumActivationFunctionOptimized.Sigmoid, gain:=1, center:=0)
 
@@ -303,7 +320,7 @@ Namespace TensorMLP
             Dim sExpectedOutput = expectedMatrix.ToStringWithFormat(dec:="0.0")
             Assert.AreEqual(sExpectedOutput, sOutput)
 
-            Dim expectedLoss# = 0.01
+            Dim expectedLoss# = 0.03
             Dim loss! = m_mlp.ComputeAverageError()
             Dim lossRounded# = Math.Round(loss, 2)
             Assert.AreEqual(True, lossRounded <= expectedLoss)
@@ -422,7 +439,7 @@ Namespace TensorMLP
             Dim sExpectedOutput = expectedMatrix.ToStringWithFormat(dec:="0.0")
             Assert.AreEqual(sExpectedOutput, sOutput)
 
-            Dim expectedLoss# = 0.02
+            Dim expectedLoss# = 0.03
             Dim loss! = m_mlp.ComputeAverageError()
             Dim lossRounded# = Math.Round(loss, 2)
             Assert.AreEqual(True, lossRounded <= expectedLoss)
@@ -560,7 +577,7 @@ Namespace TensorMLP
             Dim sExpectedOutput = expectedMatrix.ToStringWithFormat(dec:="0.0")
             Assert.AreEqual(sExpectedOutput, sOutput)
 
-            Dim expectedLoss# = 0
+            Dim expectedLoss# = 0.02
             Dim loss! = m_mlp.ComputeAverageError()
             Dim lossRounded# = Math.Round(loss, 2)
             Assert.AreEqual(True, lossRounded <= expectedLoss)
@@ -573,7 +590,7 @@ Namespace TensorMLP
             Init3XOR()
             m_mlp.learningRate = 0.1
             m_mlp.weightAdjustment = 0.2
-            m_mlp.nbIterations = 400 ' Sigmoid: works
+            m_mlp.nbIterations = 700 ' Sigmoid: works
             m_mlp.SetActivationFunctionOptimized(
                 enumActivationFunctionOptimized.Sigmoid, gain:=1, center:=0)
 
@@ -643,7 +660,7 @@ Namespace TensorMLP
             Dim sExpectedOutput = expectedMatrix.ToStringWithFormat(dec:="0.0")
             Assert.AreEqual(sExpectedOutput, sOutput)
 
-            Dim expectedLoss# = 0.04
+            Dim expectedLoss# = 0.02
             Dim loss! = m_mlp.ComputeAverageError()
             Dim lossRounded# = Math.Round(loss, 2)
             Assert.AreEqual(True, lossRounded <= expectedLoss)

@@ -121,6 +121,11 @@ Packages added:
 
 # Versions
 
+21/08/2020 V1.14
+- ComputeSuccess added
+- 2 XOR and 3 XOR added for all tests in console mode
+- Refactored code in clsMLPGeneric: PrintOutput(iteration%)
+
 19/08/2020 V1.13
 - TensorFlow MLP added
 

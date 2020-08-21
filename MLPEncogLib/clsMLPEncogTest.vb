@@ -13,7 +13,7 @@ Module modMLPEncogTest
         Console.ReadKey()
     End Sub
 
-    Public Sub EncogMLPTest()
+    Public Sub EncogMLPTest(Optional nbXor% = 1)
 
         Dim mlp As New clsMLPEncog
 
@@ -23,19 +23,36 @@ Module modMLPEncogTest
         mlp.inputArray = m_inputArrayXOR
         mlp.targetArray = m_targetArrayXOR
 
-        mlp.nbIterations = 500 ' Sigmoid: works
-        mlp.nbIterations = 500 ' Hyperbolic tangent: works fine
+        'mlp.nbIterations = 500 ' Sigmoid: works
+        mlp.nbIterations = 2000 ' Hyperbolic tangent: works fine
         'mlp.nbIterations = 20000 ' Stochastic
 
         mlp.Initialize(learningRate:=0.1!, weightAdjustment:=0)
 
-        'mlp.InitializeStruct(m_neuronCountXOR, addBiasColumn:=True)
-        mlp.InitializeStruct(m_neuronCountXOR231, addBiasColumn:=True)
-        'mlp.InitializeStruct(m_neuronCountXOR4Layers2331, addBiasColumn:=True)
-        'mlp.InitializeStruct(m_neuronCountXOR5Layers23331, addBiasColumn:=True)
+        mlp.printOutput_ = True
+        mlp.printOutputMatrix = False
 
-        mlp.SetActivationFunction(enumActivationFunction.Sigmoid, gain:=1, center:=0)
-        'mlp.SetActivationFunction(enumActivationFunction.HyperbolicTangent, gain:=1, center:=0)
+        If nbXor = 1 Then
+            mlp.InitializeStruct(m_neuronCountXOR, addBiasColumn:=True)
+            'mlp.InitializeStruct(m_neuronCountXOR231, addBiasColumn:=True)
+            'mlp.InitializeStruct(m_neuronCountXOR4Layers2331, addBiasColumn:=True)
+            'mlp.InitializeStruct(m_neuronCountXOR5Layers23331, addBiasColumn:=True)
+            mlp.printOutputMatrix = True
+            mlp.inputArray = m_inputArrayXOR
+            mlp.targetArray = m_targetArrayXOR
+        ElseIf nbXor = 2 Then
+            mlp.inputArray = m_inputArray2XOR
+            mlp.targetArray = m_targetArray2XOR
+            mlp.InitializeStruct(m_neuronCount2XOR462, addBiasColumn:=True)
+        ElseIf nbXor = 3 Then
+            'mlp.nbIterations = 20000
+            mlp.inputArray = m_inputArray3XOR
+            mlp.targetArray = m_targetArray3XOR
+            mlp.InitializeStruct(m_neuronCount3XOR, addBiasColumn:=True)
+        End If
+
+        'mlp.SetActivationFunction(enumActivationFunction.Sigmoid, gain:=1, center:=0)
+        mlp.SetActivationFunction(enumActivationFunction.HyperbolicTangent, gain:=2, center:=0)
 
         mlp.Randomize()
 
@@ -43,7 +60,6 @@ Module modMLPEncogTest
 
         WaitForKeyToStart()
 
-        mlp.printOutput_ = True
         mlp.TrainVector() ' Works fine
 
         mlp.ShowMessage("Encog MLP test: Done.")
