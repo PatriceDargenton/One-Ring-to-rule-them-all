@@ -2,7 +2,10 @@
 Imports Perceptron.MLP.ActivationFunction
 Imports Perceptron.Utility ' Matrix
 
-Public MustInherit Class clsMLPGeneric ' MultiLayer Perceptron (MLP) generic class
+''' <summary>
+''' MultiLayer Perceptron (MLP) generic class
+''' </summary>
+Public MustInherit Class clsMLPGeneric
 
 #Region "Declaration"
 
@@ -35,9 +38,13 @@ Public MustInherit Class clsMLPGeneric ' MultiLayer Perceptron (MLP) generic cla
         ''' </summary>
         Stochastic = 2
         ''' <summary>
-        ''' Leanr all samples in order as a vector
+        ''' Learn all samples in order as a vector
         ''' </summary>
         Vectorial = 3
+        ''' <summary>
+        ''' Learn all samples in order as a vector for a batch of iterations
+        ''' </summary>
+        VectorialBatch = 4
     End Enum
 
     Public printOutput_ As Boolean = False
@@ -278,7 +285,15 @@ Public MustInherit Class clsMLPGeneric ' MultiLayer Perceptron (MLP) generic cla
     ''' Train all samples (run epoch for one iteration)
     ''' </summary>
     Public Sub Train(Optional learningMode As enumLearningMode = enumLearningMode.Defaut)
+
+        Dim sw As New Stopwatch
+        sw.Start()
+        Debug.WriteLine(Now() & " Train...")
         Train(Me.inputArray, Me.targetArray, Me.nbIterations, learningMode)
+        sw.Stop()
+        Debug.WriteLine(Now() & " Train: Done. " &
+            sw.Elapsed.TotalSeconds.ToString("0.0") & " sec.")
+
     End Sub
 
     Public Sub Train(nbIterations%,
@@ -296,7 +311,7 @@ Public MustInherit Class clsMLPGeneric ' MultiLayer Perceptron (MLP) generic cla
 
         Me.nbIterations = nbIterations
         Select Case learningMode
-            Case enumLearningMode.Vectorial
+            Case enumLearningMode.Vectorial, enumLearningMode.VectorialBatch
                 TrainSystematic(inputs, targets, learningMode)
             Case enumLearningMode.Systematic
                 TrainSystematic(inputs, targets)
@@ -442,9 +457,9 @@ Public MustInherit Class clsMLPGeneric ' MultiLayer Perceptron (MLP) generic cla
     ''' </summary>
     Public MustOverride Sub PrintWeights()
 
-    Public Overridable Sub PrintOutput(iteration%)
+    Public Overridable Sub PrintOutput(iteration%, Optional force As Boolean = False)
 
-        If ShowThisIteration(iteration) Then
+        If force OrElse ShowThisIteration(iteration) Then
             Dim nbTargets = Me.targetArray.GetLength(1)
             TestAllSamples(Me.inputArray, nbTargets)
             ComputeAverageError()
@@ -471,6 +486,7 @@ Public MustInherit Class clsMLPGeneric ' MultiLayer Perceptron (MLP) generic cla
 
     Public Function ShowThisIteration(iteration%) As Boolean
         If (iteration < 10 OrElse
+            ((iteration + 1) Mod 10 = 0 AndAlso iteration < 100) OrElse
             ((iteration + 1) Mod 100 = 0 AndAlso iteration < 1000) OrElse
             ((iteration + 1) Mod 1000 = 0 AndAlso iteration < 10000) OrElse
             (iteration + 1) Mod 10000 = 0) Then Return True

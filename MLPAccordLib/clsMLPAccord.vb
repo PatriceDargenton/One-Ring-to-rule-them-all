@@ -192,7 +192,7 @@ Public Class clsMLPAccord : Inherits clsVectorizedMLPGeneric
 
     End Sub
 
-    Public Sub TrainVectorOneIteration()
+    Public Overrides Sub TrainVectorOneIteration()
 
         Dim avgError#
         If PRBPLAlgo Then

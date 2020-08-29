@@ -20,6 +20,7 @@ This is the classical XOR test.
         - [Accord.NET MLP: implementation using Accord.NET Framework](#accordnet-mlp-implementation-using-accordnet-framework)
         - [Encog MLP: implementation using Encog Framework](#encog-mlp-implementation-using-encog-framework)
         - [TensorFlow MLP: implementation using TensorFlow.NET Framework](#tensorflow-mlp-implementation-using-tensorflownet-framework)
+        - [Keras MLP: implementation using Keras.NET Framework](#keras-mlp-implementation-using-kerasnet-framework)
 - [Versions](#versions)
 
 <!-- /TOC -->
@@ -119,7 +120,39 @@ Packages added:
   <package id="TensorFlow.NET" version="0.15.1" targetFramework="net472" />
 ```
 
+### Keras MLP: implementation using Keras.NET Framework
+
+From C#: https://github.com/SciSharp/Keras.NET
+
+See: https://scisharp.github.io/Keras.NET
+
+and: https://keras.io
+
+Packages added:
+```
+  <package id = "Keras.NET" version="3.7.4.2" targetFramework="net472" />
+  <package id = "Microsoft.CSharp" version="4.5.0" targetFramework="net472" />
+  <package id = "Numpy.Bare" version="3.7.1.11" targetFramework="net472" />
+  <package id = "Python.Runtime.NETStandard" version="3.7.1" targetFramework="net472" />
+  <package id = "System.Reflection.Emit" version="4.3.0" targetFramework="net472" />
+```
+```
+ Python 3.7 is required at runtime: https://www.python.org/downloads
+ For PowerShell installations, type:
+ python -mpip install numpy      : fix "No module named 'numpy'"
+ python -mpip install keras      : fix "No module named 'keras'"
+ python -mpip install tensorflow : fix "Keras requires TensorFlow 2.2 or higher"
+```
+
 # Versions
+
+29/08/2020 V1.15
+- TensorMLP: SetOuput1D -> SetOuput1DOneSample (not all samples)
+- Learning mode added: VectorialBatch (learn all samples in order as a vector for a batch of iterations)
+- PrintWeights added for one XOR tests
+- PrintOutput: option force display added
+- Refactored code in clsMLPGenericVec: TrainVectorOneIteration(), SetOuput1D()
+- Keras MLP added
 
 21/08/2020 V1.14
 - ComputeSuccess added

@@ -3,16 +3,24 @@
 ' From: https://github.com/nlabiris/perceptrons : C# -> VB .NET conversion
 
 Imports Perceptron.MatrixMLP ' MultiLayerPerceptron
-Imports Perceptron.clsMLPGeneric ' enumLearningMode
 
 Module modMatrixMLPTest
 
     Sub Main()
+
         Console.WriteLine("Matrix-MultiLayerPerceptron with the classical XOR test.")
         Console.WriteLine("Matrix-MLP may not converge each time, run again if not.")
+
         MatrixMLPTest()
-        Console.WriteLine("Press a key to quit.")
-        Console.ReadKey()
+        NextTest()
+
+        MatrixMLPTest(nbXor:=2)
+        NextTest()
+
+        MatrixMLPTest(nbXor:=3)
+
+        WaitForKeyToQuit()
+
     End Sub
 
     Public Sub MatrixMLPTest(Optional nbXor% = 1)
@@ -92,6 +100,11 @@ Module modMatrixMLPTest
         'mlp.ComputeAverageError()
 
         mlp.ShowMessage("Matrix MLP test: Done.")
+
+        If nbXor > 1 Then Exit Sub
+
+        WaitForKeyToContinue("Press a key to print MLP weights")
+        mlp.PrintWeights()
 
     End Sub
 

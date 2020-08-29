@@ -27,16 +27,11 @@ Module modMLPTensorTest
         mlp.SetActivationFunctionOptimized(
             enumActivationFunctionOptimized.Sigmoid, gain:=1, center:=0)
         'mlp.SetActivationFunctionOptimized(
-        '    enumActivationFunctionOptimized.HyperbolicTangent, gain:=1, center:=0)
+        '    enumActivationFunctionOptimized.HyperbolicTangent, gain:=-2, center:=0)
         'mlp.SetActivationFunctionOptimized(
         '    enumActivationFunctionOptimized.ELU, gain:=1, center:=0.4)
 
         nbIterations = 2000
-
-        mlp.InitializeStruct(m_neuronCountXOR, addBiasColumn:=True)
-        'mlp.InitializeStruct(m_neuronCountXOR231, addBiasColumn:=True)
-        'mlp.InitializeStruct(m_neuronCountXOR4Layers2331, addBiasColumn:=True)
-        'mlp.InitializeStruct(m_neuronCountXOR5Layers23331, addBiasColumn:=True)
 
         mlp.printOutput_ = True
         mlp.printOutputMatrix = False
@@ -73,6 +68,11 @@ Module modMLPTensorTest
         'mlp.Train(enumLearningMode.Stochastic) ' Works
 
         mlp.ShowMessage("Tensor MLP test: Done.")
+
+        If nbXor > 1 Then Exit Sub
+
+        WaitForKeyToContinue("Press a key to print MLP weights")
+        mlp.PrintWeights()
 
     End Sub
 
@@ -160,8 +160,8 @@ Namespace TensorMLP
             Assert.AreEqual(sExpectedOutput, sOutput)
 
             Dim expectedLoss# = 0.03
-            'Dim loss! = m_mlp.ComputeAverageError() ' Vector learning mode only
-            Dim loss! = m_mlp.ComputeAverageErrorFromAllSamples!()
+            Dim loss! = m_mlp.ComputeAverageError()
+            'Dim loss! = m_mlp.ComputeAverageErrorFromAllSamples!()
             Dim lossRounded# = Math.Round(loss, 2)
             Assert.AreEqual(True, lossRounded <= expectedLoss)
 
@@ -213,8 +213,8 @@ Namespace TensorMLP
             Assert.AreEqual(sExpectedOutput, sOutput)
 
             Dim expectedLoss# = 0.03
-            'Dim loss! = m_mlp.ComputeAverageError() ' Vector learning mode only
-            Dim loss! = m_mlp.ComputeAverageErrorFromAllSamples!()
+            Dim loss! = m_mlp.ComputeAverageError()
+            'Dim loss! = m_mlp.ComputeAverageErrorFromAllSamples!()
             Dim lossRounded# = Math.Round(loss, 2)
             Assert.AreEqual(True, lossRounded <= expectedLoss)
 
@@ -266,8 +266,8 @@ Namespace TensorMLP
             Assert.AreEqual(sExpectedOutput, sOutput)
 
             Dim expectedLoss# = 0.02
-            'Dim loss! = m_mlp.ComputeAverageError() ' Vector learning mode only
-            Dim loss! = m_mlp.ComputeAverageErrorFromAllSamples!()
+            Dim loss! = m_mlp.ComputeAverageError()
+            'Dim loss! = m_mlp.ComputeAverageErrorFromAllSamples!()
             Dim lossRounded# = Math.Round(loss, 2)
             Assert.AreEqual(True, lossRounded <= expectedLoss)
 

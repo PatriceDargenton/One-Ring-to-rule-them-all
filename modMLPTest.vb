@@ -10,21 +10,55 @@ Module modMLPTest
     Public ReadOnly m_neuronCountXOR%() = {2, 2, 1}
     Public ReadOnly m_neuronCountXOR231%() = {2, 3, 1} ' With bias
     Public ReadOnly m_neuronCountXOR261%() = {2, 6, 1} ' TensorFlow minimal size
+    Public ReadOnly m_neuronCountXOR271%() = {2, 7, 1} ' Keras minimal size
+    Public ReadOnly m_neuronCountXOR291%() = {2, 9, 1} ' Keras minimal size for tanh
+    Public ReadOnly m_neuronCountXOR2_10_1%() = {2, 10, 1}
+    Public ReadOnly m_neuronCountXOR2_16_1%() = {2, 16, 1}
+
     Public ReadOnly m_neuronCount2XOR%() = {4, 4, 2}
     Public ReadOnly m_neuronCount2XOR452%() = {4, 5, 2}
     Public ReadOnly m_neuronCount2XOR462%() = {4, 6, 2} ' TensorFlow minimal size
+    Public ReadOnly m_neuronCount2XOR472%() = {4, 7, 2}
+    Public ReadOnly m_neuronCount2XOR482%() = {4, 8, 2}
+    Public ReadOnly m_neuronCount2XOR4_10_2%() = {4, 10, 2}
+    Public ReadOnly m_neuronCount2XOR4_32_2%() = {4, 32, 2} ' Keras minimal size: stable!
     Public ReadOnly m_neuronCount3XOR%() = {6, 6, 3}
     Public ReadOnly m_neuronCount3XOR673%() = {6, 7, 3}
+    Public ReadOnly m_neuronCount3XOR683%() = {6, 8, 3}
+    Public ReadOnly m_neuronCount3XOR6_10_3%() = {6, 10, 3} ' Keras minimal size: stable!
+    Public ReadOnly m_neuronCount3XOR6_32_3%() = {6, 32, 3} ' Keras stable size for tanh
+
     Public ReadOnly m_neuronCountXOR4Layers%() = {2, 2, 2, 1}
-    Public ReadOnly m_neuronCountXOR5Layers%() = {2, 2, 2, 2, 1}
     Public ReadOnly m_neuronCountXOR4Layers2331%() = {2, 3, 3, 1}
+    Public ReadOnly m_neuronCountXOR4Layers2661%() = {2, 6, 6, 1} ' Keras minimal size
+
+    Public ReadOnly m_neuronCountXOR5Layers%() = {2, 2, 2, 2, 1}
     Public ReadOnly m_neuronCountXOR5Layers23331%() = {2, 3, 3, 3, 1}
+    Public ReadOnly m_neuronCountXOR5Layers27771%() = {2, 7, 7, 7, 1} ' Keras minimal size
 
     Public ReadOnly m_inputArrayXOR!(,) = {
         {1, 0},
         {0, 0},
         {0, 1},
         {1, 1}}
+
+    Public ReadOnly m_inputArrayXOR90PC!(,) = {
+        {0.9!, 0.1!},
+        {0.1!, 0.1!},
+        {0.1!, 0.9!},
+        {0.9!, 0.9!}}
+
+    Public ReadOnly m_inputArrayXOR80PC!(,) = {
+        {0.8!, 0.2!},
+        {0.2!, 0.2!},
+        {0.2!, 0.8!},
+        {0.8!, 0.8!}}
+
+    Public ReadOnly m_inputArrayXOR70PC!(,) = {
+        {0.7!, 0.3!},
+        {0.3!, 0.3!},
+        {0.3!, 0.7!},
+        {0.7!, 0.7!}}
 
     Public ReadOnly m_targetArrayXOR!(,) = {
         {1},
@@ -574,6 +608,18 @@ Module modMLPTest
         Dim loss! = mlp.ComputeAverageError()
         Dim lossRounded# = Math.Round(loss, 2)
         Assert.AreEqual(True, lossRounded <= expectedLoss)
+
+        ' XOR at 90%: works
+        mlp.TestAllSamples(m_inputArrayXOR90PC, nbOutputs:=1)
+        Dim sOutput90PC$ = mlp.output.ToStringWithFormat(dec:="0.00")
+
+        ' XOR at 80%: works
+        mlp.TestAllSamples(m_inputArrayXOR80PC, nbOutputs:=1)
+        Dim sOutput80PC$ = mlp.output.ToStringWithFormat(dec:="0.00")
+
+        ' XOR at 70%: does not works anymore
+        mlp.TestAllSamples(m_inputArrayXOR70PC, nbOutputs:=1)
+        Dim sOutput70PC$ = mlp.output.ToStringWithFormat(dec:="0.00")
 
     End Sub
 

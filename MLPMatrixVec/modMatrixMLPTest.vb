@@ -8,10 +8,19 @@ Imports Perceptron.clsMLPGeneric ' enumLearningMode
 Module modMatrixVecMLPTest
 
     Sub Main()
-        Console.WriteLine("Vectorized-MultiLayerPerceptron with the classical XOR test.")
+
+        Console.WriteLine("Vectorized Matrix MLP with the classical XOR test.")
+
         VectorizedMatrixMLPTest()
-        Console.WriteLine("Press a key to quit.")
-        Console.ReadKey()
+        NextTest()
+
+        VectorizedMatrixMLPTest(nbXor:=2)
+        NextTest()
+
+        VectorizedMatrixMLPTest(nbXor:=3)
+
+        WaitForKeyToQuit()
+
     End Sub
 
     Public Sub VectorizedMatrixMLPTest(Optional nbXor% = 1)
@@ -72,6 +81,11 @@ Module modMatrixVecMLPTest
         'mlp.Train(enumLearningMode.Stochastic) ' Works
 
         mlp.ShowMessage("Vectorized Matrix MLP test: Done.")
+
+        If nbXor > 1 Then Exit Sub
+
+        WaitForKeyToContinue("Press a key to print MLP weights")
+        mlp.PrintWeights()
 
     End Sub
 

@@ -90,6 +90,11 @@ Module modMLPClassicTest
 
         mlp.ShowMessage("Classic MLP test: Done.")
 
+        If nbXor > 1 Then Exit Sub
+
+        WaitForKeyToContinue("Press a key to print MLP weights")
+        mlp.PrintWeights()
+
     End Sub
 
 End Module

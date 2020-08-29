@@ -250,7 +250,7 @@ Public Class clsMLPTensorFlow : Inherits clsVectorizedMLPGeneric
         If Not IsNothing(Me.sess) Then Me.sess.close()
     End Sub
 
-    Public Sub TrainVectorOneIteration()
+    Public Overrides Sub TrainVectorOneIteration()
 
 #If Implementation Then
 
@@ -465,9 +465,9 @@ Public Class clsMLPTensorFlow : Inherits clsVectorizedMLPGeneric
 
     End Sub
 
-    Public Overrides Sub PrintOutput(iteration%)
+    Public Overrides Sub PrintOutput(iteration%, Optional force As Boolean = False)
 
-        If ShowThisIteration(iteration) Then
+        If force OrElse ShowThisIteration(iteration) Then
 
             If computeScoreOneByOne Then
                 Dim nbTargets = Me.targetArray.GetLength(1)

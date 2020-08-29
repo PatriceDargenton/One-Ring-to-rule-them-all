@@ -72,15 +72,25 @@
     <Reference Include="Google.Protobuf, Version=3.11.4.0, Culture=neutral, PublicKeyToken=a7d26565bac4d604, processorArchitecture=MSIL">
       <HintPath>packages\Google.Protobuf.3.11.4\lib\net45\Google.Protobuf.dll</HintPath>
     </Reference>
+    <Reference Include="Keras, Version=3.7.4.2, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>packages\Keras.NET.3.7.4.2\lib\netstandard2.0\Keras.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.CSharp" />
     <Reference Include="Microsoft.VisualStudio.QualityTools.UnitTestFramework, Version=10.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>.\Microsoft.VisualStudio.QualityTools.UnitTestFramework.dll</HintPath>
+    </Reference>
+    <Reference Include="Numpy.Bare, Version=3.7.1.4, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>packages\Numpy.Bare.3.7.1.11\lib\netstandard2.0\Numpy.Bare.dll</HintPath>
     </Reference>
     <Reference Include="NumSharp.Lite, Version=0.1.7.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
       <HintPath>packages\NumSharp.Lite.0.1.7\lib\netstandard2.0\NumSharp.Lite.dll</HintPath>
     </Reference>
     <Reference Include="Protobuf.Text, Version=0.4.0.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
       <HintPath>packages\Protobuf.Text.0.4.0\lib\netstandard2.0\Protobuf.Text.dll</HintPath>
+    </Reference>
+    <Reference Include="Python.Runtime, Version=3.7.1.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>packages\Python.Runtime.NETStandard.3.7.1\lib\netstandard2.0\Python.Runtime.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Buffers, Version=4.0.2.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
@@ -181,6 +191,8 @@
     <Compile Include="MLPEncogLib\clsMLPEncogTest.vb" />
     <Compile Include="MLPTensorFlowLib\clsMLPTensorFlow.vb" />
     <Compile Include="MLPTensorFlowLib\clsMLPTensorFlowTest.vb" />
+    <Compile Include="MLPKerasLib\clsMLPKerasTest.vb" />
+    <Compile Include="MLPKerasLib\clsMLPKeras.vb" />
     <Compile Include="My Project\Application.Designer.vb">
       <AutoGen>True</AutoGen>
       <DependentUpon>Application.myapp</DependentUpon>

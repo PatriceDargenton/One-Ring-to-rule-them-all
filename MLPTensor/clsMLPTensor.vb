@@ -146,7 +146,6 @@ Public Class clsMLPTensor : Inherits clsVectorizedMLPGeneric
     Private Sub SetInputOneSample(input!())
 
         Dim inputsDble#(0, input.Length - 1)
-        'inputsDble = clsMLPHelper.FillArray2(inputsDble, input, 0)
         clsMLPHelper.Fill2DArrayOfDoubleByArrayOfSingle(inputsDble, input, 0)
         Dim inputMatrix As Matrix = inputsDble
         Me.input = New Tensor(inputMatrix, autoGrad:=True)
@@ -164,7 +163,6 @@ Public Class clsMLPTensor : Inherits clsVectorizedMLPGeneric
     Private Sub SetTargetOneSample(target!())
 
         Dim targetsDble#(0, target.Length - 1)
-        'targetsDble = clsMLPHelper.FillArray2(targetsDble, target, 0)
         clsMLPHelper.Fill2DArrayOfDoubleByArrayOfSingle(targetsDble, target, 0)
         Dim targetMatrix As Matrix = targetsDble
         Me.target = New Tensor(targetMatrix, autoGrad:=True)
@@ -179,12 +177,17 @@ Public Class clsMLPTensor : Inherits clsVectorizedMLPGeneric
 
     End Sub
 
-    Public Overrides Sub SetOuput1D()
+    Private Sub SetOuput1DOneSample()
 
         Dim output As Matrix = Me.pred.Data
         Me.lastOutputArray1DSingle = output.ToArraySingle()
 
     End Sub
+
+    'Public Overrides Sub SetOuput1D()
+    '    'Dim output As Matrix = Me.pred.Data
+    '    'Me.lastOutputArray1DSingle = output.ToArraySingle()
+    'End Sub
 
     Private Sub SetOuputAllSamples()
 
@@ -203,12 +206,11 @@ Public Class clsMLPTensor : Inherits clsVectorizedMLPGeneric
 
     End Sub
 
-    Public Sub TrainVectorOneIteration()
+    Public Overrides Sub TrainVectorOneIteration()
 
         SetInputAllSamples()
         ForwardPropogateSignal()
         SetTargetAllSamples()
-        'ComputeError()
         ComputeErrorInternal()
         BackwardPropagateError()
 
@@ -217,7 +219,7 @@ Public Class clsMLPTensor : Inherits clsVectorizedMLPGeneric
     Public Overrides Sub TestOneSample(input!())
         SetInputOneSample(input)
         ForwardPropogateSignal()
-        SetOuput1D()
+        SetOuput1DOneSample()
     End Sub
 
     Public Overrides Sub TrainOneSample(input!(), target!())
@@ -245,13 +247,22 @@ Public Class clsMLPTensor : Inherits clsVectorizedMLPGeneric
         Me.lastError = Me.loss.Data
     End Sub
 
-    Public Function ComputeAverageErrorFromAllSamples!()
+    Public Overrides Function ComputeAverageError!()
         ' Calculate the error: ERROR = TARGETS - OUTPUTS
         Dim m As Matrix = Me.targetArray
         Me.lastError = m - Me.output
+        ComputeSuccess()
         ComputeAverageErrorFromLastError()
         Return Me.averageError
     End Function
+
+    'Public Function ComputeAverageErrorFromAllSamples!()
+    '    ' Calculate the error: ERROR = TARGETS - OUTPUTS
+    '    Dim m As Matrix = Me.targetArray
+    '    Me.lastError = m - Me.output
+    '    ComputeAverageErrorFromLastError()
+    '    Return Me.averageError
+    'End Function
 
     Public Overrides Sub PrintWeights()
 
@@ -284,9 +295,9 @@ Public Class clsMLPTensor : Inherits clsVectorizedMLPGeneric
 
     End Sub
 
-    Public Overrides Sub PrintOutput(iteration%)
+    Public Overrides Sub PrintOutput(iteration%, Optional force As Boolean = False)
 
-        If ShowThisIteration(iteration) Then
+        If force OrElse ShowThisIteration(iteration) Then
             If Not Me.vectorizedLearningMode Then
                 Dim nbTargets = Me.targetArray.GetLength(1)
                 TestAllSamples(Me.inputArray, nbOutputs:=nbTargets)
