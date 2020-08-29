@@ -66,8 +66,8 @@ Module modMLPKerasTest
             mlp.InitializeStruct(m_neuronCount3XOR6_10_3, addBiasColumn:=False)
         End If
 
-        mlp.SetActivationFunction(enumActivationFunction.Sigmoid, gain:=1, center:=0)
-        'mlp.SetActivationFunction(enumActivationFunction.HyperbolicTangent, gain:=-2, center:=0)
+        mlp.SetActivationFunction(enumActivationFunction.Sigmoid)
+        'mlp.SetActivationFunction(enumActivationFunction.HyperbolicTangent, gain:=-2)
 
         mlp.Randomize()
 
@@ -119,7 +119,7 @@ Namespace KerasMLP
             m_mlp.learningRate = 0.02
             m_mlp.nbIterations = 700
             m_mlp.InitializeStruct(m_neuronCountXOR4Layers2661, addBiasColumn:=False)
-            m_mlp.SetActivationFunction(enumActivationFunction.Sigmoid, gain:=1, center:=0)
+            m_mlp.SetActivationFunction(enumActivationFunction.Sigmoid)
 
             m_mlp.InitializeWeights(1, {
                 {0.13, 0.23, 0.49, 0.15, 0.09, 0.49},
@@ -167,7 +167,7 @@ Namespace KerasMLP
             m_mlp.learningRate = 0.02
             m_mlp.nbIterations = 900
             m_mlp.InitializeStruct(m_neuronCountXOR5Layers27771, addBiasColumn:=False)
-            m_mlp.SetActivationFunction(enumActivationFunction.Sigmoid, gain:=1, center:=0)
+            m_mlp.SetActivationFunction(enumActivationFunction.Sigmoid)
 
             m_mlp.InitializeWeights(1, {
                 {0.34, 0.43, -0.09, -0.01, 0.8, 0.21, -0.17},
@@ -229,7 +229,7 @@ Namespace KerasMLP
             m_mlp.InitializeStruct(m_neuronCountXOR271, addBiasColumn:=False)
 
             m_mlp.nbIterations = 4000
-            m_mlp.SetActivationFunction(enumActivationFunction.Sigmoid, gain:=1, center:=0)
+            m_mlp.SetActivationFunction(enumActivationFunction.Sigmoid)
 
             m_mlp.InitializeWeights(1, {
                 {0.35, 0.23, -0.12, 0.19, -0.09, 0.58, -0.24},
@@ -272,7 +272,7 @@ Namespace KerasMLP
             m_mlp.InitializeStruct(m_neuronCountXOR2_16_1, addBiasColumn:=False)
 
             m_mlp.nbIterations = 600
-            m_mlp.SetActivationFunction(enumActivationFunction.HyperbolicTangent, gain:=-2, center:=0)
+            m_mlp.SetActivationFunction(enumActivationFunction.HyperbolicTangent, gain:=-2.0!)
 
             m_mlp.InitializeWeights(1, {
                 {-0.21, 0.51, 0.41, 0.18, 0.49, -0.33, -0.17, -0.08, 0.28, -0.02, -0.5, 0.19, -0.33, 0.15, -0.3, -0.21},
@@ -324,7 +324,7 @@ Namespace KerasMLP
             m_mlp.InitializeStruct(m_neuronCount2XOR482, addBiasColumn:=False)
 
             m_mlp.nbIterations = 6000
-            m_mlp.SetActivationFunction(enumActivationFunction.Sigmoid, gain:=1, center:=0)
+            m_mlp.SetActivationFunction(enumActivationFunction.Sigmoid)
 
             m_mlp.InitializeWeights(1, {
                 {-0.43, -0.32, 0.52, 0.24, 0.5, -0.27, 0.45, 0.56},
@@ -370,7 +370,7 @@ Namespace KerasMLP
             m_mlp.InitializeStruct(m_neuronCount2XOR4_32_2, addBiasColumn:=False)
 
             m_mlp.nbIterations = 900
-            m_mlp.SetActivationFunction(enumActivationFunction.Sigmoid, gain:=1, center:=0)
+            m_mlp.SetActivationFunction(enumActivationFunction.Sigmoid)
 
             m_mlp.InitializeWeights(1, {
                 {0.26, -0.15, 0.18, 0.15, 0.15, -0.23, 0.1, 0.22, -0.19, -0.16, -0.24, 0.33, 0.09, 0.06, -0.29, -0.02, 0.12, -0.14, 0.33, -0.4, 0.00, 0.23, 0.04, 0.11, -0.11, 0.19, 0.22, -0.35, 0.2, -0.38, -0.3, -0.14},
@@ -440,7 +440,7 @@ Namespace KerasMLP
             m_mlp.InitializeStruct(m_neuronCount3XOR673, addBiasColumn:=False)
 
             m_mlp.nbIterations = 700
-            m_mlp.SetActivationFunction(enumActivationFunction.Sigmoid, gain:=1, center:=0)
+            m_mlp.SetActivationFunction(enumActivationFunction.Sigmoid)
 
             m_mlp.InitializeWeights(1, {
                 {0.2, -0.18, 0.21, -0.51, 0.62, -0.3, -0.18},
@@ -487,7 +487,7 @@ Namespace KerasMLP
             m_mlp.InitializeStruct(m_neuronCount3XOR6_32_3, addBiasColumn:=False)
 
             m_mlp.nbIterations = 600 '1000
-            m_mlp.SetActivationFunction(enumActivationFunction.Sigmoid, gain:=1, center:=0)
+            m_mlp.SetActivationFunction(enumActivationFunction.Sigmoid)
 
             m_mlp.InitializeWeights(1, {
                 {-0.2, 0.15, 0.03, 0.3, 0.15, -0.05, -0.15, 0.37, -0.12, -0.19, -0.06, -0.23, 0.31, -0.31, 0.09, -0.19, -0.24, -0.38, 0.17, 0.00, 0.22, 0.18, -0.02, -0.28, 0.3, 0.24, 0.18, -0.26, -0.25, 0.03, -0.3, -0.07},

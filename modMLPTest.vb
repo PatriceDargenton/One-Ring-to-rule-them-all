@@ -268,7 +268,7 @@ Module modMLPTest
         mlp.InitializeStruct(m_neuronCountXOR, addBiasColumn:=True)
 
         mlp.nbIterations = nbIterations
-        mlp.SetActivationFunction(enumActivationFunction.Sigmoid, gain, center:=0)
+        mlp.SetActivationFunction(enumActivationFunction.Sigmoid, gain)
 
         mlp.InitializeWeights(1, {
             {-0.75, 0.64, -0.09},
@@ -304,7 +304,7 @@ Module modMLPTest
         mlp.InitializeStruct(m_neuronCountXOR, addBiasColumn:=True)
 
         mlp.nbIterations = nbIterations
-        mlp.SetActivationFunction(enumActivationFunction.Sigmoid, gain, center:=0)
+        mlp.SetActivationFunction(enumActivationFunction.Sigmoid, gain)
 
         mlp.InitializeWeights(1, {
             {-0.75, 0.64, -0.09},
@@ -340,7 +340,7 @@ Module modMLPTest
         mlp.InitializeStruct(m_neuronCountXOR, addBiasColumn:=False)
 
         mlp.nbIterations = nbIterations
-        mlp.SetActivationFunction(enumActivationFunction.Sigmoid, gain, center:=0)
+        mlp.SetActivationFunction(enumActivationFunction.Sigmoid, gain)
 
         mlp.InitializeWeights(1, {
             {0.42, 0.79},
@@ -381,7 +381,7 @@ Module modMLPTest
         mlp.InitializeStruct(m_neuronCountXOR, addBiasColumn:=False)
 
         mlp.nbIterations = nbIterations
-        mlp.SetActivationFunction(enumActivationFunction.Sigmoid, gain, center:=0)
+        mlp.SetActivationFunction(enumActivationFunction.Sigmoid, gain)
 
         mlp.InitializeWeights(1, {
             {0.73, 0.38},
@@ -507,7 +507,7 @@ Module modMLPTest
         mlp.learningRate = learningRate
         mlp.nbIterations = nbIterations
         mlp.InitializeStruct(m_neuronCountXOR4Layers, addBiasColumn:=True)
-        mlp.SetActivationFunction(enumActivationFunction.HyperbolicTangent, gain, center:=0)
+        mlp.SetActivationFunction(enumActivationFunction.HyperbolicTangent, gain)
 
         mlp.InitializeWeights(1, {
             {-0.2, 0.97, 0.06},
@@ -546,7 +546,7 @@ Module modMLPTest
         mlp.learningRate = learningRate
         mlp.nbIterations = nbIterations
         mlp.InitializeStruct(m_neuronCountXOR5Layers, addBiasColumn:=True)
-        mlp.SetActivationFunction(enumActivationFunction.HyperbolicTangent, gain, center:=0)
+        mlp.SetActivationFunction(enumActivationFunction.HyperbolicTangent, gain)
 
         mlp.InitializeWeights(1, {
             {0.86, 0.09, -0.48},
@@ -588,7 +588,7 @@ Module modMLPTest
         mlp.nbIterations = nbIterations
         mlp.InitializeStruct(m_neuronCountXOR, addBiasColumn:=True)
         mlp.SetActivationFunction(
-            enumActivationFunction.Sigmoid, gain, center:=0)
+            enumActivationFunction.Sigmoid, gain)
 
         mlp.InitializeWeights(1, {
             {0.36, -0.84, 0.37},
@@ -636,7 +636,7 @@ Module modMLPTest
         mlp.nbIterations = nbIterations ' HTan: works
         mlp.InitializeStruct(m_neuronCountXOR, addBiasColumn:=True)
         mlp.SetActivationFunction(
-            enumActivationFunction.HyperbolicTangent, gain, center:=0)
+            enumActivationFunction.HyperbolicTangent, gain)
 
         mlp.InitializeWeights(1, {
             {-0.59, 0.78, -0.16},
@@ -672,7 +672,7 @@ Module modMLPTest
         mlp.nbIterations = nbIterations ' HTan: works
         mlp.InitializeStruct(m_neuronCountXOR261, addBiasColumn:=False)
         mlp.SetActivationFunction(
-            enumActivationFunction.HyperbolicTangent, gain, center:=0)
+            enumActivationFunction.HyperbolicTangent, gain)
 
         mlp.InitializeWeights(1, {
             {0.28, 0.43},
@@ -712,7 +712,7 @@ Module modMLPTest
         mlp.nbIterations = nbIterations
         mlp.InitializeStruct(m_neuronCount2XOR, addBiasColumn:=True)
         mlp.SetActivationFunction(
-            enumActivationFunction.HyperbolicTangent, gain, center:=0)
+            enumActivationFunction.HyperbolicTangent, gain)
 
         mlp.InitializeWeights(1, {
             {0.6, 0.52, 0.12, -0.33, -0.48},
@@ -751,7 +751,7 @@ Module modMLPTest
         mlp.nbIterations = nbIterations ' HTan: works
         mlp.InitializeStruct(m_neuronCount2XOR, addBiasColumn:=True)
         mlp.SetActivationFunction(
-            enumActivationFunction.HyperbolicTangent, gain, center:=0)
+            enumActivationFunction.HyperbolicTangent, gain)
 
         mlp.InitializeWeights(1, {
             {0.55, 0.15, 0.71, 0.29, 0.25},
@@ -790,7 +790,7 @@ Module modMLPTest
         mlp.nbIterations = nbIterations ' HTan: works
         mlp.InitializeStruct(m_neuronCount2XOR462, addBiasColumn:=False)
         mlp.SetActivationFunction(
-            enumActivationFunction.HyperbolicTangent, gain, center:=0)
+            enumActivationFunction.HyperbolicTangent, gain)
 
         mlp.InitializeWeights(1, {
             {0.1, -0.37, -0.04, -0.3},
@@ -834,7 +834,7 @@ Module modMLPTest
         mlp.nbIterations = nbIterations
         mlp.InitializeStruct(m_neuronCount3XOR, addBiasColumn:=True)
         mlp.SetActivationFunction(
-            enumActivationFunction.Sigmoid, gain, center:=0)
+            enumActivationFunction.Sigmoid, gain)
 
         mlp.InitializeWeights(1, {
             {-0.45, -0.45, -0.17, -0.29, -0.03, -0.19, 0.58},
@@ -877,7 +877,7 @@ Module modMLPTest
         mlp.nbIterations = nbIterations
         mlp.InitializeStruct(m_neuronCount3XOR673, addBiasColumn:=True)
         mlp.SetActivationFunction(
-            enumActivationFunction.HyperbolicTangent, gain, center:=0)
+            enumActivationFunction.HyperbolicTangent, gain)
 
         mlp.InitializeWeights(1, {
             {-0.01, -0.12, -0.57, -0.02, -0.9, 0.61, 0.32},

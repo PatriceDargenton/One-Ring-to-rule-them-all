@@ -42,8 +42,8 @@ Module modMatrixVecMLPTest
         'mlp.nbIterations = 100000 ' ReLU: Does not work yet, but this next one yes:
         'mlp.nbIterations = 5000 ' ReLUSigmoid: works fine
         'mlp.nbIterations = 5000 ' Double threshold: works fine
-        mlp.SetActivationFunction(enumActivationFunction.Sigmoid, gain:=1, center:=0)
-        'mlp.SetActivationFunction(enumActivationFunction.HyperbolicTangent, gain:=2, center:=0)
+        mlp.SetActivationFunction(enumActivationFunction.Sigmoid)
+        'mlp.SetActivationFunction(enumActivationFunction.HyperbolicTangent, gain:=2)
 
         mlp.printOutput_ = True
         mlp.printOutputMatrix = False

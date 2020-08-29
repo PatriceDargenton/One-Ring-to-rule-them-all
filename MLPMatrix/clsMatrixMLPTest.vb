@@ -42,8 +42,7 @@ Namespace MatrixMLP
         Public Sub MatrixMLP1XORSigmoid()
 
             Dim nbIterations% = 10000
-            m_mlp.SetActivationFunctionOptimized(enumActivationFunctionOptimized.Sigmoid,
-                gain:=1, center:=2.2)
+            m_mlp.SetActivationFunctionOptimized(enumActivationFunctionOptimized.Sigmoid, center:=2.2)
 
             InitXOR()
             m_mlp.Initialize(learningRate:=0.9, weightAdjustment:=0.9)
@@ -85,8 +84,7 @@ Namespace MatrixMLP
         Public Sub MatrixMLP1XORSigmoidWithoutBias()
 
             Dim nbIterations% = 100000
-            m_mlp.SetActivationFunctionOptimized(enumActivationFunctionOptimized.Sigmoid,
-                gain:=1, center:=0)
+            m_mlp.SetActivationFunctionOptimized(enumActivationFunctionOptimized.Sigmoid)
 
             InitXOR()
             m_mlp.InitializeStruct(m_neuronCountXOR, addBiasColumn:=False)
@@ -124,10 +122,9 @@ Namespace MatrixMLP
         Public Sub MatrixMLP1XORHyperbolicTangent()
 
             Dim nbIterations% = 5000
-            'm_mlp.SetActivationFunctionOptimized(enumActivationFunctionOptimized.HyperbolicTangent,
-            '   gain:=1, center:=0)
+            'm_mlp.SetActivationFunctionOptimized(enumActivationFunctionOptimized.HyperbolicTangent)
             m_mlp.SetActivationFunctionOptimized(enumActivationFunctionOptimized.HyperbolicTangent,
-                gain:=2, center:=0)
+                gain:=2)
 
             InitXOR()
             m_mlp.Initialize(learningRate:=0.05, weightAdjustment:=0.05)
@@ -169,8 +166,7 @@ Namespace MatrixMLP
         Public Sub MatrixMLP1XORELU()
 
             Dim nbIterations% = 300
-            m_mlp.SetActivationFunctionOptimized(enumActivationFunctionOptimized.ELU,
-                gain:=1, center:=-1.8)
+            m_mlp.SetActivationFunctionOptimized(enumActivationFunctionOptimized.ELU, center:=-1.8)
 
             InitXOR()
             m_mlp.Initialize(learningRate:=0.1, weightAdjustment:=0.1)
@@ -213,7 +209,7 @@ Namespace MatrixMLP
 
             Dim nbIterations% = 5000
             'm_mlp.SetActivationFunctionOptimized(
-            '   enumActivationFunctionOptimized.HyperbolicTangent, gain:=1, center:=0.5)
+            '   enumActivationFunctionOptimized.HyperbolicTangent, center:=0.5)
             m_mlp.SetActivationFunctionOptimized(
                 enumActivationFunctionOptimized.HyperbolicTangent, gain:=2, center:=0.5)
 

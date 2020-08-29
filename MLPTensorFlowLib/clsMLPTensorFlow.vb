@@ -197,7 +197,7 @@ Public Class clsMLPTensorFlow : Inherits clsVectorizedMLPGeneric
 #End If
 
     Public Overrides Sub SetActivationFunction(
-        actFnc As enumActivationFunction, gain!, center!)
+        actFnc As enumActivationFunction, Optional gain! = 1, Optional center! = 0)
 
         ' gain can only be 2 for TensorFlow MLP
         gain = 2

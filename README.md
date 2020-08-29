@@ -146,6 +146,9 @@ Packages added:
 
 # Versions
 
+29/08/2020 V1.16
+- Activation function: gain and center optional
+
 29/08/2020 V1.15
 - TensorMLP: SetOuput1D -> SetOuput1DOneSample (not all samples)
 - Learning mode added: VectorialBatch (learn all samples in order as a vector for a batch of iterations)

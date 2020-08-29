@@ -24,31 +24,31 @@ Module modMLPClassicTest
 
         Dim nbIterations%
 
-        'mlp.SetActivationFunction(enumActivationFunction.Sigmoid, gain:=1, center:=0)
+        'mlp.SetActivationFunction(enumActivationFunction.Sigmoid)
         'nbIterations = 10000 ' Sigmoid: works
 
-        mlp.SetActivationFunction(enumActivationFunction.HyperbolicTangent, gain:=1, center:=0)
+        mlp.SetActivationFunction(enumActivationFunction.HyperbolicTangent)
         nbIterations = 2000 ' Hyperbolic tangent: works fine
 
-        'mlp.SetActivationFunction(enumActivationFunction.Gaussian, gain:=1, center:=0)
+        'mlp.SetActivationFunction(enumActivationFunction.Gaussian)
         'nbIterations = 1000 ' Gaussian: works fine
 
-        'mlp.SetActivationFunction(enumActivationFunction.Sinus, gain:=1, center:=0)
+        'mlp.SetActivationFunction(enumActivationFunction.Sinus)
         'nbIterations = 1000 ' Sinus: works fine
 
-        'mlp.SetActivationFunction(enumActivationFunction.ArcTangent, gain:=1, center:=0)
+        'mlp.SetActivationFunction(enumActivationFunction.ArcTangent)
         'nbIterations = 1000 ' ArcTangent: works fine
 
-        'mlp.SetActivationFunction(enumActivationFunction.ELU, gain:=1, center:=0)
+        'mlp.SetActivationFunction(enumActivationFunction.ELU)
         'nbIterations = 2000 ' ELU: works
 
-        'mlp.SetActivationFunction(enumActivationFunction.ReLu, gain:=0.9, center:=0)
+        'mlp.SetActivationFunction(enumActivationFunction.ReLu, gain:=0.9)
         'nbIterations = 1000 ' ReLU: works fine
 
-        'mlp.SetActivationFunction(enumActivationFunction.ReLuSigmoid, gain:=1, center:=0)
+        'mlp.SetActivationFunction(enumActivationFunction.ReLuSigmoid)
         'nbIterations = 10000 ' ReLUSigmoid: works?
 
-        'mlp.SetActivationFunction(enumActivationFunction.DoubleThreshold, gain:=1, center:=0)
+        'mlp.SetActivationFunction(enumActivationFunction.DoubleThreshold)
         'nbIterations = 10000 ' DoubleThreshold: works fine
 
         mlp.printOutput_ = True
@@ -217,7 +217,7 @@ Namespace ClassicMLP
             InitXOR()
 
             m_mlp.nbIterations = 400
-            m_mlp.SetActivationFunction(enumActivationFunction.ReLu, gain:=0.9, center:=0)
+            m_mlp.SetActivationFunction(enumActivationFunction.ReLu, gain:=0.9)
 
             m_mlp.InitializeWeights(1, {
                 {0.07, 0.79, 0.94},
@@ -249,7 +249,7 @@ Namespace ClassicMLP
             InitXOR()
 
             m_mlp.nbIterations = 9000
-            m_mlp.SetActivationFunction(enumActivationFunction.ReLuSigmoid, gain:=1, center:=0)
+            m_mlp.SetActivationFunction(enumActivationFunction.ReLuSigmoid)
 
             m_mlp.InitializeWeights(1, {
                 {0.58, 0.23, 0.25},
@@ -281,7 +281,7 @@ Namespace ClassicMLP
             InitXOR()
 
             m_mlp.nbIterations = 5000
-            m_mlp.SetActivationFunction(enumActivationFunction.DoubleThreshold, gain:=1, center:=0)
+            m_mlp.SetActivationFunction(enumActivationFunction.DoubleThreshold)
 
             m_mlp.InitializeWeights(1, {
                 {0.86, 0.37, 0.8},
@@ -334,7 +334,7 @@ Namespace ClassicMLP
             Init2XOR()
 
             m_mlp.nbIterations = 200
-            m_mlp.SetActivationFunction(enumActivationFunction.ELU, gain:=1, center:=0.4!)
+            m_mlp.SetActivationFunction(enumActivationFunction.ELU, center:=0.4!)
 
             m_mlp.InitializeWeights(1, {
                 {0.15, 0.46, 0.49, 0.28, 0.68},
@@ -369,7 +369,7 @@ Namespace ClassicMLP
             Init2XOR()
 
             m_mlp.nbIterations = 3000
-            m_mlp.SetActivationFunction(enumActivationFunction.DoubleThreshold, gain:=1, center:=0)
+            m_mlp.SetActivationFunction(enumActivationFunction.DoubleThreshold)
 
             m_mlp.InitializeWeights(1, {
                 {0.43, 0.21, 0.16, 0.85, 0.2},
@@ -453,7 +453,7 @@ Namespace ClassicMLP
             Init3XOR()
 
             m_mlp.nbIterations = 200
-            m_mlp.SetActivationFunction(enumActivationFunction.ELU, gain:=1, center:=0.4!)
+            m_mlp.SetActivationFunction(enumActivationFunction.ELU, center:=0.4!)
 
             m_mlp.InitializeWeights(1, {
                 {0.26, 0.39, 0.79, 0.77, 0.48, 0.65, 0.88},
@@ -525,7 +525,7 @@ Namespace ClassicMLP
             Init3XOR()
 
             m_mlp.nbIterations = 200
-            m_mlp.SetActivationFunction(enumActivationFunction.Sinus, gain:=1, center:=0)
+            m_mlp.SetActivationFunction(enumActivationFunction.Sinus)
 
             m_mlp.InitializeWeights(1, {
                 {0.41, 0.31, 0.33, 0.61, 0.57, 0.59, 0.73},
@@ -561,7 +561,7 @@ Namespace ClassicMLP
             Init3XOR()
 
             m_mlp.nbIterations = 100
-            m_mlp.SetActivationFunction(enumActivationFunction.DoubleThreshold, gain:=1, center:=2)
+            m_mlp.SetActivationFunction(enumActivationFunction.DoubleThreshold, center:=2)
 
             m_mlp.InitializeWeights(1, {
                 {0.12, 0.3, 0.12, 0.28, 0.12, 0.2, 0.32},

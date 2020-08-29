@@ -43,7 +43,7 @@ Namespace VectorizedMatrixMLP
             InitXOR()
             m_mlp.learningRate = 0.3
             m_mlp.nbIterations = 6000
-            m_mlp.SetActivationFunction(enumActivationFunction.Sigmoid, gain:=1, center:=1)
+            m_mlp.SetActivationFunction(enumActivationFunction.Sigmoid, center:=1)
 
             m_mlp.InitializeStruct(m_neuronCountXOR, addBiasColumn:=True)
 
@@ -79,7 +79,7 @@ Namespace VectorizedMatrixMLP
             InitXOR()
             m_mlp.learningRate = 0.3
             m_mlp.nbIterations = 25000
-            m_mlp.SetActivationFunction(enumActivationFunction.Sigmoid, gain:=1, center:=1)
+            m_mlp.SetActivationFunction(enumActivationFunction.Sigmoid, center:=1)
 
             m_mlp.InitializeStruct(m_neuronCountXOR, addBiasColumn:=True)
 
@@ -115,7 +115,7 @@ Namespace VectorizedMatrixMLP
             InitXOR()
             m_mlp.learningRate = 0.3
             m_mlp.nbIterations = 5000
-            m_mlp.SetActivationFunction(enumActivationFunction.Sigmoid, gain:=1, center:=1)
+            m_mlp.SetActivationFunction(enumActivationFunction.Sigmoid, center:=1)
 
             m_mlp.InitializeStruct(m_neuronCountXOR, addBiasColumn:=True)
 
@@ -151,7 +151,7 @@ Namespace VectorizedMatrixMLP
             InitXOR()
             m_mlp.learningRate = 1.5
             m_mlp.nbIterations = 1000 ' Sigmoid: works
-            m_mlp.SetActivationFunction(enumActivationFunction.Sigmoid, gain:=1, center:=1)
+            m_mlp.SetActivationFunction(enumActivationFunction.Sigmoid, center:=1)
 
             m_mlp.InitializeStruct(m_neuronCountXOR, addBiasColumn:=True)
 
@@ -191,7 +191,7 @@ Namespace VectorizedMatrixMLP
             m_mlp.InitializeStruct(m_neuronCountXOR, addBiasColumn:=False)
 
             m_mlp.nbIterations = 30000
-            m_mlp.SetActivationFunction(enumActivationFunction.Sigmoid, gain:=1, center:=0.2!)
+            m_mlp.SetActivationFunction(enumActivationFunction.Sigmoid, center:=0.2!)
 
             m_mlp.InitializeWeights(1, {
                 {0.7, 0.28},
@@ -231,7 +231,7 @@ Namespace VectorizedMatrixMLP
             m_mlp.InitializeStruct(m_neuronCountXOR231, addBiasColumn:=False)
 
             m_mlp.nbIterations = 10000
-            m_mlp.SetActivationFunction(enumActivationFunction.Sigmoid, gain:=1, center:=0.2!)
+            m_mlp.SetActivationFunction(enumActivationFunction.Sigmoid, center:=0.2!)
 
             m_mlp.InitializeWeights(1, {
                 {0.88, 0.94, 0.23},
@@ -304,7 +304,7 @@ Namespace VectorizedMatrixMLP
 
             InitXOR()
             m_mlp.nbIterations = 600 ' Hyperbolic tangent: works
-            'm_mlp.SetActivationFunction(enumActivationFunction.HyperbolicTangent, gain:=1, center:=1)
+            'm_mlp.SetActivationFunction(enumActivationFunction.HyperbolicTangent, center:=1)
             m_mlp.SetActivationFunction(enumActivationFunction.HyperbolicTangent, gain:=2, center:=1)
 
             m_mlp.InitializeStruct(m_neuronCountXOR, addBiasColumn:=True)
@@ -342,7 +342,7 @@ Namespace VectorizedMatrixMLP
 
             InitXOR()
             m_mlp.nbIterations = 400 ' Gaussian: works
-            m_mlp.SetActivationFunction(enumActivationFunction.Gaussian, gain:=1, center:=0)
+            m_mlp.SetActivationFunction(enumActivationFunction.Gaussian)
 
             m_mlp.InitializeStruct(m_neuronCountXOR, addBiasColumn:=True)
 
@@ -383,7 +383,7 @@ Namespace VectorizedMatrixMLP
 
             InitXOR()
             m_mlp.nbIterations = 200 ' Sinus: works
-            m_mlp.SetActivationFunction(enumActivationFunction.Sinus, gain:=1, center:=0)
+            m_mlp.SetActivationFunction(enumActivationFunction.Sinus)
 
             m_mlp.InitializeStruct(m_neuronCountXOR, addBiasColumn:=False)
 
@@ -421,7 +421,7 @@ Namespace VectorizedMatrixMLP
 
             InitXOR()
             m_mlp.nbIterations = 500 ' Arc Tangent: works
-            m_mlp.SetActivationFunction(enumActivationFunction.ArcTangent, gain:=1, center:=0)
+            m_mlp.SetActivationFunction(enumActivationFunction.ArcTangent)
 
             m_mlp.InitializeStruct(m_neuronCountXOR, addBiasColumn:=True)
 
@@ -500,7 +500,7 @@ Namespace VectorizedMatrixMLP
 
             InitXOR()
             m_mlp.nbIterations = 5000 ' ReLUSigmoid: works
-            m_mlp.SetActivationFunction(enumActivationFunction.ReLuSigmoid, gain:=1, center:=0)
+            m_mlp.SetActivationFunction(enumActivationFunction.ReLuSigmoid)
 
             m_mlp.InitializeStruct(m_neuronCountXOR, addBiasColumn:=True)
 
@@ -537,7 +537,7 @@ Namespace VectorizedMatrixMLP
 
             InitXOR()
             m_mlp.nbIterations = 4000
-            m_mlp.SetActivationFunction(enumActivationFunction.DoubleThreshold, gain:=1, center:=0)
+            m_mlp.SetActivationFunction(enumActivationFunction.DoubleThreshold)
 
             m_mlp.InitializeStruct(m_neuronCountXOR, addBiasColumn:=True)
 
@@ -574,7 +574,7 @@ Namespace VectorizedMatrixMLP
 
             Init2XOR()
             m_mlp.nbIterations = 400 ' Sinus: works
-            m_mlp.SetActivationFunction(enumActivationFunction.Sinus, gain:=1, center:=0)
+            m_mlp.SetActivationFunction(enumActivationFunction.Sinus)
 
             m_mlp.InitializeStruct(m_neuronCount2XOR, addBiasColumn:=True)
 
@@ -615,7 +615,7 @@ Namespace VectorizedMatrixMLP
 
             Init2XOR()
             m_mlp.nbIterations = 300 ' Gaussian: works
-            m_mlp.SetActivationFunction(enumActivationFunction.Gaussian, gain:=1, center:=1)
+            m_mlp.SetActivationFunction(enumActivationFunction.Gaussian, center:=1)
 
             m_mlp.InitializeStruct(m_neuronCount2XOR, addBiasColumn:=True)
 
@@ -656,7 +656,7 @@ Namespace VectorizedMatrixMLP
 
             Init2XOR()
             m_mlp.nbIterations = 300 ' HTan: works
-            'm_mlp.SetActivationFunction(enumActivationFunction.HyperbolicTangent, gain:=1, center:=0.5)
+            'm_mlp.SetActivationFunction(enumActivationFunction.HyperbolicTangent, center:=0.5)
             m_mlp.SetActivationFunction(enumActivationFunction.HyperbolicTangent, gain:=2, center:=0.5)
 
             m_mlp.InitializeStruct(m_neuronCount2XOR, addBiasColumn:=True)
@@ -699,7 +699,7 @@ Namespace VectorizedMatrixMLP
             Init2XOR()
             m_mlp.learningRate = 3.45
             m_mlp.nbIterations = 400 ' Sigmoid: works
-            m_mlp.SetActivationFunction(enumActivationFunction.Sigmoid, gain:=1, center:=0.5!)
+            m_mlp.SetActivationFunction(enumActivationFunction.Sigmoid, center:=0.5!)
 
             m_mlp.InitializeStruct(m_neuronCount2XOR, addBiasColumn:=True)
 
@@ -741,7 +741,7 @@ Namespace VectorizedMatrixMLP
             Init2XOR()
             m_mlp.learningRate = 0.05
             m_mlp.nbIterations = 500 '400 ' Arc tangent: works fine
-            m_mlp.SetActivationFunction(enumActivationFunction.ArcTangent, gain:=1, center:=0.9)
+            m_mlp.SetActivationFunction(enumActivationFunction.ArcTangent, center:=0.9)
 
             m_mlp.InitializeStruct(m_neuronCount2XOR, addBiasColumn:=True)
 
@@ -785,7 +785,7 @@ Namespace VectorizedMatrixMLP
             Init2XOR()
             m_mlp.learningRate = 0.15
             m_mlp.nbIterations = 900
-            m_mlp.SetActivationFunction(enumActivationFunction.DoubleThreshold, gain:=1, center:=0.2!)
+            m_mlp.SetActivationFunction(enumActivationFunction.DoubleThreshold, center:=0.2!)
 
             m_mlp.InitializeStruct(m_neuronCount2XOR, addBiasColumn:=True)
 
@@ -828,7 +828,7 @@ Namespace VectorizedMatrixMLP
             m_mlp.learningRate = 0.4
             m_mlp.weightAdjustment = 0.35
             m_mlp.nbIterations = 400 ' Sigmoid: works
-            m_mlp.SetActivationFunction(enumActivationFunction.Sigmoid, gain:=1, center:=0)
+            m_mlp.SetActivationFunction(enumActivationFunction.Sigmoid)
 
             m_mlp.InitializeStruct(m_neuronCount3XOR, addBiasColumn:=True)
 
@@ -873,7 +873,7 @@ Namespace VectorizedMatrixMLP
             Init3XOR()
             m_mlp.learningRate = 0.1
             m_mlp.nbIterations = 100 ' Gaussian: works
-            m_mlp.SetActivationFunction(enumActivationFunction.Gaussian, gain:=1, center:=1)
+            m_mlp.SetActivationFunction(enumActivationFunction.Gaussian, center:=1)
 
             m_mlp.InitializeStruct(m_neuronCount3XOR, addBiasColumn:=True)
 
@@ -919,7 +919,7 @@ Namespace VectorizedMatrixMLP
             Init3XOR()
             m_mlp.learningRate = 0.8
             m_mlp.nbIterations = 400
-            m_mlp.SetActivationFunction(enumActivationFunction.DoubleThreshold, gain:=1, center:=2)
+            m_mlp.SetActivationFunction(enumActivationFunction.DoubleThreshold, center:=2)
 
             m_mlp.InitializeStruct(m_neuronCount3XOR, addBiasColumn:=True)
 

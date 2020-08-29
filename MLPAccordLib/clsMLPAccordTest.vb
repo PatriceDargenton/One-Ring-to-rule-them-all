@@ -53,9 +53,9 @@ Module modMLPAccordTest
         End If
 
         'mlp.SetActivationFunctionOptimized(
-        '    enumActivationFunctionOptimized.Sigmoid, gain:=2, center:=0)
+        '    enumActivationFunctionOptimized.Sigmoid, gain:=2)
         mlp.SetActivationFunctionOptimized(
-            enumActivationFunctionOptimized.HyperbolicTangent, gain:=2, center:=0)
+            enumActivationFunctionOptimized.HyperbolicTangent, gain:=2)
 
         mlp.Randomize()
 
@@ -239,7 +239,7 @@ Namespace AccordMLP
 
             m_mlp.nbIterations = 700
             m_mlp.InitializeStruct(m_neuronCount2XOR, addBiasColumn:=True)
-            m_mlp.SetActivationFunction(enumActivationFunction.HyperbolicTangent, gain:=1.9!, center:=0)
+            m_mlp.SetActivationFunction(enumActivationFunction.HyperbolicTangent, gain:=1.9!)
 
             m_mlp.InitializeWeights(1, {
                 {-0.08, 0.24, 0.67, 0.65, 0.21},

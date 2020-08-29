@@ -25,11 +25,11 @@ Module modMLPTensorTest
         Dim nbIterations%
 
         mlp.SetActivationFunctionOptimized(
-            enumActivationFunctionOptimized.Sigmoid, gain:=1, center:=0)
+            enumActivationFunctionOptimized.Sigmoid)
         'mlp.SetActivationFunctionOptimized(
-        '    enumActivationFunctionOptimized.HyperbolicTangent, gain:=-2, center:=0)
+        '    enumActivationFunctionOptimized.HyperbolicTangent, gain:=-2)
         'mlp.SetActivationFunctionOptimized(
-        '    enumActivationFunctionOptimized.ELU, gain:=1, center:=0.4)
+        '    enumActivationFunctionOptimized.ELU, center:=0.4)
 
         nbIterations = 2000
 
@@ -122,7 +122,7 @@ Namespace TensorMLP
             m_mlp.weightAdjustment = 0.25
             m_mlp.nbIterations = 2000
             m_mlp.SetActivationFunctionOptimized(
-                enumActivationFunctionOptimized.Sigmoid, gain:=1, center:=0)
+                enumActivationFunctionOptimized.Sigmoid)
 
             m_mlp.InitializeStruct(m_neuronCountXOR, addBiasColumn:=True)
 
@@ -175,7 +175,7 @@ Namespace TensorMLP
             m_mlp.weightAdjustment = 0.25
             m_mlp.nbIterations = 2000
             m_mlp.SetActivationFunctionOptimized(
-                enumActivationFunctionOptimized.Sigmoid, gain:=1, center:=0)
+                enumActivationFunctionOptimized.Sigmoid)
 
             m_mlp.InitializeStruct(m_neuronCountXOR, addBiasColumn:=True)
 
@@ -228,7 +228,7 @@ Namespace TensorMLP
             m_mlp.weightAdjustment = 0.25
             m_mlp.nbIterations = 20000
             m_mlp.SetActivationFunctionOptimized(
-                enumActivationFunctionOptimized.Sigmoid, gain:=1, center:=0)
+                enumActivationFunctionOptimized.Sigmoid)
 
             m_mlp.InitializeStruct(m_neuronCountXOR, addBiasColumn:=True)
 
@@ -281,7 +281,7 @@ Namespace TensorMLP
             m_mlp.weightAdjustment = 0.2
             m_mlp.nbIterations = 7000 '5000 ' Sigmoid: works
             m_mlp.SetActivationFunctionOptimized(
-                enumActivationFunctionOptimized.Sigmoid, gain:=1, center:=0)
+                enumActivationFunctionOptimized.Sigmoid)
 
             m_mlp.InitializeStruct(m_neuronCountXOR, addBiasColumn:=True)
 
@@ -335,7 +335,7 @@ Namespace TensorMLP
             InitXOR()
             m_mlp.nbIterations = 5000
             m_mlp.SetActivationFunctionOptimized(
-                enumActivationFunctionOptimized.Sigmoid, gain:=1, center:=0)
+                enumActivationFunctionOptimized.Sigmoid)
 
             m_mlp.InitializeStruct(m_neuronCountXOR, addBiasColumn:=False)
 
@@ -385,7 +385,7 @@ Namespace TensorMLP
             m_mlp.weightAdjustment = 0.2
             m_mlp.nbIterations = 900 ' Sigmoid: works
             m_mlp.SetActivationFunctionOptimized(
-                enumActivationFunctionOptimized.Sigmoid, gain:=1, center:=0)
+                enumActivationFunctionOptimized.Sigmoid)
 
             m_mlp.InitializeStruct(m_neuronCount2XOR, addBiasColumn:=True)
 
@@ -454,7 +454,7 @@ Namespace TensorMLP
             m_mlp.weightAdjustment = 0.07
             m_mlp.nbIterations = 3000 ' 400 : Train, 3000 : TrainVector
             m_mlp.SetActivationFunctionOptimized(
-                enumActivationFunctionOptimized.HyperbolicTangent, gain:=1, center:=-0.05)
+                enumActivationFunctionOptimized.HyperbolicTangent, center:=-0.05)
 
             m_mlp.InitializeStruct(m_neuronCount2XOR, addBiasColumn:=True)
 
@@ -523,7 +523,7 @@ Namespace TensorMLP
             m_mlp.weightAdjustment = 0.05
             m_mlp.nbIterations = 200
             m_mlp.SetActivationFunctionOptimized(
-                enumActivationFunctionOptimized.ELU, gain:=1, center:=0.4)
+                enumActivationFunctionOptimized.ELU, center:=0.4)
 
             m_mlp.InitializeStruct(m_neuronCount2XOR, addBiasColumn:=True)
 
@@ -592,7 +592,7 @@ Namespace TensorMLP
             m_mlp.weightAdjustment = 0.2
             m_mlp.nbIterations = 700 ' Sigmoid: works
             m_mlp.SetActivationFunctionOptimized(
-                enumActivationFunctionOptimized.Sigmoid, gain:=1, center:=0)
+                enumActivationFunctionOptimized.Sigmoid)
 
             m_mlp.InitializeStruct(m_neuronCount3XOR, addBiasColumn:=True)
 
@@ -676,7 +676,7 @@ Namespace TensorMLP
             m_mlp.weightAdjustment = 0.05
             m_mlp.nbIterations = 700
             m_mlp.SetActivationFunctionOptimized(
-                enumActivationFunctionOptimized.ELU, gain:=1, center:=2)
+                enumActivationFunctionOptimized.ELU, center:=2)
 
             m_mlp.InitializeStruct(m_neuronCount3XOR, addBiasColumn:=True)
 

@@ -47,7 +47,7 @@ Module modMLPTensorFlowTest
             mlp.InitializeStruct(m_neuronCount3XOR673, addBiasColumn:=False)
         End If
 
-        mlp.SetActivationFunction(enumActivationFunction.HyperbolicTangent, gain:=2, center:=0)
+        mlp.SetActivationFunction(enumActivationFunction.HyperbolicTangent, gain:=2)
 
         mlp.Randomize()
 
@@ -118,7 +118,7 @@ Namespace TensorFlowMLP
             m_mlp.InitializeStruct(m_neuronCountXOR261, addBiasColumn:=False)
 
             m_mlp.nbIterations = 400
-            m_mlp.SetActivationFunction(enumActivationFunction.HyperbolicTangent, gain:=2, center:=0)
+            m_mlp.SetActivationFunction(enumActivationFunction.HyperbolicTangent, gain:=2)
 
             'm_mlp.InitializeWeights(1, {{}})
             'm_mlp.InitializeWeights(2, {{}})
@@ -149,7 +149,7 @@ Namespace TensorFlowMLP
         '    Init2XOR()
 
         '    m_mlp.nbIterations = 4000
-        '    m_mlp.SetActivationFunction(enumActivationFunction.HyperbolicTangent, gain:=2, center:=0)
+        '    m_mlp.SetActivationFunction(enumActivationFunction.HyperbolicTangent, gain:=2)
 
         '    'm_mlp.InitializeWeights(1, {{}})
         '    'm_mlp.InitializeWeights(2, {{}})

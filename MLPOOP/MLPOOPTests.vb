@@ -25,7 +25,7 @@ Module Main
             momentum:=0.8, randomizer:=standard,
             activation:=New BipolarSigmoid(alpha:=0.5))
 
-        'mlp.SetActivationFunction(enumActivationFunction.Sigmoid, gain:=0.5, center:=0)
+        'mlp.SetActivationFunction(enumActivationFunction.Sigmoid, gain:=0.5)
         'mlp.ActivationFunction = Nothing
 
         mlp.ShowMessage("Object-oriented programming MLP test")
@@ -196,7 +196,7 @@ Namespace OOPMLP
         Public Sub MLPOOP1XORSigmoidWithoutBias231()
 
             ' OOP activation function: before Initialize()
-            'm_mlp.ActivationFunction = New Sigmoid(alpha:=1, center:=0)
+            'm_mlp.ActivationFunction = New Sigmoid(alpha:=1)
 
             TestMLP1XORWithoutBias231(m_mlp)
 
@@ -216,7 +216,7 @@ Namespace OOPMLP
 
             m_mlp.nbIterations = 60000
             m_mlp.SetActivationFunction(
-                enumActivationFunction.Sigmoid, gain:=1, center:=2.2!)
+                enumActivationFunction.Sigmoid, center:=2.2!)
 
             m_mlp.InitializeWeights(1, {
                 {0.66, 0.53},
@@ -296,7 +296,7 @@ Namespace OOPMLP
         Public Sub MLPOOP3XORSigmoid()
 
             ' OOP activation function: before Initialize()
-            'm_mlp.ActivationFunction = New Sigmoid(alpha:=2, center:=0)
+            'm_mlp.ActivationFunction = New Sigmoid(alpha:=2)
 
             TestMLP3XORSigmoid(m_mlp)
 
@@ -316,7 +316,7 @@ Namespace OOPMLP
             Init3XOR()
 
             m_mlp.nbIterations = 150
-            m_mlp.SetActivationFunction(enumActivationFunction.Gaussian, gain:=1, center:=1)
+            m_mlp.SetActivationFunction(enumActivationFunction.Gaussian, center:=1)
 
             m_mlp.InitializeWeights(1, {
                 {0.64, 0.03, 0.82, 0.43, 0.84, 0.69, 0.69},

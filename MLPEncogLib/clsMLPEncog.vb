@@ -40,7 +40,7 @@ Public Class clsMLPEncog : Inherits clsVectorizedMLPGeneric
     End Sub
 
     Public Overrides Sub SetActivationFunction(
-        actFnc As enumActivationFunction, gain!, center!)
+        actFnc As enumActivationFunction, Optional gain! = 1, Optional center! = 0)
 
         ' gain can only be 1 for Encog MLP
         gain = 1

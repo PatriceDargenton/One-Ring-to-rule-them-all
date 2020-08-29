@@ -160,7 +160,9 @@ Public MustInherit Class clsMLPGeneric
     ''' <summary>
     ''' Set registered activation function
     ''' </summary>
-    Public Overridable Sub SetActivationFunction(actFnc As enumActivationFunction, gain!, center!)
+    Public Overridable Sub SetActivationFunction(actFnc As enumActivationFunction,
+        Optional gain! = 1,
+        Optional center! = 0)
 
         Select Case actFnc
             Case enumActivationFunction.Undefined : Me.activFnc = Nothing
@@ -193,7 +195,7 @@ Public MustInherit Class clsMLPGeneric
     ''' Activation function using optimised derivative: 
     ''' </summary>
     Public Overridable Sub SetActivationFunctionOptimized(
-        fctAct As enumActivationFunctionOptimized, gain!, center!)
+        fctAct As enumActivationFunctionOptimized, Optional gain! = 1, Optional center! = 0)
 
         Select Case fctAct
             Case enumActivationFunctionOptimized.Sigmoid

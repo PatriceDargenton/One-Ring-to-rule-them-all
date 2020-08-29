@@ -34,19 +34,17 @@ Module modMatrixMLPTest
 
         ' Works
         nbIterations = 5000 '100000
-        'mlp.SetActivationFunctionOptimized(enumActivationFunctionOptimized.Sigmoid,
-        '    gain:=1, center:=2)
+        'mlp.SetActivationFunctionOptimized(enumActivationFunctionOptimized.Sigmoid, center:=2)
 
         ' Sometimes works 
         'nbIterations = 100000
         mlp.SetActivationFunctionOptimized(enumActivationFunctionOptimized.HyperbolicTangent,
-            gain:=2, center:=0)
+            gain:=2)
         'mlp.Init(learningRate:=0.05, weightAdjustment:=0.05)
 
         ' Works
         'nbIterations = 10000
-        'mlp.SetActivationFunctionOptimized(enumActivationFunctionOptimized.ELU,
-        '    gain:=1, center:=-2)
+        'mlp.SetActivationFunctionOptimized(enumActivationFunctionOptimized.ELU, center:=-2)
 
         mlp.nbIterations = nbIterations
         mlp.printOutput_ = True

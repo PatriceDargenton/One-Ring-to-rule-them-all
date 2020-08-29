@@ -86,12 +86,12 @@ Namespace MLP.ActivationFunction
         ''' <summary>
         ''' Activation function
         ''' </summary>
-        Function Activation#(x#, gain#, center#)
+        Function Activation#(x#, Optional gain# = 1, Optional center# = 0)
 
         ''' <summary>
         ''' Derivative function
         ''' </summary>
-        Function Derivative#(x#, gain#, center#)
+        Function Derivative#(x#, Optional gain# = 1, Optional center# = 0)
 
         ''' <summary>
         ''' Does the derivative f'(x) depend on the original function f(x)?
@@ -120,12 +120,12 @@ Namespace MLP.ActivationFunction
             Return False
         End Function
 
-        Public Function Activation#(x#, gain#, center#) Implements IActivationFunction.Activation
+        Public Function Activation#(x#, Optional gain# = 1, Optional center# = 0) Implements IActivationFunction.Activation
             Dim xc# = x - center
             Return xc * gain
         End Function
 
-        Public Function Derivative#(x#, gain#, center#) Implements IActivationFunction.Derivative
+        Public Function Derivative#(x#, Optional gain# = 1, Optional center# = 0) Implements IActivationFunction.Derivative
             Return gain
         End Function
 
@@ -148,7 +148,7 @@ Namespace MLP.ActivationFunction
             Return True
         End Function
 
-        Public Function Activation#(x#, gain#, center#) Implements IActivationFunction.Activation
+        Public Function Activation#(x#, Optional gain# = 1, Optional center# = 0) Implements IActivationFunction.Activation
             Return CommonActivation(x, gain, center)
         End Function
 
@@ -172,7 +172,7 @@ Namespace MLP.ActivationFunction
 
         End Function
 
-        Public Function Derivative#(x#, gain#, center#) Implements IActivationFunction.Derivative
+        Public Function Derivative#(x#, Optional gain# = 1, Optional center# = 0) Implements IActivationFunction.Derivative
             Return CommonDerivative(x, gain, center)
         End Function
 
@@ -238,7 +238,7 @@ Namespace MLP.ActivationFunction
             Return True
         End Function
 
-        Public Function Activation#(x#, gain#, center#) Implements IActivationFunction.Activation
+        Public Function Activation#(x#, Optional gain# = 1, Optional center# = 0) Implements IActivationFunction.Activation
 
             Const expMax As Boolean = False
             Dim xc# = x - center
@@ -265,7 +265,7 @@ Namespace MLP.ActivationFunction
 
         End Function
 
-        Public Function Derivative#(x#, gain#, center#) Implements IActivationFunction.Derivative
+        Public Function Derivative#(x#, Optional gain# = 1, Optional center# = 0) Implements IActivationFunction.Derivative
 
             Dim xc# = x - center
             Dim fx# = Activation(x, gain, center)
@@ -317,11 +317,11 @@ Namespace MLP.ActivationFunction
             Return False
         End Function
 
-        Public Function Activation#(rX#, rGain#, rCentre#) Implements IActivationFunction.Activation
+        Public Function Activation#(x#, Optional gain# = 1, Optional center# = 0) Implements IActivationFunction.Activation
 
             Const expMax As Boolean = False
-            Dim xc# = rX - rCentre
-            Dim xg# = -rGain * xc * xc
+            Dim xc# = x - center
+            Dim xg# = -gain * xc * xc
             Dim y#
             If xg > clsMLPGeneric.expMax Then
                 y = 1
@@ -336,7 +336,7 @@ Namespace MLP.ActivationFunction
 
         End Function
 
-        Public Function Derivative#(x#, gain#, center#) Implements IActivationFunction.Derivative
+        Public Function Derivative#(x#, Optional gain# = 1, Optional center# = 0) Implements IActivationFunction.Derivative
 
             Dim xc# = x - center
             Dim c# = -gain * gain
@@ -365,14 +365,14 @@ Namespace MLP.ActivationFunction
             Return False
         End Function
 
-        Public Function Activation#(x#, gain#, center#) Implements IActivationFunction.Activation
+        Public Function Activation#(x#, Optional gain# = 1, Optional center# = 0) Implements IActivationFunction.Activation
             Dim xc# = x - center
             Dim xg# = gain * xc
             Dim y# = gain * Math.Atan(xg)
             Return y
         End Function
 
-        Public Function Derivative#(x#, gain#, center#) Implements IActivationFunction.Derivative
+        Public Function Derivative#(x#, Optional gain# = 1, Optional center# = 0) Implements IActivationFunction.Derivative
             Dim xc# = x - center
             ' https://www.wolframalpha.com/input/?i=arctan(alpha+*+x)+derivative
             Dim y# = gain / (1 + gain * gain * xc * xc)
@@ -398,13 +398,13 @@ Namespace MLP.ActivationFunction
             Return False
         End Function
 
-        Public Function Activation#(x#, gain#, center#) Implements IActivationFunction.Activation
+        Public Function Activation#(x#, Optional gain# = 1, Optional center# = 0) Implements IActivationFunction.Activation
             Dim xc# = x - center
             Dim y# = gain * Math.Sin(xc)
             Return y
         End Function
 
-        Public Function Derivative#(x#, gain#, center#) Implements IActivationFunction.Derivative
+        Public Function Derivative#(x#, Optional gain# = 1, Optional center# = 0) Implements IActivationFunction.Derivative
             Dim xc# = x - center
             Dim y# = gain * Math.Cos(xc)
             Return y
@@ -429,7 +429,7 @@ Namespace MLP.ActivationFunction
             Return True
         End Function
 
-        Public Function Activation#(x#, gain#, center#) Implements IActivationFunction.Activation
+        Public Function Activation#(x#, Optional gain# = 1, Optional center# = 0) Implements IActivationFunction.Activation
             Dim xc# = x - center
             Dim y#
             If xc >= 0 Then
@@ -440,12 +440,12 @@ Namespace MLP.ActivationFunction
             Return y
         End Function
 
-        Public Function Derivative#(x#, gain#, centre#) Implements IActivationFunction.Derivative
+        Public Function Derivative#(x#, Optional gain# = 1, Optional center# = 0) Implements IActivationFunction.Derivative
 
             ' If gain < 0 the derivate is undefined
             If gain < 0 Then Return 0
 
-            Dim xc# = x - centre
+            Dim xc# = x - center
             Dim y#
             If xc >= 0 Then
                 y = 1
@@ -454,7 +454,7 @@ Namespace MLP.ActivationFunction
                 ' https://www.wolframalpha.com/input/?i=alpha(exp(x)-1)
                 ' Derivate: alpha . exp(x) = f(x) + alpha = alpha(exp(x)-1) + alpha
                 ' https://www.wolframalpha.com/input/?i=alpha(exp(x)-1)+derivate
-                Dim fx# = Activation(x, gain, centre)
+                Dim fx# = Activation(x, gain, center)
                 y = fx + gain
             End If
             Return y
@@ -492,13 +492,13 @@ Namespace MLP.ActivationFunction
             Return False
         End Function
 
-        Public Function Activation#(x#, gain#, center#) Implements IActivationFunction.Activation
+        Public Function Activation#(x#, Optional gain# = 1, Optional center# = 0) Implements IActivationFunction.Activation
             Dim xc# = x - center
             Dim y# = Math.Max(xc * gain, 0)
             Return y
         End Function
 
-        Public Function Derivative#(x#, gain#, center#) Implements IActivationFunction.Derivative
+        Public Function Derivative#(x#, Optional gain# = 1, Optional center# = 0) Implements IActivationFunction.Derivative
             Dim xc# = x - center
             If xc >= 0 Then Return gain
             Return 0
@@ -528,13 +528,13 @@ Namespace MLP.ActivationFunction
             Return False
         End Function
 
-        Public Function Activation#(x#, gain#, center#) Implements IActivationFunction.Activation
+        Public Function Activation#(x#, Optional gain# = 1, Optional center# = 0) Implements IActivationFunction.Activation
             Dim xc# = x - center
             Dim y# = Math.Max(xc * gain, 0)
             Return y
         End Function
 
-        Public Function Derivative#(x#, gain#, center#) Implements IActivationFunction.Derivative
+        Public Function Derivative#(x#, Optional gain# = 1, Optional center# = 0) Implements IActivationFunction.Derivative
             Return SigmoidFunction.CommonDerivative(x, gain, center)
         End Function
 
@@ -558,7 +558,7 @@ Namespace MLP.ActivationFunction
             Return False
         End Function
 
-        Public Function Activation#(x#, gain#, center#) Implements IActivationFunction.Activation
+        Public Function Activation#(x#, Optional gain# = 1, Optional center# = 0) Implements IActivationFunction.Activation
 
             Dim xc# = x - center
             Dim reducedGain# = gain / 8
@@ -580,7 +580,7 @@ Namespace MLP.ActivationFunction
 
         End Function
 
-        Public Function Derivative#(x#, gain#, center#) Implements IActivationFunction.Derivative
+        Public Function Derivative#(x#, Optional gain# = 1, Optional center# = 0) Implements IActivationFunction.Derivative
             If useAlternateDerivativeFunction Then _
                 Return SigmoidFunction.CommonDerivative(x, gain, center)
             Return 0

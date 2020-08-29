@@ -64,14 +64,14 @@ Public Class clsMLPAccord : Inherits clsVectorizedMLPGeneric
     End Sub
 
     Public Overrides Sub SetActivationFunction(
-        actFnc As enumActivationFunction, gain!, center!)
+        actFnc As enumActivationFunction, Optional gain! = 1, Optional center! = 0)
 
         Select Case actFnc
-            Case enumActivationFunction.Sigmoid _
-              : SetActivationFunctionOptimized(
+            Case enumActivationFunction.Sigmoid
+                SetActivationFunctionOptimized(
                     enumActivationFunctionOptimized.Sigmoid, gain, center)
-            Case enumActivationFunction.HyperbolicTangent _
-              : SetActivationFunctionOptimized(
+            Case enumActivationFunction.HyperbolicTangent
+                SetActivationFunctionOptimized(
                     enumActivationFunctionOptimized.HyperbolicTangent, gain, center)
             Case Else
                 Throw New NotImplementedException(
@@ -81,7 +81,7 @@ Public Class clsMLPAccord : Inherits clsVectorizedMLPGeneric
     End Sub
 
     Public Overrides Sub SetActivationFunctionOptimized(
-        actFnc As enumActivationFunctionOptimized, gain!, center!)
+        actFnc As enumActivationFunctionOptimized, Optional gain! = 1, Optional center! = 0)
 
         MyBase.SetActivationFunctionOptimized(actFnc, gain, center)
 
