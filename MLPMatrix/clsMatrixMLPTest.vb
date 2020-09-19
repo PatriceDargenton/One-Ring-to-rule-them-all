@@ -72,8 +72,7 @@ Namespace MatrixMLP
             Dim sExpectedOutput = expectedMatrix.ToString()
             Assert.AreEqual(sExpectedOutput, sOutput)
 
-            Dim expectedLoss# = 0.01
-            m_mlp.targetArray = m_targetArrayXOR
+            Const expectedLoss# = 0.01
             Dim loss! = m_mlp.averageError
             Dim lossRounded# = Math.Round(loss, 2)
             Assert.AreEqual(True, lossRounded <= expectedLoss)
@@ -110,8 +109,7 @@ Namespace MatrixMLP
             Dim sExpectedOutput = expectedMatrix.ToString()
             Assert.AreEqual(sExpectedOutput, sOutput)
 
-            Dim expectedLoss# = 0.06
-            m_mlp.targetArray = m_targetArrayXOR
+            Const expectedLoss# = 0.06
             Dim loss! = m_mlp.averageError
             Dim lossRounded# = Math.Round(loss, 2)
             Assert.AreEqual(True, lossRounded <= expectedLoss)
@@ -154,8 +152,7 @@ Namespace MatrixMLP
             Dim sExpectedOutput = expectedMatrix.ToString()
             Assert.AreEqual(sExpectedOutput, sOutput)
 
-            Dim expectedLoss# = 0.01
-            m_mlp.targetArray = m_targetArrayXOR
+            Const expectedLoss# = 0.01
             Dim loss! = m_mlp.averageError
             Dim lossRounded# = Math.Round(loss, 2)
             Assert.AreEqual(True, lossRounded <= expectedLoss)
@@ -196,8 +193,7 @@ Namespace MatrixMLP
             Dim sExpectedOutput = expectedMatrix.ToString()
             Assert.AreEqual(sExpectedOutput, sOutput)
 
-            Dim expectedLoss# = 0
-            m_mlp.targetArray = m_targetArrayXOR
+            Const expectedLoss# = 0
             Dim loss! = m_mlp.averageError
             Dim lossRounded# = Math.Round(loss, 2)
             Assert.AreEqual(True, lossRounded <= expectedLoss)
@@ -285,7 +281,7 @@ Namespace MatrixMLP
             Dim sExpectedOutput = expectedMatrix.ToStringWithFormat(dec:="0.0")
             Assert.AreEqual(sExpectedOutput, sOutput)
 
-            Dim expectedLoss# = 0.01
+            Const expectedLoss# = 0.01
             Dim loss! = m_mlp.averageError
             Dim lossRounded# = Math.Round(loss, 2)
             Assert.AreEqual(True, lossRounded <= expectedLoss)

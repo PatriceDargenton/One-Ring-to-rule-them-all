@@ -183,7 +183,7 @@ Namespace EncogMLP
         '    Dim sExpectedOutput = expectedMatrix.ToStringWithFormat(dec:="0.0")
         '    Assert.AreEqual(sExpectedOutput, sOutput)
 
-        '    Dim expectedLoss# = 0.01
+        '    Const expectedLoss# = 0.01
         '    Dim loss! = m_mlp.averageError
         '    Dim lossRounded# = Math.Round(loss, 2)
         '    Assert.AreEqual(True, lossRounded <= expectedLoss)
@@ -218,7 +218,7 @@ Namespace EncogMLP
         '    Dim sExpectedOutput = expectedMatrix.ToStringWithFormat(dec:="0.0")
         '    Assert.AreEqual(sExpectedOutput, sOutput)
 
-        '    Dim expectedLoss# = 0.01
+        '    Const expectedLoss# = 0.01
         '    Dim loss! = m_mlp.averageError
         '    Dim lossRounded# = Math.Round(loss, 2)
         '    Assert.AreEqual(True, lossRounded <= expectedLoss)
@@ -251,7 +251,7 @@ Namespace EncogMLP
             Dim sExpectedOutput = expectedMatrix.ToStringWithFormat(dec:="0.0")
             Assert.AreEqual(sExpectedOutput, sOutput)
 
-            Dim expectedLoss# = 0.03
+            Const expectedLoss# = 0.03
             Dim loss! = m_mlp.averageError
             Dim lossRounded# = Math.Round(loss, 2)
             Assert.AreEqual(True, lossRounded <= expectedLoss)
@@ -285,7 +285,7 @@ Namespace EncogMLP
             Dim sExpectedOutput = expectedMatrix.ToStringWithFormat(dec:="0.0")
             Assert.AreEqual(sExpectedOutput, sOutput)
 
-            Dim expectedLoss# = 0.01
+            Const expectedLoss# = 0.01
             Dim loss! = m_mlp.averageError
             Dim lossRounded# = Math.Round(loss, 2)
             Assert.AreEqual(True, lossRounded <= expectedLoss)
@@ -343,7 +343,7 @@ Namespace EncogMLP
             Dim sExpectedOutput = expectedMatrix.ToStringWithFormat(dec:="0.0")
             Assert.AreEqual(sExpectedOutput, sOutput)
 
-            Dim expectedLoss# = 0
+            Const expectedLoss# = 0
             Dim loss! = m_mlp.averageError
             Dim lossRounded# = Math.Round(loss, 2)
             Assert.AreEqual(True, lossRounded <= expectedLoss)
@@ -454,7 +454,7 @@ Namespace EncogMLP
             Dim sExpectedOutput = expectedMatrix.ToStringWithFormat(dec:="0.0")
             Assert.AreEqual(sExpectedOutput, sOutput)
 
-            Dim expectedLoss# = 0.01
+            Const expectedLoss# = 0.01
             Dim loss! = m_mlp.averageError
             Dim lossRounded# = Math.Round(loss, 2)
             Assert.AreEqual(True, lossRounded <= expectedLoss)
@@ -514,7 +514,7 @@ Namespace EncogMLP
             Dim sExpectedOutput = expectedMatrix.ToStringWithFormat(dec:="0.0")
             Assert.AreEqual(sExpectedOutput, sOutput)
 
-            Dim expectedLoss# = 0.01
+            Const expectedLoss# = 0.01
             Dim loss! = m_mlp.averageError
             Dim lossRounded# = Math.Round(loss, 2)
             Assert.AreEqual(True, lossRounded <= expectedLoss)
@@ -553,7 +553,7 @@ Namespace EncogMLP
             Dim sExpectedOutput = expectedMatrix.ToStringWithFormat(dec:="0.0")
             Assert.AreEqual(sExpectedOutput, sOutput)
 
-            Dim expectedLoss# = 0.01
+            Const expectedLoss# = 0.01
             Dim loss! = m_mlp.averageError
             Dim lossRounded# = Math.Round(loss, 2)
             Assert.AreEqual(True, lossRounded <= expectedLoss)
@@ -607,7 +607,7 @@ Namespace EncogMLP
             Dim sExpectedOutput = expectedMatrix.ToStringWithFormat(dec:="0.0")
             Assert.AreEqual(sExpectedOutput, sOutput)
 
-            Dim expectedLoss# = 0.01
+            Const expectedLoss# = 0.01
             Dim loss! = m_mlp.averageError
             Dim lossRounded# = Math.Round(loss, 2)
             Assert.AreEqual(True, lossRounded <= expectedLoss)
@@ -663,7 +663,7 @@ Namespace EncogMLP
             m_mlp.minimalSuccessTreshold = 0.2
             m_mlp.Train()
 
-            Dim expectedLoss# = 0
+            Const expectedLoss# = 0
             Dim loss! = m_mlp.averageError
             Dim lossRounded# = Math.Round(loss, 2)
             Assert.AreEqual(True, lossRounded <= expectedLoss)
@@ -771,7 +771,7 @@ Namespace EncogMLP
             m_mlp.minimalSuccessTreshold = 0.2
             m_mlp.Train()
 
-            Dim expectedLoss# = 0.005
+            Const expectedLoss# = 0.005
             Dim loss! = m_mlp.averageError
             Dim lossRounded# = Math.Round(loss, 3)
             Assert.AreEqual(True, lossRounded <= expectedLoss)
@@ -842,7 +842,7 @@ Namespace EncogMLP
             m_mlp.minimalSuccessTreshold = 0.3
             m_mlp.Train()
 
-            Dim expectedLoss# = 0.005
+            Const expectedLoss# = 0.005
             Dim loss! = m_mlp.averageError
             Dim lossRounded# = Math.Round(loss, 3)
             Assert.AreEqual(True, lossRounded <= expectedLoss)
