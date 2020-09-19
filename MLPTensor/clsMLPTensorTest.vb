@@ -27,7 +27,7 @@ Module modMLPTensorTest
         mlp.SetActivationFunctionOptimized(
             enumActivationFunctionOptimized.Sigmoid)
         'mlp.SetActivationFunctionOptimized(
-        '    enumActivationFunctionOptimized.HyperbolicTangent, gain:=-2)
+        '    enumActivationFunctionOptimized.HyperbolicTangent, gain:=2)
         'mlp.SetActivationFunctionOptimized(
         '    enumActivationFunctionOptimized.ELU, center:=0.4)
 

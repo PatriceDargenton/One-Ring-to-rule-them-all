@@ -269,7 +269,8 @@ Namespace MLP.ActivationFunction
 
             Dim xc# = x - center
             Dim fx# = Activation(x, gain, center)
-            Dim y# = gain * (1 - fx * fx) / 2 ' 31/07/2020
+            'Dim y# = gain * (1 - fx * fx) / 2 ' 31/07/2020
+            Dim y# = Math.Abs(gain) * (1 - fx * fx) / 2 ' 19/09/2020
 
             'Dim y#
             'If gain = 1 Then
@@ -285,10 +286,12 @@ Namespace MLP.ActivationFunction
             ' https://www.wolframalpha.com/input/?i=2+%2F+%281+%2B+Exp%28alpha+x%29%29+-+1+derivative
             If debugActivationFunction Then
                 'Dim xg# = -2 * gain
-                Dim xg# = -gain ' 31/07/2020
+                'Dim xg# = -gain ' 31/07/2020
+                Dim xg# = Math.Abs(gain) ' 19/09/2020
                 Dim exp# = Math.Exp(xg * xc)
                 Dim expP1# = 1 + exp
-                Dim y2 = -2 * xg * exp / (expP1 * expP1)
+                'Dim y2 = -2 * xg * exp / (expP1 * expP1)
+                Dim y2 = 2 * xg * exp / (expP1 * expP1) ' 19/09/2020
                 If Not clsMLPHelper.Compare(y, y2, dec:=5) Then Stop
             End If
 

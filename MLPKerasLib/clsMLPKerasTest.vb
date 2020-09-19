@@ -67,7 +67,7 @@ Module modMLPKerasTest
         End If
 
         mlp.SetActivationFunction(enumActivationFunction.Sigmoid)
-        'mlp.SetActivationFunction(enumActivationFunction.HyperbolicTangent, gain:=-2)
+        'mlp.SetActivationFunction(enumActivationFunction.HyperbolicTangent, gain:=2)
 
         mlp.Randomize()
 
@@ -272,7 +272,7 @@ Namespace KerasMLP
             m_mlp.InitializeStruct(m_neuronCountXOR2_16_1, addBiasColumn:=False)
 
             m_mlp.nbIterations = 600
-            m_mlp.SetActivationFunction(enumActivationFunction.HyperbolicTangent, gain:=-2.0!)
+            m_mlp.SetActivationFunction(enumActivationFunction.HyperbolicTangent, gain:=2!)
 
             m_mlp.InitializeWeights(1, {
                 {-0.21, 0.51, 0.41, 0.18, 0.49, -0.33, -0.17, -0.08, 0.28, -0.02, -0.5, 0.19, -0.33, 0.15, -0.3, -0.21},

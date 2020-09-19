@@ -44,7 +44,7 @@ Public Class clsMLPEncog : Inherits clsVectorizedMLPGeneric
 
         ' gain can only be 1 for Encog MLP
         gain = 1
-        If actFnc = enumActivationFunction.HyperbolicTangent Then gain = -2
+        If actFnc = enumActivationFunction.HyperbolicTangent Then gain = 2
         center = 0
         Me.weightAdjustment = 0 ' Not used
 

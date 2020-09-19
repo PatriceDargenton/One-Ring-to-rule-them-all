@@ -58,7 +58,7 @@ Public Class clsMLPKeras : Inherits clsVectorizedMLPGeneric
         actFnc As enumActivationFunction, Optional gain! = 1, Optional center! = 0)
 
         gain = 1 ' gain can only be 1 for Keras MLP (sigmoid)
-        If actFnc = enumActivationFunction.HyperbolicTangent Then gain = -2
+        If actFnc = enumActivationFunction.HyperbolicTangent Then gain = 2
         center = 0
         'Me.weightAdjustment = 0 ' Not used
 

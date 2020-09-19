@@ -52,7 +52,7 @@ Module modMLPEncogTest
         End If
 
         'mlp.SetActivationFunction(enumActivationFunction.Sigmoid)
-        mlp.SetActivationFunction(enumActivationFunction.HyperbolicTangent, gain:=-2)
+        mlp.SetActivationFunction(enumActivationFunction.HyperbolicTangent, gain:=2)
 
         mlp.Randomize()
 
@@ -304,7 +304,7 @@ Namespace EncogMLP
         <TestMethod()>
         Public Sub EncogMLP1XOR4Layers()
 
-            TestMLP1XOR4Layers(m_mlp, weightAdjustment:=0, gain:=1,
+            TestMLP1XOR4Layers(m_mlp, weightAdjustment:=0, gain:=2,
                 learningMode:=enumLearningMode.Vectorial)
 
         End Sub
@@ -404,7 +404,7 @@ Namespace EncogMLP
         '<TestMethod()>
         'Public Sub EncogMLP1XORHTangent()
 
-        '    TestMLP1XORHTangent(m_mlp, weightAdjustment:=0, gain:=-2,
+        '    TestMLP1XORHTangent(m_mlp, weightAdjustment:=0, gain:=2,
         '        learningMode:=enumLearningMode.Systematic)
 
         'End Sub
@@ -412,7 +412,7 @@ Namespace EncogMLP
         <TestMethod()>
         Public Sub EncogMLP1XORHTangent()
 
-            TestMLP1XORHTangent(m_mlp, weightAdjustment:=0, gain:=-2,
+            TestMLP1XORHTangent(m_mlp, weightAdjustment:=0, gain:=2,
                 learningMode:=enumLearningMode.Vectorial)
 
         End Sub
@@ -420,7 +420,7 @@ Namespace EncogMLP
         <TestMethod()>
         Public Sub EncogMLP1XORHTangent261()
 
-            TestMLP1XORHTangent261(m_mlp, nbIterations:=200, gain:=-2,
+            TestMLP1XORHTangent261(m_mlp, nbIterations:=200, gain:=2,
                 learningMode:=enumLearningMode.Vectorial)
 
         End Sub
@@ -463,7 +463,7 @@ Namespace EncogMLP
         '<TestMethod()>
         'Public Sub EncogMLP2XORHTangent()
 
-        '    TestMLP2XORHTangent(m_mlp, weightAdjustment:=0, gain:=-2,
+        '    TestMLP2XORHTangent(m_mlp, weightAdjustment:=0, gain:=2,
         '        learningMode:=enumLearningMode.Systematic)
 
         'End Sub
@@ -471,7 +471,7 @@ Namespace EncogMLP
         <TestMethod()>
         Public Sub EncogMLP2XORHTangent()
 
-            TestMLP2XORHTangent(m_mlp, weightAdjustment:=0, gain:=-2,
+            TestMLP2XORHTangent(m_mlp, weightAdjustment:=0, gain:=2,
                 learningMode:=enumLearningMode.Vectorial)
 
         End Sub
@@ -479,7 +479,7 @@ Namespace EncogMLP
         <TestMethod()>
         Public Sub EncogMLP2XORHTangent462()
 
-            TestMLP2XORHTangent462(m_mlp, gain:=-2,
+            TestMLP2XORHTangent462(m_mlp, gain:=2,
                 learningMode:=enumLearningMode.Vectorial)
 
         End Sub
@@ -560,14 +560,14 @@ Namespace EncogMLP
         '<TestMethod()>
         'Public Sub EncogMLP3XORHTangent()
 
-        '    TestMLP3XORHTangent(m_mlp, gain:=-2) ' works slowly
+        '    TestMLP3XORHTangent(m_mlp, gain:=2) ' works slowly
 
         'End Sub
 
         <TestMethod()>
         Public Sub EncogMLP3XORHTangent()
 
-            TestMLP3XORHTangent(m_mlp, gain:=-2,
+            TestMLP3XORHTangent(m_mlp, gain:=2,
                 learningMode:=enumLearningMode.Vectorial)
 
         End Sub
