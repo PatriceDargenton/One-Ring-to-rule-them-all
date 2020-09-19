@@ -20,19 +20,19 @@ Namespace VectorizedMatrixMLP
         End Sub
 
         Private Sub InitXOR()
-            m_mlp.Initialize(learningRate:=0.1!, weightAdjustment:=0)
+            m_mlp.Initialize(learningRate:=0.1!)
             m_mlp.inputArray = m_inputArrayXOR
             m_mlp.targetArray = m_targetArrayXOR
         End Sub
 
         Private Sub Init2XOR()
-            m_mlp.Initialize(learningRate:=0.1!, weightAdjustment:=0)
+            m_mlp.Initialize(learningRate:=0.1!)
             m_mlp.inputArray = m_inputArray2XOR
             m_mlp.targetArray = m_targetArray2XOR
         End Sub
 
         Private Sub Init3XOR()
-            m_mlp.Initialize(learningRate:=0.1!, weightAdjustment:=0)
+            m_mlp.Initialize(learningRate:=0.1!)
             m_mlp.inputArray = m_inputArray3XOR
             m_mlp.targetArray = m_targetArray3XOR
         End Sub
@@ -463,7 +463,7 @@ Namespace VectorizedMatrixMLP
             InitXOR()
             m_mlp.nbIterations = 500 '400 ' ELU: works
             m_mlp.SetActivationFunction(enumActivationFunction.ELU, gain:=0.1, center:=0.4)
-            m_mlp.Initialize(learningRate:=0.07!, weightAdjustment:=0)
+            m_mlp.Initialize(learningRate:=0.07!)
 
             m_mlp.InitializeStruct(m_neuronCountXOR, addBiasColumn:=True)
 

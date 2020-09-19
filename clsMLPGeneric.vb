@@ -107,7 +107,7 @@ Public MustInherit Class clsMLPGeneric
     ''' </summary>
     Public weightAdjustment!
 
-    Public Sub Initialize(learningRate!, weightAdjustment!)
+    Public Sub Initialize(learningRate!, Optional weightAdjustment! = 0)
 
         Me.learningRate = learningRate
         Me.weightAdjustment = weightAdjustment

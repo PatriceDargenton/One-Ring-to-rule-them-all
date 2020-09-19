@@ -45,7 +45,7 @@ Namespace MatrixMLP
             m_mlp.SetActivationFunctionOptimized(enumActivationFunctionOptimized.Sigmoid, center:=2.2)
 
             InitXOR()
-            m_mlp.Initialize(learningRate:=0.9, weightAdjustment:=0)
+            m_mlp.Initialize(learningRate:=0.9)
 
             m_mlp.weights_ih = {
                 {0.95, 0.82},
@@ -87,7 +87,7 @@ Namespace MatrixMLP
 
             InitXOR()
             m_mlp.InitializeStruct(m_neuronCountXOR, addBiasColumn:=False)
-            m_mlp.Initialize(learningRate:=0.1, weightAdjustment:=0)
+            m_mlp.Initialize(learningRate:=0.1)
 
             m_mlp.weights_ih = {
                 {0.76, 0.81},
@@ -125,7 +125,7 @@ Namespace MatrixMLP
                 gain:=2)
 
             InitXOR()
-            m_mlp.Initialize(learningRate:=0.05, weightAdjustment:=0)
+            m_mlp.Initialize(learningRate:=0.05)
 
             m_mlp.weights_ih = {
                 {0.79, 0.81},
@@ -166,7 +166,7 @@ Namespace MatrixMLP
             m_mlp.SetActivationFunctionOptimized(enumActivationFunctionOptimized.ELU, center:=-1.8)
 
             InitXOR()
-            m_mlp.Initialize(learningRate:=0.1, weightAdjustment:=0)
+            m_mlp.Initialize(learningRate:=0.1)
 
             m_mlp.weights_ih = {
                 {0.57, 0.6},
@@ -207,7 +207,7 @@ Namespace MatrixMLP
             m_mlp.SetActivationFunctionOptimized(enumActivationFunctionOptimized.Sigmoid, gain:=2)
 
             Init2XOR()
-            m_mlp.Initialize(learningRate:=0.05, weightAdjustment:=0)
+            m_mlp.Initialize(learningRate:=0.05)
 
             m_mlp.weights_ih = {
                 {-0.11, 0.07, -0.05, 0.03},
@@ -252,7 +252,7 @@ Namespace MatrixMLP
                 enumActivationFunctionOptimized.HyperbolicTangent, gain:=2, center:=0.5)
 
             Init2XOR()
-            m_mlp.Initialize(learningRate:=0.1, weightAdjustment:=0)
+            m_mlp.Initialize(learningRate:=0.1)
 
             m_mlp.weights_ih = {
                 {0.39, 0.5, 0.3, 0.25},
@@ -296,7 +296,7 @@ Namespace MatrixMLP
 
             Init3XOR()
             m_mlp.InitializeStruct(m_neuronCount3XOR673, addBiasColumn:=True)
-            m_mlp.Initialize(learningRate:=0.05, weightAdjustment:=0)
+            m_mlp.Initialize(learningRate:=0.05)
 
             m_mlp.weights_ih = {
                 {0.49, -0.26, 0.08, -0.47, -0.34, -0.01},
@@ -347,7 +347,7 @@ Namespace MatrixMLP
 
             Init3XOR()
             m_mlp.InitializeStruct(m_neuronCount3XOR673, addBiasColumn:=True)
-            m_mlp.Initialize(learningRate:=0.02, weightAdjustment:=0)
+            m_mlp.Initialize(learningRate:=0.02)
 
             m_mlp.weights_ih = {
                 {-0.25, 0.05, -0.27, -0.09, -0.17, -0.31},
@@ -398,7 +398,7 @@ Namespace MatrixMLP
 
             Init3XOR()
             m_mlp.InitializeStruct(m_neuronCount3XOR673, addBiasColumn:=True)
-            m_mlp.Initialize(learningRate:=0.01, weightAdjustment:=0)
+            m_mlp.Initialize(learningRate:=0.01)
 
             m_mlp.weights_ih = {
                 {-0.47, 0.11, 0.47, 0.25, -0.09, 0.27},
@@ -449,7 +449,7 @@ Namespace MatrixMLP
 
             InitIrisAnalog(m_mlp)
             m_mlp.InitializeStruct(m_neuronCountIrisAnalog451, addBiasColumn:=True)
-            m_mlp.Initialize(learningRate:=0.1, weightAdjustment:=0)
+            m_mlp.Initialize(learningRate:=0.1)
 
             m_mlp.weights_ih = {
                 {-0.29, 0.17, 0.2, -0.23},
@@ -497,7 +497,7 @@ Namespace MatrixMLP
             m_mlp.SetActivationFunctionOptimized(enumActivationFunctionOptimized.Sigmoid)
 
             InitIrisLogical(m_mlp)
-            m_mlp.Initialize(learningRate:=0.1, weightAdjustment:=0)
+            m_mlp.Initialize(learningRate:=0.1)
 
             m_mlp.weights_ih = {
                 {-0.33, -0.42, -0.14, -0.47},

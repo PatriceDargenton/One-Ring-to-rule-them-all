@@ -27,7 +27,7 @@ Module modMLPEncogTest
         mlp.nbIterations = 2000 ' Hyperbolic tangent: works fine
         'mlp.nbIterations = 20000 ' Stochastic
 
-        mlp.Initialize(learningRate:=0, weightAdjustment:=0)
+        mlp.Initialize(learningRate:=0)
 
         mlp.printOutput_ = True
         mlp.printOutputMatrix = False
@@ -80,7 +80,7 @@ Module modMLPEncogTest
 
         mlp.nbIterations = 700
 
-        mlp.Initialize(learningRate:=0, weightAdjustment:=0)
+        mlp.Initialize(learningRate:=0)
 
         mlp.printOutput_ = True
         mlp.printOutputMatrix = False
@@ -126,30 +126,35 @@ Namespace EncogMLP
         End Sub
 
         Private Sub InitXOR()
+            m_mlp.Initialize(learningRate:=0)
             m_mlp.inputArray = m_inputArrayXOR
             m_mlp.targetArray = m_targetArrayXOR
             m_mlp.InitializeStruct(m_neuronCountXOR231, addBiasColumn:=True)
         End Sub
 
         Private Sub Init2XOR()
+            m_mlp.Initialize(learningRate:=0)
             m_mlp.inputArray = m_inputArray2XOR
             m_mlp.targetArray = m_targetArray2XOR
             m_mlp.InitializeStruct(m_neuronCount2XOR452, addBiasColumn:=True)
         End Sub
 
         Private Sub Init3XOR()
+            m_mlp.Initialize(learningRate:=0)
             m_mlp.inputArray = m_inputArray3XOR
             m_mlp.targetArray = m_targetArray3XOR
             m_mlp.InitializeStruct(m_neuronCount3XOR673, addBiasColumn:=True)
         End Sub
 
         Private Sub InitIrisAnalog()
+            m_mlp.Initialize(learningRate:=0)
             m_mlp.inputArray = m_inputArrayIris
             m_mlp.targetArray = m_targetArrayIrisAnalog
             m_mlp.InitializeStruct(m_neuronCountIrisAnalog, addBiasColumn:=True)
         End Sub
 
         Private Sub InitIrisLogical()
+            m_mlp.Initialize(learningRate:=0)
             m_mlp.inputArray = m_inputArrayIris
             m_mlp.targetArray = m_targetArrayIrisLogical
             m_mlp.InitializeStruct(m_neuronCountIrisLogical, addBiasColumn:=True)
@@ -158,7 +163,6 @@ Namespace EncogMLP
         '<TestMethod()>
         'Public Sub EncogMLP1XORSemiStochastic()
 
-        '    m_mlp.Initialize(learningRate:=0, weightAdjustment:=0)
         '    InitXOR()
         '    m_mlp.InitializeStruct(m_neuronCountXOR231, addBiasColumn:=True)
 
@@ -193,7 +197,6 @@ Namespace EncogMLP
         '<TestMethod()>
         'Public Sub EncogMLP1XORStochastic()
 
-        '    m_mlp.Initialize(learningRate:=0, weightAdjustment:=0)
         '    InitXOR()
         '    m_mlp.InitializeStruct(m_neuronCountXOR231, addBiasColumn:=True)
 
@@ -228,7 +231,6 @@ Namespace EncogMLP
         <TestMethod()>
         Public Sub EncogMLP1XORSigmoidWithoutBias()
 
-            m_mlp.Initialize(learningRate:=0, weightAdjustment:=0)
             InitXOR()
             m_mlp.InitializeStruct(m_neuronCountXOR, addBiasColumn:=False)
 
@@ -261,7 +263,6 @@ Namespace EncogMLP
         <TestMethod()>
         Public Sub EncogMLP1XORSigmoidWithoutBias231()
 
-            m_mlp.Initialize(learningRate:=0, weightAdjustment:=0)
             InitXOR()
             m_mlp.InitializeStruct(m_neuronCountXOR231, addBiasColumn:=False)
 
@@ -312,7 +313,6 @@ Namespace EncogMLP
         Public Sub EncogMLP1XOR5Layers()
 
             InitXOR()
-            m_mlp.Initialize(learningRate:=0, weightAdjustment:=0)
             m_mlp.InitializeStruct(m_neuronCountXOR5Layers23331, addBiasColumn:=True)
 
             m_mlp.nbIterations = 300
@@ -428,7 +428,6 @@ Namespace EncogMLP
         <TestMethod()>
         Public Sub EncogMLP2XORSigmoid()
 
-            m_mlp.Initialize(learningRate:=0, weightAdjustment:=0)
             Init2XOR()
 
             m_mlp.nbIterations = 200
@@ -488,7 +487,6 @@ Namespace EncogMLP
         <TestMethod()>
         Public Sub EncogMLP2XORSinus()
 
-            m_mlp.Initialize(learningRate:=0, weightAdjustment:=0)
             Init2XOR()
 
             m_mlp.nbIterations = 200
@@ -524,7 +522,6 @@ Namespace EncogMLP
         <TestMethod()>
         Public Sub EncogMLP3XORSigmoid()
 
-            m_mlp.Initialize(learningRate:=0, weightAdjustment:=0)
             Init3XOR()
 
             m_mlp.nbIterations = 300
@@ -578,7 +575,6 @@ Namespace EncogMLP
         <TestMethod()>
         Public Sub EncogMLP3XORSinus()
 
-            m_mlp.Initialize(learningRate:=0, weightAdjustment:=0)
             Init3XOR()
 
             m_mlp.nbIterations = 3000
@@ -617,7 +613,6 @@ Namespace EncogMLP
         <TestMethod()>
         Public Sub EncogMLPIrisAnalog()
 
-            m_mlp.Initialize(learningRate:=0, weightAdjustment:=0)
             InitIrisAnalog()
 
             m_mlp.nbIterations = 300
@@ -686,7 +681,6 @@ Namespace EncogMLP
         <TestMethod()>
         Public Sub EncogMLPIrisAnalog4Layers()
 
-            m_mlp.Initialize(learningRate:=0, weightAdjustment:=0)
             InitIrisAnalog()
             m_mlp.InitializeStruct({4, 50, 20, 1}, addBiasColumn:=True)
 
@@ -794,7 +788,6 @@ Namespace EncogMLP
         <TestMethod()>
         Public Sub EncogMLPIrisLogical()
 
-            m_mlp.Initialize(learningRate:=0, weightAdjustment:=0)
             InitIrisLogical()
 
             m_mlp.nbIterations = 300

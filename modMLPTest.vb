@@ -872,19 +872,19 @@ Module modMLPTest
         {0, 0, 0}}
 
     Private Sub InitXOR(mlp As clsMLPGeneric)
-        mlp.Initialize(learningRate:=0.01!, weightAdjustment:=0)
+        mlp.Initialize(learningRate:=0.01!)
         mlp.inputArray = m_inputArrayXOR
         mlp.targetArray = m_targetArrayXOR
     End Sub
 
     Private Sub Init2XOR(mlp As clsMLPGeneric)
-        mlp.Initialize(learningRate:=0.01!, weightAdjustment:=0)
+        mlp.Initialize(learningRate:=0.01!)
         mlp.inputArray = m_inputArray2XOR
         mlp.targetArray = m_targetArray2XOR
     End Sub
 
     Private Sub Init3XOR(mlp As clsMLPGeneric)
-        mlp.Initialize(learningRate:=0.01!, weightAdjustment:=0)
+        mlp.Initialize(learningRate:=0.01!)
         mlp.inputArray = m_inputArray3XOR
         mlp.targetArray = m_targetArray3XOR
     End Sub

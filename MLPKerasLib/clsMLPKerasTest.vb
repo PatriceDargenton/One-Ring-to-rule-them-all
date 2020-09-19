@@ -30,9 +30,9 @@ Module modMLPKerasTest
         'mlp.nbIterations = 2500 ' Sigmoid: works
         'mlp.nbIterations = 2000 ' Hyperbolic tangent: works fine
 
-        'mlp.Initialize(learningRate:=0.001!, weightAdjustment:=0)
-        'mlp.Initialize(learningRate:=0.01!, weightAdjustment:=0)
-        mlp.Initialize(learningRate:=0.02!, weightAdjustment:=0)
+        'mlp.Initialize(learningRate:=0.001!)
+        'mlp.Initialize(learningRate:=0.01!)
+        mlp.Initialize(learningRate:=0.02!)
 
         mlp.printOutput_ = True
         mlp.printOutputMatrix = False
@@ -223,7 +223,7 @@ Namespace KerasMLP
         <TestMethod()>
         Public Sub KerasMLP1XORSigmoid()
 
-            m_mlp.Initialize(learningRate:=0.02!, weightAdjustment:=0)
+            m_mlp.Initialize(learningRate:=0.02!)
             InitXOR()
 
             m_mlp.InitializeStruct(m_neuronCountXOR271, addBiasColumn:=False)
@@ -266,7 +266,7 @@ Namespace KerasMLP
         <TestMethod()>
         Public Sub KerasMLP1XORHTangent()
 
-            m_mlp.Initialize(learningRate:=0.02!, weightAdjustment:=0)
+            m_mlp.Initialize(learningRate:=0.02!)
             InitXOR()
 
             m_mlp.InitializeStruct(m_neuronCountXOR2_16_1, addBiasColumn:=False)
@@ -318,7 +318,7 @@ Namespace KerasMLP
         <TestMethod()>
         Public Sub KerasMLP2XORSigmoid()
 
-            m_mlp.Initialize(learningRate:=0.02!, weightAdjustment:=0)
+            m_mlp.Initialize(learningRate:=0.02!)
             Init2XOR()
 
             m_mlp.InitializeStruct(m_neuronCount2XOR482, addBiasColumn:=False)
@@ -364,7 +364,7 @@ Namespace KerasMLP
         <TestMethod()>
         Public Sub KerasMLP2XORHTangent()
 
-            m_mlp.Initialize(learningRate:=0.02!, weightAdjustment:=0)
+            m_mlp.Initialize(learningRate:=0.02!)
             Init2XOR()
 
             m_mlp.InitializeStruct(m_neuronCount2XOR4_32_2, addBiasColumn:=False)
@@ -435,7 +435,7 @@ Namespace KerasMLP
         Public Sub KerasMLP3XORSigmoid()
 
             Init3XOR()
-            m_mlp.Initialize(learningRate:=0.02!, weightAdjustment:=0)
+            m_mlp.Initialize(learningRate:=0.02!)
 
             m_mlp.InitializeStruct(m_neuronCount3XOR673, addBiasColumn:=False)
 
@@ -482,7 +482,7 @@ Namespace KerasMLP
         Public Sub KerasMLP3XORHTangent()
 
             Init3XOR()
-            m_mlp.Initialize(learningRate:=0.02!, weightAdjustment:=0)
+            m_mlp.Initialize(learningRate:=0.02!)
 
             m_mlp.InitializeStruct(m_neuronCount3XOR6_32_3, addBiasColumn:=False)
 

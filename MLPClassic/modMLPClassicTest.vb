@@ -107,9 +107,9 @@ Namespace ClassicMLP
         Private m_mlp As New clsMLPClassic
 
         ' Weights are quite the same as MLP Classic, but not exactly:
-        'Private m_mlp As New NetworkOOP.MultilayerPerceptron ' 13 success, 13 fails
-        'Private m_mlp As New clsMLPAccord ' 10 success, 16 fails
-        'Private m_mlp As New clsMLPEncog  ' 6 success, 20 fails
+        'Private m_mlp As New NetworkOOP.MultilayerPerceptron ' 15 success, 13 fails
+        'Private m_mlp As New clsMLPAccord ' 12 success, 16 fails
+        'Private m_mlp As New clsMLPEncog  ' 7 success, 21 fails
         'Private m_mlp As New clsMLPTensorFlow ' 1 success, 25 fails
 
         ' Weights are not stored in the same way:

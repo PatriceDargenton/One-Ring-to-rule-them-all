@@ -146,6 +146,9 @@ Packages added:
 
 # Versions
 
+19/09/2020 V1.18
+- clsMLPGeneric.Initialize: weightAdjustment optional
+
 19/09/2020 V1.17
 - MatrixMLP: works fine, 3XOR tests added with three activation functions
 - clsVectorizedMLPGeneric.neuronCount -> clsMLPGeneric, and displayed in PrintParameters()

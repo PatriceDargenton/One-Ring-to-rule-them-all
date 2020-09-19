@@ -97,19 +97,19 @@ Namespace TensorMLP
         End Sub
 
         Private Sub InitXOR()
-            m_mlp.Initialize(learningRate:=0.1!, weightAdjustment:=0)
+            m_mlp.Initialize(learningRate:=0.1!)
             m_mlp.inputArray = m_inputArrayXOR
             m_mlp.targetArray = m_targetArrayXOR
         End Sub
 
         Private Sub Init2XOR()
-            m_mlp.Initialize(learningRate:=0.1!, weightAdjustment:=0)
+            m_mlp.Initialize(learningRate:=0.1!)
             m_mlp.inputArray = m_inputArray2XOR
             m_mlp.targetArray = m_targetArray2XOR
         End Sub
 
         Private Sub Init3XOR()
-            m_mlp.Initialize(learningRate:=0.1!, weightAdjustment:=0)
+            m_mlp.Initialize(learningRate:=0.1!)
             m_mlp.inputArray = m_inputArray3XOR
             m_mlp.targetArray = m_targetArray3XOR
         End Sub
@@ -328,7 +328,7 @@ Namespace TensorMLP
         '<TestMethod()>
         Public Sub TensorMLP1XORSigmoidWithoutBias()
 
-            m_mlp.Initialize(learningRate:=0.1!, weightAdjustment:=0)
+            m_mlp.Initialize(learningRate:=0.1!)
             InitXOR()
             m_mlp.nbIterations = 5000
             m_mlp.SetActivationFunctionOptimized(

@@ -26,7 +26,7 @@ Module modMLPTensorFlowTest
 
         If nbXor = 1 Then
             mlp.nbIterations = 500
-            mlp.Initialize(learningRate:=0.2!, weightAdjustment:=0)
+            mlp.Initialize(learningRate:=0.2!)
             mlp.printOutputMatrix = True
             mlp.inputArray = m_inputArrayXOR
             mlp.targetArray = m_targetArrayXOR
@@ -34,14 +34,14 @@ Module modMLPTensorFlowTest
         ElseIf nbXor = 2 Then
             ' 75% success
             mlp.nbIterations = 5000
-            mlp.Initialize(learningRate:=0.1!, weightAdjustment:=0)
+            mlp.Initialize(learningRate:=0.1!)
             mlp.inputArray = m_inputArray2XOR
             mlp.targetArray = m_targetArray2XOR
             mlp.InitializeStruct(m_neuronCount2XOR462, addBiasColumn:=False)
         ElseIf nbXor = 3 Then
             ' 190/192: 99% success
             mlp.nbIterations = 10000
-            mlp.Initialize(learningRate:=0.05!, weightAdjustment:=0)
+            mlp.Initialize(learningRate:=0.05!)
             mlp.inputArray = m_inputArray3XOR
             mlp.targetArray = m_targetArray3XOR
             mlp.InitializeStruct(m_neuronCount3XOR673, addBiasColumn:=False)
@@ -177,7 +177,7 @@ Namespace TensorFlowMLP
         <TestMethod()>
         Public Sub TensorFlowMLP1XORHTangent()
 
-            m_mlp.Initialize(learningRate:=0.2!, weightAdjustment:=0)
+            m_mlp.Initialize(learningRate:=0.2!)
             InitXOR()
             m_mlp.InitializeStruct(m_neuronCountXOR261, addBiasColumn:=False)
 
@@ -209,7 +209,7 @@ Namespace TensorFlowMLP
         '<TestMethod()>
         'Public Sub TensorFlowMLP2XORHTangent()
 
-        '    m_mlp.Initialize(learningRate:=0.1!, weightAdjustment:=0)
+        '    m_mlp.Initialize(learningRate:=0.1!)
         '    Init2XOR()
 
         '    m_mlp.nbIterations = 4000
