@@ -44,6 +44,7 @@ Public Class clsMLPEncog : Inherits clsVectorizedMLPGeneric
 
         ' gain can only be 1 for Encog MLP
         gain = 1
+        If actFnc = enumActivationFunction.HyperbolicTangent Then gain = -2
         center = 0
         Me.weightAdjustment = 0 ' Not used
 
@@ -77,7 +78,19 @@ Public Class clsMLPEncog : Inherits clsVectorizedMLPGeneric
 
         Me.trainingSet = New BasicMLDataSet(
             Me.inputJaggedDblArray, Me.targetJaggedDblArray)
-        Me.imlTrain = New ResilientPropagation(Me.network, Me.trainingSet)
+
+        'maxStep: The maximum that a delta can reach
+        Me.imlTrain = New ResilientPropagation(Me.network, Me.trainingSet,
+            initialUpdate:=0.1#, maxStep:=50.0#)
+
+        Me.learningRate = 0 ' Learning rate is not use with ResilientPropagation:
+        ' http://heatonresearch-site.s3-website-us-east-1.amazonaws.com/javadoc/encog-3.3/org/encog/neural/networks/training/propagation/resilient/ResilientPropagation.html
+        ' One problem with the backpropagation algorithm is that the magnitude of the 
+        '  partial derivative is usually too large or too small. Further, the learning
+        '  rate is a single value for the entire neural network. The resilient propagation
+        '  learning algorithm uses a special update value (similar to the learning rate)
+        '  for every neuron connection. Further these update values are automatically
+        '  determined, unlike the learning rate of the backpropagation algorithm.
 
     End Sub
 
@@ -133,6 +146,7 @@ Public Class clsMLPEncog : Inherits clsVectorizedMLPGeneric
             If Me.printOutput_ Then PrintOutput(iteration)
         Next
         SetOuput1D()
+        Me.ComputeError()
 
     End Sub
 

@@ -8,12 +8,12 @@ Module modMLPTensorFlowTest
 
     Sub Main()
         Console.WriteLine("TensorFlow MLP with the classical XOR test.")
-        TensorFlowMLPTest()
+        TensorFlowMLPXORTest()
         Console.WriteLine("Press a key to quit.")
         Console.ReadKey()
     End Sub
 
-    Public Sub TensorFlowMLPTest(Optional nbXor% = 1)
+    Public Sub TensorFlowMLPXORTest(Optional nbXor% = 1)
 
         Dim mlp As New clsMLPTensorFlow
 
@@ -63,6 +63,70 @@ Module modMLPTensorFlowTest
 
         WaitForKeyToContinue("Press a key to print MLP weights")
         mlp.PrintWeights()
+
+    End Sub
+
+    Public Sub TensorFlowMLPIrisAnalogTest()
+
+        Dim mlp As New clsMLPTensorFlow
+        mlp.ShowMessage("TensorFlow.NET MLP Iris analog test")
+        mlp.ShowMessage("-----------------------------------")
+
+        mlp.nbIterations = 10000
+
+        mlp.Initialize(learningRate:=0.01!, weightAdjustment:=0.01!)
+
+        mlp.printOutput_ = True
+        mlp.printOutputMatrix = False
+
+        mlp.inputArray = m_inputArrayIris
+        mlp.targetArray = m_targetArrayIrisAnalog
+        mlp.InitializeStruct(m_neuronCountIrisAnalog4_20_1, addBiasColumn:=False)
+
+        mlp.SetActivationFunction(enumActivationFunction.HyperbolicTangent, gain:=2)
+
+        mlp.Randomize()
+
+        mlp.PrintParameters()
+
+        WaitForKeyToStart()
+
+        mlp.minimalSuccessTreshold = 0.2
+        mlp.Train()
+
+        mlp.ShowMessage("TensorFlow.NET MLP Iris analog test: Done.")
+
+    End Sub
+
+    Public Sub TensorFlowMLPIrisLogicalTest()
+
+        Dim mlp As New clsMLPTensorFlow
+        mlp.ShowMessage("TensorFlow.NET MLP Iris logical test")
+        mlp.ShowMessage("------------------------------------")
+
+        mlp.nbIterations = 10000
+
+        mlp.Initialize(learningRate:=0.01!, weightAdjustment:=0.01!)
+
+        mlp.printOutput_ = True
+        mlp.printOutputMatrix = False
+
+        mlp.inputArray = m_inputArrayIris
+        mlp.targetArray = m_targetArrayIrisLogical
+        mlp.InitializeStruct(m_neuronCountIrisLogical4_20_3, addBiasColumn:=False)
+
+        mlp.SetActivationFunction(enumActivationFunction.HyperbolicTangent, gain:=2)
+
+        mlp.Randomize()
+
+        mlp.PrintParameters()
+
+        WaitForKeyToStart()
+
+        mlp.minimalSuccessTreshold = 0.3
+        mlp.Train()
+
+        mlp.ShowMessage("TensorFlow.NET MLP Iris logical test: Done.")
 
     End Sub
 
@@ -134,7 +198,7 @@ Namespace TensorFlowMLP
             Assert.AreEqual(sExpectedOutput, sOutput)
 
             Dim expectedLoss# = 0.02
-            Dim loss! = m_mlp.ComputeAverageError()
+            Dim loss! = m_mlp.averageError
             Dim lossRounded# = Math.Round(loss, 2)
             Assert.AreEqual(True, lossRounded <= expectedLoss)
 
@@ -165,7 +229,7 @@ Namespace TensorFlowMLP
         '    Assert.AreEqual(sExpectedOutput, sOutput)
 
         '    Dim expectedLoss# = 0.01
-        '    Dim loss! = m_mlp.ComputeAverageError()
+        '    Dim loss! = m_mlp.averageError
         '    Dim lossRounded# = Math.Round(loss, 2)
         '    Assert.AreEqual(True, lossRounded <= expectedLoss)
 

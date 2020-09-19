@@ -3,6 +3,16 @@ Module modTests
 
     Sub Main()
 
+        'XORTest()
+
+        IrisTest()
+
+        WaitForKeyToQuit()
+
+    End Sub
+
+    Private Sub XORTest()
+
         For nbXor = 1 To 3
 
             ClassicMLPTest(nbXor)
@@ -26,15 +36,52 @@ Module modTests
             EncogMLPTest(nbXor)
             NextTest()
 
-            TensorFlowMLPTest(nbXor) ' Works only with 1XOR?
-            NextTest()
+            'TensorFlowMLPTest(nbXor) ' Works only with 1XOR?
+            'NextTest()
 
-            KerasMLPTest(nbXor)
-            NextTest()
+            'KerasMLPTest(nbXor)
+            'NextTest()
 
         Next
 
-        WaitForKeyToQuit()
+    End Sub
+
+    Private Sub IrisTest()
+
+        MLPGenericIrisTest(New clsMLPClassic, "Classic MLP Iris test")
+        NextTest()
+
+        MLPGenericIrisTest(New NetworkOOP.MultilayerPerceptron,
+            "Object-oriented programming MLP Iris test")
+        NextTest()
+
+        MLPGenericIrisTest(New MatrixMLP.MultiLayerPerceptron, "Matrix MLP Iris test")
+        NextTest()
+
+        MLPGenericIrisTest(New VectorizedMatrixMLP.clsVectorizedMatrixMLP,
+            "Vectorized Matrix MLP Iris test")
+        NextTest()
+
+        MLPGenericIrisTest(New clsMLPTensor, "Tensor MLP Iris test")
+        NextTest()
+
+        MLPGenericIrisTest(New clsMLPAccord, "Accord MLP Iris test")
+        NextTest()
+
+        MLPGenericIrisTest(New clsMLPEncog, "Encog MLP Iris test")
+        NextTest()
+
+        EncogMLPIrisTest()
+        NextTest()
+
+        ' Poor results:
+        'TensorFlowMLPIrisAnalogTest()
+        'NextTest()
+        'TensorFlowMLPIrisLogicalTest()
+        'NextTest()
+
+        'MLPGenericIrisTest(New clsMLPKeras, "Keras.NET MLP Iris test", nbIterations:=800)
+        'NextTest()
 
     End Sub
 

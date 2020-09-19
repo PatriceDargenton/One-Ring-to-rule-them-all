@@ -84,16 +84,17 @@ Public MustInherit Class clsMLPGeneric
     ''' <summary>
     ''' Percentage of success according to the number of ouputs 
     ''' </summary>
-    Protected successPC!
+    Public successPC!
 
     ''' <summary>
     ''' Output must be 10% close to target to be considered successful
     ''' </summary>
-    Protected Const minimalSuccessTreshold! = 0.1 ' 10%
+    Public minimalSuccessTreshold! = 0.1 ' 10%
 
     Public nbIterations%
 
     Protected layerCount%
+    Protected neuronCount%()
 
     ''' <summary>
     ''' Learning rate of the MLP (Eta coeff.)
@@ -295,6 +296,8 @@ Public MustInherit Class clsMLPGeneric
         sw.Stop()
         Debug.WriteLine(Now() & " Train: Done. " &
             sw.Elapsed.TotalSeconds.ToString("0.0") & " sec.")
+        ' If it is not already printed, print now
+        If Not Me.printOutput_ Then PrintSuccess(Me.nbIterations - 1)
 
     End Sub
 
@@ -448,6 +451,7 @@ Public MustInherit Class clsMLPGeneric
             Next
         Next
         Me.output = outputs
+        ComputeAverageError()
     End Sub
 
 #End Region
@@ -476,12 +480,13 @@ Public MustInherit Class clsMLPGeneric
         ShowMessage(Now() & " :")
         ShowMessage("")
         ShowMessage("layer count=" & Me.layerCount)
+        ShowMessage("neuron count=" & clsMLPHelper.ArrayToString(Me.neuronCount))
         ShowMessage("use bias=" & Me.useBias)
-        ShowMessage("learning rate=" & Me.learningRate)
-        ShowMessage("weight adjustment=" & Me.weightAdjustment)
+        If Me.learningRate <> 0 Then ShowMessage("learning rate=" & Me.learningRate)
+        If Me.weightAdjustment <> 0 Then ShowMessage("weight adjustment=" & Me.weightAdjustment)
         ShowMessage("activation function=" & clsMLPHelper.ReadEnumDescription(Me.m_actFunc))
         ShowMessage("gain=" & Me.m_gain)
-        ShowMessage("center=" & Me.m_center)
+        If Me.m_center <> 0 Then ShowMessage("center=" & Me.m_center)
         ShowMessage("")
 
     End Sub

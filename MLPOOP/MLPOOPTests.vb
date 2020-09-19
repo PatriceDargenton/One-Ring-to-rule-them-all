@@ -238,7 +238,7 @@ Namespace OOPMLP
             Assert.AreEqual(sExpectedOutput, sOutput)
 
             Dim expectedLoss# = 0.03
-            Dim loss! = m_mlp.ComputeAverageError()
+            Dim loss! = m_mlp.averageError
             Dim lossRounded# = Math.Round(loss, 2)
             Assert.AreEqual(True, lossRounded <= expectedLoss)
 
@@ -341,9 +341,23 @@ Namespace OOPMLP
             Assert.AreEqual(sExpectedOutput, sOutput)
 
             Dim expectedLoss# = 0.01
-            Dim loss! = m_mlp.ComputeAverageError()
+            Dim loss! = m_mlp.averageError
             Dim lossRounded# = Math.Round(loss, 2)
             Assert.AreEqual(True, lossRounded <= expectedLoss)
+
+        End Sub
+
+        <TestMethod()>
+        Public Sub MLPOOPIrisAnalog()
+
+            TestMLPIrisAnalog(m_mlp)
+
+        End Sub
+
+        <TestMethod()>
+        Public Sub MLPOOPIrisLogical()
+
+            TestMLPIrisLogical(m_mlp)
 
         End Sub
 

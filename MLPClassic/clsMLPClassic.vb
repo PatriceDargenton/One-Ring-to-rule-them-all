@@ -57,6 +57,7 @@ Friend Class clsMLPClassic : Inherits clsMLPGeneric
 
         Me.layerCount = neuronCount.GetLength(0)
         Me.useBias = addBiasColumn
+        Me.neuronCount = neuronCount
 
         ReDim Me.Layers(Me.layerCount - 1)
 

@@ -189,6 +189,7 @@ Public Class clsMLPAccord : Inherits clsVectorizedMLPGeneric
             If Me.printOutput_ Then PrintOutput(iteration)
         Next
         SetOuput1D()
+        ComputeAverageError()
 
     End Sub
 

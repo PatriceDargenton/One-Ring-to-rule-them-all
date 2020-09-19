@@ -59,6 +59,7 @@ Namespace VectorizedMatrixMLP
                 TrainVectorOneIteration()
                 If Me.printOutput_ Then PrintOutput(iteration)
             Next
+            ComputeAverageError()
 
         End Sub
 
@@ -256,8 +257,9 @@ Namespace VectorizedMatrixMLP
                 If Not Me.vectorizedLearningMode Then
                     Dim nbTargets = Me.targetArray.GetLength(1)
                     TestAllSamples(Me.inputArray, nbOutputs:=nbTargets)
+                Else
+                    ComputeAverageError()
                 End If
-                ComputeAverageError()
                 PrintSuccess(iteration)
 
                 'For i = 0 To Me.LayerCount - 1

@@ -42,9 +42,11 @@ Namespace MatrixMLP
 
         Public Overrides Sub InitializeStruct(neuronCount%(), addBiasColumn As Boolean)
 
-            Dim inputNodes = neuronCount(0)
-            Dim hiddenNodes = neuronCount(1)
+            Me.nbInputNeurons = neuronCount(0)
+            Me.nbHiddenNeurons = neuronCount(1)
             Me.layerCount = neuronCount.Length
+            Me.neuronCount = neuronCount
+            Me.weightAdjustment = 0 ' Not used
 
             If Me.layerCount <> 3 Then
                 ' ToDo: declare and use Me.weights_ih2 to compute 2 hidden layers
@@ -53,22 +55,22 @@ Namespace MatrixMLP
                 Me.layerCount = 3
             End If
 
-            Dim outputNodes = neuronCount(Me.layerCount - 1)
+            Me.nbOutputNeurons = neuronCount(Me.layerCount - 1)
 
             'Me.weights_ih = New Matrix(hiddenNodes, inputNodes)
-            Dim dbleArray_ih#(hiddenNodes - 1, inputNodes - 1)
+            Dim dbleArray_ih#(Me.nbHiddenNeurons - 1, Me.nbInputNeurons - 1)
             Me.weights_ih = dbleArray_ih
 
             'Me.weights_ho = New Matrix(outputNodes, hiddenNodes)
-            Dim dbleArray_ho#(outputNodes - 1, hiddenNodes - 1)
+            Dim dbleArray_ho#(Me.nbOutputNeurons - 1, Me.nbHiddenNeurons - 1)
             Me.weights_ho = dbleArray_ho
 
             Me.useBias = addBiasColumn
             If Me.useBias Then
                 'Me.bias_h = New Matrix(hiddenNodes, 1)
                 'Me.bias_o = New Matrix(outputNodes, 1)
-                Dim dbleArray_bh#(hiddenNodes - 1, 0)
-                Dim dbleArray_bo#(outputNodes - 1, 0)
+                Dim dbleArray_bh#(Me.nbHiddenNeurons - 1, 0)
+                Dim dbleArray_bo#(Me.nbOutputNeurons - 1, 0)
                 Me.bias_h = dbleArray_bh
                 Me.bias_o = dbleArray_bo
             End If
@@ -173,7 +175,7 @@ Namespace MatrixMLP
             ByRef weight As Matrix, ByRef bias As Matrix)
 
             ' Calculate gradient
-            Dim gradient = Matrix.Map(final, lambdaFncDFOF) 'lambdaFncD)
+            Dim gradient = Matrix.Map(final, lambdaFncDFOF)
             gradient *= error_
             gradient *= adjustment
 
@@ -212,8 +214,10 @@ Namespace MatrixMLP
 
             Me.PrintParameters()
 
-            Dim inputNodes = Me.weights_ih.r
-            Dim hiddenNodes = Me.weights_ih.c
+            'Dim inputNodes = Me.weights_ih.r
+            'Dim hiddenNodes = Me.weights_ih.c
+            Dim inputNodes = Me.nbInputNeurons
+            Dim hiddenNodes = Me.nbHiddenNeurons
             Dim outputNodes = Me.weights_ho.r
             For i = 0 To Me.layerCount - 1
                 Dim iNeuronCount = inputNodes

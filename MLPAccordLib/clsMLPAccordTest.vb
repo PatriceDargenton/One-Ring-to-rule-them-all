@@ -263,7 +263,7 @@ Namespace AccordMLP
             Assert.AreEqual(sExpectedOutput, sOutput)
 
             Dim expectedLoss# = 0.01
-            Dim loss! = m_mlp.ComputeAverageError()
+            Dim loss! = m_mlp.averageError
             Dim lossRounded# = Math.Round(loss, 2)
             Assert.AreEqual(True, lossRounded <= expectedLoss)
 
@@ -294,6 +294,20 @@ Namespace AccordMLP
         Public Sub AccordMLP3XORHTangentVect()
 
             TestMLP3XORHTangent(m_mlp, learningMode:=enumLearningMode.Vectorial)
+
+        End Sub
+
+        <TestMethod()>
+        Public Sub AccordMLPIrisAnalog()
+
+            TestMLPIrisAnalog(m_mlp)
+
+        End Sub
+
+        <TestMethod()>
+        Public Sub AccordMLPIrisLogical()
+
+            TestMLPIrisLogical(m_mlp)
 
         End Sub
 

@@ -85,10 +85,7 @@ Module modMatrixMLPTest
         mlp.Randomize(-1, 2)
         mlp.PrintWeights()
 
-        Console.WriteLine()
-        Console.WriteLine("Press a key to start.")
-        Console.ReadKey()
-        Console.WriteLine()
+        WaitForKeyToStart()
 
         mlp.Train()
         'mlp.Train(enumLearningMode.Stochastic)

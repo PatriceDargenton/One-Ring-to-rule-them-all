@@ -15,7 +15,7 @@ Imports Tensorflow.Binding
 Imports System.Text
 
 ' Tuples are not available for Visual Studio 2013: Set 0: Off
-#Const Implementation = 1 ' 0: Off, 1: On
+#Const Implementation = 0 ' 0: Off, 1: On
 
 Public Class clsMLPTensorFlow : Inherits clsVectorizedMLPGeneric
 
@@ -237,10 +237,10 @@ Public Class clsMLPTensorFlow : Inherits clsVectorizedMLPGeneric
         If computeScoreOneByOne Then
             Dim nbTargets = Me.targetArray.GetLength(1)
             TestAllSamples(Me.inputArray, nbOutputs:=nbTargets)
-            ComputeAverageError()
         Else
             SetOuput1D()
         End If
+        ComputeAverageError()
 
         CloseSession()
 
@@ -487,9 +487,11 @@ Public Class clsMLPTensorFlow : Inherits clsVectorizedMLPGeneric
                         "Output: nothing!")
                     Exit Sub
                 End If
-                SetOuput1D()
+                If Me.vectorizedLearningMode Then
+                    SetOuput1D()
+                    ComputeAverageError()
+                End If
             End If
-            ComputeAverageError()
             PrintSuccess(iteration)
         End If
 

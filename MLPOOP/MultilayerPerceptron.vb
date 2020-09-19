@@ -29,6 +29,9 @@ Namespace NetworkOOP
         Public Property Outputs As List(Of List(Of Double))
 
         Public Sub New()
+            Dim standard As New Randoms.Standard(
+                New Utilities.Range(-1, 1), seed:=DateTime.Now.Millisecond)
+            Me.Randomizer = standard
         End Sub
 
         Public Sub New(learning_rate!, momentum!,
@@ -47,6 +50,7 @@ Namespace NetworkOOP
             Dim num_input = neuronCount(0)
             Me.layerCount = neuronCount.GetLength(0)
             Dim num_output = neuronCount(Me.layerCount - 1)
+            Me.neuronCount = neuronCount
 
             Me.useBias = addBiasColumn
             If addBiasColumn Then

@@ -3,7 +3,7 @@ One Ring to rule them all
 
 Functional tests for Multi-Layer Perceptron implementations, using OOP paradigm
 
-This is the classical XOR test.
+This is the classical XOR test, and the [Iris flower](https://en.wikipedia.org/wiki/Iris_flower_data_set) test.
 
 <!-- TOC -->
 
@@ -145,6 +145,12 @@ Packages added:
 ```
 
 # Versions
+
+19/09/2020 V1.17
+- MatrixMLP: works fine, 3XOR tests added with three activation functions
+- clsVectorizedMLPGeneric.neuronCount -> clsMLPGeneric, and displayed in PrintParameters()
+- Compute success and fails after Train()
+- Iris flower test added: https://en.wikipedia.org/wiki/Iris_flower_data_set
 
 29/08/2020 V1.16
 - Activation function: gain and center optional

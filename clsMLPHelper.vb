@@ -152,4 +152,15 @@ Public Class clsMLPHelper
         Return sb.ToString
     End Function
 
+    Public Shared Function ArrayToString$(intArray%())
+        Dim sb As New StringBuilder("{")
+        Dim upB = intArray.GetUpperBound(0)
+        For i = 0 To upB
+            sb.Append(intArray(i))
+            If i < upB Then sb.Append(", ")
+        Next
+        sb.Append("}")
+        Return sb.ToString
+    End Function
+
 End Class

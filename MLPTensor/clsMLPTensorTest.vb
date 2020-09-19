@@ -160,8 +160,7 @@ Namespace TensorMLP
             Assert.AreEqual(sExpectedOutput, sOutput)
 
             Dim expectedLoss# = 0.03
-            Dim loss! = m_mlp.ComputeAverageError()
-            'Dim loss! = m_mlp.ComputeAverageErrorFromAllSamples!()
+            Dim loss! = m_mlp.averageError
             Dim lossRounded# = Math.Round(loss, 2)
             Assert.AreEqual(True, lossRounded <= expectedLoss)
 
@@ -213,8 +212,7 @@ Namespace TensorMLP
             Assert.AreEqual(sExpectedOutput, sOutput)
 
             Dim expectedLoss# = 0.03
-            Dim loss! = m_mlp.ComputeAverageError()
-            'Dim loss! = m_mlp.ComputeAverageErrorFromAllSamples!()
+            Dim loss! = m_mlp.averageError
             Dim lossRounded# = Math.Round(loss, 2)
             Assert.AreEqual(True, lossRounded <= expectedLoss)
 
@@ -266,8 +264,7 @@ Namespace TensorMLP
             Assert.AreEqual(sExpectedOutput, sOutput)
 
             Dim expectedLoss# = 0.02
-            Dim loss! = m_mlp.ComputeAverageError()
-            'Dim loss! = m_mlp.ComputeAverageErrorFromAllSamples!()
+            Dim loss! = m_mlp.averageError
             Dim lossRounded# = Math.Round(loss, 2)
             Assert.AreEqual(True, lossRounded <= expectedLoss)
 
@@ -321,7 +318,7 @@ Namespace TensorMLP
             Assert.AreEqual(sExpectedOutput, sOutput)
 
             Dim expectedLoss# = 0.03
-            Dim loss! = m_mlp.ComputeAverageError()
+            Dim loss! = m_mlp.averageError
             Dim lossRounded# = Math.Round(loss, 2)
             Assert.AreEqual(True, lossRounded <= expectedLoss)
 
@@ -371,7 +368,7 @@ Namespace TensorMLP
             Assert.AreEqual(sExpectedOutput, sOutput)
 
             Dim expectedLoss# = 0
-            Dim loss! = m_mlp.ComputeAverageError()
+            Dim loss! = m_mlp.averageError
             Dim lossRounded# = Math.Round(loss, 2)
             Assert.AreEqual(True, lossRounded <= expectedLoss)
 
@@ -440,7 +437,7 @@ Namespace TensorMLP
             Assert.AreEqual(sExpectedOutput, sOutput)
 
             Dim expectedLoss# = 0.03
-            Dim loss! = m_mlp.ComputeAverageError()
+            Dim loss! = m_mlp.averageError
             Dim lossRounded# = Math.Round(loss, 2)
             Assert.AreEqual(True, lossRounded <= expectedLoss)
 
@@ -509,7 +506,7 @@ Namespace TensorMLP
             Assert.AreEqual(sExpectedOutput, sOutput)
 
             Dim expectedLoss# = 0.01
-            Dim loss! = m_mlp.ComputeAverageError()
+            Dim loss! = m_mlp.averageError
             Dim lossRounded# = Math.Round(loss, 2)
             Assert.AreEqual(True, lossRounded <= expectedLoss)
 
@@ -578,7 +575,7 @@ Namespace TensorMLP
             Assert.AreEqual(sExpectedOutput, sOutput)
 
             Dim expectedLoss# = 0.02
-            Dim loss! = m_mlp.ComputeAverageError()
+            Dim loss! = m_mlp.averageError
             Dim lossRounded# = Math.Round(loss, 2)
             Assert.AreEqual(True, lossRounded <= expectedLoss)
 
@@ -661,7 +658,7 @@ Namespace TensorMLP
             Assert.AreEqual(sExpectedOutput, sOutput)
 
             Dim expectedLoss# = 0.02
-            Dim loss! = m_mlp.ComputeAverageError()
+            Dim loss! = m_mlp.averageError
             Dim lossRounded# = Math.Round(loss, 2)
             Assert.AreEqual(True, lossRounded <= expectedLoss)
 
@@ -745,7 +742,7 @@ Namespace TensorMLP
             Assert.AreEqual(sExpectedOutput, sOutput)
 
             Dim expectedLoss# = 0
-            Dim loss! = m_mlp.ComputeAverageError()
+            Dim loss! = m_mlp.averageError
             Dim lossRounded# = Math.Round(loss, 2)
             Assert.AreEqual(True, lossRounded <= expectedLoss)
 

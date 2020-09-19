@@ -4,7 +4,7 @@ Public MustInherit Class clsVectorizedMLPGeneric : Inherits clsMLPGeneric
     Public vectorizedLearningMode As Boolean = True
     Public exampleCount%
 
-    Protected neuronCount%()
+    'Protected neuronCount%()
 
     ''' <summary>
     ''' Train all samples at once (run epoch for all iterations: all samples ordered in one vector)
@@ -87,6 +87,7 @@ Public MustInherit Class clsVectorizedMLPGeneric : Inherits clsMLPGeneric
         End If
 
         SetOuput1D()
+        ComputeAverageError()
 
     End Sub
 
@@ -130,9 +131,10 @@ Public MustInherit Class clsVectorizedMLPGeneric : Inherits clsMLPGeneric
             If Not Me.vectorizedLearningMode Then
                 Dim nbTargets = Me.targetArray.GetLength(1)
                 TestAllSamples(Me.inputArray, nbOutputs:=nbTargets)
+            Else
+                SetOuput1D()
+                ComputeAverageError()
             End If
-            SetOuput1D()
-            ComputeAverageError()
             PrintSuccess(iteration)
         End If
 
