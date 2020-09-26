@@ -8,17 +8,17 @@ Module modMLPAccordTest
 
     Sub Main()
         Console.WriteLine("Accord MLP with the classical XOR test.")
-        AccordMLPTest()
+        AccordMLPXorTest()
         Console.WriteLine("Press a key to quit.")
         Console.ReadKey()
     End Sub
 
-    Public Sub AccordMLPTest(Optional nbXor% = 1)
+    Public Sub AccordMLPXorTest(Optional nbXor% = 1)
 
         Dim mlp As New clsMLPAccord
 
-        mlp.ShowMessage("Accord MLP test")
-        mlp.ShowMessage("---------------")
+        mlp.ShowMessage("Accord MLP Xor test")
+        mlp.ShowMessage("-------------------")
 
         mlp.inputArray = m_inputArrayXOR
         mlp.targetArray = m_targetArrayXOR
@@ -69,7 +69,7 @@ Module modMLPAccordTest
         'mlp.Train(enumLearningMode.SemiStochastic) ' Works
         'mlp.Train(enumLearningMode.Stochastic) ' Works
 
-        mlp.ShowMessage("Accord MLP test: Done.")
+        mlp.ShowMessage("Accord MLP Xor test: Done.")
 
         If nbXor > 1 Then Exit Sub
 

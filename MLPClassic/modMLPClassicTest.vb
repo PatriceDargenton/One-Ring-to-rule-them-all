@@ -8,17 +8,17 @@ Module modMLPClassicTest
 
     Sub Main()
         Console.WriteLine("MultiLayerPerceptron with the classical XOR test.")
-        ClassicMLPTest()
+        ClassicMLPXorTest()
         Console.WriteLine("Press a key to quit.")
         Console.ReadKey()
     End Sub
 
-    Public Sub ClassicMLPTest(Optional nbXor% = 1)
+    Public Sub ClassicMLPXorTest(Optional nbXor% = 1)
 
         Dim mlp As New clsMLPClassic
 
-        mlp.ShowMessage("Classic MLP test")
-        mlp.ShowMessage("----------------")
+        mlp.ShowMessage("Classic MLP Xor test")
+        mlp.ShowMessage("--------------------")
 
         mlp.Initialize(learningRate:=0.1!, weightAdjustment:=0.1!)
 
@@ -88,7 +88,7 @@ Module modMLPClassicTest
         'mlp.Train(enumLearningMode.SemiStochastic)
         'mlp.Train(enumLearningMode.Stochastic)
 
-        mlp.ShowMessage("Classic MLP test: Done.")
+        mlp.ShowMessage("Classic MLP Xor test: Done.")
 
         If nbXor > 1 Then Exit Sub
 

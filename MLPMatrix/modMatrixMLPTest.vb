@@ -3,32 +3,40 @@
 ' From: https://github.com/nlabiris/perceptrons : C# -> VB .NET conversion
 
 Imports Perceptron.MatrixMLP ' MultiLayerPerceptron
+Imports Perceptron.clsMLPGeneric ' enumLearningMode
 
 Module modMatrixMLPTest
 
-    Sub Main()
+    Public Sub MatrixMLPTest()
+
+        XORTest()
+        NextTest()
+
+        MLPGenericIrisTest(New MatrixMLP.MultiLayerPerceptron, "Matrix MLP Iris test")
+
+    End Sub
+
+    Public Sub XORTest()
 
         Console.WriteLine("Matrix-MultiLayerPerceptron with the classical XOR test.")
         Console.WriteLine("Matrix-MLP may not converge each time, run again if not.")
 
-        MatrixMLPTest()
+        MatrixMLPXorTest()
         NextTest()
 
-        MatrixMLPTest(nbXor:=2)
+        MatrixMLPXorTest(nbXor:=2)
         NextTest()
 
-        MatrixMLPTest(nbXor:=3)
-
-        WaitForKeyToQuit()
+        MatrixMLPXorTest(nbXor:=3)
 
     End Sub
 
-    Public Sub MatrixMLPTest(Optional nbXor% = 1)
+    Public Sub MatrixMLPXorTest(Optional nbXor% = 1)
 
         Dim mlp As New MultiLayerPerceptron()
 
-        mlp.ShowMessage("Matrix MLP test")
-        mlp.ShowMessage("---------------")
+        mlp.ShowMessage("Matrix MLP Xor test")
+        mlp.ShowMessage("-------------------")
 
         Dim nbIterations%
 
@@ -94,7 +102,7 @@ Module modMatrixMLPTest
         'mlp.targetArray = targets
         'mlp.ComputeAverageError()
 
-        mlp.ShowMessage("Matrix MLP test: Done.")
+        mlp.ShowMessage("Matrix MLP Xor test: Done.")
 
         If nbXor > 1 Then Exit Sub
 

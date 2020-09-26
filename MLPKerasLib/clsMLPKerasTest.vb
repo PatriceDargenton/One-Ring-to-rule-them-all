@@ -11,17 +11,17 @@ Module modMLPKerasTest
 
     Sub Main()
         Console.WriteLine("Keras MLP with the classical XOR test.")
-        KerasMLPTest()
+        KerasMLPXorTest()
         Console.WriteLine("Press a key to quit.")
         Console.ReadKey()
     End Sub
 
-    Public Sub KerasMLPTest(Optional nbXor% = 1)
+    Public Sub KerasMLPXorTest(Optional nbXor% = 1)
 
         Dim mlp As New clsMLPKeras
 
-        mlp.ShowMessage("Keras MLP test")
-        mlp.ShowMessage("--------------")
+        mlp.ShowMessage("Keras MLP Xor test")
+        mlp.ShowMessage("------------------")
 
         mlp.inputArray = m_inputArrayXOR
         mlp.targetArray = m_targetArrayXOR
@@ -77,7 +77,7 @@ Module modMLPKerasTest
 
         mlp.Train(learningMode:=enumLearningMode.VectorialBatch) ' Works fine
 
-        mlp.ShowMessage("Keras MLP test: Done.")
+        mlp.ShowMessage("Keras MLP Xor test: Done.")
 
         If nbXor > 1 Then Exit Sub
 

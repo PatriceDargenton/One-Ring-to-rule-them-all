@@ -146,6 +146,9 @@ Packages added:
 
 # Versions
 
+26/09/2020 V1.20
+- clsMLPTensor optimized
+
 19/09/2020 V1.19
 - Hyperbolic Tangent (Tanh) gain inversion: gain:=-2 -> gain:=2
 

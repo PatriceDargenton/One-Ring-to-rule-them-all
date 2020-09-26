@@ -152,7 +152,7 @@ Public Class clsMLPTensor : Inherits clsVectorizedMLPGeneric
 
     End Sub
 
-    Private Sub SetInputAllSamples()
+    Public Sub SetInputAllSamples()
 
         Dim inputArrayDble#(,) = clsMLPHelper.Convert2DArrayOfSingleToDouble(Me.inputArray)
         Dim inputMatrix As Matrix = inputArrayDble
@@ -169,7 +169,7 @@ Public Class clsMLPTensor : Inherits clsVectorizedMLPGeneric
 
     End Sub
 
-    Private Sub SetTargetAllSamples()
+    Public Sub SetTargetAllSamples()
 
         Dim targetArrayDble#(,) = clsMLPHelper.Convert2DArrayOfSingleToDouble(Me.targetArray)
         Dim targetMatrix As Matrix = targetArrayDble
@@ -184,10 +184,10 @@ Public Class clsMLPTensor : Inherits clsVectorizedMLPGeneric
 
     End Sub
 
-    'Public Overrides Sub SetOuput1D()
-    '    'Dim output As Matrix = Me.pred.Data
-    '    'Me.lastOutputArray1DSingle = output.ToArraySingle()
-    'End Sub
+    Public Overrides Sub SetOuput1D()
+        Dim output As Matrix = Me.pred.Data
+        Me.lastOutputArray1DSingle = output.ToArraySingle()
+    End Sub
 
     Private Sub SetOuputAllSamples()
 
@@ -196,6 +196,10 @@ Public Class clsMLPTensor : Inherits clsVectorizedMLPGeneric
     End Sub
 
     Public Overrides Sub TrainVector()
+
+        ' 20/09/2020 Code moved here
+        SetInputAllSamples()
+        SetTargetAllSamples()
 
         Me.vectorizedLearningMode = True
         For iteration = 0 To Me.nbIterations - 1
@@ -208,9 +212,9 @@ Public Class clsMLPTensor : Inherits clsVectorizedMLPGeneric
 
     Public Overrides Sub TrainVectorOneIteration()
 
-        SetInputAllSamples()
+        'SetInputAllSamples() ' 20/09/2020 See above
         ForwardPropogateSignal()
-        SetTargetAllSamples()
+        'SetTargetAllSamples() ' 20/09/2020 See above
         ComputeErrorInternal()
         BackwardPropagateError()
 
@@ -238,7 +242,7 @@ Public Class clsMLPTensor : Inherits clsVectorizedMLPGeneric
 
     Public Sub BackwardPropagateError()
         Me.loss.Backward(New Tensor(Matrix.Ones(Me.loss.Data.r, Me.loss.Data.c)))
-        Me.sgd.Step_()
+        Me.sgd.Step_(zero:=False)
     End Sub
 
     Private Sub ComputeErrorInternal()
@@ -255,14 +259,6 @@ Public Class clsMLPTensor : Inherits clsVectorizedMLPGeneric
         ComputeAverageErrorFromLastError()
         Return Me.averageError
     End Function
-
-    'Public Function ComputeAverageErrorFromAllSamples!()
-    '    ' Calculate the error: ERROR = TARGETS - OUTPUTS
-    '    Dim m As Matrix = Me.targetArray
-    '    Me.lastError = m - Me.output
-    '    ComputeAverageErrorFromLastError()
-    '    Return Me.averageError
-    'End Function
 
     Public Overrides Sub PrintWeights()
 

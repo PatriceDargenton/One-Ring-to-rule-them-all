@@ -38,11 +38,11 @@ Namespace DLFramework.Optimizers
             Me.m_weightAdjustment = weightAdjustment
         End Sub
 
-        Public Sub Step_()
+        Public Sub Step_(zero As Boolean)
             For Each parameter In Parameters
                 Dim m As Matrix = parameter.Gradient.Data * Me.LearningRate
                 parameter.Data -= m
-                If Me.WeightAdjustment <> 0 Then _
+                If zero OrElse Me.WeightAdjustment <> 0 Then _
                     parameter.Gradient.Data *= Me.WeightAdjustment
             Next
         End Sub

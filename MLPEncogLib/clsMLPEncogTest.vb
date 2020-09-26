@@ -8,17 +8,17 @@ Module modMLPEncogTest
 
     Sub Main()
         Console.WriteLine("Encog MLP with the classical XOR test.")
-        EncogMLPTest()
+        EncogMLPXorTest()
         Console.WriteLine("Press a key to quit.")
         Console.ReadKey()
     End Sub
 
-    Public Sub EncogMLPTest(Optional nbXor% = 1)
+    Public Sub EncogMLPXorTest(Optional nbXor% = 1)
 
         Dim mlp As New clsMLPEncog
 
-        mlp.ShowMessage("Encog MLP test")
-        mlp.ShowMessage("--------------")
+        mlp.ShowMessage("Encog MLP Xor test")
+        mlp.ShowMessage("------------------")
 
         mlp.inputArray = m_inputArrayXOR
         mlp.targetArray = m_targetArrayXOR
@@ -62,7 +62,7 @@ Module modMLPEncogTest
 
         mlp.TrainVector() ' Works fine
 
-        mlp.ShowMessage("Encog MLP test: Done.")
+        mlp.ShowMessage("Encog MLP Xor test: Done.")
 
         If nbXor > 1 Then Exit Sub
 

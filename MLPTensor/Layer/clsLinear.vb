@@ -44,7 +44,8 @@ Namespace DLFramework.Layers
         Public Overrides Function Forward(input As Tensor) As Tensor
             If Me.m_addBias Then
                 Dim bias = Tensor.Expand(Parameters(1), AxisZero.vertical, input.Data.r)
-                Return Tensor.Add(Tensor.MatMult(input, Parameters(0)), bias)
+                Dim tnsor = Tensor.Add(Tensor.MatMult(input, Parameters(0)), bias)
+                Return tnsor
             Else
                 Return input
             End If

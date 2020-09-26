@@ -1,4 +1,9 @@
 ﻿
+Imports Perceptron.DLFramework ' Tensor
+Imports Perceptron.DLFramework.Layers ' Linear, Sequential
+Imports Perceptron.DLFramework.Layers.Loss ' MeanSquaredError
+Imports Perceptron.DLFramework.Optimizers ' StochasticGradientDescent
+
 Imports Perceptron.Utility ' Matrix
 Imports Perceptron.clsMLPGeneric ' enumLearningMode
 
@@ -7,18 +12,54 @@ Imports Microsoft.VisualStudio.TestTools.UnitTesting
 Module modMLPTensorTest
 
     Sub Main()
+        'SimpleTest()
         Console.WriteLine("Tensor MultiLayerPerceptron with the classical XOR test.")
-        TensorMLPTest()
+        TensorMLPXorTest()
         Console.WriteLine("Press a key to quit.")
         Console.ReadKey()
     End Sub
 
-    Public Sub TensorMLPTest(Optional nbXor% = 1)
+    Public Sub SimpleTest()
+
+        Dim r As New Random
+
+        ' Works with an easy test:
+        'Dim sourceDble As Double(,) = {{0, 0}, {0, 1}, {1, 0}, {1, 1}}
+        'Dim targetDble As Double(,) = {{0}, {1}, {0}, {1}}
+        ' Does not work with the classical and difficult XOR test:
+        Dim sourceDble As Double(,) = {{1, 0}, {0, 0}, {0, 1}, {1, 1}}
+        Dim targetDble As Double(,) = {{1}, {0}, {1}, {0}}
+
+        Dim sourceMatrix As Matrix = sourceDble
+        Dim data As New Tensor(sourceMatrix, autoGrad:=True)
+
+        Dim targetMatrix As Matrix = targetDble
+        Dim target As New Tensor(targetMatrix, autoGrad:=True)
+
+        Dim seq As New Sequential()
+        seq.Layers.Add(New Linear(2, 3, r, addBias:=True))
+        seq.Layers.Add(New Linear(3, 1, r, addBias:=True))
+
+        Dim sgd As New StochasticGradientDescent(seq.Parameters, 0.1!)
+
+        Dim mse As New MeanSquaredError()
+
+        For i = 0 To 20
+            Dim pred = seq.Forward(data)
+            Dim loss = mse.Forward(pred, target)
+            loss.Backward(New Tensor(Matrix.Ones(loss.Data.c, loss.Data.r)))
+            sgd.Step_(zero:=True)
+            Debug.WriteLine("Epoch: {" & i & "} Loss: { " & loss.ToString() & "}")
+        Next
+
+    End Sub
+
+    Public Sub TensorMLPXorTest(Optional nbXor% = 1)
 
         Dim mlp As New clsMLPTensor
 
-        mlp.ShowMessage("Tensor MLP test")
-        mlp.ShowMessage("---------------")
+        mlp.ShowMessage("Tensor MLP Xor test")
+        mlp.ShowMessage("-------------------")
 
         mlp.Initialize(learningRate:=0.1!, weightAdjustment:=0.05!)
 
@@ -67,7 +108,7 @@ Module modMLPTensorTest
         'mlp.Train(enumLearningMode.SemiStochastic) ' Works
         'mlp.Train(enumLearningMode.Stochastic) ' Works
 
-        mlp.ShowMessage("Tensor MLP test: Done.")
+        mlp.ShowMessage("Tensor MLP Xor test: Done.")
 
         If nbXor > 1 Then Exit Sub
 

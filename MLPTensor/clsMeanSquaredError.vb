@@ -7,7 +7,8 @@ Namespace DLFramework.Layers.Loss
 
         Public Overrides Function Forward(prediction As Tensor, target As Tensor) As Tensor
             Dim diff = Tensor.Substract(prediction, target)
-            Return Tensor.Sum(Tensor.Mul(diff, diff), AxisZero.vertical)
+            Dim tnsor = Tensor.Sum(Tensor.Mul(diff, diff), AxisZero.vertical)
+            Return tnsor
         End Function
 
         'Public Overrides Function Forward(prediction As Tensor, target As Tensor,

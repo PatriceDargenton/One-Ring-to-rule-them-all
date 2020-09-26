@@ -11,11 +11,11 @@ Module Main
 
     Sub Main()
 
-        OOPMLPTest()
+        OOPMLPXorTest()
 
     End Sub
 
-    Public Sub OOPMLPTest(Optional nbXor% = 1)
+    Public Sub OOPMLPXorTest(Optional nbXor% = 1)
 
         Dim standard As New Randoms.Standard(
             New Range(-1, 1), seed:=DateTime.Now.Millisecond)
@@ -28,8 +28,8 @@ Module Main
         'mlp.SetActivationFunction(enumActivationFunction.Sigmoid, gain:=0.5)
         'mlp.ActivationFunction = Nothing
 
-        mlp.ShowMessage("Object-oriented programming MLP test")
-        mlp.ShowMessage("------------------------------------")
+        mlp.ShowMessage("Object-oriented programming MLP Xor test")
+        mlp.ShowMessage("----------------------------------------")
 
         mlp.printOutput_ = True
         mlp.printOutputMatrix = False
@@ -100,7 +100,7 @@ Module Main
         'mlp.Train(enumLearningMode.SemiStochastic) ' Works
         'mlp.Train(enumLearningMode.Stochastic) ' Works
 
-        mlp.ShowMessage("Object-oriented programming MLP test: Done.")
+        mlp.ShowMessage("Object-oriented programming MLP Xor test: Done.")
 
         If nbXor > 1 Then Exit Sub
 

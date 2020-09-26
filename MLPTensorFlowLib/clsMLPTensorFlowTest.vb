@@ -17,8 +17,8 @@ Module modMLPTensorFlowTest
 
         Dim mlp As New clsMLPTensorFlow
 
-        mlp.ShowMessage("TensorFlow MLP test")
-        mlp.ShowMessage("-------------------")
+        mlp.ShowMessage("TensorFlow MLP Xor test")
+        mlp.ShowMessage("-----------------------")
 
         mlp.nbIterations = 5000 ' Hyperbolic tangent: works
         mlp.printOutput_ = True
@@ -57,7 +57,7 @@ Module modMLPTensorFlowTest
 
         mlp.TrainVector() ' Works fine
 
-        mlp.ShowMessage("TensorFlow MLP test: Done.")
+        mlp.ShowMessage("TensorFlow MLP Xor test: Done.")
 
         If nbXor > 1 Then Exit Sub
 

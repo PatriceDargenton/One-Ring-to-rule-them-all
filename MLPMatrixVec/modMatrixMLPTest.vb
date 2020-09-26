@@ -7,28 +7,36 @@ Imports Perceptron.clsMLPGeneric ' enumLearningMode
 
 Module modMatrixVecMLPTest
 
-    Sub Main()
+    Public Sub VectorizedMatrixMLPTest()
 
-        Console.WriteLine("Vectorized Matrix MLP with the classical XOR test.")
-
-        VectorizedMatrixMLPTest()
+        XORTest()
         NextTest()
 
-        VectorizedMatrixMLPTest(nbXor:=2)
-        NextTest()
-
-        VectorizedMatrixMLPTest(nbXor:=3)
-
-        WaitForKeyToQuit()
+        MLPGenericIrisTest(New VectorizedMatrixMLP.clsVectorizedMatrixMLP,
+            "Vectorized Matrix MLP Iris test")
 
     End Sub
 
-    Public Sub VectorizedMatrixMLPTest(Optional nbXor% = 1)
+    Public Sub XORTest()
+
+        Console.WriteLine("Vectorized Matrix MLP with the classical XOR test.")
+
+        VectorizedMatrixMLPXorTest()
+        NextTest()
+
+        VectorizedMatrixMLPXorTest(nbXor:=2)
+        NextTest()
+
+        VectorizedMatrixMLPXorTest(nbXor:=3)
+
+    End Sub
+
+    Public Sub VectorizedMatrixMLPXorTest(Optional nbXor% = 1)
 
         Dim mlp As New clsVectorizedMatrixMLP
 
-        mlp.ShowMessage("Vectorized Matrix MLP test")
-        mlp.ShowMessage("--------------------------")
+        mlp.ShowMessage("Vectorized Matrix MLP Xor test")
+        mlp.ShowMessage("------------------------------")
 
         mlp.inputArray = m_inputArrayXOR
         mlp.targetArray = m_targetArrayXOR
@@ -80,7 +88,7 @@ Module modMatrixVecMLPTest
         'mlp.Train(enumLearningMode.SemiStochastic) ' Works
         'mlp.Train(enumLearningMode.Stochastic) ' Works
 
-        mlp.ShowMessage("Vectorized Matrix MLP test: Done.")
+        mlp.ShowMessage("Vectorized Matrix MLP Xor test: Done.")
 
         If nbXor > 1 Then Exit Sub
 

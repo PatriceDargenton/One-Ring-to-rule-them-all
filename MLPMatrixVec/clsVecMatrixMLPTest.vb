@@ -1029,7 +1029,7 @@ Namespace VectorizedMatrixMLP
 
             m_mlp.Train(learningMode:=enumLearningMode.Vectorial)
 
-            Const expectedSuccess# = 0.96#
+            Const expectedSuccess# = 0.94#
             Dim success! = m_mlp.successPC
             Dim successRounded# = Math.Round(success, 2)
             Assert.AreEqual(True, successRounded >= expectedSuccess)

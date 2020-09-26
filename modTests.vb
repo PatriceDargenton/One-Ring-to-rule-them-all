@@ -15,31 +15,31 @@ Module modTests
 
         For nbXor = 1 To 3
 
-            ClassicMLPTest(nbXor)
+            ClassicMLPXorTest(nbXor)
             NextTest()
 
-            OOPMLPTest(nbXor)
+            OOPMLPXorTest(nbXor)
             NextTest()
 
-            MatrixMLPTest(nbXor)
+            MatrixMLPXorTest(nbXor)
             NextTest()
 
-            VectorizedMatrixMLPTest(nbXor)
+            VectorizedMatrixMLPXorTest(nbXor)
             NextTest()
 
-            TensorMLPTest(nbXor)
+            TensorMLPXorTest(nbXor)
             NextTest()
 
-            AccordMLPTest(nbXor)
+            AccordMLPXorTest(nbXor)
             NextTest()
 
-            EncogMLPTest(nbXor)
+            EncogMLPXorTest(nbXor)
             NextTest()
 
-            'TensorFlowMLPTest(nbXor) ' Works only with 1XOR?
+            'TensorFlowMLPXORTest(nbXor) ' Works only with 1XOR?
             'NextTest()
 
-            'KerasMLPTest(nbXor)
+            'KerasMLPXorTest(nbXor)
             'NextTest()
 
         Next

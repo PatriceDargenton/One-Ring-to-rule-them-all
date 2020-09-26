@@ -1,6 +1,6 @@
 ﻿
 Imports Perceptron.Utility ' Matrix
-Imports Perceptron.clsMLPClassic ' enumLearningMode
+Imports Perceptron.clsMLPGeneric ' enumLearningMode
 
 Imports Microsoft.VisualStudio.TestTools.UnitTesting
 
@@ -520,12 +520,12 @@ Namespace MatrixMLP
 
             m_mlp.Train(learningMode:=enumLearningMode.Vectorial)
 
-            Const expectedSuccess# = 0.977#
+            Const expectedSuccess# = 0.973#
             Dim success! = m_mlp.successPC
             Dim successRounded# = Math.Round(success, 3)
             Assert.AreEqual(True, successRounded >= expectedSuccess)
 
-            Const expectedLoss# = 0.038#
+            Const expectedLoss# = 0.042#
             Dim loss! = m_mlp.averageError
             Dim lossRounded# = Math.Round(loss, 3)
             Assert.AreEqual(True, lossRounded <= expectedLoss)
