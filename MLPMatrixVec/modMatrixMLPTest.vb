@@ -12,8 +12,9 @@ Module modMatrixVecMLPTest
         XORTest()
         NextTest()
 
-        MLPGenericIrisTest(New VectorizedMatrixMLP.clsVectorizedMatrixMLP,
-            "Vectorized Matrix MLP Iris test")
+        ' Works only using sigmoid activation
+        MLPGenericIrisFlowerTest(New VectorizedMatrixMLP.clsVectorizedMatrixMLP,
+            "Vectorized Matrix MLP Iris flower test", nbIterations:=1000, sigmoid:=True)
 
     End Sub
 

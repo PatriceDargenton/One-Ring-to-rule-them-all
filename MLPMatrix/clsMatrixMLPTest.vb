@@ -41,11 +41,11 @@ Namespace MatrixMLP
         <TestMethod()>
         Public Sub MatrixMLP1XORSigmoid()
 
-            Dim nbIterations% = 10000
-            m_mlp.SetActivationFunctionOptimized(enumActivationFunctionOptimized.Sigmoid, center:=2.2)
-
             InitXOR()
             m_mlp.Initialize(learningRate:=0.9)
+
+            Dim nbIterations% = 10000
+            m_mlp.SetActivationFunctionOptimized(enumActivationFunctionOptimized.Sigmoid, center:=2.2)
 
             m_mlp.weights_ih = {
                 {0.95, 0.82},
@@ -82,12 +82,12 @@ Namespace MatrixMLP
         <TestMethod()>
         Public Sub MatrixMLP1XORSigmoidWithoutBias()
 
+            InitXOR()
+            m_mlp.Initialize(learningRate:=0.1)
+            m_mlp.InitializeStruct(m_neuronCountXOR, addBiasColumn:=False)
+
             Dim nbIterations% = 100000
             m_mlp.SetActivationFunctionOptimized(enumActivationFunctionOptimized.Sigmoid)
-
-            InitXOR()
-            m_mlp.InitializeStruct(m_neuronCountXOR, addBiasColumn:=False)
-            m_mlp.Initialize(learningRate:=0.1)
 
             m_mlp.weights_ih = {
                 {0.76, 0.81},
@@ -119,13 +119,13 @@ Namespace MatrixMLP
         <TestMethod()>
         Public Sub MatrixMLP1XORHyperbolicTangent()
 
+            InitXOR()
+            m_mlp.Initialize(learningRate:=0.05)
+
             Dim nbIterations% = 5000
             'm_mlp.SetActivationFunctionOptimized(enumActivationFunctionOptimized.HyperbolicTangent)
             m_mlp.SetActivationFunctionOptimized(enumActivationFunctionOptimized.HyperbolicTangent,
                 gain:=2)
-
-            InitXOR()
-            m_mlp.Initialize(learningRate:=0.05)
 
             m_mlp.weights_ih = {
                 {0.79, 0.81},
@@ -162,11 +162,11 @@ Namespace MatrixMLP
         <TestMethod()>
         Public Sub MatrixMLP1XORELU()
 
-            Dim nbIterations% = 300
-            m_mlp.SetActivationFunctionOptimized(enumActivationFunctionOptimized.ELU, center:=-1.8)
-
             InitXOR()
             m_mlp.Initialize(learningRate:=0.1)
+
+            Dim nbIterations% = 300
+            m_mlp.SetActivationFunctionOptimized(enumActivationFunctionOptimized.ELU, center:=-1.8)
 
             m_mlp.weights_ih = {
                 {0.57, 0.6},
@@ -203,11 +203,11 @@ Namespace MatrixMLP
         <TestMethod()>
         Public Sub MatrixMLP2XORSigmoid()
 
-            m_mlp.nbIterations = 3000
-            m_mlp.SetActivationFunctionOptimized(enumActivationFunctionOptimized.Sigmoid, gain:=2)
-
             Init2XOR()
             m_mlp.Initialize(learningRate:=0.05)
+
+            m_mlp.nbIterations = 3000
+            m_mlp.SetActivationFunctionOptimized(enumActivationFunctionOptimized.Sigmoid, gain:=2)
 
             m_mlp.weights_ih = {
                 {-0.11, 0.07, -0.05, 0.03},
@@ -245,14 +245,14 @@ Namespace MatrixMLP
         <TestMethod()>
         Public Sub MatrixMLP2XORHyperbolicTangent()
 
+            Init2XOR()
+            m_mlp.Initialize(learningRate:=0.1)
+
             Dim nbIterations% = 5000
             'm_mlp.SetActivationFunctionOptimized(
             '   enumActivationFunctionOptimized.HyperbolicTangent, center:=0.5)
             m_mlp.SetActivationFunctionOptimized(
                 enumActivationFunctionOptimized.HyperbolicTangent, gain:=2, center:=0.5)
-
-            Init2XOR()
-            m_mlp.Initialize(learningRate:=0.1)
 
             m_mlp.weights_ih = {
                 {0.39, 0.5, 0.3, 0.25},
@@ -291,12 +291,12 @@ Namespace MatrixMLP
         <TestMethod()>
         Public Sub MatrixMLP3XORSigmoid()
 
+            Init3XOR()
+            m_mlp.Initialize(learningRate:=0.05)
+            m_mlp.InitializeStruct(m_neuronCount3XOR673, addBiasColumn:=True)
+
             m_mlp.nbIterations = 900
             m_mlp.SetActivationFunctionOptimized(enumActivationFunctionOptimized.Sigmoid, gain:=2)
-
-            Init3XOR()
-            m_mlp.InitializeStruct(m_neuronCount3XOR673, addBiasColumn:=True)
-            m_mlp.Initialize(learningRate:=0.05)
 
             m_mlp.weights_ih = {
                 {0.49, -0.26, 0.08, -0.47, -0.34, -0.01},
@@ -342,12 +342,12 @@ Namespace MatrixMLP
         <TestMethod()>
         Public Sub MatrixMLP3XORHyperbolicTangent()
 
+            Init3XOR()
+            m_mlp.Initialize(learningRate:=0.02)
+            m_mlp.InitializeStruct(m_neuronCount3XOR673, addBiasColumn:=True)
+
             m_mlp.nbIterations = 800
             m_mlp.SetActivationFunctionOptimized(enumActivationFunctionOptimized.HyperbolicTangent, gain:=2)
-
-            Init3XOR()
-            m_mlp.InitializeStruct(m_neuronCount3XOR673, addBiasColumn:=True)
-            m_mlp.Initialize(learningRate:=0.02)
 
             m_mlp.weights_ih = {
                 {-0.25, 0.05, -0.27, -0.09, -0.17, -0.31},
@@ -393,12 +393,12 @@ Namespace MatrixMLP
         <TestMethod()>
         Public Sub MatrixMLP3XORELU()
 
+            Init3XOR()
+            m_mlp.Initialize(learningRate:=0.01)
+            m_mlp.InitializeStruct(m_neuronCount3XOR673, addBiasColumn:=True)
+
             m_mlp.nbIterations = 1100
             m_mlp.SetActivationFunctionOptimized(enumActivationFunctionOptimized.ELU)
-
-            Init3XOR()
-            m_mlp.InitializeStruct(m_neuronCount3XOR673, addBiasColumn:=True)
-            m_mlp.Initialize(learningRate:=0.01)
 
             m_mlp.weights_ih = {
                 {-0.47, 0.11, 0.47, 0.25, -0.09, 0.27},
@@ -442,14 +442,14 @@ Namespace MatrixMLP
         End Sub
 
         <TestMethod()>
-        Public Sub MatrixMLPIrisAnalog()
+        Public Sub MatrixMLPIrisFlowerAnalog()
+
+            InitIrisFlowerAnalog(m_mlp)
+            m_mlp.Initialize(learningRate:=0.1)
+            m_mlp.InitializeStruct(m_neuronCountIrisFlowerAnalog451, addBiasColumn:=True)
 
             m_mlp.nbIterations = 1500
             m_mlp.SetActivationFunctionOptimized(enumActivationFunctionOptimized.Sigmoid)
-
-            InitIrisAnalog(m_mlp)
-            m_mlp.InitializeStruct(m_neuronCountIrisAnalog451, addBiasColumn:=True)
-            m_mlp.Initialize(learningRate:=0.1)
 
             m_mlp.weights_ih = {
                 {-0.29, 0.17, 0.2, -0.23},
@@ -468,7 +468,7 @@ Namespace MatrixMLP
             m_mlp.bias_o = {
                 {-0.35}}
 
-            m_mlp.Train(learningMode:=enumLearningMode.Vectorial)
+            m_mlp.Train()
 
             Const expectedSuccess# = 0.953#
             Dim success! = m_mlp.successPC
@@ -480,8 +480,8 @@ Namespace MatrixMLP
             Dim lossRounded# = Math.Round(loss, 3)
             Assert.AreEqual(True, lossRounded <= expectedLoss)
 
-            If m_mlp.successPC = 1 Then
-                Dim expectedOutput = m_targetArrayIrisAnalog
+            If m_mlp.successPC = 1 AndAlso m_mlp.minimalSuccessTreshold <= 0.05! Then
+                Dim expectedOutput = m_targetArrayIrisFlowerAnalog
                 Dim expectedMatrix As Matrix = expectedOutput ' Single(,) -> Matrix
                 Dim sOutput = m_mlp.output.ToStringWithFormat(dec:="0.0")
                 Dim sExpectedOutput = expectedMatrix.ToStringWithFormat(dec:="0.0")
@@ -491,13 +491,13 @@ Namespace MatrixMLP
         End Sub
 
         <TestMethod()>
-        Public Sub MatrixMLPIrisLogical()
+        Public Sub MatrixMLPIrisFlowerLogical()
+
+            InitIrisFlowerLogical(m_mlp)
+            m_mlp.Initialize(learningRate:=0.1)
 
             m_mlp.nbIterations = 400
             m_mlp.SetActivationFunctionOptimized(enumActivationFunctionOptimized.Sigmoid)
-
-            InitIrisLogical(m_mlp)
-            m_mlp.Initialize(learningRate:=0.1)
 
             m_mlp.weights_ih = {
                 {-0.33, -0.42, -0.14, -0.47},
@@ -518,7 +518,7 @@ Namespace MatrixMLP
                 {-0.08},
                 {0.43}}
 
-            m_mlp.Train(learningMode:=enumLearningMode.Vectorial)
+            m_mlp.Train()
 
             Const expectedSuccess# = 0.973#
             Dim success! = m_mlp.successPC
@@ -530,13 +530,79 @@ Namespace MatrixMLP
             Dim lossRounded# = Math.Round(loss, 3)
             Assert.AreEqual(True, lossRounded <= expectedLoss)
 
-            If m_mlp.successPC = 1 Then
-                Dim expectedOutput = m_targetArrayIrisLogical
+            If m_mlp.successPC = 1 AndAlso m_mlp.minimalSuccessTreshold <= 0.05! Then
+                Dim expectedOutput = m_targetArrayIrisFlowerLogical
                 Dim expectedMatrix As Matrix = expectedOutput ' Single(,) -> Matrix
                 Dim sOutput = m_mlp.output.ToStringWithFormat(dec:="0.0")
                 Dim sExpectedOutput = expectedMatrix.ToStringWithFormat(dec:="0.0")
                 Assert.AreEqual(sExpectedOutput, sOutput)
             End If
+
+        End Sub
+
+        <TestMethod()>
+        Public Sub MatrixMLPIrisFlowerLogicalPredicion()
+
+            ' 96.7% prediction, 96.9% learning with 900 iterations in 912 msec.
+
+            'InitIrisFlowerLogicalPrediction(m_mlp)
+            m_mlp.inputArray = m_inputArrayIrisFlowerTrain
+            m_mlp.targetArray = m_targetArrayIrisFlowerLogicalTrain
+            m_mlp.InitializeStruct(m_neuronCountIrisFlowerLogical453, addBiasColumn:=True)
+            m_mlp.Initialize(learningRate:=0.005!)
+
+            m_mlp.nbIterations = 900
+            m_mlp.minimalSuccessTreshold = 0.3
+            m_mlp.SetActivationFunctionOptimized(
+                enumActivationFunctionOptimized.HyperbolicTangent, gain:=2)
+
+            m_mlp.weights_ih = {
+                {0.42, 0.1, -0.07, -0.06},
+                {-0.05, 0.33, -0.39, -0.47},
+                {-0.33, 0.5, -0.42, -0.35},
+                {0.26, -0.27, -0.47, 0.32},
+                {-0.07, 0.08, -0.14, -0.35}}
+            m_mlp.weights_ho = {
+                {-0.35, -0.32, 0.4, -0.29, 0.12},
+                {-0.01, -0.18, -0.33, 0.04, 0.24},
+                {-0.16, 0.26, -0.35, 0.43, -0.34}}
+            m_mlp.bias_h = {
+                {0.03},
+                {-0.12},
+                {0.17},
+                {0.13},
+                {0.48}}
+            m_mlp.bias_o = {
+                {0.11},
+                {-0.11},
+                {0.25}}
+
+            m_mlp.Train()
+
+            Dim expectedSuccess# = 0.969
+            Dim success! = m_mlp.successPC
+            Dim successRounded# = Math.Round(success, 3)
+            Assert.AreEqual(True, successRounded >= expectedSuccess)
+
+            Const expectedLoss# = 0.053
+            Dim loss! = m_mlp.averageError
+            Dim lossRounded# = Math.Round(loss, 3)
+            Assert.AreEqual(True, lossRounded <= expectedLoss)
+
+            If m_mlp.successPC = 1 AndAlso m_mlp.minimalSuccessTreshold <= 0.05! Then
+                Dim expectedOutput = m_targetArrayIrisFlowerLogicalTrain
+                Dim expectedMatrix As Matrix = expectedOutput ' Single(,) -> Matrix
+                Dim sOutput = m_mlp.output.ToStringWithFormat(dec:="0.0")
+                Dim sExpectedOutput = expectedMatrix.ToStringWithFormat(dec:="0.0")
+                Assert.AreEqual(sExpectedOutput, sOutput)
+            End If
+
+            m_mlp.TestAllSamples(m_inputArrayIrisFlowerTest,
+                m_targetArrayIrisFlowerLogicalTest, nbOutputs:=3)
+            Dim expectedSuccessPrediction# = 0.967
+            Dim successPrediction! = m_mlp.successPC
+            Dim successPredictionRounded# = Math.Round(successPrediction, 3)
+            Assert.AreEqual(True, successPredictionRounded >= expectedSuccessPrediction)
 
         End Sub
 

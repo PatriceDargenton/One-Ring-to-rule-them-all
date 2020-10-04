@@ -252,7 +252,8 @@ Namespace MLP.ActivationFunction
                 y = 0
                 If expMax Then y = -clsMLPGeneric.expMax
             Else
-                y = 2 / (1 + Math.Exp(xg)) - 1 '  = Math.Tanh(-xg / 2)
+                y = 2 / (1 + Math.Exp(xg)) - 1 ' = Math.Tanh(-xg / 2)
+                'y = Math.Tanh(-xg / 2)
 
                 ' https://www.wolframalpha.com/input/?i=HyperbolicTangent
                 If debugActivationFunction Then
@@ -269,8 +270,7 @@ Namespace MLP.ActivationFunction
 
             Dim xc# = x - center
             Dim fx# = Activation(x, gain, center)
-            'Dim y# = gain * (1 - fx * fx) / 2 ' 31/07/2020
-            Dim y# = Math.Abs(gain) * (1 - fx * fx) / 2 ' 19/09/2020
+            Dim y# = gain * (1 - fx * fx) / 2 ' 31/07/2020
 
             'Dim y#
             'If gain = 1 Then
@@ -287,7 +287,7 @@ Namespace MLP.ActivationFunction
             If debugActivationFunction Then
                 'Dim xg# = -2 * gain
                 'Dim xg# = -gain ' 31/07/2020
-                Dim xg# = Math.Abs(gain) ' 19/09/2020
+                Dim xg# = gain ' 02/10/2020
                 Dim exp# = Math.Exp(xg * xc)
                 Dim expP1# = 1 + exp
                 'Dim y2 = -2 * xg * exp / (expP1 * expP1)
@@ -301,7 +301,8 @@ Namespace MLP.ActivationFunction
 
         Public Function DerivativeFromOriginalFunction#(x#, gain#) Implements IActivationFunction.DerivativeFromOriginalFunction
             'If gain <> 1 Then Return 0
-            Dim y# = 1 - x * x
+            'Dim y# = 1 - x * x
+            Dim y# = gain * (1 - x * x) / 2 ' 02/10/2020
             Return y
         End Function
 

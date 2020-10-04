@@ -5,7 +5,7 @@ Module modTests
 
         'XORTest()
 
-        IrisTest()
+        IrisFlowerTest()
 
         WaitForKeyToQuit()
 
@@ -46,41 +46,46 @@ Module modTests
 
     End Sub
 
-    Private Sub IrisTest()
+    Private Sub IrisFlowerTest()
 
-        MLPGenericIrisTest(New clsMLPClassic, "Classic MLP Iris test")
+        ' Works only using sigmoid activation
+        MLPGenericIrisFlowerTest(New clsMLPClassic, "Classic MLP Iris flower test",
+            sigmoid:=True)
         NextTest()
 
-        MLPGenericIrisTest(New NetworkOOP.MultilayerPerceptron,
-            "Object-oriented programming MLP Iris test")
+        MLPGenericIrisFlowerTest(New NetworkOOP.MultilayerPerceptron,
+            "Object-oriented programming MLP Iris flower test")
         NextTest()
 
-        MLPGenericIrisTest(New MatrixMLP.MultiLayerPerceptron, "Matrix MLP Iris test")
+        ' Three layers only, poor results!
+        MLPGenericIrisFlowerTest(New MatrixMLP.MultiLayerPerceptron,
+            "Matrix MLP Iris flower test", nbIterations:=4000, threeLayers:=True)
         NextTest()
 
-        MLPGenericIrisTest(New VectorizedMatrixMLP.clsVectorizedMatrixMLP,
-            "Vectorized Matrix MLP Iris test")
+        ' Works only using sigmoid activation
+        MLPGenericIrisFlowerTest(New VectorizedMatrixMLP.clsVectorizedMatrixMLP,
+            "Vectorized Matrix MLP Iris flower test", nbIterations:=1000, sigmoid:=True)
         NextTest()
 
-        MLPGenericIrisTest(New clsMLPTensor, "Tensor MLP Iris test")
+        ' Nb hidden neurons = nb input neurons, works only using sigmoid activation
+        MLPGenericIrisFlowerTest(New clsMLPTensor, "Tensor MLP Iris flower test",
+            nbIterations:=300, nbHiddenLayersFromInput:=True, sigmoid:=True)
         NextTest()
 
-        MLPGenericIrisTest(New clsMLPAccord, "Accord MLP Iris test")
+        MLPGenericIrisFlowerTest(New clsMLPAccord, "Accord MLP Iris flower test")
         NextTest()
 
-        MLPGenericIrisTest(New clsMLPEncog, "Encog MLP Iris test")
+        MLPGenericIrisFlowerTest(New clsMLPEncog, "Encog MLP Iris flower test")
         NextTest()
 
-        EncogMLPIrisTest()
-        NextTest()
-
-        ' Poor results:
-        'TensorFlowMLPIrisAnalogTest()
+        '' No bias, only 3 layers, poor results! (only 50% learning, 90% prediction)
+        'MLPGenericIrisFlowerTest(New clsMLPTensorFlow, "TensorFlow MLP Iris flower test",
+        '    nbIterations:=4000, threeLayers:=True, addBiasColumn:=False)
         'NextTest()
-        'TensorFlowMLPIrisLogicalTest()
-        'NextTest()
 
-        'MLPGenericIrisTest(New clsMLPKeras, "Keras.NET MLP Iris test", nbIterations:=800)
+        '' Works only using sigmoid activation
+        'MLPGenericIrisFlowerTest(New clsMLPKeras, "Keras.NET MLP Iris flower test",
+        '    nbIterations:=100, sigmoid:=True)
         'NextTest()
 
     End Sub

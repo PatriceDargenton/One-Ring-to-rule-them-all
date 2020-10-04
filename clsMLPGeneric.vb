@@ -454,6 +454,31 @@ Public MustInherit Class clsMLPGeneric
         ComputeAverageError()
     End Sub
 
+    ''' <summary>
+    ''' Test all samples
+    ''' </summary>
+    Public Sub TestAllSamples(inputs!(,))
+        Dim nbOutputs = Me.targetArray.GetLength(1)
+        TestAllSamples(inputs, nbOutputs)
+    End Sub
+
+    ''' <summary>
+    ''' Test all samples
+    ''' </summary>
+    Public Sub TestAllSamples(inputs!(,), targets!(,))
+        Me.targetArray = targets
+        Dim nbOutputs = targets.GetLength(1)
+        TestAllSamples(inputs, nbOutputs)
+    End Sub
+
+    ''' <summary>
+    ''' Test all samples
+    ''' </summary>
+    Public Sub TestAllSamples(inputs!(,), targets!(,), nbOutputs%)
+        Me.targetArray = targets
+        TestAllSamples(inputs, nbOutputs)
+    End Sub
+
 #End Region
 
 #Region "Print"
@@ -483,16 +508,20 @@ Public MustInherit Class clsMLPGeneric
         ShowMessage("neuron count=" & clsMLPHelper.ArrayToString(Me.neuronCount))
         ShowMessage("use bias=" & Me.useBias)
         If Me.learningRate <> 0 Then ShowMessage("learning rate=" & Me.learningRate)
-        If Me.weightAdjustment <> 0 Then ShowMessage("weight adjustment=" & Me.weightAdjustment)
+        If Me.weightAdjustment <> 0 Then ShowMessage(
+            "weight adjustment=" & Me.weightAdjustment)
         ShowMessage("activation function=" & clsMLPHelper.ReadEnumDescription(Me.m_actFunc))
         ShowMessage("gain=" & Me.m_gain)
         If Me.m_center <> 0 Then ShowMessage("center=" & Me.m_center)
+        If Me.minimalSuccessTreshold <> 0 Then ShowMessage(
+            "minimal success treshold=" & Me.minimalSuccessTreshold)
         ShowMessage("")
 
     End Sub
 
     Public Function ShowThisIteration(iteration%) As Boolean
-        If (iteration < 10 OrElse
+        If (iteration >= Me.nbIterations - 1 OrElse
+            iteration < 10 OrElse
             ((iteration + 1) Mod 10 = 0 AndAlso iteration < 100) OrElse
             ((iteration + 1) Mod 100 = 0 AndAlso iteration < 1000) OrElse
             ((iteration + 1) Mod 1000 = 0 AndAlso iteration < 10000) OrElse
@@ -510,6 +539,15 @@ Public MustInherit Class clsMLPGeneric
         If Me.printOutputMatrix Then msg &= "Output: " & Me.output.ToString() & vbLf
         msg &=
             "Average error: " & Me.averageError.ToString(format6Dec) & vbLf &
+            "Success (" & (minimalSuccessTreshold).ToString("0%") & "): " &
+            Me.nbSuccess & "/" & Me.success.r * Me.success.c & ": " &
+            Me.successPC.ToString("0.0%")
+        ShowMessage(msg)
+    End Sub
+
+    Public Sub PrintSuccessPrediction()
+        Dim msg$ = vbLf &
+            "Prediction: " & vbLf &
             "Success (" & (minimalSuccessTreshold).ToString("0%") & "): " &
             Me.nbSuccess & "/" & Me.success.r * Me.success.c & ": " &
             Me.successPC.ToString("0.0%")

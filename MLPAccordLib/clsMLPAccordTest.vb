@@ -234,8 +234,8 @@ Namespace AccordMLP
 
             m_mlp.PRBPLAlgo = True
 
-            m_mlp.Initialize(learningRate:=0.1!, weightAdjustment:=0.05!)
             Init2XOR()
+            m_mlp.Initialize(learningRate:=0.1!, weightAdjustment:=0.05!)
 
             m_mlp.nbIterations = 700
             m_mlp.InitializeStruct(m_neuronCount2XOR, addBiasColumn:=True)
@@ -298,16 +298,34 @@ Namespace AccordMLP
         End Sub
 
         <TestMethod()>
-        Public Sub AccordMLPIrisAnalog()
+        Public Sub AccordMLPIrisFlowerAnalog()
 
-            TestMLPIrisAnalog(m_mlp)
+            TestMLPIrisFlowerAnalog(m_mlp)
 
         End Sub
 
         <TestMethod()>
-        Public Sub AccordMLPIrisLogical()
+        Public Sub AccordMLPIrisFlowerLogical()
 
-            TestMLPIrisLogical(m_mlp)
+            TestMLPIrisFlowerLogical(m_mlp)
+
+        End Sub
+
+        <TestMethod()>
+        Public Sub AccordMLPIrisFlowerLogicalPrediction4LTanh()
+
+            ' 97.8% prediction, 99.4% learning with 1500 iterations in 500 msec.
+
+            TestMLPIrisFlowerLogicalPredictionTanh(m_mlp)
+
+        End Sub
+
+        <TestMethod()>
+        Public Sub AccordMLPIrisFlowerLogicalPredictionSigmoid()
+
+            ' 97.8% prediction, 98.6% learning with 1000 iterations in 200 msec.
+
+            TestMLPIrisFlowerLogicalPredictionSigmoid(m_mlp)
 
         End Sub
 

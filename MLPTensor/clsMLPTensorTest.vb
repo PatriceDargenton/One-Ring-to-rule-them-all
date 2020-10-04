@@ -89,7 +89,8 @@ Module modMLPTensorTest
         ElseIf nbXor = 2 Then
             mlp.inputArray = m_inputArray2XOR
             mlp.targetArray = m_targetArray2XOR
-            mlp.InitializeStruct(m_neuronCount2XOR462, addBiasColumn:=True)
+            'mlp.InitializeStruct(m_neuronCount2XOR462, addBiasColumn:=True)
+            mlp.InitializeStruct(m_neuronCount2XOR, addBiasColumn:=True)
         ElseIf nbXor = 3 Then
             mlp.inputArray = m_inputArray3XOR
             mlp.targetArray = m_targetArray3XOR
@@ -369,8 +370,8 @@ Namespace TensorMLP
         '<TestMethod()>
         Public Sub TensorMLP1XORSigmoidWithoutBias()
 
-            m_mlp.Initialize(learningRate:=0.1!)
             InitXOR()
+            m_mlp.Initialize(learningRate:=0.1!)
             m_mlp.nbIterations = 5000
             m_mlp.SetActivationFunctionOptimized(
                 enumActivationFunctionOptimized.Sigmoid)

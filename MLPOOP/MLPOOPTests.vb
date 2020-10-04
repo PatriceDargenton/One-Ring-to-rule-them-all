@@ -210,8 +210,8 @@ Namespace OOPMLP
 
             'TestMLP1XORWithoutBias231b(m_mlp) Work only there
 
-            m_mlp.Initialize(learningRate:=0.9!, weightAdjustment:=0.05!)
             InitXOR()
+            m_mlp.Initialize(learningRate:=0.9!, weightAdjustment:=0.05!)
             m_mlp.InitializeStruct(m_neuronCountXOR231, addBiasColumn:=False)
 
             m_mlp.nbIterations = 60000
@@ -312,8 +312,8 @@ Namespace OOPMLP
         <TestMethod()>
         Public Sub MLPOOP3XORGaussian()
 
-            m_mlp.Initialize(learningRate:=0.1!, weightAdjustment:=0.09!)
             Init3XOR()
+            m_mlp.Initialize(learningRate:=0.1!, weightAdjustment:=0.09!)
 
             m_mlp.nbIterations = 150
             m_mlp.SetActivationFunction(enumActivationFunction.Gaussian, center:=1)
@@ -348,16 +348,34 @@ Namespace OOPMLP
         End Sub
 
         <TestMethod()>
-        Public Sub MLPOOPIrisAnalog()
+        Public Sub MLPOOPIrisFlowerAnalog()
 
-            TestMLPIrisAnalog(m_mlp)
+            TestMLPIrisFlowerAnalog(m_mlp)
 
         End Sub
 
         <TestMethod()>
-        Public Sub MLPOOPIrisLogical()
+        Public Sub MLPOOPIrisFlowerLogical()
 
-            TestMLPIrisLogical(m_mlp)
+            TestMLPIrisFlowerLogical(m_mlp)
+
+        End Sub
+
+        <TestMethod()>
+        Public Sub MLPOOPIrisFlowerLogicalPrediction()
+
+            ' 97.8% prediction, 99.4% learning with 800 iterations in 3.7 sec.
+
+            TestMLPIrisFlowerLogicalPredictionTanh(m_mlp, nbIterations:=800)
+
+        End Sub
+
+        <TestMethod()>
+        Public Sub MLPOOPIrisFlowerLogicalPredictionSigmoid()
+
+            ' 97.8% prediction, 98.6% learning with 800 iterations in 2.3 sec.
+
+            TestMLPIrisFlowerLogicalPredictionSigmoid(m_mlp, nbIterations:=800)
 
         End Sub
 

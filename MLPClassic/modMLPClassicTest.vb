@@ -139,18 +139,6 @@ Namespace ClassicMLP
             m_mlp.InitializeStruct(m_neuronCount3XOR, addBiasColumn:=True)
         End Sub
 
-        Private Sub InitIrisAnalog()
-            m_mlp.inputArray = m_inputArrayIris
-            m_mlp.targetArray = m_targetArrayIrisAnalog
-            m_mlp.InitializeStruct(m_neuronCountIrisAnalog4_20_1, addBiasColumn:=True)
-        End Sub
-
-        Private Sub InitIrisLogical()
-            m_mlp.inputArray = m_inputArrayIris
-            m_mlp.targetArray = m_targetArrayIrisLogical
-            m_mlp.InitializeStruct(m_neuronCountIrisLogical443, addBiasColumn:=True)
-        End Sub
-
         <TestMethod()>
         Public Sub MLP1XOR4Layers()
 
@@ -225,8 +213,8 @@ Namespace ClassicMLP
         <TestMethod()>
         Public Sub MLP1XORReLU()
 
-            m_mlp.Initialize(learningRate:=0.1!, weightAdjustment:=0.1!)
             InitXOR()
+            m_mlp.Initialize(learningRate:=0.1!, weightAdjustment:=0.1!)
 
             m_mlp.nbIterations = 400
             m_mlp.SetActivationFunction(enumActivationFunction.ReLu, gain:=0.9)
@@ -257,8 +245,8 @@ Namespace ClassicMLP
         <TestMethod()>
         Public Sub MLP1XORReLUSigmoid()
 
-            m_mlp.Initialize(learningRate:=0.1!, weightAdjustment:=0.1!)
             InitXOR()
+            m_mlp.Initialize(learningRate:=0.1!, weightAdjustment:=0.1!)
 
             m_mlp.nbIterations = 9000
             m_mlp.SetActivationFunction(enumActivationFunction.ReLuSigmoid)
@@ -289,8 +277,8 @@ Namespace ClassicMLP
         <TestMethod()>
         Public Sub MLP1XORDbleThreshold()
 
-            m_mlp.Initialize(learningRate:=0.1!, weightAdjustment:=0.1!)
             InitXOR()
+            m_mlp.Initialize(learningRate:=0.1!, weightAdjustment:=0.1!)
 
             m_mlp.nbIterations = 5000
             m_mlp.SetActivationFunction(enumActivationFunction.DoubleThreshold)
@@ -342,8 +330,8 @@ Namespace ClassicMLP
         <TestMethod()>
         Public Sub MLP2XORELU()
 
-            m_mlp.Initialize(learningRate:=0.1!, weightAdjustment:=0.05!)
             Init2XOR()
+            m_mlp.Initialize(learningRate:=0.1!, weightAdjustment:=0.05!)
 
             m_mlp.nbIterations = 200
             m_mlp.SetActivationFunction(enumActivationFunction.ELU, center:=0.4!)
@@ -377,8 +365,8 @@ Namespace ClassicMLP
         <TestMethod()>
         Public Sub MLP2XORDbleThreshold()
 
-            m_mlp.Initialize(learningRate:=0.1!, weightAdjustment:=0.1!)
             Init2XOR()
+            m_mlp.Initialize(learningRate:=0.1!, weightAdjustment:=0.1!)
 
             m_mlp.nbIterations = 3000
             m_mlp.SetActivationFunction(enumActivationFunction.DoubleThreshold)
@@ -412,8 +400,8 @@ Namespace ClassicMLP
         <TestMethod()>
         Public Sub MLP2XORReLU()
 
-            m_mlp.Initialize(learningRate:=0.1!, weightAdjustment:=0.1!)
             Init2XOR()
+            m_mlp.Initialize(learningRate:=0.1!, weightAdjustment:=0.1!)
 
             m_mlp.nbIterations = 200
             m_mlp.SetActivationFunction(enumActivationFunction.ReLu, gain:=0.6, center:=0.4)
@@ -461,8 +449,8 @@ Namespace ClassicMLP
         <TestMethod()>
         Public Sub MLP3XORELU()
 
-            m_mlp.Initialize(learningRate:=0.1!, weightAdjustment:=0.05!)
             Init3XOR()
+            m_mlp.Initialize(learningRate:=0.1!, weightAdjustment:=0.05!)
 
             m_mlp.nbIterations = 200
             m_mlp.SetActivationFunction(enumActivationFunction.ELU, center:=0.4!)
@@ -497,8 +485,8 @@ Namespace ClassicMLP
         <TestMethod()>
         Public Sub MLP3XORGaussian()
 
-            m_mlp.Initialize(learningRate:=0.15!, weightAdjustment:=0.25!)
             Init3XOR()
+            m_mlp.Initialize(learningRate:=0.15!, weightAdjustment:=0.25!)
 
             m_mlp.nbIterations = 400
             m_mlp.SetActivationFunction(enumActivationFunction.Gaussian, gain:=0.5!, center:=0.3!)
@@ -533,8 +521,8 @@ Namespace ClassicMLP
         <TestMethod()>
         Public Sub MLP3XORSinus()
 
-            m_mlp.Initialize(learningRate:=0.1!, weightAdjustment:=0.1!)
             Init3XOR()
+            m_mlp.Initialize(learningRate:=0.1!, weightAdjustment:=0.1!)
 
             m_mlp.nbIterations = 200
             m_mlp.SetActivationFunction(enumActivationFunction.Sinus)
@@ -569,8 +557,8 @@ Namespace ClassicMLP
         <TestMethod()>
         Public Sub MLP3XORDbleThreshold()
 
-            m_mlp.Initialize(learningRate:=2.0!, weightAdjustment:=0.1!)
             Init3XOR()
+            m_mlp.Initialize(learningRate:=2.0!, weightAdjustment:=0.1!)
 
             m_mlp.nbIterations = 100
             m_mlp.SetActivationFunction(enumActivationFunction.DoubleThreshold, center:=2)
@@ -605,8 +593,8 @@ Namespace ClassicMLP
         <TestMethod()>
         Public Sub MLP3XORReLU()
 
-            m_mlp.Initialize(learningRate:=0.1!, weightAdjustment:=0.2!)
             Init3XOR()
+            m_mlp.Initialize(learningRate:=0.1!, weightAdjustment:=0.2!)
 
             m_mlp.nbIterations = 350
             m_mlp.SetActivationFunction(enumActivationFunction.ReLu, gain:=0.5!, center:=0.1!)
@@ -639,16 +627,34 @@ Namespace ClassicMLP
         End Sub
 
         <TestMethod()>
-        Public Sub MLPIrisAnalog()
+        Public Sub MLPIrisFlowerAnalog()
 
-            TestMLPIrisAnalog(m_mlp)
+            TestMLPIrisFlowerAnalog(m_mlp)
 
         End Sub
 
         <TestMethod()>
-        Public Sub MLPIrisLogical()
+        Public Sub MLPIrisFlowerLogical()
 
-            TestMLPIrisLogical(m_mlp)
+            TestMLPIrisFlowerLogical(m_mlp)
+
+        End Sub
+
+        <TestMethod()>
+        Public Sub MLPIrisFlowerLogicalPrediction()
+
+            ' 97.8% prediction, 99.4% learning with 400 iterations in 915 msec.
+
+            TestMLPIrisFlowerLogicalPredictionTanh(m_mlp, nbIterations:=400)
+
+        End Sub
+
+        <TestMethod()>
+        Public Sub MLPIrisFlowerLogicalPredictionSigmoid2()
+
+            ' 97.8% prediction, 98.9% learning with 900 iterations in 1.2 sec.
+
+            TestMLPIrisFlowerLogicalPredictionSigmoid(m_mlp, nbIterations:=900)
 
         End Sub
 

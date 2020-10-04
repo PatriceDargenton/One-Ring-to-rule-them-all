@@ -15,7 +15,7 @@ Imports Tensorflow.Binding
 Imports System.Text
 
 ' Tuples are not available for Visual Studio 2013: Set 0: Off
-#Const Implementation = 0 ' 0: Off, 1: On
+#Const Implementation = 1 ' 0: Off, 1: On
 
 Public Class clsMLPTensorFlow : Inherits clsVectorizedMLPGeneric
 
@@ -235,14 +235,15 @@ Public Class clsMLPTensorFlow : Inherits clsVectorizedMLPGeneric
         Next
 
         If computeScoreOneByOne Then
-            Dim nbTargets = Me.targetArray.GetLength(1)
-            TestAllSamples(Me.inputArray, nbOutputs:=nbTargets)
+            'Dim nbTargets = Me.targetArray.GetLength(1)
+            TestAllSamples(Me.inputArray) ', nbOutputs:=nbTargets)
         Else
             SetOuput1D()
         End If
         ComputeAverageError()
 
-        CloseSession()
+        ' Do not close before prediction
+        'CloseSession()
 
     End Sub
 
@@ -470,8 +471,8 @@ Public Class clsMLPTensorFlow : Inherits clsVectorizedMLPGeneric
         If force OrElse ShowThisIteration(iteration) Then
 
             If computeScoreOneByOne Then
-                Dim nbTargets = Me.targetArray.GetLength(1)
-                TestAllSamples(Me.inputArray, nbOutputs:=nbTargets)
+                'Dim nbTargets = Me.targetArray.GetLength(1)
+                TestAllSamples(Me.inputArray) ', nbOutputs:=nbTargets)
                 If IsNothing(Me.outputs1D) Then
                     ShowMessage(vbLf & "Iteration n°" & iteration + 1 & "/" & nbIterations & vbLf &
                         "Output: nothing!")
@@ -479,8 +480,8 @@ Public Class clsMLPTensorFlow : Inherits clsVectorizedMLPGeneric
                 End If
             Else
                 If Not Me.vectorizedLearningMode Then
-                    Dim nbTargets = Me.targetArray.GetLength(1)
-                    TestAllSamples(Me.inputArray, nbOutputs:=nbTargets)
+                    'Dim nbTargets = Me.targetArray.GetLength(1)
+                    TestAllSamples(Me.inputArray) ', nbOutputs:=nbTargets)
                 End If
                 If IsNothing(Me.outputs1D) Then
                     ShowMessage(vbLf & "Iteration n°" & iteration + 1 & "/" & nbIterations & vbLf &

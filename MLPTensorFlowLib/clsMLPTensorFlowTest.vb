@@ -66,11 +66,11 @@ Module modMLPTensorFlowTest
 
     End Sub
 
-    Public Sub TensorFlowMLPIrisAnalogTest()
+    Public Sub TensorFlowMLPIrisFlowerAnalogTest()
 
         Dim mlp As New clsMLPTensorFlow
-        mlp.ShowMessage("TensorFlow.NET MLP Iris analog test")
-        mlp.ShowMessage("-----------------------------------")
+        mlp.ShowMessage("TensorFlow.NET MLP Iris flower analog test")
+        mlp.ShowMessage("------------------------------------------")
 
         mlp.nbIterations = 10000
 
@@ -79,9 +79,9 @@ Module modMLPTensorFlowTest
         mlp.printOutput_ = True
         mlp.printOutputMatrix = False
 
-        mlp.inputArray = m_inputArrayIris
-        mlp.targetArray = m_targetArrayIrisAnalog
-        mlp.InitializeStruct(m_neuronCountIrisAnalog4_20_1, addBiasColumn:=False)
+        mlp.inputArray = m_inputArrayIrisFlower
+        mlp.targetArray = m_targetArrayIrisFlowerAnalog
+        mlp.InitializeStruct(m_neuronCountIrisFlowerAnalog4_20_1, addBiasColumn:=False)
 
         mlp.SetActivationFunction(enumActivationFunction.HyperbolicTangent, gain:=2)
 
@@ -94,39 +94,7 @@ Module modMLPTensorFlowTest
         mlp.minimalSuccessTreshold = 0.2
         mlp.Train()
 
-        mlp.ShowMessage("TensorFlow.NET MLP Iris analog test: Done.")
-
-    End Sub
-
-    Public Sub TensorFlowMLPIrisLogicalTest()
-
-        Dim mlp As New clsMLPTensorFlow
-        mlp.ShowMessage("TensorFlow.NET MLP Iris logical test")
-        mlp.ShowMessage("------------------------------------")
-
-        mlp.nbIterations = 10000
-
-        mlp.Initialize(learningRate:=0.01!, weightAdjustment:=0.01!)
-
-        mlp.printOutput_ = True
-        mlp.printOutputMatrix = False
-
-        mlp.inputArray = m_inputArrayIris
-        mlp.targetArray = m_targetArrayIrisLogical
-        mlp.InitializeStruct(m_neuronCountIrisLogical4_20_3, addBiasColumn:=False)
-
-        mlp.SetActivationFunction(enumActivationFunction.HyperbolicTangent, gain:=2)
-
-        mlp.Randomize()
-
-        mlp.PrintParameters()
-
-        WaitForKeyToStart()
-
-        mlp.minimalSuccessTreshold = 0.3
-        mlp.Train()
-
-        mlp.ShowMessage("TensorFlow.NET MLP Iris logical test: Done.")
+        mlp.ShowMessage("TensorFlow.NET MLP Iris flower analog test: Done.")
 
     End Sub
 
@@ -177,8 +145,8 @@ Namespace TensorFlowMLP
         <TestMethod()>
         Public Sub TensorFlowMLP1XORHTangent()
 
-            m_mlp.Initialize(learningRate:=0.2!)
             InitXOR()
+            m_mlp.Initialize(learningRate:=0.2!)
             m_mlp.InitializeStruct(m_neuronCountXOR261, addBiasColumn:=False)
 
             m_mlp.nbIterations = 400
@@ -209,8 +177,8 @@ Namespace TensorFlowMLP
         '<TestMethod()>
         'Public Sub TensorFlowMLP2XORHTangent()
 
-        '    m_mlp.Initialize(learningRate:=0.1!)
         '    Init2XOR()
+        '    m_mlp.Initialize(learningRate:=0.1!)
 
         '    m_mlp.nbIterations = 4000
         '    m_mlp.SetActivationFunction(enumActivationFunction.HyperbolicTangent, gain:=2)

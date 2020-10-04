@@ -77,19 +77,16 @@ Namespace VectorizedMatrixMLP
             Dim zc = Me.Z(maxLayer).c
             If Me.useBias Then Zlast = Zlast.Slice(0, 1, zr, zc)
 
-            'Me.outputMatrix = Me.A(maxIndex)
             Me.output = Me.A(maxIndex)
             ' Cut first column for last index of result matrix
             Dim ar = Me.A(maxIndex).r
             Dim ac = Me.A(maxIndex).c
-            'If Me.useBias Then Me.outputMatrix = Me.outputMatrix.Slice(0, 1, ar, ac)
             If Me.useBias Then Me.output = Me.output.Slice(0, 1, ar, ac)
 
         End Sub
 
         Public Sub ComputeErrorInternal()
             Me.error_ = New Matrix(Me.layerCount - 1) {}
-            'Me.error_(Me.layerCount - 1) = Me.outputMatrix - Me.target
             Me.error_(Me.layerCount - 1) = Me.output - Me.target
         End Sub
 
@@ -147,7 +144,8 @@ Namespace VectorizedMatrixMLP
                 Me.delta(i) = Me.error_(i) * Matrix.Map(Z(i), Me.lambdaFncD)
 
                 ' Cut first column
-                If Me.useBias Then Me.delta(i) = Me.delta(i).Slice(0, 1, Me.delta(i).r, Me.delta(i).c)
+                If Me.useBias Then Me.delta(i) = Me.delta(i).Slice(0, 1,
+                    Me.delta(i).r, Me.delta(i).c)
 
             Next
 
@@ -169,11 +167,6 @@ Namespace VectorizedMatrixMLP
         Public Sub SetLastError()
             Me.lastError = Me.error_(Me.layerCount - 1)
         End Sub
-
-        'Public Overrides Sub ComputeAverageErrorFromLastError()
-        '    ' Compute first abs then average:
-        '    Me.averageError = CSng(Me.lastError.Abs.Average * Me.exampleCount)
-        'End Sub
 
         Public Sub ComputeErrorOneSample()
             ' Calculate the error: ERROR = TARGETS - OUTPUTS
@@ -201,7 +194,6 @@ Namespace VectorizedMatrixMLP
 
         Private Sub SetInputOneSample(input!())
             Dim inputDble#(0, input.Length - 1)
-            'inputDble = clsMLPHelper.FillArray2(inputDble, input, 0)
             clsMLPHelper.Fill2DArrayOfDoubleByArrayOfSingle(inputDble, input, 0)
             Dim matrixInput As Matrix = inputDble
             Me.input = matrixInput
@@ -209,7 +201,6 @@ Namespace VectorizedMatrixMLP
 
         Private Sub SetTargetOneSample(target!())
             Dim targetsDble#(0, target.Length - 1)
-            'targetsDble = clsMLPHelper.FillArray2(targetsDble, target, 0)
             clsMLPHelper.Fill2DArrayOfDoubleByArrayOfSingle(targetsDble, target, 0)
             Me.target = targetsDble
         End Sub
@@ -255,8 +246,8 @@ Namespace VectorizedMatrixMLP
             If force OrElse ShowThisIteration(iteration) Then
 
                 If Not Me.vectorizedLearningMode Then
-                    Dim nbTargets = Me.targetArray.GetLength(1)
-                    TestAllSamples(Me.inputArray, nbOutputs:=nbTargets)
+                    'Dim nbTargets = Me.targetArray.GetLength(1)
+                    TestAllSamples(Me.inputArray) ', nbOutputs:=nbTargets)
                 Else
                     ComputeAverageError()
                 End If

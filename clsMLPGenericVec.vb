@@ -129,8 +129,8 @@ Public MustInherit Class clsVectorizedMLPGeneric : Inherits clsMLPGeneric
 
         If force OrElse ShowThisIteration(iteration) Then
             If Not Me.vectorizedLearningMode Then
-                Dim nbTargets = Me.targetArray.GetLength(1)
-                TestAllSamples(Me.inputArray, nbOutputs:=nbTargets)
+                'Dim nbTargets = Me.targetArray.GetLength(1)
+                TestAllSamples(Me.inputArray) ', nbOutputs:=nbTargets)
             Else
                 SetOuput1D()
                 ComputeAverageError()

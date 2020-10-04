@@ -223,8 +223,8 @@ Namespace KerasMLP
         <TestMethod()>
         Public Sub KerasMLP1XORSigmoid()
 
-            m_mlp.Initialize(learningRate:=0.02!)
             InitXOR()
+            m_mlp.Initialize(learningRate:=0.02!)
 
             m_mlp.InitializeStruct(m_neuronCountXOR271, addBiasColumn:=False)
 
@@ -266,13 +266,13 @@ Namespace KerasMLP
         <TestMethod()>
         Public Sub KerasMLP1XORHTangent()
 
-            m_mlp.Initialize(learningRate:=0.02!)
             InitXOR()
+            m_mlp.Initialize(learningRate:=0.02!)
 
             m_mlp.InitializeStruct(m_neuronCountXOR2_16_1, addBiasColumn:=False)
 
             m_mlp.nbIterations = 600
-            m_mlp.SetActivationFunction(enumActivationFunction.HyperbolicTangent, gain:=2!)
+            m_mlp.SetActivationFunction(enumActivationFunction.HyperbolicTangent, gain:=2.0!)
 
             m_mlp.InitializeWeights(1, {
                 {-0.21, 0.51, 0.41, 0.18, 0.49, -0.33, -0.17, -0.08, 0.28, -0.02, -0.5, 0.19, -0.33, 0.15, -0.3, -0.21},
@@ -318,8 +318,8 @@ Namespace KerasMLP
         <TestMethod()>
         Public Sub KerasMLP2XORSigmoid()
 
-            m_mlp.Initialize(learningRate:=0.02!)
             Init2XOR()
+            m_mlp.Initialize(learningRate:=0.02!)
 
             m_mlp.InitializeStruct(m_neuronCount2XOR482, addBiasColumn:=False)
 
@@ -364,8 +364,8 @@ Namespace KerasMLP
         <TestMethod()>
         Public Sub KerasMLP2XORHTangent()
 
-            m_mlp.Initialize(learningRate:=0.02!)
             Init2XOR()
+            m_mlp.Initialize(learningRate:=0.02!)
 
             m_mlp.InitializeStruct(m_neuronCount2XOR4_32_2, addBiasColumn:=False)
 

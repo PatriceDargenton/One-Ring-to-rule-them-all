@@ -30,6 +30,13 @@ Public Class clsMLPTensor : Inherits clsVectorizedMLPGeneric
         Me.layerCount = neuronCount.Length
         Me.nbInputNeurons = neuronCount(0)
         Me.nbHiddenNeurons = neuronCount(1)
+
+        ' 03/10/2020
+        If Me.nbInputNeurons <> Me.nbHiddenNeurons Then
+            Throw New NotImplementedException(
+                "nbHiddenNeurons must be identical to nbInputNeurons for clsTensorMLP!")
+        End If
+
         Me.nbOutputNeurons = neuronCount(Me.layerCount - 1)
         Me.neuronCount = neuronCount
         Me.nbHiddenNeuronsTensor = Me.nbHiddenNeurons + Me.nbInputNeurons
@@ -295,8 +302,8 @@ Public Class clsMLPTensor : Inherits clsVectorizedMLPGeneric
 
         If force OrElse ShowThisIteration(iteration) Then
             If Not Me.vectorizedLearningMode Then
-                Dim nbTargets = Me.targetArray.GetLength(1)
-                TestAllSamples(Me.inputArray, nbOutputs:=nbTargets)
+                'Dim nbTargets = Me.targetArray.GetLength(1)
+                TestAllSamples(Me.inputArray) ', nbOutputs:=nbTargets)
             Else
                 SetOuputAllSamples()
             End If

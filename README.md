@@ -146,6 +146,14 @@ Packages added:
 
 # Versions
 
+04/10/2020 V1.21
+- Iris flower prediction test added
+- Hyperbolic Tangent (Tanh) derivative fixed
+- clsMLPGeneric.TestAllSamples: simplified
+- clsMLPGeneric.PrintParameters: minimalSuccessTreshold displayed
+- clsMLPGeneric.ShowThisIteration: also for last iteration
+- clsTensorMLP: nbHiddenNeurons must be identical to nbInputNeurons
+
 26/09/2020 V1.20
 - clsMLPTensor optimized
 
