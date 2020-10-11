@@ -94,7 +94,7 @@ Friend Class clsMLPClassic : Inherits clsMLPGeneric
 
     End Sub
 
-    Public Overrides Sub Randomize(Optional minValue! = 0, Optional maxValue! = 1)
+    Public Overrides Sub Randomize(Optional minValue! = -0.5!, Optional maxValue! = 0.5!)
 
         For i = 1 To Me.layerCount - 1
             For j = 0 To Me.Layers(i).nbNeurons - 1

@@ -80,7 +80,7 @@ Namespace MatrixMLP
         ''' <summary>
         ''' Randomize weights
         ''' </summary>
-        Public Overrides Sub Randomize(Optional minValue! = 0, Optional maxValue! = 1)
+        Public Overrides Sub Randomize(Optional minValue! = -0.5!, Optional maxValue! = 0.5!)
 
             Me.rnd = New Random()
 

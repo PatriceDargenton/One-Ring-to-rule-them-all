@@ -159,7 +159,7 @@ Public Class clsMLPKeras : Inherits clsVectorizedMLPGeneric
 
     End Sub
 
-    Public Overrides Sub Randomize(Optional minValue! = 0, Optional maxValue! = 1)
+    Public Overrides Sub Randomize(Optional minValue! = -0.5!, Optional maxValue! = 0.5!)
 
         ' Round the weights (to reproduce all tests exactly)
 
@@ -184,6 +184,7 @@ Public Class clsMLPKeras : Inherits clsVectorizedMLPGeneric
 
     Public Overrides Sub TrainVectorBatch(nbIterationsBatch%)
 
+        Me.learningMode = enumLearningMode.VectorialBatch
         Me.vectorizedLearningMode = True
 
         Dim history = model.Fit(

@@ -146,6 +146,12 @@ Packages added:
 
 # Versions
 
+11/10/2020 V1.22
+- Randomize: Default range: [0, 1] -> [-0.5, +0.5]
+- clsMLPOOP: Activation function: BipolarSigmoid renamed as HyperbolicTangent (and previous HyperbolicTangent deleted)
+- clsTensorMLP: Iris flower prediction test added
+- Compilation: Strict mode enabled
+
 04/10/2020 V1.21
 - Iris flower prediction test added
 - Hyperbolic Tangent (Tanh) derivative fixed

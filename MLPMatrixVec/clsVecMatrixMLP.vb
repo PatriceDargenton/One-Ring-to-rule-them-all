@@ -32,7 +32,7 @@ Namespace VectorizedMatrixMLP
 
         End Sub
 
-        Public Overrides Sub Randomize(Optional minValue! = 0, Optional maxValue! = 1)
+        Public Overrides Sub Randomize(Optional minValue! = -0.5!, Optional maxValue! = 0.5!)
 
             'Me.rnd = New Random(Seed:=1)
             Me.rnd = New Random()
@@ -54,6 +54,7 @@ Namespace VectorizedMatrixMLP
 
         Public Overrides Sub TrainVector()
 
+            Me.learningMode = enumLearningMode.Vectorial
             Me.vectorizedLearningMode = True
             For iteration = 0 To Me.nbIterations - 1
                 TrainVectorOneIteration()

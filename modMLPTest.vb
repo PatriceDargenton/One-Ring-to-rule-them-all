@@ -2121,7 +2121,7 @@ Module modMLPTest
         Optional nbIterations% = 1500,
         Optional expectedSuccess# = 0.994#,
         Optional expectedSuccessPrediction# = 0.978#,
-        Optional expectedLoss# = 0.02#,
+        Optional expectedLoss# = 0.025#,
         Optional learningRate! = 0.1!,
         Optional weightAdjustment! = 0.1!,
         Optional gain! = 2,
@@ -2293,6 +2293,8 @@ Module modMLPTest
         ElseIf nbHiddenLayersFromInput Then
             mlp.inputArray = m_inputArrayIrisFlowerTrain
             mlp.targetArray = m_targetArrayIrisFlowerLogicalTrain
+            ' clsMLPTensor: Set activation function before InitializeStruct
+            mlp.SetActivationFunctionOptimized(enumActivationFunctionOptimized.Sigmoid)
             mlp.InitializeStruct({4, 4, 4, 3}, addBiasColumn)
         Else
             InitIrisFlowerLogicalPrediction(mlp)

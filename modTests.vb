@@ -67,6 +67,7 @@ Module modTests
             "Vectorized Matrix MLP Iris flower test", nbIterations:=1000, sigmoid:=True)
         NextTest()
 
+        ' 97.8% prediction, 98.9% learning with 300 iterations
         ' Nb hidden neurons = nb input neurons, works only using sigmoid activation
         MLPGenericIrisFlowerTest(New clsMLPTensor, "Tensor MLP Iris flower test",
             nbIterations:=300, nbHiddenLayersFromInput:=True, sigmoid:=True)

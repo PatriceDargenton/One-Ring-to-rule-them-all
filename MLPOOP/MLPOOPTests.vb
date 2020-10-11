@@ -23,7 +23,7 @@ Module Main
         Dim mlp As New MultilayerPerceptron(
             learning_rate:=0.5,
             momentum:=0.8, randomizer:=standard,
-            activation:=New BipolarSigmoid(alpha:=0.5))
+            activation:=New HyperbolicTangent(alpha:=0.5#))
 
         'mlp.SetActivationFunction(enumActivationFunction.Sigmoid, gain:=0.5)
         'mlp.ActivationFunction = Nothing
@@ -181,6 +181,9 @@ Namespace OOPMLP
         <TestMethod()>
         Public Sub MLPOOP1XORSigmoid()
 
+            ' OOP activation function: before Initialize()
+            'm_mlp.ActivationFunction = New Sigmoid(alpha:=2.5)
+
             TestMLP1XORSigmoid(m_mlp)
 
         End Sub
@@ -248,7 +251,7 @@ Namespace OOPMLP
         Public Sub MLPOOP1XORHTangent()
 
             ' OOP activation function: before Initialize()
-            'm_mlp.ActivationFunction = New BipolarSigmoid(alpha:=2.4!)
+            'm_mlp.ActivationFunction = New HyperbolicTangent(alpha:=2.4#)
 
             TestMLP1XORHTangent(m_mlp)
 
@@ -256,6 +259,9 @@ Namespace OOPMLP
 
         <TestMethod()>
         Public Sub MLPOOP1XORHTangent261()
+
+            ' OOP activation function: before Initialize()
+            'm_mlp.ActivationFunction = New HyperbolicTangent(alpha:=2.0#)
 
             TestMLP1XORHTangent261(m_mlp, nbIterations:=500)
 
@@ -281,12 +287,18 @@ Namespace OOPMLP
         <TestMethod()>
         Public Sub MLPOOP2XORHTangent()
 
+            ' OOP activation function: before Initialize()
+            'm_mlp.ActivationFunction = New HyperbolicTangent(alpha:=2.0#)
+
             TestMLP2XORHTangent(m_mlp)
 
         End Sub
 
         <TestMethod()>
         Public Sub MLPOOP2XORHTangent462()
+
+            ' OOP activation function: before Initialize()
+            'm_mlp.ActivationFunction = New HyperbolicTangent(alpha:=2.0#)
 
             TestMLP2XORHTangent462(m_mlp, nbIterations:=9000)
 
@@ -304,6 +316,9 @@ Namespace OOPMLP
 
         <TestMethod()>
         Public Sub MLPOOP3XORHTangent()
+
+            ' OOP activation function: before Initialize()
+            'm_mlp.ActivationFunction = New HyperbolicTangent(alpha:=1.0#)
 
             TestMLP3XORHTangent(m_mlp)
 
@@ -350,12 +365,18 @@ Namespace OOPMLP
         <TestMethod()>
         Public Sub MLPOOPIrisFlowerAnalog()
 
+            ' OOP activation function: before Initialize()
+            'm_mlp.ActivationFunction = New Sigmoid(alpha:=1.0#)
+
             TestMLPIrisFlowerAnalog(m_mlp)
 
         End Sub
 
         <TestMethod()>
         Public Sub MLPOOPIrisFlowerLogical()
+
+            ' OOP activation function: before Initialize()
+            'm_mlp.ActivationFunction = New Sigmoid(alpha:=1.0#)
 
             TestMLPIrisFlowerLogical(m_mlp)
 
@@ -366,7 +387,11 @@ Namespace OOPMLP
 
             ' 97.8% prediction, 99.4% learning with 800 iterations in 3.7 sec.
 
-            TestMLPIrisFlowerLogicalPredictionTanh(m_mlp, nbIterations:=800)
+            ' OOP activation function: before Initialize()
+            'm_mlp.ActivationFunction = New HyperbolicTangent(alpha:=2.0#)
+
+            TestMLPIrisFlowerLogicalPredictionTanh(m_mlp,
+                nbIterations:=800, expectedSuccess:=0.989#)
 
         End Sub
 
@@ -374,6 +399,9 @@ Namespace OOPMLP
         Public Sub MLPOOPIrisFlowerLogicalPredictionSigmoid()
 
             ' 97.8% prediction, 98.6% learning with 800 iterations in 2.3 sec.
+
+            ' OOP activation function: before Initialize()
+            'm_mlp.ActivationFunction = New Sigmoid(alpha:=1.0#)
 
             TestMLPIrisFlowerLogicalPredictionSigmoid(m_mlp, nbIterations:=800)
 

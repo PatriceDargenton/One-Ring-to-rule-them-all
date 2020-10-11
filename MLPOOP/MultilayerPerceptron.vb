@@ -105,7 +105,7 @@ Namespace NetworkOOP
 
         End Sub
 
-        Public Overrides Sub Randomize(Optional minValue! = 0, Optional maxValue! = 1)
+        Public Overrides Sub Randomize(Optional minValue! = -0.5!, Optional maxValue! = 0.5!)
 
             For x = 0 To Me.Layers.Count - 2
                 Me.Layers(x).InitChild(Layers(x + 1), Me.Randomizer)

@@ -1052,13 +1052,14 @@ Namespace VectorizedMatrixMLP
         <TestMethod()>
         Public Sub VecMatrixMLPIrisFlowerLogicalPrediction()
 
-            ' 95.6% prediction, 96.4% learning with 700 iterations in 300 msec.
+            ' 95.6% prediction, 96.4% learning with 700  iterations in 300 msec. (64 bits)
+            ' 95.6% prediction, 96.4% learning with 2500 iterations in 1.2 sec.  (32 bits)
 
             InitIrisFlowerLogicalPrediction(m_mlp)
             m_mlp.InitializeStruct(m_neuronCountIrisFlowerLogical453, addBiasColumn:=True)
             m_mlp.Initialize(learningRate:=0.01)
 
-            m_mlp.nbIterations = 700
+            m_mlp.nbIterations = 2500
             m_mlp.minimalSuccessTreshold = 0.3
             m_mlp.SetActivationFunctionOptimized(enumActivationFunctionOptimized.Sigmoid)
 

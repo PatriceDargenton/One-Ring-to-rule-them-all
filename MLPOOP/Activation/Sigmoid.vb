@@ -13,7 +13,7 @@ Namespace Activation
             Me.out_range = New Range(0, 1)
         End Sub
 
-        Public Sub New(alpha#, center#)
+        Public Sub New(alpha#, Optional center# = 0)
             Me.Alpha = alpha
             Me.Center = center
             Me.in_range = New Range(Double.NegativeInfinity, Double.PositiveInfinity)

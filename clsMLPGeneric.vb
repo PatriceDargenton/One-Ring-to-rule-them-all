@@ -47,6 +47,11 @@ Public MustInherit Class clsMLPGeneric
         VectorialBatch = 4
     End Enum
 
+    ''' <summary>
+    ''' Learning mode of the MLP
+    ''' </summary>
+    Public learningMode As enumLearningMode
+
     Public printOutput_ As Boolean = False
     Public printOutputMatrix As Boolean = False
     Public useBias As Boolean = False
@@ -178,7 +183,8 @@ Public MustInherit Class clsMLPGeneric
             Case enumActivationFunction.ReLuSigmoid : Me.activFnc = New ReLuSigmoidFunction
             Case enumActivationFunction.DoubleThreshold : Me.activFnc = New DoubleThresholdFunction
             Case Else
-                Stop
+                Me.activFnc = Nothing
+                Throw New ArgumentException("Activation function undefined!")
         End Select
 
         If Not IsNothing(Me.activFnc) Then
@@ -210,6 +216,8 @@ Public MustInherit Class clsMLPGeneric
                 Me.activFnc = New ELUFunction
             Case Else
                 Me.activFnc = Nothing
+                Me.m_actFunc = enumActivationFunction.Undefined
+                Throw New ArgumentException("Activation function undefined!")
         End Select
 
         Me.lambdaFnc = Function(x#) Me.activFnc.Activation(x, gain, center)
@@ -235,7 +243,7 @@ Public MustInherit Class clsMLPGeneric
     ''' <summary>
     ''' Randomize weights
     ''' </summary>
-    Public MustOverride Sub Randomize(Optional minValue! = 0, Optional maxValue! = 1)
+    Public MustOverride Sub Randomize(Optional minValue! = -0.5!, Optional maxValue! = 0.5!)
 
 #End Region
 
@@ -315,6 +323,7 @@ Public MustInherit Class clsMLPGeneric
         Optional learningMode As enumLearningMode = enumLearningMode.Defaut)
 
         Me.nbIterations = nbIterations
+        Me.learningMode = learningMode
         Select Case learningMode
             Case enumLearningMode.Vectorial, enumLearningMode.VectorialBatch
                 TrainSystematic(inputs, targets, learningMode)
@@ -347,6 +356,7 @@ Public MustInherit Class clsMLPGeneric
     ''' </summary>
     Public Overridable Sub TrainStochastic(inputs!(,), targets!(,))
 
+        Me.learningMode = enumLearningMode.Stochastic
         Dim nbLines = inputs.GetLength(0)
         Dim nbTargets = targets.GetLength(1)
         For iteration = 0 To Me.nbIterations - 1
@@ -365,6 +375,7 @@ Public MustInherit Class clsMLPGeneric
     ''' </summary>
     Public Overridable Sub TrainSemiStochastic(inputs!(,), targets!(,))
 
+        Me.learningMode = enumLearningMode.SemiStochastic
         Dim nbLines = inputs.GetLength(0)
         Dim nbInputs = inputs.GetLength(1)
         Dim nbTargets = targets.GetLength(1)
@@ -403,6 +414,7 @@ Public MustInherit Class clsMLPGeneric
     Public Overridable Sub TrainSystematic(inputs!(,), targets!(,),
         Optional learningMode As enumLearningMode = enumLearningMode.Defaut)
 
+        Me.learningMode = learningMode
         Dim nbTargets = targets.GetLength(1)
         For iteration = 0 To Me.nbIterations - 1
             TrainAllSamples(inputs, targets)
@@ -504,6 +516,8 @@ Public MustInherit Class clsMLPGeneric
         ShowMessage("")
         ShowMessage(Now() & " :")
         ShowMessage("")
+        If Me.learningMode <> enumLearningMode.Defaut Then ShowMessage(
+            "learning mode=" & clsMLPHelper.ReadEnumDescription(Me.learningMode))
         ShowMessage("layer count=" & Me.layerCount)
         ShowMessage("neuron count=" & clsMLPHelper.ArrayToString(Me.neuronCount))
         ShowMessage("use bias=" & Me.useBias)
@@ -537,7 +551,7 @@ Public MustInherit Class clsMLPGeneric
     Protected Sub PrintSuccess(iteration%)
         Dim msg$ = vbLf & "Iteration n°" & iteration + 1 & "/" & nbIterations & vbLf
         If Me.printOutputMatrix Then msg &= "Output: " & Me.output.ToString() & vbLf
-        msg &=
+        If Not IsNothing(Me.success) Then msg &=
             "Average error: " & Me.averageError.ToString(format6Dec) & vbLf &
             "Success (" & (minimalSuccessTreshold).ToString("0%") & "): " &
             Me.nbSuccess & "/" & Me.success.r * Me.success.c & ": " &

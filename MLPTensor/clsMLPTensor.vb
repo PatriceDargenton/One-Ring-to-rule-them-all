@@ -51,6 +51,7 @@ Public Class clsMLPTensor : Inherits clsVectorizedMLPGeneric
             If Me.useBias AndAlso i < Me.layerCount - 1 Then nbNodes2 += 1
             If i = 1 Then nbNodes1 = Me.nbInputNeurons
             If i = Me.layerCount - 1 Then nbNodes2 = Me.nbOutputNeurons
+            'Debug.WriteLine("W" & i & " : " & nbNodes1 & " x " & nbNodes2)
             Me.weights.Add(New Tensor(
                 Matrix.Zeros(nbNodes1, nbNodes2), autoGrad:=True))
         Next
@@ -61,6 +62,7 @@ Public Class clsMLPTensor : Inherits clsVectorizedMLPGeneric
             Dim nbNodes2 = Me.nbHiddenNeuronsTensorWithBias
             If i = 0 Then nbNodes1 = Me.nbInputNeurons
             If i = Me.layerCount - 1 Then nbNodes2 = Me.nbOutputNeurons
+            'Debug.WriteLine("WL" & i + 1 & " : " & nbNodes1 & " x " & nbNodes2)
             Me.seq.Layers.Add(New Linear(nbNodes1, nbNodes2, Me.useBias))
             AddLayerWithActivationFunction()
         Next
@@ -79,6 +81,8 @@ Public Class clsMLPTensor : Inherits clsVectorizedMLPGeneric
                 New HyperbolicTangentLayer(Me.m_center))
             Case enumActivationFunction.ELU : Me.seq.Layers.Add(
                 New ELULayer(Me.m_center))
+            Case Else
+                Throw New ArgumentException("Activation function undefined!")
         End Select
     End Sub
 
@@ -112,6 +116,7 @@ Public Class clsMLPTensor : Inherits clsVectorizedMLPGeneric
             j = i
             Me.seq.Layers(j) = New Linear(nbNodes1, nbNodes2, wMatrix, addBias:=False)
         End If
+        'Debug.WriteLine("WL" & j + 1 & " : " & nbNodes1 & " x " & nbNodes2)
 
     End Sub
 
@@ -121,7 +126,7 @@ Public Class clsMLPTensor : Inherits clsVectorizedMLPGeneric
         'Debug.WriteLine("seq.prm=" & Me.seq.ParametersToString)
     End Sub
 
-    Public Overrides Sub Randomize(Optional minValue! = 0, Optional maxValue! = 1)
+    Public Overrides Sub Randomize(Optional minValue! = -0.5!, Optional maxValue! = 0.5!)
 
         Me.weights = New List(Of Tensor)
         Me.rnd = New Random
@@ -133,6 +138,7 @@ Public Class clsMLPTensor : Inherits clsVectorizedMLPGeneric
             If Me.useBias AndAlso i > 1 Then nbNodes1 += 1
             If Me.useBias AndAlso i < Me.layerCount - 1 Then nbNodes2 += 1
             If i = Me.layerCount - 1 Then nbNodes2 = Me.nbOutputNeurons
+            'Debug.WriteLine("W" & i & " : " & nbNodes1 & " x " & nbNodes2)
             Me.weights.Add(New Tensor(Matrix.Randomize(
                 nbNodes1, nbNodes2, Me.rnd), autoGrad:=True))
         Next
@@ -143,6 +149,7 @@ Public Class clsMLPTensor : Inherits clsVectorizedMLPGeneric
             If Me.useBias Then nbNodes2 += 1
             If i > 0 Then nbNodes1 = nbNodes2
             If i = Me.layerCount - 1 Then nbNodes2 = Me.nbOutputNeurons
+            'Debug.WriteLine("WL" & i + 1 & " : " & nbNodes1 & " x " & nbNodes2)
             Me.seq.Layers.Add(New Linear(nbNodes1, nbNodes2, Me.rnd, Me.useBias))
             AddLayerWithActivationFunction()
         Next
@@ -204,11 +211,13 @@ Public Class clsMLPTensor : Inherits clsVectorizedMLPGeneric
 
     Public Overrides Sub TrainVector()
 
+        Me.learningMode = enumLearningMode.Vectorial
+        Me.vectorizedLearningMode = True
+
         ' 20/09/2020 Code moved here
         SetInputAllSamples()
         SetTargetAllSamples()
 
-        Me.vectorizedLearningMode = True
         For iteration = 0 To Me.nbIterations - 1
             TrainVectorOneIteration()
             If Me.printOutput_ Then PrintOutput(iteration)
@@ -234,6 +243,8 @@ Public Class clsMLPTensor : Inherits clsVectorizedMLPGeneric
     End Sub
 
     Public Overrides Sub TrainOneSample(input!(), target!())
+
+        Me.vectorizedLearningMode = False ' 10/10/2020
 
         TestOneSample(input)
         SetTargetOneSample(target)

@@ -15,7 +15,7 @@ Imports Tensorflow.Binding
 Imports System.Text
 
 ' Tuples are not available for Visual Studio 2013: Set 0: Off
-#Const Implementation = 1 ' 0: Off, 1: On
+#Const Implementation = 0 ' 0: Off, 1: On
 
 Public Class clsMLPTensorFlow : Inherits clsVectorizedMLPGeneric
 
@@ -220,7 +220,7 @@ Public Class clsMLPTensorFlow : Inherits clsVectorizedMLPGeneric
 
     End Sub
 
-    Public Overrides Sub Randomize(Optional minValue! = 0, Optional maxValue! = 1)
+    Public Overrides Sub Randomize(Optional minValue! = -0.5!, Optional maxValue! = 0.5!)
 
         ReadWeights()
 
@@ -228,6 +228,9 @@ Public Class clsMLPTensorFlow : Inherits clsVectorizedMLPGeneric
 
     Public Overrides Sub TrainVector()
 
+        If IsNothing(Me.sess) Then Exit Sub
+
+        Me.learningMode = enumLearningMode.Vectorial
         Me.vectorizedLearningMode = True
         For iteration = 0 To Me.nbIterations - 1
             TrainVectorOneIteration()

@@ -107,9 +107,9 @@ Namespace ClassicMLP
         Private m_mlp As New clsMLPClassic
 
         ' Weights are quite the same as MLP Classic, but not exactly:
-        'Private m_mlp As New NetworkOOP.MultilayerPerceptron ' 15 success, 13 fails
-        'Private m_mlp As New clsMLPAccord ' 12 success, 16 fails
-        'Private m_mlp As New clsMLPEncog  ' 7 success, 21 fails
+        'Private m_mlp As New NetworkOOP.MultilayerPerceptron ' 15 success, 15 fails
+        'Private m_mlp As New clsMLPAccord ' 14 success, 16 fails
+        'Private m_mlp As New clsMLPEncog  ' 7 success, 23 fails
         'Private m_mlp As New clsMLPTensorFlow ' 1 success, 25 fails
 
         ' Weights are not stored in the same way:
@@ -650,7 +650,7 @@ Namespace ClassicMLP
         End Sub
 
         <TestMethod()>
-        Public Sub MLPIrisFlowerLogicalPredictionSigmoid2()
+        Public Sub MLPIrisFlowerLogicalPredictionSigmoid()
 
             ' 97.8% prediction, 98.9% learning with 900 iterations in 1.2 sec.
 
