@@ -56,7 +56,7 @@ Public Module modFctAct
     End Enum
 
     ''' <summary>
-    ''' An activation function expressed from its direct function,, e.g. f'(x)=g(f(x)),
+    ''' An activation function expressed from its direct function, e.g. f'(x)=g(f(x)),
     '''  can be optimized
     ''' </summary>
     Public Enum enumActivationFunctionOptimized
@@ -69,6 +69,54 @@ Public Module modFctAct
         ''' Exponential Linear Units (ELU)
         ''' </summary>
         ELU = 3
+
+    End Enum
+
+    ''' <summary>
+    ''' Activation function type
+    ''' </summary>
+    Public Enum enumActivationFunctionType
+
+        ''' <summary>
+        ''' Normal (can use general activation function)
+        ''' (ex.: MLPClassic, MLPMatrix, MLPMatrixVec)
+        ''' </summary>
+        Normal = 1
+
+        ''' <summary>
+        ''' Specific code (use only specific code for general activation function) (ex.: ?)
+        ''' </summary>
+        SpecificCode = 2
+
+        ''' <summary>
+        ''' Specific code and optimized (use only specific code with only optimized activation function)
+        ''' (ex.: MLPTensor)
+        ''' </summary>
+        SpecificCodeOptimized = 3
+
+        ''' <summary>
+        ''' Both normal and specific code (can use general or specific code for activation function, if defined)
+        ''' (ex.: MLPOOP)
+        ''' </summary>
+        BothNormalAndSpecificCode = 4
+
+        ''' <summary>
+        ''' Optimized: can use only activation function expressed from its direct function,
+        '''  e.g. f'(x)=g(f(x)) (ex.: ?)
+        ''' </summary>
+        Optimized = 5
+
+        ''' <summary>
+        ''' Library (can use general activation function proposed in the library)
+        ''' (ex.: MLPEncog)
+        ''' </summary>
+        Library = 6
+
+        ''' <summary>
+        ''' Library (can use only optimized activation function proposed in the library)
+        ''' (ex.: MLPAccord, MLPKeras, MLPTensorFlow)
+        ''' </summary>
+        LibraryOptimized = 7
 
     End Enum
 
@@ -334,6 +382,7 @@ Namespace MLP.ActivationFunction
                 y = 0
                 If expMax Then y = -clsMLPGeneric.expMax
             Else
+                ' https://www.wolframalpha.com/input/?i=exp+%28-alpha+x2%29
                 y = Math.Exp(xg)
             End If
             Return y
@@ -343,9 +392,11 @@ Namespace MLP.ActivationFunction
         Public Function Derivative#(x#, Optional gain# = 1, Optional center# = 0) Implements IActivationFunction.Derivative
 
             Dim xc# = x - center
-            Dim c# = -gain * gain
-            Dim exp# = Math.Exp(c * xc * xc)
-            Dim y# = 2 * c * xc * exp
+            'Dim c# = -gain * gain
+            'Dim exp# = Math.Exp(c * xc * xc)
+            'Dim y# = 2 * c * xc * exp
+            Dim y# = -2 * gain * xc * Math.Exp(-gain * xc * xc) ' 16/10/2020
+
             Return y
 
         End Function
@@ -404,13 +455,15 @@ Namespace MLP.ActivationFunction
 
         Public Function Activation#(x#, Optional gain# = 1, Optional center# = 0) Implements IActivationFunction.Activation
             Dim xc# = x - center
+            ' https://www.wolframalpha.com/input/?i=sin+%28alpha+x%29
             Dim y# = gain * Math.Sin(xc)
             Return y
         End Function
 
         Public Function Derivative#(x#, Optional gain# = 1, Optional center# = 0) Implements IActivationFunction.Derivative
             Dim xc# = x - center
-            Dim y# = gain * Math.Cos(xc)
+            'Dim y# = gain * Math.Cos(xc)
+            Dim y# = gain * Math.Cos(gain * xc) ' 17/10/2020
             Return y
         End Function
 

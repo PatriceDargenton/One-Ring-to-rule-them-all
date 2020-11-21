@@ -23,12 +23,11 @@ Public Class clsMLPEncog : Inherits clsVectorizedMLPGeneric
     Public inputJaggedDblArray#()()
     Public targetJaggedDblArray#()()
 
-    Public Overrides Sub InitializeStruct(neuronCount%(), addBiasColumn As Boolean)
+    Public Overrides Function GetActivationFunctionType() As enumActivationFunctionType
+        Return enumActivationFunctionType.Library
+    End Function
 
-        Dim inputArrayDbl = clsMLPHelper.Convert2DArrayOfSingleToDouble(Me.inputArray)
-        Me.inputJaggedDblArray = clsMLPHelper.Transform2DArrayToJaggedArray(inputArrayDbl)
-        Dim targetArrayDbl = clsMLPHelper.Convert2DArrayOfSingleToDouble(Me.targetArray)
-        Me.targetJaggedDblArray = clsMLPHelper.Transform2DArrayToJaggedArray(targetArrayDbl)
+    Public Overrides Sub InitializeStruct(neuronCount%(), addBiasColumn As Boolean)
 
         Me.layerCount = neuronCount.Length
         Me.useBias = addBiasColumn
@@ -36,6 +35,12 @@ Public Class clsMLPEncog : Inherits clsVectorizedMLPGeneric
         Me.nbInputNeurons = Me.neuronCount(0)
         Me.nbHiddenNeurons = Me.neuronCount(1)
         Me.nbOutputNeurons = Me.neuronCount(Me.layerCount - 1)
+
+        If IsNothing(Me.inputArray) Then Exit Sub
+        Dim inputArrayDbl = clsMLPHelper.Convert2DArrayOfSingleToDouble(Me.inputArray)
+        Me.inputJaggedDblArray = clsMLPHelper.Transform2DArrayToJaggedArray(inputArrayDbl)
+        Dim targetArrayDbl = clsMLPHelper.Convert2DArrayOfSingleToDouble(Me.targetArray)
+        Me.targetJaggedDblArray = clsMLPHelper.Transform2DArrayToJaggedArray(targetArrayDbl)
 
     End Sub
 
@@ -48,7 +53,19 @@ Public Class clsMLPEncog : Inherits clsVectorizedMLPGeneric
         center = 0
         Me.weightAdjustment = 0 ' Not used
 
+        Me.learningRate = 0 ' Learning rate is not use with ResilientPropagation:
+        ' http://heatonresearch-site.s3-website-us-east-1.amazonaws.com/javadoc/encog-3.3/org/encog/neural/networks/training/propagation/resilient/ResilientPropagation.html
+        ' One problem with the backpropagation algorithm is that the magnitude of the 
+        '  partial derivative is usually too large or too small. Further, the learning
+        '  rate is a single value for the entire neural network. The resilient propagation
+        '  learning algorithm uses a special update value (similar to the learning rate)
+        '  for every neuron connection. Further these update values are automatically
+        '  determined, unlike the learning rate of the backpropagation algorithm.
+
         MyBase.SetActivationFunction(actFnc, gain, center)
+
+        If IsNothing(Me.inputJaggedDblArray) Then Exit Sub
+        If Me.inputJaggedDblArray.Length = 0 Then Exit Sub
 
         Me.network = New BasicNetwork()
 
@@ -76,21 +93,14 @@ Public Class clsMLPEncog : Inherits clsVectorizedMLPGeneric
 
         Me.network.Structure.FinalizeStructure()
 
-        Me.trainingSet = New BasicMLDataSet(
-            Me.inputJaggedDblArray, Me.targetJaggedDblArray)
+        ' Random weights to start
+        Me.network.Reset() ' Reset the weight matrix and the bias values
+
+        Me.trainingSet = New BasicMLDataSet(Me.inputJaggedDblArray, Me.targetJaggedDblArray)
 
         'maxStep: The maximum that a delta can reach
         Me.imlTrain = New ResilientPropagation(Me.network, Me.trainingSet,
             initialUpdate:=0.1#, maxStep:=50.0#)
-
-        Me.learningRate = 0 ' Learning rate is not use with ResilientPropagation:
-        ' http://heatonresearch-site.s3-website-us-east-1.amazonaws.com/javadoc/encog-3.3/org/encog/neural/networks/training/propagation/resilient/ResilientPropagation.html
-        ' One problem with the backpropagation algorithm is that the magnitude of the 
-        '  partial derivative is usually too large or too small. Further, the learning
-        '  rate is a single value for the entire neural network. The resilient propagation
-        '  learning algorithm uses a special update value (similar to the learning rate)
-        '  for every neuron connection. Further these update values are automatically
-        '  determined, unlike the learning rate of the backpropagation algorithm.
 
     End Sub
 
@@ -115,7 +125,13 @@ Public Class clsMLPEncog : Inherits clsVectorizedMLPGeneric
 
     Public Overrides Sub Randomize(Optional minValue! = -0.5!, Optional maxValue! = 0.5!)
 
-        Me.network.Reset()
+        Me.network.Reset() ' Reset the weight matrix and the bias values
+
+        RoundWeights()
+
+    End Sub
+
+    Public Overrides Sub RoundWeights()
 
         ' Round the weights (to reproduce all tests exactly)
         For i = 1 To Me.layerCount - 1
@@ -125,12 +141,12 @@ Public Class clsMLPEncog : Inherits clsVectorizedMLPGeneric
                 Dim nbWeights = nbNeuronsPreviousLayer
                 For k = 0 To nbWeights - 1
                     Dim weight = Me.network.GetWeight(i - 1, k, j)
-                    Dim rounded = Math.Round(weight, clsMLPGeneric.roundWeights)
+                    Dim rounded = Math.Round(weight, clsMLPGeneric.nbRoundingDigits)
                     Me.network.SetWeight(i - 1, k, j, rounded)
                 Next k
                 If Me.useBias Then
                     Dim weightT = Me.network.GetWeight(i - 1, nbWeights, j)
-                    Dim rounded = Math.Round(weightT, clsMLPGeneric.roundWeights)
+                    Dim rounded = Math.Round(weightT, clsMLPGeneric.nbRoundingDigits)
                     Me.network.SetWeight(i - 1, nbWeights, j, rounded)
                 End If
             Next j
@@ -146,8 +162,24 @@ Public Class clsMLPEncog : Inherits clsVectorizedMLPGeneric
             TrainVectorOneIteration()
             If Me.printOutput_ Then PrintOutput(iteration)
         Next
+
+        CloseTrainingSession() ' 21/11/2020
+
         SetOuput1D()
-        Me.ComputeError()
+        'ComputeError()
+        ComputeAverageError() ' 14/11/2020
+
+    End Sub
+
+    Public Overrides Sub CloseTrainingSession()
+
+        ' Should be called once training is complete and no more iterations are
+        ' needed. Calling iteration again will simply begin the training again, and
+        ' require finishTraining to be called once the new training session is
+        ' complete.
+        ' It is particularly important to call finishTraining for multithreaded
+        ' training techniques.
+        Me.imlTrain.FinishTraining()
 
     End Sub
 

@@ -271,7 +271,7 @@ Namespace KerasMLP
 
             m_mlp.InitializeStruct(m_neuronCountXOR2_16_1, addBiasColumn:=False)
 
-            m_mlp.nbIterations = 600
+            m_mlp.nbIterations = 700
             m_mlp.SetActivationFunction(enumActivationFunction.HyperbolicTangent, gain:=2.0!)
 
             m_mlp.InitializeWeights(1, {

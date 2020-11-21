@@ -305,6 +305,15 @@ Namespace AccordMLP
         End Sub
 
         <TestMethod()>
+        Public Sub AccordMLPIrisFlowerAnalogPredictionTanh()
+
+            ' 96.7% prediction, 98.3% learning with 900 iterations in 200 msec.
+
+            TestMLPIrisFlowerAnalogPrediction(m_mlp, nbIterations:=900)
+
+        End Sub
+
+        <TestMethod()>
         Public Sub AccordMLPIrisFlowerLogical()
 
             TestMLPIrisFlowerLogical(m_mlp)

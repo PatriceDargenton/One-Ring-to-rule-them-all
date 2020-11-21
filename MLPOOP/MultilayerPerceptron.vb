@@ -45,6 +45,10 @@ Namespace NetworkOOP
 
         End Sub
 
+        Public Overrides Function GetActivationFunctionType() As enumActivationFunctionType
+            Return enumActivationFunctionType.BothNormalAndSpecificCode
+        End Function
+
         Public Overrides Sub InitializeStruct(neuronCount%(), addBiasColumn As Boolean)
 
             Dim num_input = neuronCount(0)

@@ -146,10 +146,29 @@ Packages added:
 
 # Versions
 
+21/11/2020 V1.23
+- Console menu added
+- Iris flower prediction analog test added
+- clsVecMatrix.ComputeErrorOneSample() : clsMLPGeneric's version used
+- clsMLPGeneric.GetActivationFunctionType() added with enumActivationFunctionType
+- clsMLPGeneric.RoundWeights() added
+- clsMLPGeneric.ComputeErrorOneSample(targetArray!(,)) added
+- clsMLPGeneric.ComputeAverageErrorOneSample!(targetArray!(,)) added
+- clsMLPGeneric.CloseSession() -> CloseTrainingSession()
+- clsMLPHelper.Fill2DArrayOfDouble function fixed
+- Gaussian activation function derivate fixed
+- Sinus activation function derivate fixed
+- clsMLPAccord.TestOneSample() : output matrix setted
+- clsMLPAccord averageError fixed
+- clsMLPAccord PrintWeights() fixed
+- clsMLPEncog averageError fixed
+- clsMLPTensor : InitializeSequential() added and InitializeGradient() renamed
+- clsMLPTensor averageError fixed
+
 11/10/2020 V1.22
 - Randomize: Default range: [0, 1] -> [-0.5, +0.5]
 - clsMLPOOP: Activation function: BipolarSigmoid renamed as HyperbolicTangent (and previous HyperbolicTangent deleted)
-- clsTensorMLP: Iris flower prediction test added
+- clsTensorMLP, clsMatrixMLP: Iris flower prediction test added
 - Compilation: Strict mode enabled
 
 04/10/2020 V1.21

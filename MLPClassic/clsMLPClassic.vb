@@ -101,7 +101,7 @@ Friend Class clsMLPClassic : Inherits clsMLPGeneric
                 For k = 0 To Me.Layers(i - 1).nbWeights - 1
                     With Me.Layers(i).Neurons(j)
                         Dim r# = rndShared.NextDouble(minValue, maxValue)
-                        Dim rounded# = Math.Round(r, clsMLPGeneric.roundWeights)
+                        Dim rounded# = Math.Round(r, clsMLPGeneric.nbRoundingDigits)
                         .w(k) = CSng(rounded)
                         .dw(k) = 0
                         .wCopy(k) = 0

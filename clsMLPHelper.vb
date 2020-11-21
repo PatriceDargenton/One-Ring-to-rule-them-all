@@ -41,7 +41,8 @@ Public Class clsMLPHelper
     End Sub
 
     Public Shared Sub Fill2DArrayOfDouble(array2D#(,), array1D#(), index%)
-        Dim nbItems = array2D.GetLength(0)
+        'Dim nbItems = array2D.GetLength(0)
+        Dim nbItems = array2D.GetLength(1) ' 30/10/2020
         For j = 0 To nbItems - 1
             array2D(index, j) = array1D(j)
         Next

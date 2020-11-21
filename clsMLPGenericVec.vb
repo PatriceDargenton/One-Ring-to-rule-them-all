@@ -2,6 +2,7 @@
 Public MustInherit Class clsVectorizedMLPGeneric : Inherits clsMLPGeneric
 
     Public vectorizedLearningMode As Boolean = True
+
     Public exampleCount%
 
     'Protected neuronCount%()

@@ -25,8 +25,7 @@ Module Main
             momentum:=0.8, randomizer:=standard,
             activation:=New HyperbolicTangent(alpha:=0.5#))
 
-        'mlp.SetActivationFunction(enumActivationFunction.Sigmoid, gain:=0.5)
-        'mlp.ActivationFunction = Nothing
+        mlp.SetActivationFunction(enumActivationFunction.Sigmoid, gain:=0.5)
 
         mlp.ShowMessage("Object-oriented programming MLP Xor test")
         mlp.ShowMessage("----------------------------------------")
@@ -369,6 +368,16 @@ Namespace OOPMLP
             'm_mlp.ActivationFunction = New Sigmoid(alpha:=1.0#)
 
             TestMLPIrisFlowerAnalog(m_mlp)
+
+        End Sub
+
+        <TestMethod()>
+        Public Sub MLPOOPIrisFlowerAnalogPredictionTanh()
+
+            ' 93.3% prediction, 96.7% learning with 50 iterations in 100 msec.
+
+            TestMLPIrisFlowerAnalogPrediction(m_mlp,
+                expectedSuccess:=0.967, expectedSuccessPrediction:=0.933)
 
         End Sub
 

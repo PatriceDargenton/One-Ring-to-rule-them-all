@@ -12,8 +12,13 @@ Module modMatrixMLPTest
         XORTest()
         NextTest()
 
-        ' Three layers only, poor results!
+        ' Three layers only, good results!
         MLPGenericIrisFlowerTest(New MatrixMLP.MultiLayerPerceptron,
+            "Matrix MLP Iris flower test", nbIterations:=4000, threeLayers:=True)
+        NextTest()
+
+        ' Three layers only, good results!
+        MLPGenericIrisFlowerTestAnalog(New MatrixMLP.MultiLayerPerceptron,
             "Matrix MLP Iris flower test", nbIterations:=4000, threeLayers:=True)
 
     End Sub

@@ -15,6 +15,11 @@ Module modMatrixVecMLPTest
         ' Works only using sigmoid activation
         MLPGenericIrisFlowerTest(New VectorizedMatrixMLP.clsVectorizedMatrixMLP,
             "Vectorized Matrix MLP Iris flower test", nbIterations:=1000, sigmoid:=True)
+        NextTest()
+
+        ' Works only using sigmoid activation, poor results!
+        MLPGenericIrisFlowerTestAnalog(New VectorizedMatrixMLP.clsVectorizedMatrixMLP,
+            "Vectorized Matrix MLP Iris flower test", sigmoid:=True)
 
     End Sub
 

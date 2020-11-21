@@ -19,7 +19,7 @@ Public MustInherit Class clsMLPGeneric
     ''' <summary>
     ''' Round random weights to reproduce functionnal tests exactly
     ''' </summary>
-    Public Const roundWeights% = 2
+    Public Const nbRoundingDigits% = 2
 
     Public Const expMax! = 50
 
@@ -163,6 +163,11 @@ Public MustInherit Class clsMLPGeneric
     Protected m_center!
     Protected m_actFunc As enumActivationFunction = enumActivationFunction.Undefined
 
+    Public Overridable Function GetActivationFunctionType() As enumActivationFunctionType
+        Return enumActivationFunctionType.Normal
+    End Function
+
+
     ''' <summary>
     ''' Set registered activation function
     ''' </summary>
@@ -245,6 +250,9 @@ Public MustInherit Class clsMLPGeneric
     ''' </summary>
     Public MustOverride Sub Randomize(Optional minValue! = -0.5!, Optional maxValue! = 0.5!)
 
+    Public Overridable Sub RoundWeights()
+    End Sub
+
 #End Region
 
 #Region "Error"
@@ -255,6 +263,16 @@ Public MustInherit Class clsMLPGeneric
     Public Overridable Sub ComputeError()
         ' Calculate the error: ERROR = TARGETS - OUTPUTS
         Dim m As Matrix = Me.targetArray
+        Me.lastError = m - Me.output
+        ComputeSuccess()
+    End Sub
+
+    ''' <summary>
+    ''' Compute error of the output matrix for one sample
+    ''' </summary>
+    Public Overridable Sub ComputeErrorOneSample(targetArray!(,))
+        ' Calculate the error: ERROR = TARGETS - OUTPUTS
+        Dim m As Matrix = targetArray
         Me.lastError = m - Me.output
         ComputeSuccess()
     End Sub
@@ -279,6 +297,15 @@ Public MustInherit Class clsMLPGeneric
     ''' </summary>
     Public Overridable Function ComputeAverageError!()
         Me.ComputeError()
+        Me.ComputeAverageErrorFromLastError()
+        Return Me.averageError
+    End Function
+
+    ''' <summary>
+    ''' Compute average error of the output matrix for one sample
+    ''' </summary>
+    Public Overridable Function ComputeAverageErrorOneSample!(targetArray!(,))
+        Me.ComputeErrorOneSample(targetArray)
         Me.ComputeAverageErrorFromLastError()
         Return Me.averageError
     End Function
@@ -427,7 +454,7 @@ Public MustInherit Class clsMLPGeneric
     ''' <summary>
     ''' Close the training session
     ''' </summary>
-    Public Overridable Sub CloseSession()
+    Public Overridable Sub CloseTrainingSession()
     End Sub
 
 #End Region
@@ -524,6 +551,9 @@ Public MustInherit Class clsMLPGeneric
         If Me.learningRate <> 0 Then ShowMessage("learning rate=" & Me.learningRate)
         If Me.weightAdjustment <> 0 Then ShowMessage(
             "weight adjustment=" & Me.weightAdjustment)
+        Dim afType = Me.GetActivationFunctionType()
+        If afType <> enumActivationFunctionType.Normal Then _
+            ShowMessage("activation function type=" & clsMLPHelper.ReadEnumDescription(afType))
         ShowMessage("activation function=" & clsMLPHelper.ReadEnumDescription(Me.m_actFunc))
         ShowMessage("gain=" & Me.m_gain)
         If Me.m_center <> 0 Then ShowMessage("center=" & Me.m_center)

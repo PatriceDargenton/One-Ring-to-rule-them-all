@@ -26,6 +26,10 @@ Public Class clsMLPAccord : Inherits clsVectorizedMLPGeneric
     Public inputJaggedDblArray#()()
     Public targetJaggedDblArray#()()
 
+    Public Overrides Function GetActivationFunctionType() As enumActivationFunctionType
+        Return enumActivationFunctionType.LibraryOptimized
+    End Function
+
     Public Overrides Sub InitializeStruct(neuronCount%(), addBiasColumn As Boolean)
 
         Dim inputNodes = neuronCount(0)
@@ -38,11 +42,6 @@ Public Class clsMLPAccord : Inherits clsVectorizedMLPGeneric
             Throw New NotImplementedException(
                 "useBias=False is not implemented for clsAccordMLP!")
         End If
-
-        Dim inputArrayDbl = clsMLPHelper.Convert2DArrayOfSingleToDouble(Me.inputArray)
-        Me.inputJaggedDblArray = clsMLPHelper.Transform2DArrayToJaggedArray(inputArrayDbl)
-        Dim targetArrayDbl = clsMLPHelper.Convert2DArrayOfSingleToDouble(Me.targetArray)
-        Me.targetJaggedDblArray = clsMLPHelper.Transform2DArrayToJaggedArray(targetArrayDbl)
 
         Dim sigmoidAlphaValue! = Me.m_gain
 
@@ -60,6 +59,13 @@ Public Class clsMLPAccord : Inherits clsVectorizedMLPGeneric
         For i = 1 To Me.layerCount - 1
             Me.neuronCountWithoutInputLayer(i - 1) = neuronCount(i)
         Next
+
+        If IsNothing(Me.inputArray) Then Exit Sub
+        Dim inputArrayDbl = clsMLPHelper.Convert2DArrayOfSingleToDouble(Me.inputArray)
+        Me.inputJaggedDblArray = clsMLPHelper.Transform2DArrayToJaggedArray(inputArrayDbl)
+        If IsNothing(Me.targetArray) Then Exit Sub
+        Dim targetArrayDbl = clsMLPHelper.Convert2DArrayOfSingleToDouble(Me.targetArray)
+        Me.targetJaggedDblArray = clsMLPHelper.Transform2DArrayToJaggedArray(targetArrayDbl)
 
     End Sub
 
@@ -166,12 +172,12 @@ Public Class clsMLPAccord : Inherits clsVectorizedMLPGeneric
                 Dim nbWeights = neuron.Weights.Count
                 For k = 0 To nbWeights - 1
                     Dim r = neuron.Weights(k)
-                    Dim rounded = Math.Round(r, clsMLPGeneric.roundWeights)
+                    Dim rounded = Math.Round(r, clsMLPGeneric.nbRoundingDigits)
                     neuron.Weights(k) = rounded
                 Next k
                 If Me.useBias Then
                     Dim r = neuron.Threshold
-                    Dim rounded = Math.Round(r, clsMLPGeneric.roundWeights)
+                    Dim rounded = Math.Round(r, clsMLPGeneric.nbRoundingDigits)
                     neuron.Threshold = rounded
                 Else
                     neuron.Threshold = 0
@@ -202,7 +208,8 @@ Public Class clsMLPAccord : Inherits clsVectorizedMLPGeneric
         Else
             avgError = Me.teacherBPL.RunEpoch(Me.inputJaggedDblArray, Me.targetJaggedDblArray)
         End If
-        Me.averageError = CSng(avgError)
+        ' Does not work fine, too high!?
+        'Me.averageError = CSng(avgError)
 
     End Sub
 
@@ -262,6 +269,11 @@ Public Class clsMLPAccord : Inherits clsVectorizedMLPGeneric
         Dim outputs#() = Me.network.Compute(inputsDbl)
         Me.lastOutputArray1DSingle = clsMLPHelper.Convert1DArrayOfDoubleToSingle(outputs)
 
+        ' 20/11/2020
+        Dim outputs2D#(0, Me.nbOutputNeurons - 1)
+        clsMLPHelper.Fill2DArrayOfDouble(outputs2D, outputs, 0)
+        Me.output = outputs2D
+
     End Sub
 
     'Public Overrides Sub TestOneSample(input!(), ByRef ouput!())
@@ -278,8 +290,9 @@ Public Class clsMLPAccord : Inherits clsVectorizedMLPGeneric
 
         Me.PrintParameters()
 
+        ShowMessage("Neuron count(" & 0 & ")=" & Me.nbInputNeurons) ' 24/10/2020
         For i = 0 To Me.network.Layers.Count - 1
-            ShowMessage("Neuron count(" & i & ")=" & Me.network.Layers(i).Neurons.Count)
+            ShowMessage("Neuron count(" & i + 1 & ")=" & Me.network.Layers(i).Neurons.Count)
         Next
 
         ShowMessage("")

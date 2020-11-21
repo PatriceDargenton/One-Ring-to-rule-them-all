@@ -551,7 +551,7 @@ Namespace Utility
             'MatrixLoop((Sub(i, j) random_(i, j) = rnd.NextDouble), x, y)
             MatrixLoop((Sub(i, j) random_(i, j) =
                 Math.Round(rnd.NextDouble(minValue, maxValue),
-                clsMLPGeneric.roundWeights)), r, c)
+                clsMLPGeneric.nbRoundingDigits)), r, c)
             Dim m As Matrix = random_
             Return m
 
@@ -562,7 +562,7 @@ Namespace Utility
 
             MatrixLoop((Sub(i, j) Me.m_matrix(i, j) =
                 Math.Round(rnd.NextDouble(minValue, maxValue),
-                clsMLPGeneric.roundWeights)), Me.r, Me.c)
+                clsMLPGeneric.nbRoundingDigits)), Me.r, Me.c)
 
         End Sub
 

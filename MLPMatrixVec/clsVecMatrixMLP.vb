@@ -6,11 +6,27 @@ Namespace VectorizedMatrixMLP
 
     Public Class clsVectorizedMatrixMLP : Inherits clsVectorizedMLPGeneric
 
-        Public target As Matrix
-
         Private neuronCountWithBias%()
-        Private input, Zlast As Matrix
+        Private m_input, m_target, Zlast As Matrix
         Private w, error_, Z, A, delta As Matrix()
+
+        Public Property input As Matrix
+            Get
+                Return Me.m_input
+            End Get
+            Set(value As Matrix)
+                Me.m_input = value
+            End Set
+        End Property
+
+        Public Property target As Matrix
+            Get
+                Return Me.m_target
+            End Get
+            Set(value As Matrix)
+                Me.m_target = value
+            End Set
+        End Property
 
         Public Overrides Sub InitializeStruct(neuronCount%(), addBiasColumn As Boolean)
 
@@ -107,7 +123,7 @@ Namespace VectorizedMatrixMLP
             Me.Z = New Matrix(layerCount - 1) {}
             Me.A = New Matrix(layerCount - 1) {}
 
-            Me.Z(0) = Me.input
+            Me.Z(0) = Me.m_input
             ' Column added with 1 for all examples
             If Me.useBias Then Me.Z(0) = Me.Z(0).AddColumn(Matrix.Ones(Me.exampleCount, 1))
             Me.A(0) = Me.Z(0)
@@ -168,23 +184,6 @@ Namespace VectorizedMatrixMLP
         Public Sub SetLastError()
             Me.lastError = Me.error_(Me.layerCount - 1)
         End Sub
-
-        Public Sub ComputeErrorOneSample()
-            ' Calculate the error: ERROR = TARGETS - OUTPUTS
-            Dim m As Matrix = Me.targetArray
-            Me.lastError = (m - Me.output).GetRow(0)
-        End Sub
-
-        Public Sub ComputeAverageErrorFromLastErrorOneSample()
-            ' Compute first abs then average:
-            Me.averageError = CSng(Me.lastError.Abs.Average)
-        End Sub
-
-        Public Function ComputeAverageErrorOneSample!()
-            Me.ComputeErrorOneSample()
-            Me.ComputeAverageErrorFromLastErrorOneSample()
-            Return Me.averageError
-        End Function
 
         Public Overrides Sub TrainOneSample(input!(), target!())
             SetInputOneSample(input)

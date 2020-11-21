@@ -18,6 +18,10 @@ Public Class clsMLPTensor : Inherits clsVectorizedMLPGeneric
     Private nbHiddenNeuronsTensor%
     Private nbHiddenNeuronsTensorWithBias%
 
+    Public Overrides Function GetActivationFunctionType() As enumActivationFunctionType
+        Return enumActivationFunctionType.SpecificCodeOptimized
+    End Function
+
     Public Overrides Sub InitializeStruct(neuronCount%(), addBiasColumn As Boolean)
 
         Me.useBias = addBiasColumn
@@ -56,6 +60,14 @@ Public Class clsMLPTensor : Inherits clsVectorizedMLPGeneric
                 Matrix.Zeros(nbNodes1, nbNodes2), autoGrad:=True))
         Next
 
+        InitializeSequential()
+
+        Me.mse = New MeanSquaredError()
+
+    End Sub
+
+    Public Sub InitializeSequential()
+
         Me.seq = New Sequential()
         For i = 0 To Me.layerCount - 1
             Dim nbNodes1 = Me.nbHiddenNeuronsTensorWithBias
@@ -67,9 +79,7 @@ Public Class clsMLPTensor : Inherits clsVectorizedMLPGeneric
             AddLayerWithActivationFunction()
         Next
 
-        InitializeSequential()
-
-        Me.mse = New MeanSquaredError()
+        InitializeGradient()
 
     End Sub
 
@@ -120,7 +130,7 @@ Public Class clsMLPTensor : Inherits clsVectorizedMLPGeneric
 
     End Sub
 
-    Public Sub InitializeSequential()
+    Public Sub InitializeGradient()
         Me.sgd = New StochasticGradientDescent(
             Me.seq.Parameters, Me.learningRate, Me.weightAdjustment)
         'Debug.WriteLine("seq.prm=" & Me.seq.ParametersToString)
@@ -130,7 +140,7 @@ Public Class clsMLPTensor : Inherits clsVectorizedMLPGeneric
 
         Me.weights = New List(Of Tensor)
         Me.rnd = New Random
-        Me.seq = New Sequential()
+
         For i = 1 To Me.layerCount - 1
             Dim nbNodes1 = Me.nbHiddenNeurons
             Dim nbNodes2 = Me.nbHiddenNeurons
@@ -143,17 +153,7 @@ Public Class clsMLPTensor : Inherits clsVectorizedMLPGeneric
                 nbNodes1, nbNodes2, Me.rnd), autoGrad:=True))
         Next
 
-        For i = 0 To Me.layerCount - 1
-            Dim nbNodes1 = Me.nbInputNeurons
-            Dim nbNodes2 = Me.nbHiddenNeurons + Me.nbInputNeurons
-            If Me.useBias Then nbNodes2 += 1
-            If i > 0 Then nbNodes1 = nbNodes2
-            If i = Me.layerCount - 1 Then nbNodes2 = Me.nbOutputNeurons
-            'Debug.WriteLine("WL" & i + 1 & " : " & nbNodes1 & " x " & nbNodes2)
-            Me.seq.Layers.Add(New Linear(nbNodes1, nbNodes2, Me.rnd, Me.useBias))
-            AddLayerWithActivationFunction()
-        Next
-        InitializeSequential()
+        Me.InitializeSequential()
 
     End Sub
 
@@ -194,13 +194,17 @@ Public Class clsMLPTensor : Inherits clsVectorizedMLPGeneric
     Private Sub SetOuput1DOneSample()
 
         Dim output As Matrix = Me.pred.Data
+        Me.output = Me.pred.Data ' 20/11/2020
         Me.lastOutputArray1DSingle = output.ToArraySingle()
 
     End Sub
 
     Public Overrides Sub SetOuput1D()
+
         Dim output As Matrix = Me.pred.Data
+        Me.output = Me.pred.Data ' 20/11/2020
         Me.lastOutputArray1DSingle = output.ToArraySingle()
+
     End Sub
 
     Private Sub SetOuputAllSamples()
@@ -223,6 +227,7 @@ Public Class clsMLPTensor : Inherits clsVectorizedMLPGeneric
             If Me.printOutput_ Then PrintOutput(iteration)
         Next
         Me.output = Me.pred.Data
+        ComputeAverageError() ' 14/11/2020
 
     End Sub
 

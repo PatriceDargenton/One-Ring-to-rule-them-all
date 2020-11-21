@@ -57,18 +57,14 @@ Namespace MatrixMLP
 
             Me.nbOutputNeurons = neuronCount(Me.layerCount - 1)
 
-            'Me.weights_ih = New Matrix(hiddenNodes, inputNodes)
             Dim dbleArray_ih#(Me.nbHiddenNeurons - 1, Me.nbInputNeurons - 1)
             Me.weights_ih = dbleArray_ih
 
-            'Me.weights_ho = New Matrix(outputNodes, hiddenNodes)
             Dim dbleArray_ho#(Me.nbOutputNeurons - 1, Me.nbHiddenNeurons - 1)
             Me.weights_ho = dbleArray_ho
 
             Me.useBias = addBiasColumn
             If Me.useBias Then
-                'Me.bias_h = New Matrix(hiddenNodes, 1)
-                'Me.bias_o = New Matrix(outputNodes, 1)
                 Dim dbleArray_bh#(Me.nbHiddenNeurons - 1, 0)
                 Dim dbleArray_bo#(Me.nbOutputNeurons - 1, 0)
                 Me.bias_h = dbleArray_bh
@@ -160,7 +156,7 @@ Namespace MatrixMLP
             ForwardPropogateSignal(inputsArray)
 
             ' Calculate the error: ERROR = TARGETS - OUTPUTS
-            ComputeErrorOneSample(targetsArray)
+            ComputeErrorOneSampleSpecific(targetsArray)
             ComputeAverageErrorFromLastError()
 
             BackwardPropagateError()
@@ -193,7 +189,7 @@ Namespace MatrixMLP
         ''' <summary>
         ''' Compute error from output and target matrices
         ''' </summary>
-        Public Sub ComputeErrorOneSample(target!())
+        Private Sub ComputeErrorOneSampleSpecific(target!())
 
             ' Calculate the error: ERROR = TARGETS - OUTPUTS
             Me.lastError = Matrix.SubtractFromArraySingle(target, Me.output)
@@ -214,8 +210,6 @@ Namespace MatrixMLP
 
             Me.PrintParameters()
 
-            'Dim inputNodes = Me.weights_ih.r
-            'Dim hiddenNodes = Me.weights_ih.c
             Dim inputNodes = Me.nbInputNeurons
             Dim hiddenNodes = Me.nbHiddenNeurons
             Dim outputNodes = Me.weights_ho.r

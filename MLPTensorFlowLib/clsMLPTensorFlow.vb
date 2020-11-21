@@ -38,6 +38,10 @@ Public Class clsMLPTensorFlow : Inherits clsVectorizedMLPGeneric
         globalStep As Tensor, prediction As Tensor, hw As Tensor, ow As Tensor)
 #End If
 
+    Public Overrides Function GetActivationFunctionType() As enumActivationFunctionType
+        Return enumActivationFunctionType.LibraryOptimized
+    End Function
+
     Public Overrides Sub InitializeStruct(neuronCount%(), addBiasColumn As Boolean)
 
         Me.useBias = addBiasColumn
@@ -250,7 +254,7 @@ Public Class clsMLPTensorFlow : Inherits clsVectorizedMLPGeneric
 
     End Sub
 
-    Public Overrides Sub CloseSession()
+    Public Overrides Sub CloseTrainingSession()
         If Not IsNothing(Me.sess) Then Me.sess.close()
     End Sub
 

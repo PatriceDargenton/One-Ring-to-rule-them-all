@@ -38,6 +38,10 @@ Public Class clsMLPKeras : Inherits clsVectorizedMLPGeneric
     Public inputJaggedDblArray#()()
     Public targetJaggedDblArray#()()
 
+    Public Overrides Function GetActivationFunctionType() As enumActivationFunctionType
+        Return enumActivationFunctionType.LibraryOptimized
+    End Function
+
     Public Overrides Sub InitializeStruct(neuronCount%(), addBiasColumn As Boolean)
 
         Dim inputArrayDbl = clsMLPHelper.Convert2DArrayOfSingleToDouble(Me.inputArray)
@@ -170,7 +174,7 @@ Public Class clsMLPKeras : Inherits clsVectorizedMLPGeneric
             Dim nbItems = ws.GetUpperBound(0) + 1
             For j = 0 To nbItems - 1
                 Dim weight = ws(j)
-                Dim rounded = Math.Round(weight, clsMLPGeneric.roundWeights)
+                Dim rounded = Math.Round(weight, clsMLPGeneric.nbRoundingDigits)
                 ws(j) = CSng(rounded)
             Next
         Next

@@ -634,6 +634,43 @@ Namespace ClassicMLP
         End Sub
 
         <TestMethod()>
+        Public Sub MLPIrisFlowerAnalogPrediction()
+
+            ' 93.3% prediction, 96.7% learning with 50 iterations in 45 msec.
+
+            TestMLPIrisFlowerAnalogPrediction(m_mlp,
+                expectedSuccess:=0.967, expectedSuccessPrediction:=0.933)
+
+        End Sub
+
+        <TestMethod()>
+        Public Sub MLPIrisFlowerAnalogPredictionGaussian()
+
+            ' 93.3% prediction, 96.7% learning with 100 iterations in 77 msec.
+
+            TestMLPIrisFlowerAnalogPredictionGaussian(m_mlp)
+
+        End Sub
+
+        <TestMethod()>
+        Public Sub MLPIrisFlowerLogicalPredictionGaussian()
+
+            ' 96.7% prediction, 96.4% learning with 100 iterations in 90 msec.
+
+            TestMLPIrisFlowerLogicalPredictionGaussian(m_mlp)
+
+        End Sub
+
+        <TestMethod()>
+        Public Sub MLPIrisFlowerLogicalPredictionSinus()
+
+            ' 97.8% prediction, 93.3% learning with 200 iterations in 190 msec.
+
+            TestMLPIrisFlowerLogicalPredictionSinus(m_mlp)
+
+        End Sub
+
+        <TestMethod()>
         Public Sub MLPIrisFlowerLogical()
 
             TestMLPIrisFlowerLogical(m_mlp)

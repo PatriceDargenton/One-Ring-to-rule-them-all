@@ -192,7 +192,7 @@ Namespace TensorMLP
                 {0.66},
                 {-0.7},
                 {0.56}})
-            m_mlp.InitializeSequential()
+            m_mlp.InitializeGradient()
 
             m_mlp.Train()
 
@@ -244,7 +244,7 @@ Namespace TensorMLP
                 {0.66},
                 {-0.7},
                 {0.56}})
-            m_mlp.InitializeSequential()
+            m_mlp.InitializeGradient()
 
             m_mlp.Train(enumLearningMode.SemiStochastic)
 
@@ -296,7 +296,7 @@ Namespace TensorMLP
                 {0.66},
                 {-0.7},
                 {0.56}})
-            m_mlp.InitializeSequential()
+            m_mlp.InitializeGradient()
 
             m_mlp.Train(enumLearningMode.Stochastic)
 
@@ -353,7 +353,7 @@ Namespace TensorMLP
                 {-0.42},
                 {0.42},
                 {-0.84}})
-            m_mlp.InitializeSequential()
+            m_mlp.InitializeGradient()
 
             'm_mlp.PrintWeights()
             'm_mlp.printOutput_ = True
@@ -412,7 +412,7 @@ Namespace TensorMLP
                 {-0.12, -0.2, -0.66, 0.06, -0.58},
                 {0.2, 0.58, -0.92, 0.26, 0.6},
                 {-0.08, 0.76, -0.32, 0.34, -0.06},
-                {-0.92, 0.00, 0.92, -0.92, -0.28},
+                {-0.92, 0.0, 0.92, -0.92, -0.28},
                 {0.48, -0.64, -0.86, 0.06, -0.2}})
             ' 5 x 5
             m_mlp.WeightInitLayerLinear(3, {
@@ -428,7 +428,7 @@ Namespace TensorMLP
                 {-0.04},
                 {0.48},
                 {0.74}})
-            m_mlp.InitializeSequential()
+            m_mlp.InitializeGradient()
 
             'm_mlp.PrintWeights()
             'm_mlp.printOutput_ = True
@@ -482,7 +482,7 @@ Namespace TensorMLP
                 {-0.48},
                 {-0.64},
                 {0.14}}, addBias:=False)
-            m_mlp.InitializeSequential()
+            m_mlp.InitializeGradient()
 
             m_mlp.TrainVector()
             'm_mlp.Train()
@@ -555,7 +555,7 @@ Namespace TensorMLP
                 {0.1, -0.18},
                 {-0.38, 0.88},
                 {0.38, -0.2}})
-            m_mlp.InitializeSequential()
+            m_mlp.InitializeGradient()
 
             'm_mlp.PrintWeights()
             'm_mlp.printOutput_ = True
@@ -627,7 +627,7 @@ Namespace TensorMLP
                 {0.18, -0.92},
                 {-0.46, -0.44},
                 {0.28, 0.64}})
-            m_mlp.InitializeSequential()
+            m_mlp.InitializeGradient()
 
             m_mlp.TrainVector()
             'm_mlp.Train(enumLearningMode.Vectorial)
@@ -696,7 +696,7 @@ Namespace TensorMLP
                 {-0.02, -0.36},
                 {0.94, -0.98},
                 {-0.22, 0.48}})
-            m_mlp.InitializeSequential()
+            m_mlp.InitializeGradient()
 
             'm_mlp.TrainVector()
             'm_mlp.Train(enumLearningMode.Vectorial)
@@ -784,7 +784,7 @@ Namespace TensorMLP
                 {-0.44, 0.8, 0.72},
                 {-0.22, -0.42, 0.82},
                 {-0.74, -0.44, -0.56}})
-            m_mlp.InitializeSequential()
+            m_mlp.InitializeGradient()
 
             m_mlp.TrainVector()
             'm_mlp.Train(enumLearningMode.Vectorial)
@@ -868,7 +868,7 @@ Namespace TensorMLP
                 {0.66, 0.56, -0.02},
                 {0.34, -0.68, 0.52},
                 {-0.22, -0.94, 0.8}})
-            m_mlp.InitializeSequential()
+            m_mlp.InitializeGradient()
 
             'm_mlp.TrainVector()
             'm_mlp.Train(enumLearningMode.Vectorial)
@@ -961,7 +961,7 @@ Namespace TensorMLP
             ' 9 x 3: Fourth linear layer: (4 inputs + 4 hidden neurons + bias) x 3 outputs:
             m_mlp.WeightInitLayerLinear(4, {
                 {-1.74, -1.7, -0.04},
-                {-0.16, -1.32, 0.00},
+                {-0.16, -1.32, 0.0},
                 {-0.02, -1.42, -0.78},
                 {-0.12, -1.86, -0.84},
                 {-1.26, -0.46, -1.6},
@@ -969,7 +969,7 @@ Namespace TensorMLP
                 {-1.86, -1.54, -1.76},
                 {-0.22, -0.02, -1.96},
                 {-1.4, -0.64, -0.78}})
-            m_mlp.InitializeSequential()
+            m_mlp.InitializeGradient()
 
             'm_mlp.PrintWeights()
             'm_mlp.printOutput_ = True
