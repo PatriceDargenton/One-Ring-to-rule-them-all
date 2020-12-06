@@ -146,6 +146,13 @@ Packages added:
 
 # Versions
 
+06/12/2020 V1.24
+- clsMLPGeneric.InitializeStruct function
+- clsMLPAccord: Resilient Backpropagation Learning
+- clsMLPEncog: Classic Backpropagation Learning
+- clsMLPKeras: Randomize(): weights rounding fixed
+- clsMLPTensor: InitializeSequential() fixed
+
 21/11/2020 V1.23
 - Console menu added
 - Iris flower prediction analog test added

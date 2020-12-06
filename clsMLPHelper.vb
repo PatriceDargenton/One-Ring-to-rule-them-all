@@ -33,10 +33,31 @@ Public Class clsMLPHelper
         Next
     End Sub
 
+    Public Shared Sub Fill2DArrayOfSingle2(array2D!(,), array1D!(), index%)
+        Dim nbItems = array1D.GetLength(0)
+        For j = 0 To nbItems - 1
+            array2D(j, index) = array1D(j)
+        Next
+    End Sub
+
     Public Shared Sub Fill2DArrayOfDoubleByArrayOfSingle(array2D#(,), array1D!(), index%)
         Dim nbItems = array1D.GetLength(0)
         For j = 0 To nbItems - 1
             array2D(index, j) = array1D(j)
+        Next
+    End Sub
+
+    Public Shared Sub Fill2DArrayOfDoubleByArrayOfSingle2(array2D#(,), array1D!(), index%)
+        Dim nbItems = array2D.GetLength(1)
+        For j = 0 To nbItems - 1
+            array2D(index, j) = array1D(j + index * nbItems)
+        Next
+    End Sub
+
+    Public Shared Sub Fill2DArrayOfDoubleByArray(array2D#(,), array1D#(), index%)
+        Dim nbItems = array2D.GetLength(1)
+        For j = 0 To nbItems - 1
+            array2D(index, j) = array1D(j + index * nbItems)
         Next
     End Sub
 
@@ -90,6 +111,40 @@ Public Class clsMLPHelper
             ReDim arr(i)(length1 - 1)
             For j = 0 To length1 - 1
                 arr(i)(j) = array2D(i, j)
+            Next j
+        Next i
+
+        Return arr
+
+    End Function
+
+    Public Shared Function Transform1DArrayToJaggedArray(array1D!(), length%) As Double()()
+
+        ' Transform a 1D array into a jagged array
+
+        Dim length0 = array1D.GetLength(0)
+        Dim length1 = length
+        Dim arr As Double()() = New Double(length0 - 1)() {}
+        For i = 0 To length0 - 1
+            arr(i) = New Double() {}
+            ReDim arr(i)(length1 - 1)
+            For j = 0 To length1 - 1
+                arr(i)(j) = array1D(i + length0 * j)
+            Next j
+        Next i
+
+        Return arr
+
+    End Function
+
+    Public Shared Function Swap2DArray(array2D#(,)) As Double(,)
+
+        Dim length0 = array2D.GetLength(0)
+        Dim length1 = array2D.GetLength(1)
+        Dim arr#(length1 - 1, length0 - 1)
+        For i = 0 To length0 - 1
+            For j = 0 To length1 - 1
+                arr(j, i) = array2D(i, j)
             Next j
         Next i
 

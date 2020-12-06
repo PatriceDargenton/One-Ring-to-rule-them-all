@@ -42,10 +42,8 @@ Namespace MatrixMLP
 
         Public Overrides Sub InitializeStruct(neuronCount%(), addBiasColumn As Boolean)
 
-            Me.nbInputNeurons = neuronCount(0)
-            Me.nbHiddenNeurons = neuronCount(1)
-            Me.layerCount = neuronCount.Length
-            Me.neuronCount = neuronCount
+            MyBase.InitializeStruct(neuronCount, addBiasColumn)
+
             Me.weightAdjustment = 0 ' Not used
 
             If Me.layerCount <> 3 Then

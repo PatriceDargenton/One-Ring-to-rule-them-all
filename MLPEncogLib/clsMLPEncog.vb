@@ -10,11 +10,17 @@ Imports Encog.ML.Data.Basic
 Imports Encog.ML.Train
 Imports Encog.Neural.Networks
 Imports Encog.Neural.Networks.Layers
-Imports Encog.Neural.Networks.Training.Propagation.Resilient
+Imports Encog.Neural.Networks.Training.Propagation.Resilient ' ResilientPropagation
+Imports Encog.Neural.Networks.Training.Propagation.Back ' Backpropagation
 
 Imports System.Text
 
 Public Class clsMLPEncog : Inherits clsVectorizedMLPGeneric
+
+    ''' <summary>
+    ''' Resilient Backpropagation Learning
+    ''' </summary>
+    Public RBPLAlgo As Boolean = True
 
     Private network As BasicNetwork
     Private trainingSet As IMLDataSet
@@ -29,12 +35,7 @@ Public Class clsMLPEncog : Inherits clsVectorizedMLPGeneric
 
     Public Overrides Sub InitializeStruct(neuronCount%(), addBiasColumn As Boolean)
 
-        Me.layerCount = neuronCount.Length
-        Me.useBias = addBiasColumn
-        Me.neuronCount = neuronCount
-        Me.nbInputNeurons = Me.neuronCount(0)
-        Me.nbHiddenNeurons = Me.neuronCount(1)
-        Me.nbOutputNeurons = Me.neuronCount(Me.layerCount - 1)
+        MyBase.InitializeStruct(neuronCount, addBiasColumn)
 
         If IsNothing(Me.inputArray) Then Exit Sub
         Dim inputArrayDbl = clsMLPHelper.Convert2DArrayOfSingleToDouble(Me.inputArray)
@@ -51,16 +52,18 @@ Public Class clsMLPEncog : Inherits clsVectorizedMLPGeneric
         gain = 1
         If actFnc = enumActivationFunction.HyperbolicTangent Then gain = 2
         center = 0
-        Me.weightAdjustment = 0 ' Not used
 
-        Me.learningRate = 0 ' Learning rate is not use with ResilientPropagation:
-        ' http://heatonresearch-site.s3-website-us-east-1.amazonaws.com/javadoc/encog-3.3/org/encog/neural/networks/training/propagation/resilient/ResilientPropagation.html
-        ' One problem with the backpropagation algorithm is that the magnitude of the 
-        '  partial derivative is usually too large or too small. Further, the learning
-        '  rate is a single value for the entire neural network. The resilient propagation
-        '  learning algorithm uses a special update value (similar to the learning rate)
-        '  for every neuron connection. Further these update values are automatically
-        '  determined, unlike the learning rate of the backpropagation algorithm.
+        If RBPLAlgo Then
+            Me.weightAdjustment = 0 ' Not used
+            Me.learningRate = 0 ' Learning rate is not use with ResilientPropagation:
+            ' http://heatonresearch-site.s3-website-us-east-1.amazonaws.com/javadoc/encog-3.3/org/encog/neural/networks/training/propagation/resilient/ResilientPropagation.html
+            ' One problem with the backpropagation algorithm is that the magnitude of the 
+            '  partial derivative is usually too large or too small. Further, the learning
+            '  rate is a single value for the entire neural network. The resilient propagation
+            '  learning algorithm uses a special update value (similar to the learning rate)
+            '  for every neuron connection. Further these update values are automatically
+            '  determined, unlike the learning rate of the backpropagation algorithm.
+        End If
 
         MyBase.SetActivationFunction(actFnc, gain, center)
 
@@ -73,7 +76,8 @@ Public Class clsMLPEncog : Inherits clsVectorizedMLPGeneric
         Me.network.AddLayer(New BasicLayer(Nothing, Me.useBias,
             neuronCount:=Me.neuronCount(0)))
 
-        Dim act As Encog.Engine.Network.Activation.IActivationFunction
+        'Dim act As Encog.Engine.Network.Activation.IActivationFunction
+        Dim act As IActivationFunction
         Select Case actFnc
             Case enumActivationFunction.Sigmoid : act = New ActivationSigmoid()
             Case enumActivationFunction.HyperbolicTangent : act = New ActivationTANH()
@@ -93,14 +97,19 @@ Public Class clsMLPEncog : Inherits clsVectorizedMLPGeneric
 
         Me.network.Structure.FinalizeStructure()
 
-        ' Random weights to start
-        Me.network.Reset() ' Reset the weight matrix and the bias values
+        ' Reset the weight matrix and the bias values: random weights to start
+        Me.network.Reset()
 
         Me.trainingSet = New BasicMLDataSet(Me.inputJaggedDblArray, Me.targetJaggedDblArray)
 
-        'maxStep: The maximum that a delta can reach
-        Me.imlTrain = New ResilientPropagation(Me.network, Me.trainingSet,
-            initialUpdate:=0.1#, maxStep:=50.0#)
+        If RBPLAlgo Then
+            'maxStep: The maximum that a delta can reach
+            Me.imlTrain = New ResilientPropagation(Me.network, Me.trainingSet,
+                initialUpdate:=0.1#, maxStep:=50.0#)
+        Else
+            Me.imlTrain = New Backpropagation(Me.network, Me.trainingSet,
+                Me.learningRate, momentum:=Me.weightAdjustment)
+        End If
 
     End Sub
 
@@ -125,7 +134,8 @@ Public Class clsMLPEncog : Inherits clsVectorizedMLPGeneric
 
     Public Overrides Sub Randomize(Optional minValue! = -0.5!, Optional maxValue! = 0.5!)
 
-        Me.network.Reset() ' Reset the weight matrix and the bias values
+        ' Reset the weight matrix and the bias values: random weights to start
+        Me.network.Reset()
 
         RoundWeights()
 

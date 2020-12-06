@@ -51,12 +51,8 @@ Namespace NetworkOOP
 
         Public Overrides Sub InitializeStruct(neuronCount%(), addBiasColumn As Boolean)
 
-            Dim num_input = neuronCount(0)
-            Me.layerCount = neuronCount.GetLength(0)
-            Dim num_output = neuronCount(Me.layerCount - 1)
-            Me.neuronCount = neuronCount
+            MyBase.InitializeStruct(neuronCount, addBiasColumn)
 
-            Me.useBias = addBiasColumn
             If addBiasColumn Then
                 'setting bias
                 Me.Bias = New Neuron(NeuronType.Input)
@@ -71,7 +67,7 @@ Namespace NetworkOOP
             Me.HiddenLayers = New List(Of HiddenLayer)
 
             'creating layers
-            Me.InputLayer = New InputLayer(num_input, Me.ActivationFunction)
+            Me.InputLayer = New InputLayer(Me.nbInputNeurons, Me.ActivationFunction)
             Me.Layers.Add(InputLayer)
             Dim numLayer = 0
             For Each i In neuronCount
@@ -82,7 +78,7 @@ Namespace NetworkOOP
                 Me.HiddenLayers.Add(hiddenLayer)
                 Me.Layers.Add(hiddenLayer)
             Next
-            Me.OutputLayer = New OutputLayer(num_output, Me.ActivationFunction)
+            Me.OutputLayer = New OutputLayer(Me.nbOutputNeurons, Me.ActivationFunction)
             Me.Layers.Add(OutputLayer)
             Me.layerCount = Me.Layers.Count
 
@@ -178,8 +174,15 @@ Namespace NetworkOOP
 
         Public Sub SetOuput1D()
             Dim lst = Me.OutputLayer.ExtractOutputs()
-            Dim lastOutputArray1D#() = lst.ToArray()
-            Me.lastOutputArray1DSingle = clsMLPHelper.Convert1DArrayOfDoubleToSingle(lastOutputArray1D)
+            Me.lastOutputArray1D = lst.ToArray()
+            Me.lastOutputArray1DSingle = clsMLPHelper.Convert1DArrayOfDoubleToSingle(Me.lastOutputArray1D)
+        End Sub
+
+        Private Sub SetOutput()
+            ' 29/11/2020
+            Dim outputs2D#(0, Me.nbOutputNeurons - 1)
+            clsMLPHelper.Fill2DArrayOfDouble(outputs2D, Me.lastOutputArray1D, 0)
+            Me.output = outputs2D
         End Sub
 
         Public Overrides Sub TestOneSample(input!())
@@ -187,6 +190,7 @@ Namespace NetworkOOP
             SetInputOneSample(input)
             ForwardPropogateSignal()
             SetOuput1D()
+            SetOutput() ' 29/11/2020
 
         End Sub
 

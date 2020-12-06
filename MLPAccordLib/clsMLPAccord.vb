@@ -17,8 +17,18 @@ Public Class clsMLPAccord : Inherits clsVectorizedMLPGeneric
 
     Private network As ActivationNetwork
 
-    Public PRBPLAlgo As Boolean = False
     Private teacherBPL As BackPropagationLearning ' Reliable
+
+    ''' <summary>
+    ''' Resilient Backpropagation Learning
+    ''' </summary>
+    Public RBPLAlgo As Boolean = False
+    Private teacherRBPL As ResilientBackpropagationLearning
+
+    ''' <summary>
+    ''' Parallel Resilient Backpropagation Learning
+    ''' </summary>
+    Public PRBPLAlgo As Boolean = False
     Private teacherPRBPL As ParallelResilientBackpropagationLearning ' Less reliable?
 
     Private neuronCountWithoutInputLayer%()
@@ -32,11 +42,7 @@ Public Class clsMLPAccord : Inherits clsVectorizedMLPGeneric
 
     Public Overrides Sub InitializeStruct(neuronCount%(), addBiasColumn As Boolean)
 
-        Dim inputNodes = neuronCount(0)
-        Dim hiddenNodes = neuronCount(1)
-        Me.layerCount = neuronCount.Length
-        Me.useBias = addBiasColumn
-        Me.neuronCount = neuronCount
+        MyBase.InitializeStruct(neuronCount, addBiasColumn)
 
         If Not Me.useBias Then
             Throw New NotImplementedException(
@@ -44,11 +50,6 @@ Public Class clsMLPAccord : Inherits clsVectorizedMLPGeneric
         End If
 
         Dim sigmoidAlphaValue! = Me.m_gain
-
-        Me.layerCount = Me.neuronCount.Length
-        Me.nbInputNeurons = Me.neuronCount(0)
-        Me.nbHiddenNeurons = Me.neuronCount(1)
-        Me.nbOutputNeurons = Me.neuronCount(Me.layerCount - 1)
 
         ' 2, 2, 1 :
         ' 2 : two inputs  in the network
@@ -111,7 +112,11 @@ Public Class clsMLPAccord : Inherits clsVectorizedMLPGeneric
                 Me.activFnc = Nothing
         End Select
 
-        If PRBPLAlgo Then
+        If RBPLAlgo Then
+            Me.teacherRBPL = New ResilientBackpropagationLearning(Me.network)
+            Me.teacherRBPL.LearningRate = Me.learningRate ' default value: 0.0125
+            Me.weightAdjustment = 0
+        ElseIf PRBPLAlgo Then
             Me.teacherPRBPL = New ParallelResilientBackpropagationLearning(Me.network)
             'Me.teacherPRBPL.Reset(Me.learningRate)
             'Me.teacherPRBPL.DecreaseFactor = 0.5 ' eta minus
@@ -141,6 +146,8 @@ Public Class clsMLPAccord : Inherits clsVectorizedMLPGeneric
                 neuron.Weights(k) = weights(j, k)
             Next k
             If Me.useBias Then
+                ' The Threshold value is added to inputs weighted sum before
+                '  it is passed to activation function
                 neuron.Threshold = weights(j, nbWeights)
             Else
                 neuron.Threshold = 0
@@ -151,6 +158,7 @@ Public Class clsMLPAccord : Inherits clsVectorizedMLPGeneric
 
     Public Overrides Sub Randomize(Optional minValue! = -0.5!, Optional maxValue! = 0.5!)
 
+        ' No Reset function for RBPL algo.
         If PRBPLAlgo Then Me.teacherPRBPL.Reset(Me.learningRate)
 
         ' Randomly initialize the network
@@ -203,7 +211,9 @@ Public Class clsMLPAccord : Inherits clsVectorizedMLPGeneric
     Public Overrides Sub TrainVectorOneIteration()
 
         Dim avgError#
-        If PRBPLAlgo Then
+        If RBPLAlgo Then
+            avgError = Me.teacherRBPL.RunEpoch(Me.inputJaggedDblArray, Me.targetJaggedDblArray)
+        ElseIf PRBPLAlgo Then
             avgError = Me.teacherPRBPL.RunEpoch(Me.inputJaggedDblArray, Me.targetJaggedDblArray)
         Else
             avgError = Me.teacherBPL.RunEpoch(Me.inputJaggedDblArray, Me.targetJaggedDblArray)
@@ -243,7 +253,9 @@ Public Class clsMLPAccord : Inherits clsVectorizedMLPGeneric
         Dim targetArrayDbl = clsMLPHelper.Convert1DArrayOfSingleToDouble(target)
 
         Dim avgError#
-        If PRBPLAlgo Then
+        If RBPLAlgo Then
+            avgError = Me.teacherRBPL.Run(inputArrayDbl, targetArrayDbl)
+        ElseIf PRBPLAlgo Then
             avgError = Me.teacherPRBPL.Run(inputArrayDbl, targetArrayDbl)
         Else
             avgError = Me.teacherBPL.Run(inputArrayDbl, targetArrayDbl)

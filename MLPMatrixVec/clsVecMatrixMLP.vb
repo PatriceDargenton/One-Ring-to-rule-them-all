@@ -30,11 +30,11 @@ Namespace VectorizedMatrixMLP
 
         Public Overrides Sub InitializeStruct(neuronCount%(), addBiasColumn As Boolean)
 
+            MyBase.InitializeStruct(neuronCount, addBiasColumn)
+
             Me.input = Me.inputArray
             Me.target = Me.targetArray
 
-            Me.useBias = addBiasColumn
-            Me.layerCount = neuronCount.Length
             ReDim Me.neuronCount(0 To Me.layerCount - 1)
             ReDim Me.neuronCountWithBias(0 To Me.layerCount - 1)
             For i = 0 To Me.layerCount - 1

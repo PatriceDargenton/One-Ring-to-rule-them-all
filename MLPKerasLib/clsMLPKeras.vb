@@ -31,7 +31,6 @@ Public Class clsMLPKeras : Inherits clsVectorizedMLPGeneric
 
     Private inputNDA, targetNDA As NDarray
     Private model As Model
-    Dim outputs1D#()
     Dim weightsNDA As List(Of NDarray)
     Private Const batch_size% = 2
 
@@ -44,17 +43,20 @@ Public Class clsMLPKeras : Inherits clsVectorizedMLPGeneric
 
     Public Overrides Sub InitializeStruct(neuronCount%(), addBiasColumn As Boolean)
 
+        MyBase.InitializeStruct(neuronCount, addBiasColumn)
+        Me.useBias = False 'addBiasColumn
+
+        If IsNothing(Me.inputArray) Then Exit Sub
         Dim inputArrayDbl = clsMLPHelper.Convert2DArrayOfSingleToDouble(Me.inputArray)
         Me.inputJaggedDblArray = clsMLPHelper.Transform2DArrayToJaggedArray(inputArrayDbl)
         Dim targetArrayDbl = clsMLPHelper.Convert2DArrayOfSingleToDouble(Me.targetArray)
         Me.targetJaggedDblArray = clsMLPHelper.Transform2DArrayToJaggedArray(targetArrayDbl)
 
-        Me.layerCount = neuronCount.Length
-        Me.useBias = False 'addBiasColumn
-        Me.neuronCount = neuronCount
-        Me.nbInputNeurons = Me.neuronCount(0)
-        Me.nbHiddenNeurons = Me.neuronCount(1)
-        Me.nbOutputNeurons = Me.neuronCount(Me.layerCount - 1)
+        ' 29/11/2020 Moved here
+        ' Load train data
+        Me.inputNDA = Me.inputArray
+        Me.targetNDA = np.array(Me.targetArray, dtype:=np.float32)
+        Me.exampleCount = Me.inputArray.GetLength(0)
 
     End Sub
 
@@ -70,10 +72,11 @@ Public Class clsMLPKeras : Inherits clsVectorizedMLPGeneric
 
         Me.ShowMessage(Now() & " Initializing python engine...")
 
-        ' Load train data
-        Me.inputNDA = Me.inputArray
-        Me.targetNDA = np.array(Me.targetArray, dtype:=np.float32)
-        Me.exampleCount = Me.inputArray.GetLength(0)
+        ' 29/11/2020 Moved above
+        '' Load train data
+        'Me.inputNDA = Me.inputArray
+        'Me.targetNDA = np.array(Me.targetArray, dtype:=np.float32)
+        'Me.exampleCount = Me.inputArray.GetLength(0)
         'batch_size = Me.exampleCount ' Does not work?
 
         ' Build functional model
@@ -151,8 +154,8 @@ Public Class clsMLPKeras : Inherits clsVectorizedMLPGeneric
         Dim nda As NDarray
 
         If numLayer Mod 2 = 0 Then
-            Dim asng = clsMLPHelper.Transform2DArrayToJaggedArray(weights)
-            nda = asng(0)
+            Dim adbl = clsMLPHelper.Transform2DArrayToJaggedArray(weights)
+            nda = adbl(0)
         Else
             nda = weights
         End If
@@ -169,15 +172,38 @@ Public Class clsMLPKeras : Inherits clsVectorizedMLPGeneric
 
         Dim weights = Me.model.GetWeights()
         Dim nbWeightLayers = (Me.layerCount - 1) * 2
+        Dim ws(nbWeightLayers - 1)() As Single
         For i = 0 To nbWeightLayers - 1
-            Dim ws = weights(i).GetData(Of Single)()
-            Dim nbItems = ws.GetUpperBound(0) + 1
-            For j = 0 To nbItems - 1
-                Dim weight = ws(j)
-                Dim rounded = Math.Round(weight, clsMLPGeneric.nbRoundingDigits)
-                ws(j) = CSng(rounded)
-            Next
+            ws(i) = weights(i).GetData(Of Single)()
         Next
+
+        For i = 1 To nbWeightLayers
+
+            Dim wsi = ws(i - 1)
+            Dim nbItems = wsi.GetUpperBound(0) + 1
+            Dim nbNeuronsPreviousLayer = weights(i - 1).len
+            Dim nbNeuronsLayer = nbItems \ nbNeuronsPreviousLayer
+            Dim w2#(nbNeuronsPreviousLayer - 1, nbNeuronsLayer - 1)
+            Dim l = 0
+            For j = 0 To nbNeuronsPreviousLayer - 1
+                Dim nbWeights = nbNeuronsLayer
+                For k = 0 To nbWeights - 1
+                    Dim weight = wsi(l)
+                    Dim rounded = Math.Round(weight, clsMLPGeneric.nbRoundingDigits)
+                    wsi(l) = CSng(rounded)
+                    l += 1
+                Next k
+                If (i - 1) Mod 2 = 0 Then
+                    clsMLPHelper.Fill2DArrayOfDoubleByArrayOfSingle2(w2, wsi, j)
+                Else
+                    w2(j, 0) = wsi(j)
+                End If
+            Next j
+            If Not ((i - 1) Mod 2 = 0) Then w2 = clsMLPHelper.Swap2DArray(w2)
+
+            InitializeWeights(i, w2)
+
+        Next i
 
     End Sub
 
@@ -191,12 +217,16 @@ Public Class clsMLPKeras : Inherits clsVectorizedMLPGeneric
         Me.learningMode = enumLearningMode.VectorialBatch
         Me.vectorizedLearningMode = True
 
-        Dim history = model.Fit(
+        Dim history = Me.model.Fit(
             Me.inputNDA, Me.targetNDA, batch_size:=batch_size,
             epochs:=nbIterationsBatch, verbose:=0)
         Dim err = history.HistoryLogs("loss").GetValue(0)
         Me.averageError = CSng(err)
 
+    End Sub
+
+    Public Sub ModelEvaluate()
+        Me.model.Evaluate(Me.inputNDA, Me.targetNDA, batch_size:=batch_size, verbose:=1)
     End Sub
 
     Public Overrides Sub TrainVectorOneIteration()
@@ -209,6 +239,7 @@ Public Class clsMLPKeras : Inherits clsVectorizedMLPGeneric
         ' ForwardPropogateSignal
         Dim score = model.Predict(Me.inputNDA, verbose:=0)
         Dim outputs!() = score.GetData(Of Single)()
+        'Dim outputs#() = score.GetData(Of Double)() ' Does not work?
 
         Dim nbInputs = Me.inputArray.GetLength(0)
         Dim nbTargets = Me.targetArray.GetLength(0)
@@ -221,6 +252,8 @@ Public Class clsMLPKeras : Inherits clsVectorizedMLPGeneric
                 k += 1
             Next
         Next
+        'Me.lastOutputArray1D = outputs
+        'Me.lastOutputArray1DSingle = clsMLPHelper.Convert1DArrayOfDoubleToSingle(outputs)
         Me.lastOutputArray1DSingle = outputs
         Me.output = outputs2D
 
@@ -230,7 +263,13 @@ Public Class clsMLPKeras : Inherits clsVectorizedMLPGeneric
 
         ' ForwardPropogateSignal
         Dim score = model.Predict(Me.inputNDA, verbose:=0)
+        'Dim score = model.Predict(Me.inputNDA, verbose:=1)
         Dim outputs!() = score.GetData(Of Single)()
+        Dim o1 = outputs(0)
+        If Single.IsNaN(o1) Then
+            Debug.WriteLine("!")
+            Throw New Exception("Keras MLP model is not initialized!")
+        End If
 
         Dim nbInputs = 1
         Dim nbTargets = 1
@@ -275,6 +314,7 @@ Public Class clsMLPKeras : Inherits clsVectorizedMLPGeneric
 
         Dim inputsDble#(0, input.Length - 1)
         clsMLPHelper.Fill2DArrayOfDoubleByArrayOfSingle(inputsDble, input, 0)
+
         Me.inputNDA = inputsDble
         SetOuput1DOneSample()
 
@@ -304,16 +344,15 @@ Public Class clsMLPKeras : Inherits clsVectorizedMLPGeneric
 
             Dim wsi = ws(i - 1)
             Dim nbItems = wsi.GetUpperBound(0) + 1
-            Dim nbNeuronsLayer = weights(i - 1).len
-            Dim nbNeuronsPreviousLayer = nbItems \ nbNeuronsLayer
+            Dim nbNeuronsPreviousLayer = weights(i - 1).len
+            Dim nbNeuronsLayer = nbItems \ nbNeuronsPreviousLayer
             Dim oneDim = (i Mod 2 = 0)
             Dim l = 0
-            Dim lMax = wsi.GetUpperBound(0) + 1
-            For j = 0 To nbNeuronsLayer - 1
+            For j = 0 To nbNeuronsPreviousLayer - 1
                 sb.Append(" ")
                 If Not oneDim Then sb.Append("{")
 
-                Dim nbWeights = nbNeuronsPreviousLayer
+                Dim nbWeights = nbNeuronsLayer
                 For k = 0 To nbWeights - 1
                     Dim weight = wsi(l)
                     Dim sVal$ = weight.ToString(format2Dec).ReplaceCommaByDot()
@@ -323,7 +362,7 @@ Public Class clsMLPKeras : Inherits clsVectorizedMLPGeneric
                 Next k
 
                 If Not oneDim Then sb.Append("}")
-                If j < nbNeuronsLayer - 1 Then
+                If j < nbNeuronsPreviousLayer - 1 Then
                     sb.Append(",")
                     If Not oneDim Then sb.Append(vbLf)
                 End If

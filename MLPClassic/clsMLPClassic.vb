@@ -55,9 +55,7 @@ Friend Class clsMLPClassic : Inherits clsMLPGeneric
 
     Public Overrides Sub InitializeStruct(neuronCount%(), addBiasColumn As Boolean)
 
-        Me.layerCount = neuronCount.GetLength(0)
-        Me.useBias = addBiasColumn
-        Me.neuronCount = neuronCount
+        MyBase.InitializeStruct(neuronCount, addBiasColumn)
 
         ReDim Me.Layers(Me.layerCount - 1)
 

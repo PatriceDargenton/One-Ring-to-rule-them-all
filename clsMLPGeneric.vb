@@ -9,7 +9,15 @@ Public MustInherit Class clsMLPGeneric
 
 #Region "Declaration"
 
-    Public MustOverride Sub InitializeStruct(neuronCount%(), addBiasColumn As Boolean)
+    Public Overridable Sub InitializeStruct(neuronCount%(), addBiasColumn As Boolean)
+        Me.useBias = addBiasColumn
+        Me.layerCount = neuronCount.Length
+        Me.neuronCount = neuronCount
+        Me.nbInputNeurons = Me.neuronCount(0)
+        Me.nbHiddenNeurons = Me.neuronCount(1)
+        Me.nbOutputNeurons = Me.neuronCount(Me.layerCount - 1)
+    End Sub
+
     Public MustOverride Sub InitializeWeights(layer%, weights#(,))
 
     Protected nbInputNeurons%
@@ -68,6 +76,11 @@ Public MustInherit Class clsMLPGeneric
     ''' Output array 1D
     ''' </summary>
     Public lastOutputArray1DSingle!()
+
+    ''' <summary>
+    ''' Output array 1D
+    ''' </summary>
+    Public lastOutputArray1D#() ' 29/11/2020
 
     Public lastErrorArray#(,)
 
@@ -472,6 +485,16 @@ Public MustInherit Class clsMLPGeneric
     Public Overridable Sub TestOneSample(input!(), ByRef ouput!())
         TestOneSample(input)
         ouput = Me.lastOutputArray1DSingle
+    End Sub
+
+    Public Overridable Sub TestOneSampleAndComputeError(input!(), target!()) ' 29/11/2020
+
+        TestOneSample(input)
+
+        Dim targetArray2D!(0, target.GetUpperBound(0))
+        clsMLPHelper.Fill2DArrayOfSingle(targetArray2D, target, 0)
+        ComputeAverageErrorOneSample(targetArray2D)
+
     End Sub
 
     ''' <summary>

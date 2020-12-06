@@ -44,12 +44,7 @@ Public Class clsMLPTensorFlow : Inherits clsVectorizedMLPGeneric
 
     Public Overrides Sub InitializeStruct(neuronCount%(), addBiasColumn As Boolean)
 
-        Me.useBias = addBiasColumn
-        Me.layerCount = neuronCount.Length
-        Me.neuronCount = neuronCount
-        Me.nbInputNeurons = Me.neuronCount(0)
-        Me.nbHiddenNeurons = Me.neuronCount(1)
-        Me.nbOutputNeurons = Me.neuronCount(Me.layerCount - 1)
+        MyBase.InitializeStruct(neuronCount, addBiasColumn)
 
         ReDim Me.hiddenWeights(Me.nbInputNeurons * Me.nbHiddenNeurons - 1)
         ReDim Me.outputWeights(Me.nbHiddenNeurons * Me.nbOutputNeurons - 1)
@@ -316,10 +311,12 @@ Public Class clsMLPTensorFlow : Inherits clsVectorizedMLPGeneric
         Dim nbTargets = Me.targetArray.GetLength(0)
         Dim outputs2D#(nbTargets - 1, Me.nbOutputNeurons - 1)
         For i = 0 To nbInputs - 1
-            For j = 0 To Me.nbOutputNeurons - 1
-                outputs2D(i, j) = Me.outputs1D(i)
-            Next
+            'For j = 0 To Me.nbOutputNeurons - 1
+            '    outputs2D(i, j) = Me.outputs1D(i)
+            'Next
+            clsMLPHelper.Fill2DArrayOfDoubleByArray(outputs2D, Me.outputs1D, i)
         Next
+
         Me.output = outputs2D
         Me.lastOutputArray1DSingle = clsMLPHelper.Convert1DArrayOfDoubleToSingle(Me.outputs1D)
 

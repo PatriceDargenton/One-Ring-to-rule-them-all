@@ -172,7 +172,6 @@
     <Compile Include="MLPOOP\Neurons\NeuronEnum.vb" />
     <Compile Include="MLPOOP\Neurons\Weight.vb" />
     <Compile Include="MLPOOP\Randoms\BaseRandom.vb" />
-    <Compile Include="MLPOOP\Randoms\Predefined.vb" />
     <Compile Include="MLPOOP\Randoms\Standard.vb" />
     <Compile Include="MLPOOP\MLPOOPTests.vb" />
     <Compile Include="MLPOOP\Range.vb" />

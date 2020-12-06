@@ -499,7 +499,7 @@ Namespace Utility
         End Function
 
         ''' <summary>
-        ''' Convert whole Matrix object to array
+        ''' Convert whole Matrix object to an array of Single
         ''' </summary>
         Public Function ToArraySingle() As Single()
 
@@ -509,6 +509,24 @@ Namespace Utility
             For i = 0 To Me.r - 1
                 For j = 0 To Me.c - 1
                     array(k) = CSng(Me.m_matrix(i, j))
+                    k += 1
+                Next
+            Next
+            Return array
+
+        End Function
+
+        ''' <summary>
+        ''' Convert whole Matrix object to an array of Double
+        ''' </summary>
+        Public Function ToArray() As Double()
+
+            Dim length = Me.m_matrix.RowCount * Me.m_matrix.ColumnCount
+            Dim array#() = New Double(length - 1) {}
+            Dim k = 0
+            For i = 0 To Me.r - 1
+                For j = 0 To Me.c - 1
+                    array(k) = Me.m_matrix(i, j)
                     k += 1
                 Next
             Next

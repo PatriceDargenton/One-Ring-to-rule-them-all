@@ -11,7 +11,7 @@ Public Module modExt
     ''' <summary>
     ''' Add NextDouble function to standard Random generator
     ''' </summary>
-    <Extension> _
+    <Extension>
     Public Function NextDouble#(rand As Random, minValue#, maxValue#)
         Return rand.NextDouble * Math.Abs(maxValue - minValue) + minValue
     End Function
@@ -19,7 +19,7 @@ Public Module modExt
     ''' <summary>
     ''' Add NextFloat function to standard Random generator
     ''' </summary>
-    <Extension> _
+    <Extension>
     Public Function NextFloat!(rand As Random)
         Return CSng(rand.NextDouble)
     End Function
@@ -27,7 +27,7 @@ Public Module modExt
     ''' <summary>
     ''' Add NextFloat function to standard Random generator
     ''' </summary>
-    <Extension> _
+    <Extension>
     Public Function NextFloat!(rand As Random, maxValue!)
         Return CSng(rand.NextDouble * maxValue)
     End Function
@@ -35,7 +35,7 @@ Public Module modExt
     ''' <summary>
     ''' Add NextFloat function to standard Random generator
     ''' </summary>
-    <Extension> _
+    <Extension>
     Public Function NextFloat!(rand As Random, minValue!, maxValue!)
         Return CSng(rand.NextDouble * Math.Abs(CDbl(maxValue - minValue))) + minValue
     End Function
