@@ -236,7 +236,7 @@ Namespace ClassicMLP
             Assert.AreEqual(sExpectedOutput, sOutput)
 
             Const expectedLoss# = 0.04
-            Dim loss! = m_mlp.averageError
+            Dim loss# = m_mlp.averageError
             Dim lossRounded# = Math.Round(loss, 2)
             Assert.AreEqual(True, lossRounded <= expectedLoss)
 
@@ -268,7 +268,7 @@ Namespace ClassicMLP
             Assert.AreEqual(sExpectedOutput, sOutput)
 
             Const expectedLoss# = 0
-            Dim loss! = m_mlp.averageError
+            Dim loss# = m_mlp.averageError
             Dim lossRounded# = Math.Round(loss, 2)
             Assert.AreEqual(True, lossRounded <= expectedLoss)
 
@@ -300,7 +300,7 @@ Namespace ClassicMLP
             Assert.AreEqual(sExpectedOutput, sOutput)
 
             Const expectedLoss# = 0
-            Dim loss! = m_mlp.averageError
+            Dim loss# = m_mlp.averageError
             Dim lossRounded# = Math.Round(loss, 2)
             Assert.AreEqual(True, lossRounded <= expectedLoss)
 
@@ -356,7 +356,7 @@ Namespace ClassicMLP
             Assert.AreEqual(sExpectedOutput, sOutput)
 
             Const expectedLoss# = 0
-            Dim loss! = m_mlp.averageError
+            Dim loss# = m_mlp.averageError
             Dim lossRounded# = Math.Round(loss, 2)
             Assert.AreEqual(True, lossRounded <= expectedLoss)
 
@@ -391,7 +391,7 @@ Namespace ClassicMLP
             Assert.AreEqual(sExpectedOutput, sOutput)
 
             Const expectedLoss# = 0
-            Dim loss! = m_mlp.averageError
+            Dim loss# = m_mlp.averageError
             Dim lossRounded# = Math.Round(loss, 2)
             Assert.AreEqual(True, lossRounded <= expectedLoss)
 
@@ -426,7 +426,7 @@ Namespace ClassicMLP
             Assert.AreEqual(sExpectedOutput, sOutput)
 
             Const expectedLoss# = 0
-            Dim loss! = m_mlp.averageError
+            Dim loss# = m_mlp.averageError
             Dim lossRounded# = Math.Round(loss, 2)
             Assert.AreEqual(True, lossRounded <= expectedLoss)
 
@@ -476,7 +476,7 @@ Namespace ClassicMLP
             Assert.AreEqual(sExpectedOutput, sOutput)
 
             Const expectedLoss# = 0
-            Dim loss! = m_mlp.averageError
+            Dim loss# = m_mlp.averageError
             Dim lossRounded# = Math.Round(loss, 2)
             Assert.AreEqual(True, lossRounded <= expectedLoss)
 
@@ -512,7 +512,7 @@ Namespace ClassicMLP
             Assert.AreEqual(sExpectedOutput, sOutput)
 
             Const expectedLoss# = 0.01
-            Dim loss! = m_mlp.averageError
+            Dim loss# = m_mlp.averageError
             Dim lossRounded# = Math.Round(loss, 2)
             Assert.AreEqual(True, lossRounded <= expectedLoss)
 
@@ -548,7 +548,7 @@ Namespace ClassicMLP
             Assert.AreEqual(sExpectedOutput, sOutput)
 
             Const expectedLoss# = 0
-            Dim loss! = m_mlp.averageError
+            Dim loss# = m_mlp.averageError
             Dim lossRounded# = Math.Round(loss, 2)
             Assert.AreEqual(True, lossRounded <= expectedLoss)
 
@@ -584,7 +584,7 @@ Namespace ClassicMLP
             Assert.AreEqual(sExpectedOutput, sOutput)
 
             Const expectedLoss# = 0
-            Dim loss! = m_mlp.averageError
+            Dim loss# = m_mlp.averageError
             Dim lossRounded# = Math.Round(loss, 2)
             Assert.AreEqual(True, lossRounded <= expectedLoss)
 
@@ -620,7 +620,7 @@ Namespace ClassicMLP
             Assert.AreEqual(sExpectedOutput, sOutput)
 
             Const expectedLoss# = 0
-            Dim loss! = m_mlp.averageError
+            Dim loss# = m_mlp.averageError
             Dim lossRounded# = Math.Round(loss, 2)
             Assert.AreEqual(True, lossRounded <= expectedLoss)
 

@@ -196,7 +196,7 @@ Public Class clsMLPEncog : Inherits clsVectorizedMLPGeneric
     Public Overrides Sub TrainVectorOneIteration()
 
         Me.imlTrain.Iteration()
-        Me.averageError = CSng(Me.imlTrain.Error)
+        Me.averageError = Me.imlTrain.Error
 
     End Sub
 

@@ -67,7 +67,7 @@ Namespace VectorizedMatrixMLP
             Assert.AreEqual(sExpectedOutput, sOutput)
 
             Const expectedLoss# = 0.04
-            Dim loss! = m_mlp.averageError
+            Dim loss# = m_mlp.averageError
             Dim lossRounded# = Math.Round(loss, 2)
             Assert.AreEqual(True, lossRounded <= expectedLoss)
 
@@ -103,7 +103,7 @@ Namespace VectorizedMatrixMLP
             Assert.AreEqual(sExpectedOutput, sOutput)
 
             Const expectedLoss# = 0.04
-            Dim loss! = m_mlp.averageError
+            Dim loss# = m_mlp.averageError
             Dim lossRounded# = Math.Round(loss, 2)
             Assert.AreEqual(True, lossRounded <= expectedLoss)
 
@@ -139,7 +139,7 @@ Namespace VectorizedMatrixMLP
             Assert.AreEqual(sExpectedOutput, sOutput)
 
             Const expectedLoss# = 0.15
-            Dim loss! = m_mlp.averageError
+            Dim loss# = m_mlp.averageError
             Dim lossRounded# = Math.Round(loss, 2)
             Assert.AreEqual(True, lossRounded <= expectedLoss)
 
@@ -177,7 +177,7 @@ Namespace VectorizedMatrixMLP
             Assert.AreEqual(sExpectedOutput, sOutput)
 
             Const expectedLoss# = 0.04
-            Dim loss! = m_mlp.averageError
+            Dim loss# = m_mlp.averageError
             Dim lossRounded# = Math.Round(loss, 2)
             Assert.AreEqual(True, lossRounded <= expectedLoss)
 
@@ -217,7 +217,7 @@ Namespace VectorizedMatrixMLP
             Assert.AreEqual(sExpectedOutput, sOutput)
 
             Const expectedLoss# = 0.12
-            Dim loss! = m_mlp.averageError
+            Dim loss# = m_mlp.averageError
             Dim lossRounded# = Math.Round(loss, 2)
             Assert.AreEqual(True, lossRounded <= expectedLoss)
 
@@ -258,7 +258,7 @@ Namespace VectorizedMatrixMLP
             Assert.AreEqual(sExpectedOutput, sOutput)
 
             Const expectedLoss# = 0.1
-            Dim loss! = m_mlp.averageError
+            Dim loss# = m_mlp.averageError
             Dim lossRounded# = Math.Round(loss, 2)
             Assert.AreEqual(True, lossRounded <= expectedLoss)
 
@@ -293,7 +293,7 @@ Namespace VectorizedMatrixMLP
             Assert.AreEqual(sExpectedOutput, sOutput)
 
             Const expectedLoss# = 0.04
-            Dim loss! = m_mlp.averageError
+            Dim loss# = m_mlp.averageError
             Dim lossRounded# = Math.Round(loss, 2)
             Assert.AreEqual(True, lossRounded <= expectedLoss)
 
@@ -331,7 +331,7 @@ Namespace VectorizedMatrixMLP
             Assert.AreEqual(sExpectedOutput, sOutput)
 
             Const expectedLoss# = 0.02
-            Dim loss! = m_mlp.averageError
+            Dim loss# = m_mlp.averageError
             Dim lossRounded# = Math.Round(loss, 2)
             Assert.AreEqual(True, lossRounded <= expectedLoss)
 
@@ -372,7 +372,7 @@ Namespace VectorizedMatrixMLP
             Assert.AreEqual(sExpectedOutput, sOutput)
 
             Const expectedLoss# = 0.02 '0.08
-            Dim loss! = m_mlp.averageError
+            Dim loss# = m_mlp.averageError
             Dim lossRounded# = Math.Round(loss, 2)
             Assert.AreEqual(True, lossRounded <= expectedLoss)
 
@@ -410,7 +410,7 @@ Namespace VectorizedMatrixMLP
             Assert.AreEqual(sExpectedOutput, sOutput)
 
             Const expectedLoss# = 0.01 '0.02
-            Dim loss! = m_mlp.averageError
+            Dim loss# = m_mlp.averageError
             Dim lossRounded# = Math.Round(loss, 2)
             Assert.AreEqual(True, lossRounded <= expectedLoss)
 
@@ -451,7 +451,7 @@ Namespace VectorizedMatrixMLP
             Assert.AreEqual(sExpectedOutput, sOutput)
 
             Const expectedLoss# = 0.01 '0.03
-            Dim loss! = m_mlp.averageError
+            Dim loss# = m_mlp.averageError
             Dim lossRounded# = Math.Round(loss, 2)
             Assert.AreEqual(True, lossRounded <= expectedLoss)
 
@@ -489,7 +489,7 @@ Namespace VectorizedMatrixMLP
             Assert.AreEqual(sExpectedOutput, sOutput)
 
             Const expectedLoss# = 0
-            Dim loss! = m_mlp.averageError
+            Dim loss# = m_mlp.averageError
             Dim lossRounded# = Math.Round(loss, 2)
             Assert.AreEqual(True, lossRounded <= expectedLoss)
 
@@ -526,7 +526,7 @@ Namespace VectorizedMatrixMLP
             Assert.AreEqual(sExpectedOutput, sOutput)
 
             Const expectedLoss# = 0
-            Dim loss! = m_mlp.averageError
+            Dim loss# = m_mlp.averageError
             Dim lossRounded# = Math.Round(loss, 2)
             Assert.AreEqual(True, lossRounded <= expectedLoss)
 
@@ -563,7 +563,7 @@ Namespace VectorizedMatrixMLP
             Assert.AreEqual(sExpectedOutput, sOutput)
 
             Const expectedLoss# = 0.04
-            Dim loss! = m_mlp.averageError
+            Dim loss# = m_mlp.averageError
             Dim lossRounded# = Math.Round(loss, 2)
             Assert.AreEqual(True, lossRounded <= expectedLoss)
 
@@ -604,7 +604,7 @@ Namespace VectorizedMatrixMLP
             Assert.AreEqual(sExpectedOutput, sOutput)
 
             Const expectedLoss# = 0
-            Dim loss! = m_mlp.averageError
+            Dim loss# = m_mlp.averageError
             Dim lossRounded# = Math.Round(loss, 2)
             Assert.AreEqual(True, lossRounded <= expectedLoss)
 
@@ -645,7 +645,7 @@ Namespace VectorizedMatrixMLP
             Assert.AreEqual(sExpectedOutput, sOutput)
 
             Const expectedLoss# = 0.01
-            Dim loss! = m_mlp.averageError
+            Dim loss# = m_mlp.averageError
             Dim lossRounded# = Math.Round(loss, 2)
             Assert.AreEqual(True, lossRounded <= expectedLoss)
 
@@ -687,7 +687,7 @@ Namespace VectorizedMatrixMLP
             Assert.AreEqual(sExpectedOutput, sOutput)
 
             Const expectedLoss# = 0.02
-            Dim loss! = m_mlp.averageError
+            Dim loss# = m_mlp.averageError
             Dim lossRounded# = Math.Round(loss, 2)
             Assert.AreEqual(True, lossRounded <= expectedLoss)
 
@@ -729,7 +729,7 @@ Namespace VectorizedMatrixMLP
             Assert.AreEqual(sExpectedOutput, sOutput)
 
             Const expectedLoss# = 0.02
-            Dim loss! = m_mlp.averageError
+            Dim loss# = m_mlp.averageError
             Dim lossRounded# = Math.Round(loss, 2)
             Assert.AreEqual(True, lossRounded <= expectedLoss)
 
@@ -771,7 +771,7 @@ Namespace VectorizedMatrixMLP
             Assert.AreEqual(sExpectedOutput, sOutput)
 
             Const expectedLoss# = 0 '0.17
-            Dim loss! = m_mlp.averageError
+            Dim loss# = m_mlp.averageError
             Dim lossRounded# = Math.Round(loss, 2)
             Assert.AreEqual(True, lossRounded <= expectedLoss)
 
@@ -815,7 +815,7 @@ Namespace VectorizedMatrixMLP
             Assert.AreEqual(sExpectedOutput, sOutput)
 
             Const expectedLoss# = 0.01
-            Dim loss! = m_mlp.averageError
+            Dim loss# = m_mlp.averageError
             Dim lossRounded# = Math.Round(loss, 2)
             Assert.AreEqual(True, lossRounded <= expectedLoss)
 
@@ -861,7 +861,7 @@ Namespace VectorizedMatrixMLP
             Assert.AreEqual(sExpectedOutput, sOutput)
 
             Const expectedLoss# = 0.02
-            Dim loss! = m_mlp.averageError
+            Dim loss# = m_mlp.averageError
             Dim lossRounded# = Math.Round(loss, 2)
             Assert.AreEqual(True, lossRounded <= expectedLoss)
 
@@ -907,7 +907,7 @@ Namespace VectorizedMatrixMLP
             Assert.AreEqual(sExpectedOutput, sOutput)
 
             Const expectedLoss# = 0.01
-            Dim loss! = m_mlp.averageError
+            Dim loss# = m_mlp.averageError
             Dim lossRounded# = Math.Round(loss, 2)
             Assert.AreEqual(True, lossRounded <= expectedLoss)
 
@@ -953,7 +953,7 @@ Namespace VectorizedMatrixMLP
             Assert.AreEqual(sExpectedOutput, sOutput)
 
             Const expectedLoss# = 0.01
-            Dim loss! = m_mlp.averageError
+            Dim loss# = m_mlp.averageError
             Dim lossRounded# = Math.Round(loss, 2)
             Assert.AreEqual(True, lossRounded <= expectedLoss)
 
@@ -991,7 +991,7 @@ Namespace VectorizedMatrixMLP
             Assert.AreEqual(True, successRounded >= expectedSuccess)
 
             Const expectedLoss# = 0.05#
-            Dim loss! = m_mlp.averageError
+            Dim loss# = m_mlp.averageError
             Dim lossRounded# = Math.Round(loss, 2)
             Assert.AreEqual(True, lossRounded <= expectedLoss)
 
@@ -1035,7 +1035,7 @@ Namespace VectorizedMatrixMLP
             Assert.AreEqual(True, successRounded >= expectedSuccess)
 
             Const expectedLoss# = 0.03#
-            Dim loss! = m_mlp.averageError
+            Dim loss# = m_mlp.averageError
             Dim lossRounded# = Math.Round(loss, 2)
             Assert.AreEqual(True, lossRounded <= expectedLoss)
 
@@ -1085,7 +1085,7 @@ Namespace VectorizedMatrixMLP
             Assert.AreEqual(True, successRounded >= expectedSuccess)
 
             Const expectedLoss# = 0.085
-            Dim loss! = m_mlp.averageError
+            Dim loss# = m_mlp.averageError
             Dim lossRounded# = Math.Round(loss, 3)
             Assert.AreEqual(True, lossRounded <= expectedLoss)
 
@@ -1161,7 +1161,7 @@ Namespace VectorizedMatrixMLP
             Assert.AreEqual(True, successRounded >= expectedSuccess)
 
             Const expectedLoss# = 0.05
-            Dim loss! = m_mlp.averageError
+            Dim loss# = m_mlp.averageError
             Dim lossRounded# = Math.Round(loss, 3)
             Assert.AreEqual(True, lossRounded <= expectedLoss)
 

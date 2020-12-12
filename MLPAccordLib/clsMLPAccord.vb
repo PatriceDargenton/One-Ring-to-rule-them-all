@@ -219,7 +219,7 @@ Public Class clsMLPAccord : Inherits clsVectorizedMLPGeneric
             avgError = Me.teacherBPL.RunEpoch(Me.inputJaggedDblArray, Me.targetJaggedDblArray)
         End If
         ' Does not work fine, too high!?
-        'Me.averageError = CSng(avgError)
+        'Me.averageError = avgError
 
     End Sub
 
@@ -260,7 +260,7 @@ Public Class clsMLPAccord : Inherits clsVectorizedMLPGeneric
         Else
             avgError = Me.teacherBPL.Run(inputArrayDbl, targetArrayDbl)
         End If
-        'Me.averageError = CSng(avgError)
+        'Me.averageError = avgError
 
         Dim outputs#() = Me.network.Compute(inputArrayDbl)
         Me.lastOutputArray1DSingle = clsMLPHelper.Convert1DArrayOfDoubleToSingle(outputs)
@@ -271,7 +271,7 @@ Public Class clsMLPAccord : Inherits clsVectorizedMLPGeneric
             Dim target0 = target(i)
             sum += Math.Abs(ouput - target0)
         Next
-        Me.averageError = CSng(sum / Me.nbOutputNeurons)
+        Me.averageError = sum / Me.nbOutputNeurons
 
     End Sub
 

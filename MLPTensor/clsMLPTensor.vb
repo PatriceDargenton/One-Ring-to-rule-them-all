@@ -279,7 +279,7 @@ Public Class clsMLPTensor : Inherits clsVectorizedMLPGeneric
         Me.lastError = Me.loss.Data
     End Sub
 
-    Public Overrides Function ComputeAverageError!()
+    Public Overrides Function ComputeAverageError#()
         ' Calculate the error: ERROR = TARGETS - OUTPUTS
         Dim m As Matrix = Me.targetArray
         Me.lastError = m - Me.output

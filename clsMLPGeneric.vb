@@ -135,7 +135,7 @@ Public MustInherit Class clsMLPGeneric
     ''' <summary>
     ''' Average error of the output matrix
     ''' </summary>
-    Public averageError!
+    Public averageError#
 
     ''' <summary>
     ''' Random generator (Shared)
@@ -302,13 +302,13 @@ Public MustInherit Class clsMLPGeneric
     ''' </summary>
     Public Overridable Sub ComputeAverageErrorFromLastError()
         ' Compute first abs then average:
-        Me.averageError = CSng(Me.lastError.Abs.Average)
+        Me.averageError = Me.lastError.Abs.Average
     End Sub
 
     ''' <summary>
     ''' Compute average error of the output matrix for all samples
     ''' </summary>
-    Public Overridable Function ComputeAverageError!()
+    Public Overridable Function ComputeAverageError#()
         Me.ComputeError()
         Me.ComputeAverageErrorFromLastError()
         Return Me.averageError
@@ -317,7 +317,7 @@ Public MustInherit Class clsMLPGeneric
     ''' <summary>
     ''' Compute average error of the output matrix for one sample
     ''' </summary>
-    Public Overridable Function ComputeAverageErrorOneSample!(targetArray!(,))
+    Public Overridable Function ComputeAverageErrorOneSample#(targetArray!(,))
         Me.ComputeErrorOneSample(targetArray)
         Me.ComputeAverageErrorFromLastError()
         Return Me.averageError

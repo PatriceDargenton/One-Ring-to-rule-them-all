@@ -221,7 +221,7 @@ Public Class clsMLPKeras : Inherits clsVectorizedMLPGeneric
             Me.inputNDA, Me.targetNDA, batch_size:=batch_size,
             epochs:=nbIterationsBatch, verbose:=0)
         Dim err = history.HistoryLogs("loss").GetValue(0)
-        Me.averageError = CSng(err)
+        Me.averageError = CDbl(err)
 
     End Sub
 

@@ -167,7 +167,7 @@ Namespace NetworkOOP
 
             Dim data = SetInputAndTargetOneSample(input, target)
             TrainOneSampleOOP(data)
-            Me.averageError = CSng(Me.TotalError / target.GetLength(0))
+            Me.averageError = Me.TotalError / target.GetLength(0)
             SetOuput1D()
 
         End Sub

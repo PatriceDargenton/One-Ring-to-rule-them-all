@@ -166,7 +166,7 @@ Namespace TensorFlowMLP
             Assert.AreEqual(sExpectedOutput, sOutput)
 
             Const expectedLoss# = 0.02
-            Dim loss! = m_mlp.averageError
+            Dim loss# = m_mlp.averageError
             Dim lossRounded# = Math.Round(loss, 2)
             Assert.AreEqual(True, lossRounded <= expectedLoss)
 
@@ -197,7 +197,7 @@ Namespace TensorFlowMLP
         '    Assert.AreEqual(sExpectedOutput, sOutput)
 
         '    Const expectedLoss# = 0.01
-        '    Dim loss! = m_mlp.averageError
+        '    Dim loss# = m_mlp.averageError
         '    Dim lossRounded# = Math.Round(loss, 2)
         '    Assert.AreEqual(True, lossRounded <= expectedLoss)
 

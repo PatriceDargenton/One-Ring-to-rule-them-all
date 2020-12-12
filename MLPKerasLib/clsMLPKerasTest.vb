@@ -154,7 +154,7 @@ Namespace KerasMLP
             Assert.AreEqual(sExpectedOutput, sOutput)
 
             Const expectedLoss# = 0.04
-            Dim loss! = m_mlp.averageError
+            Dim loss# = m_mlp.averageError
             Dim lossRounded# = Math.Round(loss, 2)
             Assert.AreEqual(True, lossRounded <= expectedLoss)
 
@@ -214,7 +214,7 @@ Namespace KerasMLP
             Assert.AreEqual(sExpectedOutput, sOutput)
 
             Const expectedLoss# = 0.02
-            Dim loss! = m_mlp.averageError
+            Dim loss# = m_mlp.averageError
             Dim lossRounded# = Math.Round(loss, 2)
             Assert.AreEqual(True, lossRounded <= expectedLoss)
 
@@ -257,7 +257,7 @@ Namespace KerasMLP
             Assert.AreEqual(sExpectedOutput, sOutput)
 
             Const expectedLoss# = 0.02
-            Dim loss! = m_mlp.averageError
+            Dim loss# = m_mlp.averageError
             Dim lossRounded# = Math.Round(loss, 2)
             Assert.AreEqual(True, lossRounded <= expectedLoss)
 
@@ -271,7 +271,7 @@ Namespace KerasMLP
 
             m_mlp.InitializeStruct(m_neuronCountXOR2_16_1, addBiasColumn:=False)
 
-            m_mlp.nbIterations = 1000 '700
+            m_mlp.nbIterations = 1200 '700
             m_mlp.SetActivationFunction(enumActivationFunction.HyperbolicTangent, gain:=2.0!)
 
             m_mlp.InitializeWeights(1, {
@@ -309,7 +309,7 @@ Namespace KerasMLP
             Assert.AreEqual(sExpectedOutput, sOutput)
 
             Const expectedLoss# = 0.02
-            Dim loss! = m_mlp.averageError
+            Dim loss# = m_mlp.averageError
             Dim lossRounded# = Math.Round(loss, 2)
             Assert.AreEqual(True, lossRounded <= expectedLoss)
 
@@ -355,7 +355,7 @@ Namespace KerasMLP
             Assert.AreEqual(sExpectedOutput, sOutput)
 
             Const expectedLoss# = 0
-            Dim loss! = m_mlp.averageError
+            Dim loss# = m_mlp.averageError
             Dim lossRounded# = Math.Round(loss, 2)
             Assert.AreEqual(True, lossRounded <= expectedLoss)
 
@@ -425,7 +425,7 @@ Namespace KerasMLP
             Assert.AreEqual(sExpectedOutput, sOutput)
 
             Const expectedLoss# = 0.02
-            Dim loss! = m_mlp.averageError
+            Dim loss# = m_mlp.averageError
             Dim lossRounded# = Math.Round(loss, 2)
             Assert.AreEqual(True, lossRounded <= expectedLoss)
 
@@ -472,7 +472,7 @@ Namespace KerasMLP
             Assert.AreEqual(sExpectedOutput, sOutput)
 
             Const expectedLoss# = 0.01
-            Dim loss! = m_mlp.averageError
+            Dim loss# = m_mlp.averageError
             Dim lossRounded# = Math.Round(loss, 2)
             Assert.AreEqual(True, lossRounded <= expectedLoss)
 
@@ -544,7 +544,7 @@ Namespace KerasMLP
             Assert.AreEqual(sExpectedOutput, sOutput)
 
             Const expectedLoss# = 0.01
-            Dim loss! = m_mlp.averageError
+            Dim loss# = m_mlp.averageError
             Dim lossRounded# = Math.Round(loss, 2)
             Assert.AreEqual(True, lossRounded <= expectedLoss)
 

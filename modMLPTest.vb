@@ -1526,7 +1526,7 @@ Module modMLPTest
         Dim sExpectedOutput = expectedMatrix.ToStringWithFormat(dec:="0.0")
         Assert.AreEqual(sExpectedOutput, sOutput)
 
-        Dim loss! = mlp.ComputeAverageError()
+        Dim loss# = mlp.averageError
         Dim lossRounded# = Math.Round(loss, 2)
         Assert.AreEqual(True, lossRounded <= expectedLoss)
 
@@ -1562,7 +1562,7 @@ Module modMLPTest
         Dim sExpectedOutput = expectedMatrix.ToStringWithFormat(dec:="0.0")
         Assert.AreEqual(sExpectedOutput, sOutput)
 
-        Dim loss! = mlp.ComputeAverageError()
+        Dim loss# = mlp.averageError
         Dim lossRounded# = Math.Round(loss, 2)
         Assert.AreEqual(True, lossRounded <= expectedLoss)
 
@@ -1603,7 +1603,7 @@ Module modMLPTest
         Dim sExpectedOutput = expectedMatrix.ToStringWithFormat(dec:="0.0")
         Assert.AreEqual(sExpectedOutput, sOutput)
 
-        Dim loss! = mlp.ComputeAverageError()
+        Dim loss# = mlp.averageError
         Dim lossRounded# = Math.Round(loss, 2)
         Assert.AreEqual(True, lossRounded <= expectedLoss)
 
@@ -1646,7 +1646,7 @@ Module modMLPTest
         Dim sExpectedOutput = expectedMatrix.ToStringWithFormat(dec:="0.0")
         Assert.AreEqual(sExpectedOutput, sOutput)
 
-        Dim loss! = mlp.ComputeAverageError()
+        Dim loss# = mlp.averageError
         Dim lossRounded# = Math.Round(loss, 2)
         Assert.AreEqual(True, lossRounded <= expectedLoss)
 
@@ -1684,7 +1684,7 @@ Module modMLPTest
     '    Dim sExpectedOutput = expectedMatrix.ToStringWithFormat(dec:="0.0")
     '    Assert.AreEqual(sExpectedOutput, sOutput)
 
-    '    Dim loss! = mlp.ComputeAverageError()
+    '    Dim loss# = mlp.averageError
     '    Dim lossRounded# = Math.Round(loss, 2)
     '    Assert.AreEqual(True, lossRounded <= expectedLoss)
 
@@ -1721,7 +1721,7 @@ Module modMLPTest
         Dim sExpectedOutput = expectedMatrix.ToStringWithFormat(dec:="0.0")
         Assert.AreEqual(sExpectedOutput, sOutput)
 
-        Dim loss! = mlp.ComputeAverageError()
+        Dim loss# = mlp.averageError
         Dim lossRounded# = Math.Round(loss, 2)
         Assert.AreEqual(True, lossRounded <= expectedLoss)
 
@@ -1767,7 +1767,7 @@ Module modMLPTest
         Dim sExpectedOutput = expectedMatrix.ToStringWithFormat(dec:="0.0")
         Assert.AreEqual(sExpectedOutput, sOutput)
 
-        Dim loss! = mlp.ComputeAverageError()
+        Dim loss# = mlp.averageError
         Dim lossRounded# = Math.Round(loss, 2)
         Assert.AreEqual(True, lossRounded <= expectedLoss)
 
@@ -1809,7 +1809,7 @@ Module modMLPTest
         Dim sExpectedOutput = expectedMatrix.ToStringWithFormat(dec:="0.0")
         Assert.AreEqual(sExpectedOutput, sOutput)
 
-        Dim loss! = mlp.ComputeAverageError()
+        Dim loss# = mlp.averageError
         Dim lossRounded# = Math.Round(loss, 2)
         Assert.AreEqual(True, lossRounded <= expectedLoss)
 
@@ -1845,7 +1845,7 @@ Module modMLPTest
         Dim sExpectedOutput = expectedMatrix.ToStringWithFormat(dec:="0.0")
         Assert.AreEqual(sExpectedOutput, sOutput)
 
-        Dim loss! = mlp.ComputeAverageError()
+        Dim loss# = mlp.averageError
         Dim lossRounded# = Math.Round(loss, 2)
         Assert.AreEqual(True, lossRounded <= expectedLoss)
 
@@ -1893,7 +1893,7 @@ Module modMLPTest
         Dim sExpectedOutput = expectedMatrix.ToStringWithFormat(dec:="0.0")
         Assert.AreEqual(sExpectedOutput, sOutput)
 
-        Dim loss! = mlp.ComputeAverageError()
+        Dim loss# = mlp.averageError
         Dim lossRounded# = Math.Round(loss, 2)
         Assert.AreEqual(True, lossRounded <= expectedLoss)
 
@@ -1933,7 +1933,7 @@ Module modMLPTest
         Dim sExpectedOutput = expectedMatrix.ToStringWithFormat(dec:="0.0")
         Assert.AreEqual(sExpectedOutput, sOutput)
 
-        Dim loss! = mlp.ComputeAverageError()
+        Dim loss# = mlp.averageError
         Dim lossRounded# = Math.Round(loss, 2)
         Assert.AreEqual(True, lossRounded <= expectedLoss)
 
@@ -1972,7 +1972,7 @@ Module modMLPTest
         Dim sExpectedOutput = expectedMatrix.ToStringWithFormat(dec:="0.0")
         Assert.AreEqual(sExpectedOutput, sOutput)
 
-        Dim loss! = mlp.ComputeAverageError()
+        Dim loss# = mlp.averageError
         Dim lossRounded# = Math.Round(loss, 2)
         Assert.AreEqual(True, lossRounded <= expectedLoss)
 
@@ -2011,7 +2011,7 @@ Module modMLPTest
         Dim sExpectedOutput = expectedMatrix.ToStringWithFormat(dec:="0.0")
         Assert.AreEqual(sExpectedOutput, sOutput)
 
-        Dim loss! = mlp.ComputeAverageError()
+        Dim loss# = mlp.averageError
         Dim lossRounded# = Math.Round(loss, 2)
         Assert.AreEqual(True, lossRounded <= expectedLoss)
 
@@ -2052,7 +2052,7 @@ Module modMLPTest
         Dim sExpectedOutput = expectedMatrix.ToStringWithFormat(dec:="0.0")
         Assert.AreEqual(sExpectedOutput, sOutput)
 
-        Dim loss! = mlp.ComputeAverageError()
+        Dim loss# = mlp.averageError
         Dim lossRounded# = Math.Round(loss, 2)
         Assert.AreEqual(True, lossRounded <= expectedLoss)
 
@@ -2095,7 +2095,7 @@ Module modMLPTest
         Dim sExpectedOutput = expectedMatrix.ToStringWithFormat(dec:="0.0")
         Assert.AreEqual(sExpectedOutput, sOutput)
 
-        Dim loss! = mlp.ComputeAverageError()
+        Dim loss# = mlp.averageError
         Dim lossRounded# = Math.Round(loss, 2)
         Assert.AreEqual(True, lossRounded <= expectedLoss)
 
@@ -2138,7 +2138,7 @@ Module modMLPTest
         Dim sExpectedOutput = expectedMatrix.ToStringWithFormat(dec:="0.0")
         Assert.AreEqual(sExpectedOutput, sOutput)
 
-        Dim loss! = mlp.ComputeAverageError()
+        Dim loss# = mlp.averageError
         Dim lossRounded# = Math.Round(loss, 2)
         Assert.AreEqual(True, lossRounded <= expectedLoss)
 
@@ -2218,7 +2218,7 @@ Module modMLPTest
         Dim successRounded# = Math.Round(success, 3)
         Assert.AreEqual(True, successRounded >= expectedSuccess)
 
-        Dim loss! = mlp.averageError
+        Dim loss# = mlp.averageError
         Dim lossRounded# = Math.Round(loss, 3)
         Assert.AreEqual(True, lossRounded <= expectedLoss)
 
@@ -2278,7 +2278,7 @@ Module modMLPTest
         Dim successRounded# = Math.Round(success, 3)
         Assert.AreEqual(True, successRounded >= expectedSuccess)
 
-        Dim loss! = mlp.averageError
+        Dim loss# = mlp.averageError
         Dim lossRounded# = Math.Round(loss, 3)
         Assert.AreEqual(True, lossRounded <= expectedLoss)
 
@@ -2347,7 +2347,7 @@ Module modMLPTest
         Dim successRounded# = Math.Round(success, 3)
         Assert.AreEqual(True, successRounded >= expectedSuccess)
 
-        Dim loss! = mlp.averageError
+        Dim loss# = mlp.averageError
         Dim lossRounded# = Math.Round(loss, 3)
         Assert.AreEqual(True, lossRounded <= expectedLoss)
 
@@ -2399,7 +2399,7 @@ Module modMLPTest
         Dim successRounded# = Math.Round(success, 3)
         Assert.AreEqual(True, successRounded >= expectedSuccess)
 
-        Dim loss! = mlp.averageError
+        Dim loss# = mlp.averageError
         Dim lossRounded# = Math.Round(loss, 3)
         Assert.AreEqual(True, lossRounded <= expectedLoss)
 
@@ -2469,7 +2469,7 @@ Module modMLPTest
         Dim successRounded# = Math.Round(success, 3)
         Assert.AreEqual(True, successRounded >= expectedSuccess)
 
-        Dim loss! = mlp.averageError
+        Dim loss# = mlp.averageError
         Dim lossRounded# = Math.Round(loss, 3)
         Assert.AreEqual(True, lossRounded <= expectedLoss)
 
@@ -2545,7 +2545,7 @@ Module modMLPTest
         Dim successRounded# = Math.Round(success, 3)
         Assert.AreEqual(True, successRounded >= expectedSuccess)
 
-        Dim loss! = mlp.averageError
+        Dim loss# = mlp.averageError
         Dim lossRounded# = Math.Round(loss, 3)
         Assert.AreEqual(True, lossRounded <= expectedLoss)
 
@@ -2616,7 +2616,7 @@ Module modMLPTest
         Dim successRounded# = Math.Round(success, 3)
         Assert.AreEqual(True, successRounded >= expectedSuccess)
 
-        Dim loss! = mlp.averageError
+        Dim loss# = mlp.averageError
         Dim lossRounded# = Math.Round(loss, 3)
         Assert.AreEqual(True, lossRounded <= expectedLoss)
 
@@ -2687,7 +2687,7 @@ Module modMLPTest
         Dim successRounded# = Math.Round(success, 3)
         Assert.AreEqual(True, successRounded >= expectedSuccess)
 
-        Dim loss! = mlp.averageError
+        Dim loss# = mlp.averageError
         Dim lossRounded# = Math.Round(loss, 3)
         Assert.AreEqual(True, lossRounded <= expectedLoss)
 

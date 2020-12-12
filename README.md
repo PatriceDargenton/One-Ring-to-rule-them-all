@@ -146,6 +146,9 @@ Packages added:
 
 # Versions
 
+12/12/2020 V1.25
+- clsMLPGeneric.averageError: Single -> Double
+
 06/12/2020 V1.24
 - clsMLPGeneric.InitializeStruct function
 - clsMLPAccord: Resilient Backpropagation Learning
