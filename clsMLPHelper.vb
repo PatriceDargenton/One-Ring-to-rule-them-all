@@ -162,6 +162,8 @@ Public Class clsMLPHelper
     End Function
 
     Public Shared Function CompareArray(array2Da!(,), array2Db!(,)) As Boolean
+        If IsNothing(array2Da) Then Return False
+        If IsNothing(array2Db) Then Return False
         Dim length0a = array2Da.GetLength(0)
         Dim length1a = array2Da.GetLength(1)
         Dim length0b = array2Db.GetLength(0)
@@ -177,11 +179,33 @@ Public Class clsMLPHelper
     End Function
 
     Public Shared Function CompareArray1D(array1Da#(), array1Db#()) As Boolean
+        If IsNothing(array1Da) Then Return False
+        If IsNothing(array1Db) Then Return False
         Dim length0a = array1Da.GetLength(0)
         Dim length0b = array1Db.GetLength(0)
         If length0a <> length0b Then Return False
         For i = 0 To length0a - 1
-            If array1Da(i) <> array1Db(i) Then Return False
+            Dim va = array1Da(i)
+            Dim vb = array1Db(i)
+            If va <> vb Then
+                Return False
+            End If
+        Next
+        Return True
+    End Function
+
+    Public Shared Function CompareArray1DSingle(array1Da!(), array1Db!()) As Boolean
+        If IsNothing(array1Da) Then Return False
+        If IsNothing(array1Db) Then Return False
+        Dim length0a = array1Da.GetLength(0)
+        Dim length0b = array1Db.GetLength(0)
+        If length0a <> length0b Then Return False
+        For i = 0 To length0a - 1
+            Dim va = array1Da(i)
+            Dim vb = array1Db(i)
+            If va <> vb Then
+                Return False
+            End If
         Next
         Return True
     End Function

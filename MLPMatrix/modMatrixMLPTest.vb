@@ -75,15 +75,14 @@ Module modMatrixMLPTest
 
             'mlp.inputArray = inputs
             'mlp.targetArray = targets
-
+            mlp.inputArray = m_inputArrayXOR
+            mlp.targetArray = m_targetArrayXOR
             mlp.InitializeStruct(m_neuronCountXOR, addBiasColumn:=True)
             'mlp.InitializeStruct(m_neuronCountXOR231, addBiasColumn:=True)
             ' Not implemented:
             'mlp.InitializeStruct(m_neuronCountXOR4Layers2331, addBiasColumn:=True)
             'mlp.InitializeStruct(m_neuronCountXOR5Layers23331, addBiasColumn:=True)
             mlp.printOutputMatrix = True
-            mlp.inputArray = m_inputArrayXOR
-            mlp.targetArray = m_targetArrayXOR
         ElseIf nbXor = 2 Then
             mlp.inputArray = m_inputArray2XOR
             mlp.targetArray = m_targetArray2XOR

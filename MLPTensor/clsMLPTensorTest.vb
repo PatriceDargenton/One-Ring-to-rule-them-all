@@ -81,13 +81,13 @@ Module modMLPTensorTest
         mlp.nbIterations = nbIterations
 
         If nbXor = 1 Then
+            mlp.inputArray = m_inputArrayXOR
+            mlp.targetArray = m_targetArrayXOR
             mlp.InitializeStruct(m_neuronCountXOR, addBiasColumn:=True)
             'mlp.InitializeStruct(m_neuronCountXOR231, addBiasColumn:=True)
             'mlp.InitializeStruct(m_neuronCountXOR4Layers2331, addBiasColumn:=True)
             'mlp.InitializeStruct(m_neuronCountXOR5Layers23331, addBiasColumn:=True)
             mlp.printOutputMatrix = True
-            mlp.inputArray = m_inputArrayXOR
-            mlp.targetArray = m_targetArrayXOR
         ElseIf nbXor = 2 Then
             mlp.inputArray = m_inputArray2XOR
             mlp.targetArray = m_targetArray2XOR
@@ -889,12 +889,12 @@ Namespace TensorMLP
         End Sub
 
         <TestMethod()>
-        Public Sub TensorMLPIrisFlowerLogicalPrediction()
+        Public Sub TensorMLPIrisFlowerLogical()
 
             ' 97.8% prediction, 98.3% learning with 200 iterations in 1.5 sec.
 
             m_mlp.Initialize(learningRate:=0.1!, weightAdjustment:=0.1!)
-            'InitIrisFlowerLogicalPrediction(m_mlp)
+            'InitIrisFlowerLogical(m_mlp)
             m_mlp.inputArray = m_inputArrayIrisFlowerTrain
             m_mlp.targetArray = m_targetArrayIrisFlowerLogicalTrain
 

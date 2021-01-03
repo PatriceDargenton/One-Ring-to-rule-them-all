@@ -1,6 +1,7 @@
 ﻿
 Imports Perceptron.MLP.ActivationFunction
 Imports Perceptron.Utility ' Matrix
+Imports System.Text ' StringBuilder
 
 ''' <summary>
 ''' MultiLayer Perceptron (MLP) generic class
@@ -29,7 +30,19 @@ Public MustInherit Class clsMLPGeneric
     ''' </summary>
     Public Const nbRoundingDigits% = 2
 
+    ''' <summary>
+    ''' Set a random value other than 0 to avoid to nullify the gradient
+    ''' (only for RProp MLP for the moment)
+    ''' </summary>
+    Public Const minRandomValue! = 0.0001!
+
+    ''' <summary>
+    ''' Use Nguyen-Widrow weights initialization (only for RProp MLP for the moment)
+    ''' </summary>
+    Public useNguyenWidrowWeightsInitialization As Boolean = False
+
     Public Const expMax! = 50
+    Public Const expMax20! = 20
 
     Public Enum enumLearningMode
         Defaut = Systematic
@@ -97,7 +110,7 @@ Public MustInherit Class clsMLPGeneric
     ''' <summary>
     ''' Number of success according to the treshold between target and output
     ''' </summary>
-    Protected nbSuccess%
+    Public nbSuccess%
 
     ''' <summary>
     ''' Percentage of success according to the number of ouputs 
@@ -124,6 +137,15 @@ Public MustInherit Class clsMLPGeneric
     ''' (can be 0, but works best if 0.1 for example)
     ''' </summary>
     Public weightAdjustment!
+
+    ''' <summary>
+    ''' Set true if the objective is to classify an output (1 among N)
+    '''  within a homogeneous group (for example, the Iris Flower logical test,
+    '''  but not the 2XOR test, nor the 3XOR test, because the outputs are independent)
+    ''' Then a softmax activation is used for last layer, it can speed up training
+    ''' (only for RProp MLP for the moment)
+    ''' </summary>
+    Public classificationObjective As Boolean = False
 
     Public Sub Initialize(learningRate!, Optional weightAdjustment! = 0)
 
@@ -548,7 +570,13 @@ Public MustInherit Class clsMLPGeneric
     ''' <summary>
     ''' Print weights for functionnal test
     ''' </summary>
-    Public MustOverride Sub PrintWeights()
+    Public Overridable Sub PrintWeights()
+        ShowMessage(ShowWeights())
+    End Sub
+
+    Public Overridable Function ShowWeights$()
+        Return ""
+    End Function
 
     Public Overridable Sub PrintOutput(iteration%, Optional force As Boolean = False)
 
@@ -561,28 +589,43 @@ Public MustInherit Class clsMLPGeneric
 
     End Sub
 
-    Public Sub PrintParameters()
+    Public Function ShowParameters$()
 
-        ShowMessage("")
-        ShowMessage(Now() & " :")
-        ShowMessage("")
-        If Me.learningMode <> enumLearningMode.Defaut Then ShowMessage(
+        Dim sb As New StringBuilder()
+        sb.AppendLine("")
+        If Me.learningMode <> enumLearningMode.Defaut Then sb.AppendLine(
             "learning mode=" & clsMLPHelper.ReadEnumDescription(Me.learningMode))
-        ShowMessage("layer count=" & Me.layerCount)
-        ShowMessage("neuron count=" & clsMLPHelper.ArrayToString(Me.neuronCount))
-        ShowMessage("use bias=" & Me.useBias)
-        If Me.learningRate <> 0 Then ShowMessage("learning rate=" & Me.learningRate)
-        If Me.weightAdjustment <> 0 Then ShowMessage(
+        sb.AppendLine("layer count=" & Me.layerCount)
+        sb.AppendLine("neuron count=" & clsMLPHelper.ArrayToString(Me.neuronCount))
+        sb.AppendLine("use bias=" & Me.useBias)
+        If Me.learningRate <> 0 Then sb.AppendLine("learning rate=" & Me.learningRate)
+        If Me.weightAdjustment <> 0 Then sb.AppendLine(
             "weight adjustment=" & Me.weightAdjustment)
         Dim afType = Me.GetActivationFunctionType()
         If afType <> enumActivationFunctionType.Normal Then _
-            ShowMessage("activation function type=" & clsMLPHelper.ReadEnumDescription(afType))
-        ShowMessage("activation function=" & clsMLPHelper.ReadEnumDescription(Me.m_actFunc))
-        ShowMessage("gain=" & Me.m_gain)
-        If Me.m_center <> 0 Then ShowMessage("center=" & Me.m_center)
-        If Me.minimalSuccessTreshold <> 0 Then ShowMessage(
+            sb.AppendLine("activation function type=" & clsMLPHelper.ReadEnumDescription(afType))
+        sb.AppendLine("activation function=" & clsMLPHelper.ReadEnumDescription(Me.m_actFunc))
+        sb.AppendLine("gain=" & Me.m_gain)
+        If Me.m_center <> 0 Then sb.AppendLine("center=" & Me.m_center)
+        If Me.classificationObjective Then _
+            sb.AppendLine("use softmax for last layer=True (ojective is classification)")
+        If Me.useNguyenWidrowWeightsInitialization Then _
+            sb.AppendLine("use Nguyen-Widrow weights initialization=True")
+        If Me.minimalSuccessTreshold <> 0 Then sb.AppendLine(
             "minimal success treshold=" & Me.minimalSuccessTreshold)
-        ShowMessage("")
+        sb.AppendLine("")
+
+        Return sb.ToString()
+
+    End Function
+
+    Public Sub PrintParameters()
+
+        Dim sb As New StringBuilder()
+        sb.AppendLine("")
+        sb.AppendLine(Now() & " :")
+        sb.Append(ShowParameters())
+        ShowMessage(sb.ToString())
 
     End Sub
 

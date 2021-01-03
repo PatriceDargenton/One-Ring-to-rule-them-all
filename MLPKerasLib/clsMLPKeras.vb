@@ -320,15 +320,16 @@ Public Class clsMLPKeras : Inherits clsVectorizedMLPGeneric
 
     End Sub
 
-    Public Overrides Sub PrintWeights()
+    Public Overrides Function ShowWeights$()
 
-        Me.PrintParameters()
+        Dim sb As New StringBuilder
+        sb.Append(Me.ShowParameters())
 
         For i = 0 To Me.layerCount - 1
-            ShowMessage("Neuron count(" & i & ")=" & Me.neuronCount(i))
+            sb.AppendLine("Neuron count(" & i & ")=" & Me.neuronCount(i))
         Next
 
-        ShowMessage("")
+        sb.AppendLine("")
 
         Dim weights = Me.model.GetWeights()
         Dim nbWeightLayers = (Me.layerCount - 1) * 2
@@ -337,7 +338,6 @@ Public Class clsMLPKeras : Inherits clsVectorizedMLPGeneric
             ws(i) = weights(i).GetData(Of Single)()
         Next
 
-        Dim sb As New StringBuilder
         For i = 1 To nbWeightLayers
 
             sb.AppendLine("W(" & i & ")={")
@@ -373,8 +373,8 @@ Public Class clsMLPKeras : Inherits clsVectorizedMLPGeneric
 
         Next i
 
-        ShowMessage(sb.ToString())
+        Return sb.ToString()
 
-    End Sub
+    End Function
 
 End Class

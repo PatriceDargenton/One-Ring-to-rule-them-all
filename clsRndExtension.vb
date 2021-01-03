@@ -8,6 +8,16 @@ Imports System.Runtime.CompilerServices ' Extension
 ''' </summary>
 Public Module modExt
 
+    <Extension>
+    Public Function NextDoubleGreaterThanZero#(rand As Random, minValue#, maxValue#, minAbsValue#)
+
+Retry:
+        Dim r# = rand.NextDouble * Math.Abs(maxValue - minValue) + minValue
+        If Math.Abs(r) < minAbsValue Then GoTo Retry
+        Return r
+
+    End Function
+
     ''' <summary>
     ''' Add NextDouble function to standard Random generator
     ''' </summary>

@@ -395,6 +395,13 @@ Public Class clsMLPTensorFlow : Inherits clsVectorizedMLPGeneric
         'Dim s = clsMLPHelper.ArrayToString(input)
         'Debug.WriteLine(s & " -> " & clsMLPHelper.ArrayToString(Me.lastOutputArray1DSingle))
 
+        ' 27/12/2020
+        Me.lastOutputArray1D = clsMLPHelper.Convert1DArrayOfSingleToDouble(
+            Me.lastOutputArray1DSingle)
+        Dim outputs2D#(0, Me.nbOutputNeurons - 1)
+        clsMLPHelper.Fill2DArrayOfDouble(outputs2D, Me.lastOutputArray1D, 0)
+        Me.output = outputs2D
+
     End Sub
 
 #Else
@@ -405,18 +412,16 @@ Public Class clsMLPTensorFlow : Inherits clsVectorizedMLPGeneric
 
 #End If
 
-    Public Overrides Sub PrintWeights()
-
-        Me.PrintParameters()
-
-        For i = 0 To Me.layerCount - 1
-            ShowMessage("Neuron count(" & i & ")=" & Me.neuronCount(i))
-        Next
-
-        ShowMessage("")
+    Public Overrides Function ShowWeights$()
 
         Dim sb As New StringBuilder
+        sb.Append(Me.ShowParameters())
 
+        For i = 0 To Me.layerCount - 1
+            sb.AppendLine("Neuron count(" & i & ")=" & Me.neuronCount(i))
+        Next
+
+        sb.AppendLine("")
 
         For i = 1 To Me.layerCount - 1
 
@@ -466,9 +471,9 @@ Public Class clsMLPTensorFlow : Inherits clsVectorizedMLPGeneric
 
         Next i
 
-        ShowMessage(sb.ToString())
+        Return sb.ToString()
 
-    End Sub
+    End Function
 
     Public Overrides Sub PrintOutput(iteration%, Optional force As Boolean = False)
 

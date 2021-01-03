@@ -3,7 +3,7 @@ Module modTests
 
     Sub Main()
 
-Again:
+Retry:
         Console.WriteLine("")
         Console.WriteLine("")
         Console.WriteLine("MLP Test, choose an option from the following list:")
@@ -24,13 +24,17 @@ Again:
             Case "5"c : IrisFlowerTestAnalog()
         End Select
 
-        GoTo Again
+        GoTo Retry
 
     End Sub
 
     Private Sub XORTest(nbXor%)
 
         Console.WriteLine("")
+
+        RPropMLPXorTest(nbXor)
+        NextTest()
+        Exit Sub
 
         ClassicMLPXorTest(nbXor)
         NextTest()
@@ -64,6 +68,21 @@ Again:
     Private Sub IrisFlowerTestLogical()
 
         Console.WriteLine("")
+
+        Dim mlpRProp As New clsMLPRProp
+        mlpRProp.classificationObjective = True ' Sometimes 100% prediction
+        MLPGenericIrisFlowerTest(mlpRProp, "RProp MLP Iris flower test",
+            nbIterations:=200, threeLayers:=True, minValue:=-10.0!, maxValue:=10.0!)
+        NextTest()
+
+        'MLPGenericIrisFlowerTest(mlpRProp, "RProp MLP Iris flower test",
+        ' nbIterations:=200, sigmoid:=True)
+        'NextTest()
+
+        'MLPGenericIrisFlowerTest(New clsMLPRProp, "RProp MLP Iris flower test",
+        '    nbIterations:=200, sigmoid:=True)
+        'NextTest()
+        Exit Sub
 
         ' Works only using sigmoid activation
         MLPGenericIrisFlowerTest(New clsMLPClassic, "Classic MLP Iris flower test",
@@ -111,6 +130,11 @@ Again:
     Private Sub IrisFlowerTestAnalog()
 
         Console.WriteLine("")
+
+        MLPGenericIrisFlowerTestAnalog(New clsMLPRProp,
+            "RProp MLP Iris flower test", sigmoid:=True, nbIterations:=300) ' minValue:=-10, maxValue:=10, gain:=0.5!)
+        NextTest()
+        Exit Sub
 
         MLPGenericIrisFlowerTestAnalog(New clsMLPClassic, "Classic MLP Iris flower test")
         NextTest()

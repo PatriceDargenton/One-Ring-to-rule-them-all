@@ -56,13 +56,13 @@ Module modMLPClassicTest
         mlp.nbIterations = nbIterations
 
         If nbXor = 1 Then
+            mlp.inputArray = m_inputArrayXOR
+            mlp.targetArray = m_targetArrayXOR
             mlp.InitializeStruct(m_neuronCountXOR, addBiasColumn:=True)
             'mlp.InitializeStruct(m_neuronCountXOR231, addBiasColumn:=True)
             'mlp.InitializeStruct(m_neuronCountXOR4Layers2331, addBiasColumn:=True)
             'mlp.InitializeStruct(m_neuronCountXOR5Layers23331, addBiasColumn:=True)
             mlp.printOutputMatrix = True
-            mlp.inputArray = m_inputArrayXOR
-            mlp.targetArray = m_targetArrayXOR
         ElseIf nbXor = 2 Then
             mlp.inputArray = m_inputArray2XOR
             mlp.targetArray = m_targetArray2XOR
@@ -107,10 +107,11 @@ Namespace ClassicMLP
         Private m_mlp As New clsMLPClassic
 
         ' Weights are quite the same as MLP Classic, but not exactly:
-        'Private m_mlp As New NetworkOOP.MultilayerPerceptron ' 15 success, 15 fails
-        'Private m_mlp As New clsMLPAccord ' 14 success, 16 fails
-        'Private m_mlp As New clsMLPEncog  ' 7 success, 23 fails
+        'Private m_mlp As New NetworkOOP.MultilayerPerceptron ' 20 success, 15 fails
+        'Private m_mlp As New clsMLPAccord ' 15 success, 20 fails
+        'Private m_mlp As New clsMLPEncog  ' 8 success, 27 fails
         'Private m_mlp As New clsMLPTensorFlow ' 1 success, 25 fails
+        'Private m_mlp As New clsMLPRProp  ' 4 success, 30 fails
 
         ' Weights are not stored in the same way:
         'Private m_mlp As New MatrixMLP.MultiLayerPerceptron ' 24/24 fails
@@ -317,6 +318,13 @@ Namespace ClassicMLP
         Public Sub MLP2XORHTangent()
 
             TestMLP2XORHTangent(m_mlp)
+
+        End Sub
+
+        <TestMethod()>
+        Public Sub MLP2XORHTangent2()
+
+            TestMLP2XORHTangent2(m_mlp)
 
         End Sub
 
@@ -627,71 +635,65 @@ Namespace ClassicMLP
         End Sub
 
         <TestMethod()>
-        Public Sub MLPIrisFlowerAnalog()
+        Public Sub MLPIrisFlowerAnalogTanh()
 
-            TestMLPIrisFlowerAnalog(m_mlp)
+            ' 96.7% prediction, 96.7% learning with 200 iterations in 180 msec.
 
-        End Sub
-
-        <TestMethod()>
-        Public Sub MLPIrisFlowerAnalogPrediction()
-
-            ' 93.3% prediction, 96.7% learning with 50 iterations in 45 msec.
-
-            TestMLPIrisFlowerAnalogPrediction(m_mlp,
-                expectedSuccess:=0.967, expectedSuccessPrediction:=0.933)
+            TestMLPIrisFlowerAnalogTanh(m_mlp)
 
         End Sub
 
         <TestMethod()>
-        Public Sub MLPIrisFlowerAnalogPredictionGaussian()
+        Public Sub MLPIrisFlowerAnalogSigmoid()
+
+            ' 96.7% prediction, 95.8% learning with 150 iterations in 150 msec.
+
+            TestMLPIrisFlowerAnalogSigmoid(m_mlp)
+
+        End Sub
+
+        <TestMethod()>
+        Public Sub MLPIrisFlowerAnalogGaussian()
 
             ' 93.3% prediction, 96.7% learning with 100 iterations in 77 msec.
 
-            TestMLPIrisFlowerAnalogPredictionGaussian(m_mlp)
+            TestMLPIrisFlowerAnalogGaussian(m_mlp)
 
         End Sub
 
         <TestMethod()>
-        Public Sub MLPIrisFlowerLogicalPredictionGaussian()
+        Public Sub MLPIrisFlowerLogicalGaussian()
 
             ' 96.7% prediction, 96.4% learning with 100 iterations in 90 msec.
 
-            TestMLPIrisFlowerLogicalPredictionGaussian(m_mlp)
+            TestMLPIrisFlowerLogicalGaussian(m_mlp)
 
         End Sub
 
         <TestMethod()>
-        Public Sub MLPIrisFlowerLogicalPredictionSinus()
+        Public Sub MLPIrisFlowerLogicalSinus()
 
             ' 97.8% prediction, 93.3% learning with 200 iterations in 190 msec.
 
-            TestMLPIrisFlowerLogicalPredictionSinus(m_mlp)
+            TestMLPIrisFlowerLogicalSinus(m_mlp)
 
         End Sub
 
         <TestMethod()>
-        Public Sub MLPIrisFlowerLogical()
-
-            TestMLPIrisFlowerLogical(m_mlp)
-
-        End Sub
-
-        <TestMethod()>
-        Public Sub MLPIrisFlowerLogicalPrediction()
+        Public Sub MLPIrisFlowerLogicalTanh()
 
             ' 97.8% prediction, 99.4% learning with 400 iterations in 915 msec.
 
-            TestMLPIrisFlowerLogicalPredictionTanh(m_mlp, nbIterations:=400)
+            TestMLPIrisFlowerLogicalTanh(m_mlp, nbIterations:=400)
 
         End Sub
 
         <TestMethod()>
-        Public Sub MLPIrisFlowerLogicalPredictionSigmoid()
+        Public Sub MLPIrisFlowerLogicalSigmoid()
 
             ' 97.8% prediction, 98.9% learning with 900 iterations in 1.2 sec.
 
-            TestMLPIrisFlowerLogicalPredictionSigmoid(m_mlp, nbIterations:=900)
+            TestMLPIrisFlowerLogicalSigmoid(m_mlp) ', nbIterations:=900)
 
         End Sub
 

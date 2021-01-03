@@ -288,28 +288,17 @@ Public Class clsMLPAccord : Inherits clsVectorizedMLPGeneric
 
     End Sub
 
-    'Public Overrides Sub TestOneSample(input!(), ByRef ouput!())
-
-    '    'Dim inputsDbl#() = clsMLPHelper.Convert1DArrayOfSingleToDouble(input)
-    '    'Dim outputs#() = Me.network.Compute(inputsDbl)
-    '    'Me.lastOutputArray1DSingle = clsMLPHelper.Convert1DArrayOfDoubleToSingle(outputs)
-    '    TestOneSample(input)
-    '    ouput = Me.lastOutputArray1DSingle
-
-    'End Sub
-
-    Public Overrides Sub PrintWeights()
-
-        Me.PrintParameters()
-
-        ShowMessage("Neuron count(" & 0 & ")=" & Me.nbInputNeurons) ' 24/10/2020
-        For i = 0 To Me.network.Layers.Count - 1
-            ShowMessage("Neuron count(" & i + 1 & ")=" & Me.network.Layers(i).Neurons.Count)
-        Next
-
-        ShowMessage("")
+    Public Overrides Function ShowWeights$()
 
         Dim sb As New StringBuilder
+        sb.Append(Me.ShowParameters())
+
+        sb.AppendLine("Neuron count(" & 0 & ")=" & Me.nbInputNeurons) ' 24/10/2020
+        For i = 0 To Me.network.Layers.Count - 1
+            sb.AppendLine("Neuron count(" & i + 1 & ")=" & Me.network.Layers(i).Neurons.Count)
+        Next
+
+        sb.AppendLine("")
 
         For i = 0 To Me.network.Layers.Count - 1
 
@@ -342,8 +331,8 @@ Public Class clsMLPAccord : Inherits clsVectorizedMLPGeneric
 
         Next i
 
-        ShowMessage(sb.ToString())
+        Return sb.ToString()
 
-    End Sub
+    End Function
 
 End Class

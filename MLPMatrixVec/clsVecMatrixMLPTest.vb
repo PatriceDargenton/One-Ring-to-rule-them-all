@@ -960,102 +960,12 @@ Namespace VectorizedMatrixMLP
         End Sub
 
         <TestMethod()>
-        Public Sub VecMatrixMLPIrisFlowerAnalog()
-
-            InitIrisFlowerAnalog(m_mlp)
-            m_mlp.Initialize(learningRate:=0.01, weightAdjustment:=0.01)
-            m_mlp.InitializeStruct(m_neuronCountIrisFlowerAnalog451, addBiasColumn:=True)
-
-            m_mlp.nbIterations = 3000
-            m_mlp.SetActivationFunctionOptimized(enumActivationFunctionOptimized.Sigmoid)
-
-            m_mlp.InitializeWeights(1, {
-                {0.46, 0.23, 0.25, 0.13, 0.19},
-                {0.1, -0.2, -0.13, -0.17, 0.46},
-                {0.41, 0.41, -0.13, -0.16, 0.36},
-                {0.22, 0.08, -0.41, -0.04, 0.37},
-                {-0.07, 0.23, 0.03, 0.06, 0.04}})
-            m_mlp.InitializeWeights(2, {
-                {0.21},
-                {-0.17},
-                {0.42},
-                {0.06},
-                {-0.32},
-                {-0.25}})
-
-            m_mlp.Train(learningMode:=enumLearningMode.Vectorial)
-
-            Const expectedSuccess# = 0.89#
-            Dim success! = m_mlp.successPC
-            Dim successRounded# = Math.Round(success, 2)
-            Assert.AreEqual(True, successRounded >= expectedSuccess)
-
-            Const expectedLoss# = 0.05#
-            Dim loss# = m_mlp.averageError
-            Dim lossRounded# = Math.Round(loss, 2)
-            Assert.AreEqual(True, lossRounded <= expectedLoss)
-
-            If m_mlp.successPC = 1 AndAlso m_mlp.minimalSuccessTreshold <= 0.05! Then
-                Dim expectedOutput = m_targetArrayIrisFlowerAnalog
-                Dim expectedMatrix As Matrix = expectedOutput ' Single(,) -> Matrix
-                Dim sOutput = m_mlp.output.ToStringWithFormat(dec:="0.0")
-                Dim sExpectedOutput = expectedMatrix.ToStringWithFormat(dec:="0.0")
-                Assert.AreEqual(sExpectedOutput, sOutput)
-            End If
-
-        End Sub
-
-        <TestMethod()>
         Public Sub VecMatrixMLPIrisFlowerLogical()
-
-            InitIrisFlowerLogical(m_mlp)
-            m_mlp.Initialize(learningRate:=0.01, weightAdjustment:=0.01)
-
-            m_mlp.nbIterations = 3000
-            m_mlp.SetActivationFunctionOptimized(enumActivationFunctionOptimized.Sigmoid)
-
-            m_mlp.InitializeWeights(1, {
-                {0.13, 0.1, -0.29, -0.33},
-                {-0.31, -0.24, -0.16, 0.14},
-                {0.14, -0.28, -0.18, 0.17},
-                {-0.25, 0.18, -0.19, 0.16},
-                {-0.22, 0.43, -0.32, -0.23}})
-            m_mlp.InitializeWeights(2, {
-                {-0.15, -0.28, -0.07},
-                {0.13, 0.28, -0.15},
-                {-0.49, -0.05, -0.44},
-                {-0.13, -0.28, -0.27},
-                {0.38, -0.09, -0.12}})
-
-            m_mlp.Train(learningMode:=enumLearningMode.Vectorial)
-
-            Const expectedSuccess# = 0.94#
-            Dim success! = m_mlp.successPC
-            Dim successRounded# = Math.Round(success, 2)
-            Assert.AreEqual(True, successRounded >= expectedSuccess)
-
-            Const expectedLoss# = 0.03#
-            Dim loss# = m_mlp.averageError
-            Dim lossRounded# = Math.Round(loss, 2)
-            Assert.AreEqual(True, lossRounded <= expectedLoss)
-
-            If m_mlp.successPC = 1 AndAlso m_mlp.minimalSuccessTreshold <= 0.05! Then
-                Dim expectedOutput = m_targetArrayIrisFlowerLogical
-                Dim expectedMatrix As Matrix = expectedOutput ' Single(,) -> Matrix
-                Dim sOutput = m_mlp.output.ToStringWithFormat(dec:="0.0")
-                Dim sExpectedOutput = expectedMatrix.ToStringWithFormat(dec:="0.0")
-                Assert.AreEqual(sExpectedOutput, sOutput)
-            End If
-
-        End Sub
-
-        <TestMethod()>
-        Public Sub VecMatrixMLPIrisFlowerLogicalPrediction()
 
             ' 95.6% prediction, 96.4% learning with 700  iterations in 300 msec. (64 bits)
             ' 95.6% prediction, 96.4% learning with 2500 iterations in 1.2 sec.  (32 bits)
 
-            InitIrisFlowerLogicalPrediction(m_mlp)
+            InitIrisFlowerLogical(m_mlp)
             m_mlp.InitializeStruct(m_neuronCountIrisFlowerLogical453, addBiasColumn:=True)
             m_mlp.Initialize(learningRate:=0.01)
 
@@ -1107,11 +1017,11 @@ Namespace VectorizedMatrixMLP
         End Sub
 
         <TestMethod()>
-        Public Sub VecMatrixMLPIrisFlowerLogicalPredictionSigmoid()
+        Public Sub VecMatrixMLPIrisFlowerLogicalSigmoid()
 
             ' 97.8% prediction, 96.1% learning with 1500 iterations in 1.8 sec.
 
-            InitIrisFlowerLogicalPrediction(m_mlp)
+            InitIrisFlowerLogical4Layers(m_mlp)
             m_mlp.Initialize(learningRate:=0.005, weightAdjustment:=0.005)
 
             m_mlp.nbIterations = 1500

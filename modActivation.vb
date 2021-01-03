@@ -202,20 +202,26 @@ Namespace MLP.ActivationFunction
 
         Private Shared Function CommonActivation#(x#, gain#, center#)
 
-            Const expMax As Boolean = False
+            'Const expMax As Boolean = False
             Dim xc# = x - center
             Dim xg# = -gain * xc
             Dim y#
             ' To avoid arithmetic overflow
             If xg > clsMLPGeneric.expMax Then
-                y = 1
-                If expMax Then y = clsMLPGeneric.expMax
+                y = 0 '1
+                'If expMax Then y = clsMLPGeneric.expMax
             ElseIf xg < -clsMLPGeneric.expMax Then
-                y = 0
-                If expMax Then y = -clsMLPGeneric.expMax
+                y = 1 '0
+                'If expMax Then y = -clsMLPGeneric.expMax
             Else
                 y = 1 / (1 + Math.Exp(xg))
             End If
+
+            If debugActivationFunction Then
+                Dim sig# = 1 / (1 + Math.Exp(xg))
+                If Not clsMLPHelper.Compare(y, sig, dec:=5) Then Stop
+            End If
+
             Return y
 
         End Function
@@ -288,28 +294,28 @@ Namespace MLP.ActivationFunction
 
         Public Function Activation#(x#, Optional gain# = 1, Optional center# = 0) Implements IActivationFunction.Activation
 
-            Const expMax As Boolean = False
+            'Const expMax As Boolean = True
             Dim xc# = x - center
             'Dim xg# = -2 * gain * xc
             Dim xg# = -gain * xc ' 31/07/2020
             Dim y#
-            If xg > clsMLPGeneric.expMax Then
+            If xg > clsMLPGeneric.expMax20 Then
+                y = -1 ' 0
+                'If expMax Then y = -1 'clsMLPGeneric.expMax
+            ElseIf xg < -clsMLPGeneric.expMax20 Then
                 y = 1
-                If expMax Then y = clsMLPGeneric.expMax
-            ElseIf xg < -clsMLPGeneric.expMax Then
-                y = 0
-                If expMax Then y = -clsMLPGeneric.expMax
+                'If expMax Then y = 1 '-clsMLPGeneric.expMax
             Else
                 y = 2 / (1 + Math.Exp(xg)) - 1 ' = Math.Tanh(-xg / 2)
                 'y = Math.Tanh(-xg / 2)
-
-                ' https://www.wolframalpha.com/input/?i=HyperbolicTangent
-                If debugActivationFunction Then
-                    Dim th# = Math.Tanh(-xg / 2)
-                    If Not clsMLPHelper.Compare(y, th, dec:=5) Then Stop
-                End If
-
             End If
+
+            ' https://www.wolframalpha.com/input/?i=HyperbolicTangent
+            If debugActivationFunction Then
+                Dim th# = Math.Tanh(-xg / 2)
+                If Not clsMLPHelper.Compare(y, th, dec:=5) Then Stop
+            End If
+
             Return y
 
         End Function
@@ -348,10 +354,18 @@ Namespace MLP.ActivationFunction
         End Function
 
         Public Function DerivativeFromOriginalFunction#(x#, gain#) Implements IActivationFunction.DerivativeFromOriginalFunction
+
             'If gain <> 1 Then Return 0
             'Dim y# = 1 - x * x
             Dim y# = gain * (1 - x * x) / 2 ' 02/10/2020
+
+            'If debugActivationFunction Then
+            '    Dim y2# = (1 - x) * (1 + x)
+            '    If Not clsMLPHelper.Compare(y, y2, dec:=5) Then Stop
+            'End If
+
             Return y
+
         End Function
 
     End Class

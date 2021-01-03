@@ -261,17 +261,16 @@ Public Class clsMLPEncog : Inherits clsVectorizedMLPGeneric
 
     End Sub
 
-    Public Overrides Sub PrintWeights()
-
-        Me.PrintParameters()
-
-        For i = 0 To Me.layerCount - 1
-            ShowMessage("Neuron count(" & i & ")=" & Me.neuronCount(i))
-        Next
-
-        ShowMessage("")
+    Public Overrides Function ShowWeights$()
 
         Dim sb As New StringBuilder
+        sb.Append(Me.ShowParameters())
+
+        For i = 0 To Me.layerCount - 1
+            sb.AppendLine("Neuron count(" & i & ")=" & Me.neuronCount(i))
+        Next
+
+        sb.AppendLine("")
 
         For i = 1 To Me.layerCount - 1
 
@@ -306,8 +305,8 @@ Public Class clsMLPEncog : Inherits clsVectorizedMLPGeneric
 
         Next i
 
-        ShowMessage(sb.ToString())
+        Return sb.ToString()
 
-    End Sub
+    End Function
 
 End Class

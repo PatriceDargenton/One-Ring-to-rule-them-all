@@ -6,6 +6,7 @@ Imports Perceptron.DLFramework.Layers ' Linear, Sequential
 Imports Perceptron.DLFramework.Layers.Loss ' MeanSquaredError
 Imports Perceptron.DLFramework.Optimizers ' StochasticGradientDescent
 Imports Perceptron.Utility ' Matrix
+Imports System.Text ' StringBuilder
 
 Public Class clsMLPTensor : Inherits clsVectorizedMLPGeneric
 
@@ -288,36 +289,39 @@ Public Class clsMLPTensor : Inherits clsVectorizedMLPGeneric
         Return Me.averageError
     End Function
 
-    Public Overrides Sub PrintWeights()
+    Public Overrides Function ShowWeights$()
 
-        Me.PrintParameters()
+        Dim sb As New StringBuilder
+        sb.Append(Me.ShowParameters())
 
         For i = 0 To Me.layerCount - 1
-            ShowMessage("Neuron count(" & i & ")=" & Me.neuronCount(i))
+            sb.AppendLine("Neuron count(" & i & ")=" & Me.neuronCount(i))
         Next
 
-        ShowMessage("")
+        sb.AppendLine("")
 
         Dim j = 0
         For Each w In Me.weights
-            ShowMessage("W(" & j + 1 & ")=" & w.ToString & vbLf)
+            sb.AppendLine("W(" & j + 1 & ")=" & w.ToString & vbLf)
             j += 1
         Next
 
-        ShowMessage("")
+        sb.AppendLine("")
 
         j = 0
         For Each layer In Me.seq.Layers
             Dim k = 0
             For Each tensr In layer.Parameters
                 Dim m As Matrix = tensr.Data
-                ShowMessage("Layer(" & j + 1 & "," & k + 1 & ").W=" & m.ToString & vbLf)
+                sb.AppendLine("Layer(" & j + 1 & "," & k + 1 & ").W=" & m.ToString & vbLf)
                 k += 1
             Next
             If layer.Parameters.Count > 0 Then j += 1
         Next
 
-    End Sub
+        Return sb.ToString()
+
+    End Function
 
     Public Overrides Sub PrintOutput(iteration%, Optional force As Boolean = False)
 

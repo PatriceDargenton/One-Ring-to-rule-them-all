@@ -36,14 +36,14 @@ Module Main
 
         If nbXor = 1 Then
             'num_input:=2, num_hidden:={5}, num_output:=1
+            mlp.inputArray = m_inputArrayXOR
+            mlp.targetArray = m_targetArrayXOR
             'mlp.InitializeStruct({2, 5, 1}, addBiasColumn:=True)
             mlp.InitializeStruct(m_neuronCountXOR, addBiasColumn:=True)
             'mlp.InitializeStruct(m_neuronCountXOR231, addBiasColumn:=True)
             'mlp.InitializeStruct(m_neuronCountXOR4Layers2331, addBiasColumn:=True)
             'mlp.InitializeStruct(m_neuronCountXOR5Layers23331, addBiasColumn:=True)
             mlp.printOutputMatrix = True
-            mlp.inputArray = m_inputArrayXOR
-            mlp.targetArray = m_targetArrayXOR
         ElseIf nbXor = 2 Then
             mlp.inputArray = m_inputArray2XOR
             mlp.targetArray = m_targetArray2XOR
@@ -279,7 +279,7 @@ Namespace OOPMLP
         <TestMethod()>
         Public Sub MLPOOP2XORSigmoid()
 
-            TestMLP2XORSigmoid(m_mlp, nbIterations:=600)
+            TestMLP2XORSigmoid(m_mlp, nbIterations:=6000)
 
         End Sub
 
@@ -290,6 +290,13 @@ Namespace OOPMLP
             'm_mlp.ActivationFunction = New HyperbolicTangent(alpha:=2.0#)
 
             TestMLP2XORHTangent(m_mlp)
+
+        End Sub
+
+        <TestMethod()>
+        Public Sub MLPOOP2XORHTangent2()
+
+            TestMLP2XORHTangent2(m_mlp, nbIterations:=600)
 
         End Sub
 
@@ -362,57 +369,46 @@ Namespace OOPMLP
         End Sub
 
         <TestMethod()>
-        Public Sub MLPOOPIrisFlowerAnalog()
+        Public Sub MLPOOPIrisFlowerAnalogSigmoid()
 
-            ' OOP activation function: before Initialize()
-            'm_mlp.ActivationFunction = New Sigmoid(alpha:=1.0#)
+            ' 93.3% prediction, 94.2% learning with 150 iterations in 315 msec.
 
-            TestMLPIrisFlowerAnalog(m_mlp)
+            TestMLPIrisFlowerAnalogSigmoid(m_mlp, expectedSuccess:=0.942,
+                expectedSuccessPrediction:=0.933)
 
         End Sub
 
         <TestMethod()>
-        Public Sub MLPOOPIrisFlowerAnalogPredictionTanh()
+        Public Sub MLPOOPIrisFlowerAnalogTanh()
 
-            ' 93.3% prediction, 96.7% learning with 50 iterations in 100 msec.
+            ' 96.7% prediction, 96.7% learning with 200 iterations in 380 msec.
 
-            TestMLPIrisFlowerAnalogPrediction(m_mlp,
-                expectedSuccess:=0.967, expectedSuccessPrediction:=0.933)
+            TestMLPIrisFlowerAnalogTanh(m_mlp)
 
         End Sub
 
         <TestMethod()>
         Public Sub MLPOOPIrisFlowerLogical()
 
-            ' OOP activation function: before Initialize()
-            'm_mlp.ActivationFunction = New Sigmoid(alpha:=1.0#)
-
-            TestMLPIrisFlowerLogical(m_mlp)
-
-        End Sub
-
-        <TestMethod()>
-        Public Sub MLPOOPIrisFlowerLogicalPrediction()
-
-            ' 97.8% prediction, 99.4% learning with 800 iterations in 3.7 sec.
+            ' 97.8% prediction, 98.9% learning with 1200 iterations in 3.7 sec.
 
             ' OOP activation function: before Initialize()
             'm_mlp.ActivationFunction = New HyperbolicTangent(alpha:=2.0#)
 
-            TestMLPIrisFlowerLogicalPredictionTanh(m_mlp,
-                nbIterations:=800, expectedSuccess:=0.989#)
+            TestMLPIrisFlowerLogicalTanh(m_mlp,
+                nbIterations:=1200, expectedSuccess:=0.989#)
 
         End Sub
 
         <TestMethod()>
-        Public Sub MLPOOPIrisFlowerLogicalPredictionSigmoid()
+        Public Sub MLPOOPIrisFlowerLogicalSigmoid()
 
             ' 97.8% prediction, 98.6% learning with 800 iterations in 2.3 sec.
 
             ' OOP activation function: before Initialize()
             'm_mlp.ActivationFunction = New Sigmoid(alpha:=1.0#)
 
-            TestMLPIrisFlowerLogicalPredictionSigmoid(m_mlp, nbIterations:=800)
+            TestMLPIrisFlowerLogicalSigmoid(m_mlp, nbIterations:=800)
 
         End Sub
 

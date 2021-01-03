@@ -16,6 +16,7 @@ This is the classical XOR test, and the [Iris flower](https://en.wikipedia.org/w
         - [Matrix MLP: implementation using matrix products](#matrix-mlp-implementation-using-matrix-products)
         - [Vectorized Matrix MLP: implementation using matrix products, including samples vector](#vectorized-matrix-mlp-implementation-using-matrix-products-including-samples-vector)
         - [Tensor MLP: implementation using tensor](#tensor-mlp-implementation-using-tensor)
+        - [RProp MLP: implementation using Resilient Back Propagation algorithm](#rprop-mlp-implementation-using-resilient-back-propagation-algorithm)
     - [MLP implementations using frameworks and libraries](#mlp-implementations-using-frameworks-and-libraries)
         - [Accord.NET MLP: implementation using Accord.NET Framework](#accordnet-mlp-implementation-using-accordnet-framework)
         - [Encog MLP: implementation using Encog Framework](#encog-mlp-implementation-using-encog-framework)
@@ -66,6 +67,11 @@ From C#: https://github.com/HectorPulido/Vectorized-multilayer-neural-network
 ### Tensor MLP: implementation using tensor
 
 From C#: https://github.com/HectorPulido/Machine-learning-Framework-Csharp
+
+
+### RProp MLP: implementation using Resilient Back Propagation algorithm
+
+From C#: https://github.com/nokitakaze/ResilientBackProp
 
 
 ## MLP implementations using frameworks and libraries
@@ -145,6 +151,19 @@ Packages added:
 ```
 
 # Versions
+
+03/01/2021 V1.26
+- clsMLPTensorFlow.TestOneSample fixed
+- clsMLPClassic.TestOneSample fixed
+- modMLPTest.TestMLP2XORSigmoid fixed
+- modActivation: Sigmoid and Tanh limits fixed
+- clsRndExtension: NextDoubleGreaterThanZero added (RProp MLP)
+- clsMLPGenericVec.TrainVectorBatch: nbIterations computed from nbIterationsBatch
+- clsMLPGeneric.ShowWeights added, to compare configurations
+- clsMLPGeneric.classificationObjective added (RProp MLP)
+- clsMLPGeneric.useNguyenWidrowWeightsInitialization added (RProp MLP)
+- clsMLPGeneric.minRandomValue added (RProp MLP)
+- clsMLPRProp added
 
 12/12/2020 V1.25
 - clsMLPGeneric.averageError: Single -> Double

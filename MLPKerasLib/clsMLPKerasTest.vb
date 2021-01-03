@@ -39,6 +39,8 @@ Module modMLPKerasTest
 
         If nbXor = 1 Then
             'mlp.nbIterations = 1000
+            mlp.inputArray = m_inputArrayXOR
+            mlp.targetArray = m_targetArrayXOR
             'mlp.InitializeStruct(m_neuronCountXOR, addBiasColumn:=True)
             'mlp.InitializeStruct(m_neuronCountXOR231, addBiasColumn:=True)
             'mlp.InitializeStruct(m_neuronCountXOR281, addBiasColumn:=False)
@@ -49,8 +51,6 @@ Module modMLPKerasTest
             'mlp.InitializeStruct(m_neuronCountXOR4Layers2661, addBiasColumn:=False)
             'mlp.InitializeStruct(m_neuronCountXOR5Layers23331, addBiasColumn:=True)
             mlp.printOutputMatrix = True
-            mlp.inputArray = m_inputArrayXOR
-            mlp.targetArray = m_targetArrayXOR
         ElseIf nbXor = 2 Then
             mlp.nbIterations = 1500
             mlp.inputArray = m_inputArray2XOR
@@ -271,7 +271,7 @@ Namespace KerasMLP
 
             m_mlp.InitializeStruct(m_neuronCountXOR2_16_1, addBiasColumn:=False)
 
-            m_mlp.nbIterations = 1200 '700
+            m_mlp.nbIterations = 1400
             m_mlp.SetActivationFunction(enumActivationFunction.HyperbolicTangent, gain:=2.0!)
 
             m_mlp.InitializeWeights(1, {

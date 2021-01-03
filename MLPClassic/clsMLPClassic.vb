@@ -87,8 +87,8 @@ Friend Class clsMLPClassic : Inherits clsMLPGeneric
             End With
         Next i
 
-        Me.nbInputNeurons = Me.Layers(0).nbNeurons
-        Me.nbOutputNeurons = Me.Layers(Me.layerCount - 1).nbNeurons
+        'Me.nbInputNeurons = Me.Layers(0).nbNeurons
+        'Me.nbOutputNeurons = Me.Layers(Me.layerCount - 1).nbNeurons
 
     End Sub
 
@@ -126,17 +126,30 @@ Friend Class clsMLPClassic : Inherits clsMLPGeneric
 
     Public Overrides Sub TestOneSample(input!())
 
-        Dim ouput!(Me.nbOutputNeurons - 1)
-        TestOneSample(input, ouput)
-        Me.lastOutputArray1DSingle = ouput
+        Dim output1D!(Me.nbOutputNeurons - 1)
+        TestOneSample(input, output1D)
+        Me.lastOutputArray1DSingle = output1D
+
+        Me.lastOutputArray1D = clsMLPHelper.Convert1DArrayOfSingleToDouble(
+            Me.lastOutputArray1DSingle)
+        Dim outputs2D#(0, Me.nbOutputNeurons - 1)
+        clsMLPHelper.Fill2DArrayOfDouble(outputs2D, Me.lastOutputArray1D, 0)
+        Me.output = outputs2D
 
     End Sub
 
-    Public Overrides Sub TestOneSample(input!(), ByRef ouput!())
+    Public Overrides Sub TestOneSample(input!(), ByRef output1D!())
 
         SetInputSignal(input)
         ForwardPropogateSignal()
-        GetOutputSignal(ouput)
+        GetOutputSignal(output1D)
+        Me.lastOutputArray1DSingle = output1D
+
+        Me.lastOutputArray1D = clsMLPHelper.Convert1DArrayOfSingleToDouble(
+            Me.lastOutputArray1DSingle)
+        Dim outputs2D#(0, Me.nbOutputNeurons - 1)
+        clsMLPHelper.Fill2DArrayOfDouble(outputs2D, Me.lastOutputArray1D, 0)
+        Me.output = outputs2D
 
     End Sub
 
@@ -306,11 +319,10 @@ Friend Class clsMLPClassic : Inherits clsMLPGeneric
 
 #Region "Print"
 
-    Public Overrides Sub PrintWeights()
-
-        Me.PrintParameters()
+    Public Overrides Function ShowWeights$()
 
         Dim sb As New StringBuilder
+        sb.Append(Me.ShowParameters())
 
         For i = 0 To Me.layerCount - 1
             sb.AppendLine("Neuron count(" & i & ")=" & Me.Layers(i).nbNeurons)
@@ -341,9 +353,9 @@ Friend Class clsMLPClassic : Inherits clsMLPGeneric
 
         Next i
 
-        ShowMessage(sb.ToString())
+        Return sb.ToString()
 
-    End Sub
+    End Function
 
 #End Region
 

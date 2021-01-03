@@ -33,6 +33,8 @@ Module modMLPAccordTest
         mlp.printOutputMatrix = False
 
         If nbXor = 1 Then
+            mlp.inputArray = m_inputArrayXOR
+            mlp.targetArray = m_targetArrayXOR
             'num_input:=2, num_hidden:={5}, num_output:=1
             'mlp.InitializeStruct({2, 5, 1}, addBiasColumn:=True)
             mlp.InitializeStruct(m_neuronCountXOR, addBiasColumn:=True)
@@ -40,8 +42,6 @@ Module modMLPAccordTest
             'mlp.InitializeStruct(m_neuronCountXOR4Layers2331, addBiasColumn:=True)
             'mlp.InitializeStruct(m_neuronCountXOR5Layers23331, addBiasColumn:=True)
             mlp.printOutputMatrix = True
-            mlp.inputArray = m_inputArrayXOR
-            mlp.targetArray = m_targetArrayXOR
         ElseIf nbXor = 2 Then
             mlp.inputArray = m_inputArray2XOR
             mlp.targetArray = m_targetArray2XOR
@@ -196,14 +196,7 @@ Namespace AccordMLP
         <TestMethod()>
         Public Sub AccordMLP2XORSigmoid()
 
-            TestMLP2XORSigmoid(m_mlp)
-
-        End Sub
-
-        <TestMethod()>
-        Public Sub AccordMLP2XORSigmoidVect()
-
-            TestMLP2XORSigmoid(m_mlp, learningMode:=enumLearningMode.Vectorial)
+            TestMLP2XORSigmoid(m_mlp, nbIterations:=6000)
 
         End Sub
 
@@ -221,6 +214,20 @@ Namespace AccordMLP
 
         End Sub
 
+        <TestMethod()>
+        Public Sub AccordMLP2XORHTangent2()
+
+            TestMLP2XORHTangent2(m_mlp)
+
+        End Sub
+
+        <TestMethod()>
+        Public Sub AccordMLP2XORHTangent2Vect()
+
+            TestMLP2XORHTangent2(m_mlp, learningMode:=enumLearningMode.Vectorial)
+
+        End Sub
+
         ' useBias=False not implemented
         '<TestMethod()>
         'Public Sub AccordMLP2XORHTangent462()
@@ -230,7 +237,7 @@ Namespace AccordMLP
         'End Sub
 
         <TestMethod()>
-        Public Sub AccordMLP2XORHTangentVectAlgo2()
+        Public Sub AccordMLP2XORHTangentVectRProp()
 
             m_mlp.PRBPLAlgo = True
 
@@ -298,43 +305,47 @@ Namespace AccordMLP
         End Sub
 
         <TestMethod()>
-        Public Sub AccordMLPIrisFlowerAnalog()
+        Public Sub AccordMLPIrisFlowerAnalogTanh()
 
-            TestMLPIrisFlowerAnalog(m_mlp)
+            ' 96.7% prediction, 96.7% learning with 200 iterations in 45 msec.
+
+            TestMLPIrisFlowerAnalogTanh(m_mlp)
 
         End Sub
 
         <TestMethod()>
-        Public Sub AccordMLPIrisFlowerAnalogPredictionTanh()
+        Public Sub AccordMLPIrisFlowerAnalogTanh2()
 
             ' 96.7% prediction, 98.3% learning with 900 iterations in 200 msec.
 
-            TestMLPIrisFlowerAnalogPrediction(m_mlp, nbIterations:=900)
+            TestMLPIrisFlowerAnalogTanh2(m_mlp, nbIterations:=900)
 
         End Sub
 
         <TestMethod()>
-        Public Sub AccordMLPIrisFlowerLogical()
+        Public Sub AccordMLPIrisFlowerAnalogSigmoid()
 
-            TestMLPIrisFlowerLogical(m_mlp)
+            ' 96.7% prediction, 95.8% learning with 150 iterations in 23 msec.
+
+            TestMLPIrisFlowerAnalogSigmoid(m_mlp, learningMode:=enumLearningMode.Vectorial)
 
         End Sub
 
         <TestMethod()>
-        Public Sub AccordMLPIrisFlowerLogicalPrediction4LTanh()
+        Public Sub AccordMLPIrisFlowerLogical4LTanh()
 
             ' 97.8% prediction, 99.4% learning with 1500 iterations in 500 msec.
 
-            TestMLPIrisFlowerLogicalPredictionTanh(m_mlp)
+            TestMLPIrisFlowerLogicalTanh(m_mlp)
 
         End Sub
 
         <TestMethod()>
-        Public Sub AccordMLPIrisFlowerLogicalPredictionSigmoid()
+        Public Sub AccordMLPIrisFlowerLogicalSigmoid()
 
             ' 97.8% prediction, 98.6% learning with 1000 iterations in 200 msec.
 
-            TestMLPIrisFlowerLogicalPredictionSigmoid(m_mlp)
+            TestMLPIrisFlowerLogicalSigmoid(m_mlp)
 
         End Sub
 

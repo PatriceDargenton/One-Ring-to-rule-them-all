@@ -172,6 +172,14 @@ Namespace TensorFlowMLP
 
         End Sub
 
+        ' Bias is not implemented
+        '<TestMethod()>
+        'Public Sub TensorFlowMLP2XORHSigmoid()
+
+        '    TestMLP2XORSigmoid(m_mlp)
+
+        'End Sub
+
         ' Does not work:
 
         '<TestMethod()>

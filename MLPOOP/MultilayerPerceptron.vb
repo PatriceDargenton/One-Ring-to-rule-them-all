@@ -7,6 +7,7 @@ Imports Perceptron.Data
 Imports Perceptron.Neurons
 Imports Perceptron.Randoms
 Imports Perceptron.Utility ' Matrix
+Imports System.Text ' StringBuilder
 
 Namespace NetworkOOP
 
@@ -274,21 +275,24 @@ Namespace NetworkOOP
 
         End Sub
 
-        Public Overrides Sub PrintWeights()
+        Public Overrides Function ShowWeights$()
 
-            Me.PrintParameters()
+            Dim sb As New StringBuilder
+            sb.Append(Me.ShowParameters())
 
             For i = 0 To Me.Layers.Count - 1
-                ShowMessage("Neuron count(" & i & ")=" & Me.Layers(i).Neurons.Count)
+                sb.AppendLine("Neuron count(" & i & ")=" & Me.Layers(i).Neurons.Count)
             Next
 
-            ShowMessage("")
+            sb.AppendLine("")
 
             For i = 1 To Me.Layers.Count - 1
-                ShowMessage("W(" & i & ")=" & Layers(i).PrintWeights())
+                sb.AppendLine("W(" & i & ")=" & Layers(i).PrintWeights())
             Next
 
-        End Sub
+            Return sb.ToString()
+
+        End Function
 
         Public Function PrintOutputOOP$()
 

@@ -146,6 +146,8 @@
     <Compile Include="modMLPTest.vb" />
     <Compile Include="modTests.vb" />
     <Compile Include="AssemblyInfo.vb" />
+    <Compile Include="MLPRProp\clsMLPRProp.vb" />
+    <Compile Include="MLPRProp\modMLPRPropTest.vb" />
     <Compile Include="MLPClassic\clsMLPClassic.vb" />
     <Compile Include="MLPClassic\modMLPClassicTest.vb" />
     <Compile Include="MLPMatrixVec\clsVecMatrixMLP.vb" />

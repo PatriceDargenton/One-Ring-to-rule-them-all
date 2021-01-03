@@ -225,21 +225,24 @@ Namespace VectorizedMatrixMLP
 
         End Sub
 
-        Public Overrides Sub PrintWeights()
+        Public Overrides Function ShowWeights$()
 
-            Me.PrintParameters()
+            Dim sb As New System.Text.StringBuilder
+            sb.Append(Me.ShowParameters())
 
             For i = 0 To Me.layerCount - 1
-                ShowMessage("Neuron count(" & i & ")=" & Me.neuronCount(i))
+                sb.AppendLine("Neuron count(" & i & ")=" & Me.neuronCount(i))
             Next
 
-            ShowMessage("")
+            sb.AppendLine("")
 
             For i = 0 To Me.w.Length - 1
-                ShowMessage("W(" & i + 1 & ")=" & Me.w(i).ToString & vbLf)
+                sb.AppendLine("W(" & i + 1 & ")=" & Me.w(i).ToString & vbLf)
             Next
 
-        End Sub
+            Return sb.ToString()
+
+        End Function
 
         Public Overrides Sub PrintOutput(iteration%, Optional force As Boolean = False)
 

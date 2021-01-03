@@ -3,6 +3,7 @@
 
 Imports Perceptron.Utility ' Matrix
 Imports Perceptron.MLP.ActivationFunction
+Imports System.Text ' StringBuilder
 
 Namespace MatrixMLP
 
@@ -201,12 +202,10 @@ Namespace MatrixMLP
 
         End Sub
 
-        ''' <summary>
-        ''' Print weights for functionnal test
-        ''' </summary>
-        Public Overrides Sub PrintWeights()
+        Public Overrides Function ShowWeights$()
 
-            Me.PrintParameters()
+            Dim sb As New StringBuilder
+            sb.Append(Me.ShowParameters())
 
             Dim inputNodes = Me.nbInputNeurons
             Dim hiddenNodes = Me.nbHiddenNeurons
@@ -215,19 +214,21 @@ Namespace MatrixMLP
                 Dim iNeuronCount = inputNodes
                 If i > 0 Then iNeuronCount = hiddenNodes
                 If i >= Me.layerCount - 1 Then iNeuronCount = outputNodes
-                ShowMessage("Neuron count(" & i & ")=" & iNeuronCount)
+                sb.AppendLine("Neuron count(" & i & ")=" & iNeuronCount)
             Next
 
-            ShowMessage("")
-            ShowMessage("Me.weights_ih=" & Me.weights_ih.ToString())
-            ShowMessage("Me.weights_ho=" & Me.weights_ho.ToString())
+            sb.AppendLine("")
+            sb.AppendLine("Me.weights_ih=" & Me.weights_ih.ToString())
+            sb.AppendLine("Me.weights_ho=" & Me.weights_ho.ToString())
 
             If Me.useBias Then
-                ShowMessage("Me.bias_h=" & Me.bias_h.ToString())
-                ShowMessage("Me.bias_o=" & Me.bias_o.ToString())
+                sb.AppendLine("Me.bias_h=" & Me.bias_h.ToString())
+                sb.AppendLine("Me.bias_o=" & Me.bias_o.ToString())
             End If
 
-        End Sub
+            Return sb.ToString()
+
+        End Function
 
     End Class
 

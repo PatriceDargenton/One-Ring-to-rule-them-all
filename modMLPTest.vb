@@ -1850,15 +1850,15 @@ Module modMLPTest
         Assert.AreEqual(True, lossRounded <= expectedLoss)
 
         ' XOR at 90%: works
-        mlp.TestAllSamples(m_inputArrayXOR90PC) ', nbOutputs:=1)
+        mlp.TestAllSamples(m_inputArrayXOR90PC)
         Dim sOutput90PC$ = mlp.output.ToStringWithFormat(dec:="0.00")
 
         ' XOR at 80%: works
-        mlp.TestAllSamples(m_inputArrayXOR80PC) ', nbOutputs:=1)
+        mlp.TestAllSamples(m_inputArrayXOR80PC)
         Dim sOutput80PC$ = mlp.output.ToStringWithFormat(dec:="0.00")
 
         ' XOR at 70%: does not works anymore
-        mlp.TestAllSamples(m_inputArrayXOR70PC) ', nbOutputs:=1)
+        mlp.TestAllSamples(m_inputArrayXOR70PC)
         Dim sOutput70PC$ = mlp.output.ToStringWithFormat(dec:="0.00")
 
     End Sub
@@ -1940,6 +1940,45 @@ Module modMLPTest
     End Sub
 
     Public Sub TestMLP2XORSigmoid(mlp As clsMLPGeneric,
+            Optional nbIterations% = 5000,
+            Optional expectedLoss# = 0.03#,
+            Optional learningRate! = 0.1!,
+            Optional weightAdjustment! = 0.1!,
+            Optional gain! = 1.0!,
+            Optional learningMode As enumLearningMode = enumLearningMode.Defaut)
+
+        Init2XOR(mlp)
+        mlp.Initialize(learningRate, weightAdjustment)
+        mlp.nbIterations = nbIterations
+        mlp.InitializeStruct(m_neuronCount2XOR, addBiasColumn:=True)
+        mlp.SetActivationFunction(
+            enumActivationFunction.Sigmoid, gain)
+
+        mlp.InitializeWeights(1, {
+            {-0.05, -0.28, -0.14, -0.42, -0.47},
+            {0.41, 0.15, 0.05, 0.04, -0.46},
+            {-0.23, 0.29, -0.19, 0.31, -0.37},
+            {-0.4, -0.44, -0.29, -0.03, 0.05}})
+        mlp.InitializeWeights(2, {
+            {-0.2, 0.17, -0.35, 0.46, 0.26},
+            {0.16, 0.35, 0.4, -0.11, -0.42}})
+
+        mlp.Train(learningMode)
+
+        Dim expectedOutput = m_targetArray2XOR
+
+        Dim sOutput$ = mlp.output.ToStringWithFormat(dec:="0.0")
+        Dim expectedMatrix As Matrix = expectedOutput ' Single(,) -> Matrix
+        Dim sExpectedOutput = expectedMatrix.ToStringWithFormat(dec:="0.0")
+        Assert.AreEqual(sExpectedOutput, sOutput)
+
+        Dim loss# = mlp.averageError
+        Dim lossRounded# = Math.Round(loss, 2)
+        Assert.AreEqual(True, lossRounded <= expectedLoss)
+
+    End Sub
+
+    Public Sub TestMLP2XORHTangent2(mlp As clsMLPGeneric,
             Optional nbIterations% = 200,
             Optional expectedLoss# = 0.03#,
             Optional learningRate! = 0.09!,
@@ -2148,68 +2187,64 @@ Module modMLPTest
 
 #Region "Iris flower standard tests"
 
-    Public Sub InitIrisFlowerAnalog(mlp As clsMLPGeneric)
-        mlp.inputArray = m_inputArrayIrisFlower
-        mlp.targetArray = m_targetArrayIrisFlowerAnalog
-        mlp.InitializeStruct(m_neuronCountIrisFlowerAnalog4_20_1, addBiasColumn:=True)
-    End Sub
-
-    Public Sub InitIrisFlowerAnalogPrediction(mlp As clsMLPGeneric)
+    Public Sub InitIrisFlowerAnalog4Layers(mlp As clsMLPGeneric)
         mlp.inputArray = m_inputArrayIrisFlowerTrain
         mlp.targetArray = m_targetArrayIrisFlowerAnalogTrain
         mlp.InitializeStruct(m_neuronCountIrisFlowerAnalog4991, addBiasColumn:=True)
     End Sub
 
     Public Sub InitIrisFlowerLogical(mlp As clsMLPGeneric)
-        mlp.inputArray = m_inputArrayIrisFlower
-        mlp.targetArray = m_targetArrayIrisFlowerLogical
+        'mlp.inputArray = m_inputArrayIrisFlower
+        'mlp.targetArray = m_targetArrayIrisFlowerLogical
+        mlp.inputArray = m_inputArrayIrisFlowerTrain
+        mlp.targetArray = m_targetArrayIrisFlowerLogicalTrain
         mlp.InitializeStruct(m_neuronCountIrisFlowerLogical443, addBiasColumn:=True)
     End Sub
 
-    Public Sub InitIrisFlowerLogicalPrediction(mlp As clsMLPGeneric)
+    Public Sub InitIrisFlowerLogical4Layers(mlp As clsMLPGeneric)
         mlp.inputArray = m_inputArrayIrisFlowerTrain
         mlp.targetArray = m_targetArrayIrisFlowerLogicalTrain
         mlp.InitializeStruct(m_neuronCountIrisFlowerLogical4_16_83, addBiasColumn:=True)
     End Sub
 
-    Public Sub TestMLPIrisFlowerAnalog(mlp As clsMLPGeneric,
-        Optional nbIterations% = 2000,
-        Optional expectedSuccess# = 0.953#,
-        Optional expectedLoss# = 0.06#,
+    Public Sub TestMLPIrisFlowerAnalogTanh(mlp As clsMLPGeneric,
+        Optional nbIterations% = 200,
+        Optional expectedSuccess# = 0.967#,
+        Optional expectedSuccessPrediction# = 0.967#,
+        Optional expectedLoss# = 0.031#,
         Optional learningRate! = 0.1!,
         Optional weightAdjustment! = 0.1!,
-        Optional gain! = 1,
+        Optional gain! = 2,
         Optional learningMode As enumLearningMode = enumLearningMode.Defaut)
 
         mlp.Initialize(learningRate, weightAdjustment)
-        InitIrisFlowerAnalog(mlp)
+        InitIrisFlowerAnalog4Layers(mlp)
 
         mlp.nbIterations = nbIterations
-        mlp.SetActivationFunction(enumActivationFunction.Sigmoid, gain)
+        mlp.SetActivationFunction(enumActivationFunction.HyperbolicTangent, gain)
 
         mlp.InitializeWeights(1, {
-            {-0.05, 0.43, -0.26, -0.27, -0.01},
-            {-0.5, 0.15, -0.11, 0.4, -0.49},
-            {0.15, -0.42, 0.19, -0.1, 0.31},
-            {-0.07, 0.05, -0.18, -0.2, -0.03},
-            {0.48, 0.45, -0.03, -0.28, 0.34},
-            {-0.15, -0.39, -0.34, -0.41, -0.25},
-            {0.15, -0.25, 0.46, 0.28, 0.41},
-            {0.21, -0.23, 0.03, -0.26, 0.13},
-            {-0.24, -0.44, -0.42, 0.24, 0.33},
-            {0.45, 0.09, -0.43, -0.16, 0.14},
-            {-0.39, 0.22, 0.28, -0.25, 0.25},
-            {-0.03, -0.48, -0.11, -0.36, 0.39},
-            {-0.2, 0.15, -0.14, -0.09, -0.38},
-            {0.41, -0.39, -0.34, -0.47, -0.42},
-            {0.18, -0.29, 0.42, 0.37, 0.22},
-            {-0.11, 0.39, 0.27, -0.46, 0.31},
-            {-0.04, -0.37, 0.43, -0.04, 0.21},
-            {-0.47, -0.09, -0.26, -0.25, -0.37},
-            {-0.4, 0.24, 0.26, 0.26, -0.07},
-            {-0.11, -0.08, 0.33, 0.17, 0.08}})
+            {0.1, 0.31, 0.24, -0.45, -0.2},
+            {-0.28, -0.38, -0.26, -0.18, 0.32},
+            {0.39, -0.05, 0.27, -0.03, -0.09},
+            {-0.45, -0.15, 0.46, -0.33, 0.15},
+            {0.28, -0.23, -0.5, -0.03, -0.09},
+            {-0.03, 0.12, -0.44, 0.09, 0.27},
+            {-0.19, 0.21, 0.4, -0.46, 0.41},
+            {0.23, -0.3, 0.27, 0.07, -0.2},
+            {0.25, 0.26, -0.36, 0.1, 0.32}})
         mlp.InitializeWeights(2, {
-            {-0.26, -0.02, -0.41, 0.15, -0.39, -0.47, 0.33, 0.13, 0.25, 0.13, -0.13, 0.35, 0.18, 0.34, 0.02, -0.07, 0.44, -0.09, 0.39, -0.41, 0.36}})
+            {-0.31, 0.2, -0.1, 0.28, -0.02, -0.11, -0.31, -0.23, 0.32, 0.04},
+            {0.24, 0.08, 0.39, 0.25, -0.32, 0.22, -0.45, 0.08, 0.23, 0.37},
+            {-0.07, -0.17, -0.34, -0.32, 0.1, -0.34, -0.3, -0.48, 0.01, 0.37},
+            {0.37, 0.09, -0.22, 0.41, 0.16, 0.32, -0.21, 0.43, 0.02, 0.14},
+            {-0.28, -0.14, 0.49, 0.12, 0.38, 0.33, 0.48, -0.38, -0.47, 0.21},
+            {0.06, 0.37, 0.45, 0.26, -0.3, -0.42, 0.12, -0.21, 0.29, -0.47},
+            {-0.44, 0.3, -0.47, 0.37, 0.21, -0.2, -0.03, 0.1, 0.02, 0.4},
+            {0.25, 0.15, -0.29, -0.26, -0.29, -0.36, -0.17, 0.04, -0.19, 0.27},
+            {-0.32, -0.42, 0.49, 0.3, -0.2, 0.5, 0.15, 0.01, 0.21, 0.08}})
+        mlp.InitializeWeights(3, {
+            {-0.3, -0.5, -0.36, 0.07, -0.08, -0.17, -0.38, 0.4, 0.08, -0.14}})
 
         mlp.minimalSuccessTreshold = 0.2
         mlp.Train(learningMode)
@@ -2223,16 +2258,22 @@ Module modMLPTest
         Assert.AreEqual(True, lossRounded <= expectedLoss)
 
         If mlp.successPC = 1 Then
-            Dim expectedOutput = m_targetArrayIrisFlowerAnalog
+            Dim expectedOutput = m_targetArrayIrisFlowerAnalogTest
             Dim expectedMatrix As Matrix = expectedOutput ' Single(,) -> Matrix
             Dim sOutput = mlp.output.ToStringWithFormat(dec:="0.0")
             Dim sExpectedOutput = expectedMatrix.ToStringWithFormat(dec:="0.0")
             Assert.AreEqual(sExpectedOutput, sOutput)
         End If
 
+        mlp.TestAllSamples(m_inputArrayIrisFlowerTest,
+            m_targetArrayIrisFlowerAnalogTest, nbOutputs:=1)
+        Dim successPrediction! = mlp.successPC
+        Dim successPredictionRounded# = Math.Round(successPrediction, 3)
+        Assert.AreEqual(True, successPredictionRounded >= expectedSuccessPrediction)
+
     End Sub
 
-    Public Sub TestMLPIrisFlowerAnalogPrediction(mlp As clsMLPGeneric,
+    Public Sub TestMLPIrisFlowerAnalogTanh2(mlp As clsMLPGeneric,
         Optional nbIterations% = 50,
         Optional expectedSuccess# = 0.983#,
         Optional expectedSuccessPrediction# = 0.967#,
@@ -2243,7 +2284,7 @@ Module modMLPTest
         Optional learningMode As enumLearningMode = enumLearningMode.Defaut)
 
         mlp.Initialize(learningRate, weightAdjustment)
-        InitIrisFlowerAnalogPrediction(mlp)
+        InitIrisFlowerAnalog4Layers(mlp)
 
         mlp.nbIterations = nbIterations
         mlp.SetActivationFunction(enumActivationFunction.HyperbolicTangent, gain)
@@ -2298,7 +2339,77 @@ Module modMLPTest
 
     End Sub
 
-    Public Sub TestMLPIrisFlowerAnalogPredictionGaussian(mlp As clsMLPGeneric,
+    Public Sub TestMLPIrisFlowerAnalogSigmoid(mlp As clsMLPGeneric,
+        Optional nbIterations% = 150,
+        Optional expectedSuccess# = 0.958#,
+        Optional expectedSuccessPrediction# = 0.967#,
+        Optional expectedLoss# = 0.072#,
+        Optional learningRate! = 0.2!,
+        Optional weightAdjustment! = 0!,
+        Optional gain! = 1.1!,
+        Optional learningMode As enumLearningMode = enumLearningMode.Defaut)
+
+        mlp.Initialize(learningRate, weightAdjustment)
+        InitIrisFlowerAnalog4Layers(mlp)
+        mlp.InitializeStruct({4, 12, 8, 1}, addBiasColumn:=True)
+
+        mlp.nbIterations = nbIterations
+        mlp.SetActivationFunction(enumActivationFunction.Sigmoid, gain)
+
+        mlp.InitializeWeights(1, {
+            {0.35, -0.16, -0.09, 0.22, -0.47},
+            {-0.46, 0.33, 0.21, 0.43, 0.1},
+            {0.47, 0.19, -0.21, -0.42, 0.22},
+            {0.18, 0.16, 0.47, 0.45, -0.38},
+            {0.02, 0.36, 0.31, 0.46, -0.45},
+            {-0.23, 0.17, -0.19, -0.49, -0.42},
+            {0.36, 0.16, -0.2, 0.09, 0.4},
+            {-0.06, 0.46, 0.23, 0.42, 0.45},
+            {-0.04, -0.25, -0.24, -0.03, 0.17},
+            {0.03, 0.41, -0.16, -0.13, 0.13},
+            {0.27, 0.05, -0.09, 0.08, -0.17},
+            {-0.02, 0.09, 0.26, 0.48, 0.27}})
+        mlp.InitializeWeights(2, {
+            {-0.35, -0.1, 0.43, 0.02, -0.39, -0.47, 0.49, 0.32, -0.26, 0.2, -0.27, 0.09, 0.5},
+            {0.16, -0.23, 0.1, -0.15, -0.21, 0.02, -0.13, -0.17, 0.44, -0.12, -0.19, -0.19, -0.25},
+            {0.22, -0.24, -0.08, 0.35, -0.3, 0.25, -0.35, 0.29, -0.44, -0.18, 0.24, -0.14, 0.15},
+            {0.04, -0.09, 0.02, -0.37, 0.43, 0.04, 0.47, -0.09, 0.42, -0.44, 0.38, -0.25, -0.03},
+            {-0.04, -0.09, 0.32, -0.04, 0.05, -0.29, 0.3, 0.27, -0.23, -0.26, -0.1, -0.11, -0.02},
+            {-0.06, -0.3, 0.1, 0.45, 0.37, 0.49, 0.14, 0.48, 0.45, 0.32, 0.3, -0.06, 0.28},
+            {-0.16, 0.34, 0.3, -0.3, 0.05, 0.1, 0.23, -0.21, 0.24, 0.47, 0.09, 0.27, 0.03},
+            {0.06, 0.38, -0.23, -0.33, -0.38, 0.24, -0.06, -0.45, 0.03, -0.29, -0.19, -0.39, -0.49}})
+        mlp.InitializeWeights(3, {
+            {-0.25, 0.33, -0.02, -0.05, -0.49, 0.16, -0.39, -0.07, -0.04}})
+
+        mlp.minimalSuccessTreshold = 0.2
+
+        mlp.Train(learningMode)
+
+        Dim success! = mlp.successPC
+        Dim successRounded# = Math.Round(success, 3)
+        Assert.AreEqual(True, successRounded >= expectedSuccess)
+
+        Dim loss# = mlp.averageError
+        Dim lossRounded# = Math.Round(loss, 3)
+        Assert.AreEqual(True, lossRounded <= expectedLoss)
+
+        If mlp.successPC = 1 Then
+            Dim expectedOutput = m_targetArrayIrisFlowerAnalogTest
+            Dim expectedMatrix As Matrix = expectedOutput ' Single(,) -> Matrix
+            Dim sOutput = mlp.output.ToStringWithFormat(dec:="0.0")
+            Dim sExpectedOutput = expectedMatrix.ToStringWithFormat(dec:="0.0")
+            Assert.AreEqual(sExpectedOutput, sOutput)
+        End If
+
+        mlp.TestAllSamples(m_inputArrayIrisFlowerTest,
+            m_targetArrayIrisFlowerAnalogTest, nbOutputs:=1)
+        Dim successPrediction! = mlp.successPC
+        Dim successPredictionRounded# = Math.Round(successPrediction, 3)
+        Assert.AreEqual(True, successPredictionRounded >= expectedSuccessPrediction)
+
+    End Sub
+
+    Public Sub TestMLPIrisFlowerAnalogGaussian(mlp As clsMLPGeneric,
         Optional nbIterations% = 100,
         Optional expectedSuccess# = 0.967#,
         Optional expectedSuccessPrediction# = 0.933#,
@@ -2309,7 +2420,7 @@ Module modMLPTest
         Optional learningMode As enumLearningMode = enumLearningMode.Defaut)
 
         mlp.Initialize(learningRate, weightAdjustment)
-        InitIrisFlowerAnalogPrediction(mlp)
+        InitIrisFlowerAnalog4Layers(mlp)
 
         mlp.nbIterations = nbIterations
         mlp.SetActivationFunction(enumActivationFunction.Gaussian, gain)
@@ -2339,8 +2450,6 @@ Module modMLPTest
 
         mlp.minimalSuccessTreshold = 0.2
 
-        'mlp.PrintWeights()
-
         mlp.Train(learningMode)
 
         Dim success! = mlp.successPC
@@ -2367,53 +2476,7 @@ Module modMLPTest
 
     End Sub
 
-    Public Sub TestMLPIrisFlowerLogical(mlp As clsMLPGeneric,
-        Optional nbIterations% = 300,
-        Optional expectedSuccess# = 0.969#,
-        Optional expectedLoss# = 0.13#,
-        Optional learningRate! = 0.1!,
-        Optional weightAdjustment! = 0.1!,
-        Optional gain! = 1,
-        Optional learningMode As enumLearningMode = enumLearningMode.Defaut)
-
-        mlp.Initialize(learningRate, weightAdjustment)
-        InitIrisFlowerLogical(mlp)
-
-        mlp.nbIterations = nbIterations
-        mlp.SetActivationFunction(enumActivationFunction.Sigmoid, gain)
-
-        mlp.InitializeWeights(1, {
-            {0.5, 0.03, 0.08, 0.35, 0.43},
-            {-0.1, 0.09, -0.19, 0.11, 0.46},
-            {-0.26, -0.39, -0.49, 0.35, -0.27},
-            {-0.4, -0.49, 0.43, -0.38, -0.11}})
-        mlp.InitializeWeights(2, {
-            {-0.36, 0.37, -0.04, -0.1, -0.23},
-            {0.2, -0.42, 0.09, 0.23, -0.38},
-            {0.21, -0.35, -0.22, 0.01, -0.07}})
-
-        mlp.minimalSuccessTreshold = 0.3
-        mlp.Train(learningMode)
-
-        Dim success! = mlp.successPC
-        Dim successRounded# = Math.Round(success, 3)
-        Assert.AreEqual(True, successRounded >= expectedSuccess)
-
-        Dim loss# = mlp.averageError
-        Dim lossRounded# = Math.Round(loss, 3)
-        Assert.AreEqual(True, lossRounded <= expectedLoss)
-
-        If mlp.successPC = 1 Then
-            Dim expectedOutput = m_targetArrayIrisFlowerLogical
-            Dim expectedMatrix As Matrix = expectedOutput ' Single(,) -> Matrix
-            Dim sOutput = mlp.output.ToStringWithFormat(dec:="0.0")
-            Dim sExpectedOutput = expectedMatrix.ToStringWithFormat(dec:="0.0")
-            Assert.AreEqual(sExpectedOutput, sOutput)
-        End If
-
-    End Sub
-
-    Public Sub TestMLPIrisFlowerLogicalPredictionTanh(mlp As clsMLPGeneric,
+    Public Sub TestMLPIrisFlowerLogicalTanh(mlp As clsMLPGeneric,
         Optional nbIterations% = 1500,
         Optional expectedSuccess# = 0.994#,
         Optional expectedSuccessPrediction# = 0.978#,
@@ -2426,7 +2489,7 @@ Module modMLPTest
         ' 97.8% prediction, 99.4% learning with 1500 iterations
 
         mlp.Initialize(learningRate, weightAdjustment)
-        InitIrisFlowerLogicalPrediction(mlp)
+        InitIrisFlowerLogical4Layers(mlp)
 
         mlp.minimalSuccessTreshold = 0.3
         mlp.nbIterations = nbIterations
@@ -2489,7 +2552,7 @@ Module modMLPTest
 
     End Sub
 
-    Public Sub TestMLPIrisFlowerLogicalPredictionSigmoid(mlp As clsMLPGeneric,
+    Public Sub TestMLPIrisFlowerLogicalSigmoid(mlp As clsMLPGeneric,
         Optional nbIterations% = 1000,
         Optional expectedSuccess# = 0.986#,
         Optional expectedSuccessPrediction# = 0.978#,
@@ -2502,7 +2565,7 @@ Module modMLPTest
         ' 97.8% prediction, 98.6% learning with 200 iterations
 
         mlp.Initialize(learningRate, weightAdjustment)
-        InitIrisFlowerLogicalPrediction(mlp)
+        InitIrisFlowerLogical4Layers(mlp)
 
         mlp.minimalSuccessTreshold = 0.3
         mlp.nbIterations = nbIterations
@@ -2565,7 +2628,7 @@ Module modMLPTest
 
     End Sub
 
-    Public Sub TestMLPIrisFlowerLogicalPredictionGaussian(mlp As clsMLPGeneric,
+    Public Sub TestMLPIrisFlowerLogicalGaussian(mlp As clsMLPGeneric,
         Optional nbIterations% = 100,
         Optional expectedSuccess# = 0.953#,
         Optional expectedSuccessPrediction# = 0.967#,
@@ -2578,7 +2641,7 @@ Module modMLPTest
         ' 96.7% prediction, 95.3% learning with 100 iterations
 
         mlp.Initialize(learningRate, weightAdjustment)
-        InitIrisFlowerLogicalPrediction(mlp)
+        InitIrisFlowerLogical4Layers(mlp)
         mlp.InitializeStruct({4, 9, 9, 3}, addBiasColumn:=True)
 
         mlp.minimalSuccessTreshold = 0.3
@@ -2636,7 +2699,7 @@ Module modMLPTest
 
     End Sub
 
-    Public Sub TestMLPIrisFlowerLogicalPredictionSinus(mlp As clsMLPGeneric,
+    Public Sub TestMLPIrisFlowerLogicalSinus(mlp As clsMLPGeneric,
         Optional nbIterations% = 200,
         Optional expectedSuccess# = 0.933#,
         Optional expectedSuccessPrediction# = 0.978#,
@@ -2649,7 +2712,7 @@ Module modMLPTest
         ' 97.8% prediction, 93.3% learning with 200 iterations
 
         mlp.Initialize(learningRate, weightAdjustment)
-        InitIrisFlowerLogicalPrediction(mlp)
+        InitIrisFlowerLogical4Layers(mlp)
         mlp.InitializeStruct({4, 9, 9, 3}, addBiasColumn:=True)
 
         mlp.minimalSuccessTreshold = 0.3
@@ -2712,7 +2775,8 @@ Module modMLPTest
         Optional threeLayers As Boolean = False,
         Optional addBiasColumn As Boolean = True,
         Optional nbHiddenLayersFromInput As Boolean = False,
-        Optional sigmoid As Boolean = False)
+        Optional sigmoid As Boolean = False,
+        Optional minValue! = -0.5, Optional maxValue! = 0.5, Optional gain! = 2)
 
         mlp.ShowMessage(testName)
 
@@ -2732,19 +2796,20 @@ Module modMLPTest
             mlp.inputArray = m_inputArrayIrisFlowerTrain
             mlp.targetArray = m_targetArrayIrisFlowerLogicalTrain
             ' clsMLPTensor: Set activation function before InitializeStruct
-            mlp.SetActivationFunctionOptimized(enumActivationFunctionOptimized.Sigmoid)
+            mlp.SetActivationFunctionOptimized(enumActivationFunctionOptimized.Sigmoid, gain)
             mlp.InitializeStruct({4, 4, 4, 3}, addBiasColumn)
         Else
-            InitIrisFlowerLogicalPrediction(mlp)
+            InitIrisFlowerLogical4Layers(mlp)
         End If
 
         If sigmoid Then
-            mlp.SetActivationFunction(enumActivationFunction.Sigmoid)
+            mlp.SetActivationFunction(enumActivationFunction.Sigmoid, gain)
         Else
-            mlp.SetActivationFunction(enumActivationFunction.HyperbolicTangent, gain:=2)
+            mlp.SetActivationFunction(enumActivationFunction.HyperbolicTangent, gain)
         End If
 
-        mlp.Randomize()
+        'mlp.Randomize()
+        mlp.Randomize(minValue, maxValue)
 
         mlp.PrintParameters()
 
@@ -2765,7 +2830,8 @@ Module modMLPTest
             Optional threeLayers As Boolean = False,
             Optional addBiasColumn As Boolean = True,
             Optional nbHiddenLayersFromInput As Boolean = False,
-            Optional sigmoid As Boolean = False)
+            Optional sigmoid As Boolean = False,
+            Optional minValue! = -0.5, Optional maxValue! = 0.5, Optional gain! = 2)
 
         mlp.ShowMessage(testName)
 
@@ -2785,19 +2851,20 @@ Module modMLPTest
             mlp.inputArray = m_inputArrayIrisFlowerTrain
             mlp.targetArray = m_targetArrayIrisFlowerAnalogTrain
             ' clsMLPTensor: Set activation function before InitializeStruct
-            mlp.SetActivationFunctionOptimized(enumActivationFunctionOptimized.Sigmoid)
+            mlp.SetActivationFunctionOptimized(enumActivationFunctionOptimized.Sigmoid, gain)
             mlp.InitializeStruct({4, 4, 4, 1}, addBiasColumn)
         Else
-            InitIrisFlowerAnalogPrediction(mlp)
+            InitIrisFlowerAnalog4Layers(mlp)
         End If
 
         If sigmoid Then
-            mlp.SetActivationFunction(enumActivationFunction.Sigmoid)
+            mlp.SetActivationFunction(enumActivationFunction.Sigmoid, gain)
         Else
-            mlp.SetActivationFunction(enumActivationFunction.HyperbolicTangent, gain:=2)
+            mlp.SetActivationFunction(enumActivationFunction.HyperbolicTangent, gain)
         End If
 
-        mlp.Randomize()
+        'mlp.Randomize()
+        mlp.Randomize(minValue, maxValue)
 
         mlp.PrintParameters()
 
