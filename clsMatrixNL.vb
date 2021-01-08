@@ -681,7 +681,7 @@ Namespace Utility
         ''' <summary>
         ''' Convert whole Matrix object to an array of Single
         ''' </summary>
-        Public Function ToArraySingle() As Single()
+        Public Function ToArrayOfSingle() As Single()
 
             Dim array!() = New Single(Me.data.Length - 1) {}
             Dim k = 0

@@ -206,7 +206,7 @@ Namespace VectorizedMatrixMLP
         End Sub
 
         Public Overrides Sub SetOuput1D()
-            Me.lastOutputArray1DSingle = Me.output.ToArraySingle()
+            Me.lastOutputArray1DSingle = Me.output.ToArrayOfSingle()
         End Sub
 
         Public Overrides Sub TestOneSample(input!())

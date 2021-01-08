@@ -1,7 +1,7 @@
 ﻿
 ' Matrix implementation using Math.Net
 ' https://numerics.mathdotnet.com/Matrix.html
-' <package id="MathNet.Numerics" version="4.12.0" targetFramework="net472" />
+' <package id="MathNet.Numerics" version="4.15.0" targetFramework="net472" />
 
 Imports System.Text ' StringBuilder
 
@@ -501,7 +501,7 @@ Namespace Utility
         ''' <summary>
         ''' Convert whole Matrix object to an array of Single
         ''' </summary>
-        Public Function ToArraySingle() As Single()
+        Public Function ToArrayOfSingle() As Single()
 
             Dim length = Me.m_matrix.RowCount * Me.m_matrix.ColumnCount
             Dim array!() = New Single(length - 1) {}

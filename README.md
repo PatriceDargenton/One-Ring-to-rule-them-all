@@ -152,6 +152,9 @@ Packages added:
 
 # Versions
 
+08/01/2021 V1.28
+- Matrix.ToArraySingle -> ToArrayOfSingle
+
 08/01/2021 V1.27
 - Dataset directory
 

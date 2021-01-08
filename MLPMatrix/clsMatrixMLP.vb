@@ -99,7 +99,7 @@ Namespace MatrixMLP
         ''' </summary>
         Public Overrides Sub TestOneSample(input!())
             ForwardPropogateSignal(input)
-            Me.lastOutputArray1DSingle = Me.output.ToArraySingle()
+            Me.lastOutputArray1DSingle = Me.output.ToArrayOfSingle()
         End Sub
 
         ''' <summary>

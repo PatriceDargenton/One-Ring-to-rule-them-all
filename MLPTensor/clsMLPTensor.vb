@@ -201,7 +201,7 @@ Public Class clsMLPTensor : Inherits clsVectorizedMLPGeneric
 
         Dim output As Matrix = Me.pred.Data
         Me.output = Me.pred.Data ' 20/11/2020
-        Me.lastOutputArray1DSingle = output.ToArraySingle()
+        Me.lastOutputArray1DSingle = output.ToArrayOfSingle()
 
     End Sub
 
@@ -209,7 +209,7 @@ Public Class clsMLPTensor : Inherits clsVectorizedMLPGeneric
 
         Dim output As Matrix = Me.pred.Data
         Me.output = Me.pred.Data ' 20/11/2020
-        Me.lastOutputArray1DSingle = output.ToArraySingle()
+        Me.lastOutputArray1DSingle = output.ToArrayOfSingle()
 
     End Sub
 
