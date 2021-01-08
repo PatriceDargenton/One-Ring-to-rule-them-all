@@ -146,6 +146,14 @@
     <Compile Include="modMLPTest.vb" />
     <Compile Include="modTests.vb" />
     <Compile Include="AssemblyInfo.vb" />
+    <Compile Include="Dataset\mod1XOR.vb" />
+    <Compile Include="Dataset\mod2XOR.vb" />
+    <Compile Include="Dataset\mod3XOR.vb" />
+    <Compile Include="Dataset\modIrisFlowerInputOriginal.vb" />
+    <Compile Include="Dataset\modIrisFlowerInputCorrected.vb" />
+    <Compile Include="Dataset\modIrisFlowerTargetLogical.vb" />
+    <Compile Include="Dataset\modIrisFlowerTargetAnalogOriginal.vb" />
+    <Compile Include="Dataset\modIrisFlowerTargetAnalog.vb" />
     <Compile Include="MLPRProp\clsMLPRProp.vb" />
     <Compile Include="MLPRProp\modMLPRPropTest.vb" />
     <Compile Include="MLPClassic\clsMLPClassic.vb" />

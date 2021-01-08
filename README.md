@@ -152,6 +152,9 @@ Packages added:
 
 # Versions
 
+08/01/2021 V1.27
+- Dataset directory
+
 03/01/2021 V1.26
 - clsMLPTensorFlow.TestOneSample fixed
 - clsMLPClassic.TestOneSample fixed
