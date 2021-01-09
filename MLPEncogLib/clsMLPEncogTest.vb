@@ -246,6 +246,7 @@ Namespace EncogMLP
 
             'm_mlp.RBPLAlgo = True ' Default
             TestMLP1XORSigmoidRProp(m_mlp)
+            'TestMLP1XORSigmoidRProp(m_mlp, learningMode:=enumLearningMode.VectorialBatch)
 
         End Sub
 
@@ -298,6 +299,7 @@ Namespace EncogMLP
 
             'm_mlp.RBPLAlgo = True ' Default
             TestMLP1XORTanhRProp(m_mlp)
+            'TestMLP1XORTanhRProp(m_mlp, learningMode:=enumLearningMode.VectorialBatch)
 
         End Sub
 

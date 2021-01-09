@@ -33,6 +33,7 @@ Public Class clsMLPKeras : Inherits clsVectorizedMLPGeneric
     Private model As Model
     Dim weightsNDA As List(Of NDarray)
     Private Const batch_size% = 2
+    Private nbHiddenNeurons%
 
     Public inputJaggedDblArray#()()
     Public targetJaggedDblArray#()()
@@ -44,6 +45,7 @@ Public Class clsMLPKeras : Inherits clsVectorizedMLPGeneric
     Public Overrides Sub InitializeStruct(neuronCount%(), addBiasColumn As Boolean)
 
         MyBase.InitializeStruct(neuronCount, addBiasColumn)
+        Me.nbHiddenNeurons = Me.neuronCount(Me.layerCount - 2) ' lastHidden
         Me.useBias = False 'addBiasColumn
 
         If IsNothing(Me.inputArray) Then Exit Sub

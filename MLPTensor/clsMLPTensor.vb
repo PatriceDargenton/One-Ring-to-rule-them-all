@@ -16,6 +16,7 @@ Public Class clsMLPTensor : Inherits clsVectorizedMLPGeneric
     Private mse As MeanSquaredError
     Private sgd As StochasticGradientDescent
 
+    Private nbHiddenNeurons%
     Private nbHiddenNeuronsTensor%
     Private nbHiddenNeuronsTensorWithBias%
 
@@ -26,6 +27,7 @@ Public Class clsMLPTensor : Inherits clsVectorizedMLPGeneric
     Public Overrides Sub InitializeStruct(neuronCount%(), addBiasColumn As Boolean)
 
         MyBase.InitializeStruct(neuronCount, addBiasColumn)
+        Me.nbHiddenNeurons = Me.neuronCount(1)
 
         If Not Me.useBias Then
             Throw New NotImplementedException(

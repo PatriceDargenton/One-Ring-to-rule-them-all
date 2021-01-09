@@ -32,6 +32,8 @@ Public Class clsMLPTensorFlow : Inherits clsVectorizedMLPGeneric
 
     Dim hiddenWeights#(), outputWeights#()
 
+    Private nbHiddenNeurons%
+
 #If Implementation Then
     Private graphTuple As (
         trainOperation As Operation, loss As Tensor,
@@ -45,6 +47,7 @@ Public Class clsMLPTensorFlow : Inherits clsVectorizedMLPGeneric
     Public Overrides Sub InitializeStruct(neuronCount%(), addBiasColumn As Boolean)
 
         MyBase.InitializeStruct(neuronCount, addBiasColumn)
+        Me.nbHiddenNeurons = Me.neuronCount(1)
 
         ReDim Me.hiddenWeights(Me.nbInputNeurons * Me.nbHiddenNeurons - 1)
         ReDim Me.outputWeights(Me.nbHiddenNeurons * Me.nbOutputNeurons - 1)

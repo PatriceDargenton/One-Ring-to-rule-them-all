@@ -175,6 +175,7 @@ Namespace AccordMLP
 
             m_mlp.RBPLAlgo = True
             TestMLP1XORSigmoidRProp(m_mlp)
+            'TestMLP1XORSigmoidRProp(m_mlp, learningMode:=enumLearningMode.VectorialBatch)
             m_mlp.RBPLAlgo = False
 
         End Sub
@@ -198,6 +199,7 @@ Namespace AccordMLP
 
             m_mlp.RBPLAlgo = True
             TestMLP1XORTanhRProp(m_mlp, nbIterations:=350)
+            'TestMLP1XORTanhRProp(m_mlp, nbIterations:=350, learningMode:=enumLearningMode.VectorialBatch)
             m_mlp.RBPLAlgo = False
 
         End Sub

@@ -139,6 +139,7 @@ Namespace RPropMLP
         Public Sub RPropMLP1XORSigmoidRProp()
 
             TestMLP1XORSigmoidRProp(m_mlp, nbIterations:=350)
+            'TestMLP1XORSigmoidRProp(m_mlp, nbIterations:=350, learningMode:=enumLearningMode.VectorialBatch)
 
         End Sub
 
@@ -153,6 +154,7 @@ Namespace RPropMLP
         Public Sub RPropMLP1XORTanhRProp()
 
             TestMLP1XORTanhRProp(m_mlp, nbIterations:=500)
+            'TestMLP1XORTanhRProp(m_mlp, nbIterations:=500, learningMode:=enumLearningMode.VectorialBatch)
 
         End Sub
 

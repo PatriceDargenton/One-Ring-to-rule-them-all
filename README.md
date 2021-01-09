@@ -152,6 +152,9 @@ Packages added:
 
 # Versions
 
+09/01/2021 V1.30
+- clsMLPGeneric.nbHiddenNeurons -> moved to specific classes
+
 09/01/2021 V1.29
 - HTangent -> Tanh
 

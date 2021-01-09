@@ -15,14 +15,14 @@ Public MustInherit Class clsMLPGeneric
         Me.layerCount = neuronCount.Length
         Me.neuronCount = neuronCount
         Me.nbInputNeurons = Me.neuronCount(0)
-        Me.nbHiddenNeurons = Me.neuronCount(1)
+        'Me.nbHiddenNeurons = Me.neuronCount(1)
         Me.nbOutputNeurons = Me.neuronCount(Me.layerCount - 1)
     End Sub
 
     Public MustOverride Sub InitializeWeights(layer%, weights#(,))
 
     Protected nbInputNeurons%
-    Protected nbHiddenNeurons%
+    'Protected nbHiddenNeurons%
     Protected nbOutputNeurons%
 
     ''' <summary>

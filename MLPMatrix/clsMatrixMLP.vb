@@ -41,9 +41,12 @@ Namespace MatrixMLP
         ' ''' </summary>
         'Public output As Matrix
 
+        Private nbHiddenNeurons%
+
         Public Overrides Sub InitializeStruct(neuronCount%(), addBiasColumn As Boolean)
 
             MyBase.InitializeStruct(neuronCount, addBiasColumn)
+            Me.nbHiddenNeurons = Me.neuronCount(1)
 
             Me.weightAdjustment = 0 ' Not used
 
