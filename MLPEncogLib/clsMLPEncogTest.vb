@@ -241,6 +241,14 @@ Namespace EncogMLP
 
         End Sub
 
+        <TestMethod()>
+        Public Sub EncogMLP1XORSigmoidRProp()
+
+            'm_mlp.RBPLAlgo = True ' Default
+            TestMLP1XORSigmoidRProp(m_mlp)
+
+        End Sub
+
         Private Sub TestMLP1XORSigmoid231(mlp As clsMLPGeneric,
             Optional nbIterations% = 300,
             Optional expectedLoss# = 0.01#,
@@ -278,17 +286,25 @@ Namespace EncogMLP
         End Sub
 
         <TestMethod()>
-        Public Sub EncogMLP1XORHTangent()
+        Public Sub EncogMLP1XORTanh()
 
-            TestMLP1XORHTangent(m_mlp, weightAdjustment:=0, gain:=2,
+            TestMLP1XORTanh(m_mlp, weightAdjustment:=0, gain:=2,
                 learningMode:=enumLearningMode.Vectorial)
 
         End Sub
 
         <TestMethod()>
-        Public Sub EncogMLP1XORHTangent261()
+        Public Sub EncogMLP1XORTanhRProp()
 
-            TestMLP1XORHTangent261(m_mlp, nbIterations:=200, gain:=2,
+            'm_mlp.RBPLAlgo = True ' Default
+            TestMLP1XORTanhRProp(m_mlp)
+
+        End Sub
+
+        <TestMethod()>
+        Public Sub EncogMLP1XORTanh261()
+
+            TestMLP1XORTanh261(m_mlp, nbIterations:=200, gain:=2,
                 learningMode:=enumLearningMode.Vectorial)
 
         End Sub
@@ -337,17 +353,17 @@ Namespace EncogMLP
         End Sub
 
         <TestMethod()>
-        Public Sub EncogMLP2XORHTangent()
+        Public Sub EncogMLP2XORTanh()
 
-            TestMLP2XORHTangent(m_mlp, weightAdjustment:=0, gain:=2,
+            TestMLP2XORTanh(m_mlp, weightAdjustment:=0, gain:=2,
                 learningMode:=enumLearningMode.Vectorial)
 
         End Sub
 
         <TestMethod()>
-        Public Sub EncogMLP2XORHTangent462()
+        Public Sub EncogMLP2XORTanh462()
 
-            TestMLP2XORHTangent462(m_mlp, gain:=2,
+            TestMLP2XORTanh462(m_mlp, gain:=2,
                 learningMode:=enumLearningMode.Vectorial)
 
         End Sub
@@ -426,9 +442,9 @@ Namespace EncogMLP
         End Sub
 
         <TestMethod()>
-        Public Sub EncogMLP3XORHTangent()
+        Public Sub EncogMLP3XORTanh()
 
-            TestMLP3XORHTangent(m_mlp, gain:=2,
+            TestMLP3XORTanh(m_mlp, gain:=2,
                 learningMode:=enumLearningMode.Vectorial)
 
         End Sub

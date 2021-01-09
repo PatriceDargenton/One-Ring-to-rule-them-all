@@ -462,7 +462,111 @@ Module modMLPTest
 
     End Sub
 
-    Public Sub TestMLP1XORHTangent(mlp As clsMLPGeneric,
+    Public Sub TestMLP1XORSigmoidRProp(mlp As clsMLPGeneric,
+            Optional nbIterations% = 140,
+            Optional expectedLoss# = 0.03#,
+            Optional learningRate! = 0.1!,
+            Optional weightAdjustment! = 0.1!,
+            Optional gain! = 1,
+            Optional learningMode As enumLearningMode = enumLearningMode.Vectorial)
+
+        InitXOR(mlp)
+        mlp.Initialize(learningRate, weightAdjustment)
+        mlp.nbIterations = nbIterations
+        mlp.InitializeStruct(m_neuronCountXOR231, addBiasColumn:=True)
+        mlp.SetActivationFunction(enumActivationFunction.Sigmoid, gain)
+
+        mlp.InitializeWeights(1, {
+            {-0.11, -0.17, 0.05},
+            {0.47, 0.05, 0.08},
+            {-0.26, 0.09, 0.1}})
+        mlp.InitializeWeights(2, {
+            {-0.38, 0.08, -0.2, -0.01}})
+
+        'mlp.printOutput_ = True
+        'mlp.printOutputMatrix = True
+        'mlp.PrintWeights()
+
+        mlp.Train(learningMode)
+
+        Dim expectedOutput = m_targetArrayXOR
+
+        Dim sOutput$ = mlp.output.ToStringWithFormat(dec:="0.0")
+        Dim expectedMatrix As Matrix = expectedOutput ' Single(,) -> Matrix
+        Dim sExpectedOutput = expectedMatrix.ToStringWithFormat(dec:="0.0")
+        Assert.AreEqual(sExpectedOutput, sOutput)
+
+        Dim loss# = mlp.averageError
+        Dim lossRounded# = Math.Round(loss, 2)
+        Assert.AreEqual(True, lossRounded <= expectedLoss)
+
+        ' XOR at 90%: works for Accord
+        mlp.TestAllSamples(m_inputArrayXOR90PC)
+        Dim sOutput90PC$ = mlp.output.ToStringWithFormat(dec:="0.00")
+
+        ' XOR at 80%: works for Accord
+        mlp.TestAllSamples(m_inputArrayXOR80PC)
+        Dim sOutput80PC$ = mlp.output.ToStringWithFormat(dec:="0.00")
+
+        ' XOR at 70%: works for Accord
+        mlp.TestAllSamples(m_inputArrayXOR70PC)
+        Dim sOutput70PC$ = mlp.output.ToStringWithFormat(dec:="0.00")
+
+    End Sub
+
+    Public Sub TestMLP1XORTanhRProp(mlp As clsMLPGeneric,
+            Optional nbIterations% = 180,
+            Optional expectedLoss# = 0.03#,
+            Optional learningRate! = 0.1!,
+            Optional weightAdjustment! = 0.1!,
+            Optional gain! = 2,
+            Optional learningMode As enumLearningMode = enumLearningMode.Vectorial)
+
+        InitXOR(mlp)
+        mlp.Initialize(learningRate, weightAdjustment)
+        mlp.nbIterations = nbIterations
+        mlp.InitializeStruct(m_neuronCountXOR231, addBiasColumn:=True)
+        mlp.SetActivationFunction(enumActivationFunction.HyperbolicTangent, gain)
+
+        mlp.InitializeWeights(1, {
+            {0.38, 0.47, -0.12},
+            {0.41, -0.04, -0.03},
+            {0.14, -0.12, -0.31}})
+        mlp.InitializeWeights(2, {
+            {-0.41, 0.27, -0.41, 0.46}})
+
+        'mlp.printOutput_ = True
+        'mlp.printOutputMatrix = True
+        'mlp.PrintWeights()
+
+        mlp.Train(learningMode)
+
+        Dim expectedOutput = m_targetArrayXOR
+
+        Dim sOutput$ = mlp.output.ToStringWithFormat(dec:="0.0")
+        Dim expectedMatrix As Matrix = expectedOutput ' Single(,) -> Matrix
+        Dim sExpectedOutput = expectedMatrix.ToStringWithFormat(dec:="0.0")
+        Assert.AreEqual(sExpectedOutput, sOutput)
+
+        Dim loss# = mlp.averageError
+        Dim lossRounded# = Math.Round(loss, 2)
+        Assert.AreEqual(True, lossRounded <= expectedLoss)
+
+        ' XOR at 90%: does not work
+        mlp.TestAllSamples(m_inputArrayXOR90PC)
+        Dim sOutput90PC$ = mlp.output.ToStringWithFormat(dec:="0.00")
+
+        ' XOR at 80%: does not work
+        mlp.TestAllSamples(m_inputArrayXOR80PC)
+        Dim sOutput80PC$ = mlp.output.ToStringWithFormat(dec:="0.00")
+
+        ' XOR at 70%: does not work
+        mlp.TestAllSamples(m_inputArrayXOR70PC)
+        Dim sOutput70PC$ = mlp.output.ToStringWithFormat(dec:="0.00")
+
+    End Sub
+
+    Public Sub TestMLP1XORTanh(mlp As clsMLPGeneric,
             Optional nbIterations% = 2500,
             Optional expectedLoss# = 0.02#,
             Optional learningRate! = 0.05!,
@@ -498,7 +602,7 @@ Module modMLPTest
 
     End Sub
 
-    Public Sub TestMLP1XORHTangent261(mlp As clsMLPGeneric,
+    Public Sub TestMLP1XORTanh261(mlp As clsMLPGeneric,
             Optional nbIterations% = 400,
             Optional expectedLoss# = 0.02#,
             Optional learningRate! = 0.2!,
@@ -577,7 +681,7 @@ Module modMLPTest
 
     End Sub
 
-    Public Sub TestMLP2XORHTangent2(mlp As clsMLPGeneric,
+    Public Sub TestMLP2XORTanh2(mlp As clsMLPGeneric,
             Optional nbIterations% = 200,
             Optional expectedLoss# = 0.03#,
             Optional learningRate! = 0.09!,
@@ -616,7 +720,7 @@ Module modMLPTest
 
     End Sub
 
-    Public Sub TestMLP2XORHTangent(mlp As clsMLPGeneric,
+    Public Sub TestMLP2XORTanh(mlp As clsMLPGeneric,
             Optional nbIterations% = 400,
             Optional expectedLoss# = 0.02#,
             Optional learningRate! = 0.1!,
@@ -655,7 +759,7 @@ Module modMLPTest
 
     End Sub
 
-    Public Sub TestMLP2XORHTangent462(mlp As clsMLPGeneric,
+    Public Sub TestMLP2XORTanh462(mlp As clsMLPGeneric,
         Optional nbIterations% = 700,
         Optional expectedLoss# = 0.01#,
         Optional learningRate! = 0.1!,
@@ -739,7 +843,7 @@ Module modMLPTest
 
     End Sub
 
-    Public Sub TestMLP3XORHTangent(mlp As clsMLPGeneric,
+    Public Sub TestMLP3XORTanh(mlp As clsMLPGeneric,
             Optional nbIterations% = 1100,
             Optional expectedLoss# = 0.02#,
             Optional learningRate! = 0.1!,

@@ -300,7 +300,7 @@ Namespace VectorizedMatrixMLP
         End Sub
 
         <TestMethod()>
-        Public Sub VecMatrixMLP1XORHTangent()
+        Public Sub VecMatrixMLP1XORTanh()
 
             InitXOR()
             m_mlp.nbIterations = 600 ' Hyperbolic tangent: works
@@ -652,7 +652,7 @@ Namespace VectorizedMatrixMLP
         End Sub
 
         <TestMethod()>
-        Public Sub VecMatrixMLP2XORHTangent()
+        Public Sub VecMatrixMLP2XORTanh()
 
             Init2XOR()
             m_mlp.nbIterations = 300 ' HTan: works

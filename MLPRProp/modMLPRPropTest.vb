@@ -135,12 +135,27 @@ Namespace RPropMLP
 
         End Sub
 
-        '<TestMethod()>
-        Public Sub RPropMLP1XORHTangent()
+        <TestMethod()>
+        Public Sub RPropMLP1XORSigmoidRProp()
 
-            TestMLP1XORHTangent(m_mlp, nbIterations:=1000)
+            TestMLP1XORSigmoidRProp(m_mlp, nbIterations:=350)
 
         End Sub
+
+        '<TestMethod()>
+        Public Sub RPropMLP1XORTanhStdr()
+
+            TestMLP1XORTanh(m_mlp, nbIterations:=1000)
+
+        End Sub
+
+        <TestMethod()>
+        Public Sub RPropMLP1XORTanhRProp()
+
+            TestMLP1XORTanhRProp(m_mlp, nbIterations:=500)
+
+        End Sub
+
 
         '<TestMethod()>
         Public Sub RPropMLP1XORTanH()
@@ -182,9 +197,9 @@ Namespace RPropMLP
         End Sub
 
         <TestMethod()>
-        Public Sub RPropMLP2XORHTangent()
+        Public Sub RPropMLP2XORTanh()
 
-            TestMLP2XORHTangent(m_mlp, nbIterations:=600, gain:=0.5)
+            TestMLP2XORTanh(m_mlp, nbIterations:=600, gain:=0.5)
 
         End Sub
 
@@ -232,14 +247,14 @@ Namespace RPropMLP
         End Sub
 
         <TestMethod()>
-        Public Sub RPropMLP3XORHTangentStdr()
+        Public Sub RPropMLP3XORTanhStdr()
 
-            TestMLP3XORHTangent(m_mlp, nbIterations:=8000, gain:=0.1)
+            TestMLP3XORTanh(m_mlp, nbIterations:=8000, gain:=0.1)
 
         End Sub
 
         <TestMethod()>
-        Public Sub RPropMLP3XORHTangent()
+        Public Sub RPropMLP3XORTanh()
 
             Init3XOR()
             m_mlp.InitializeStruct(m_neuronCount3XOR673, addBiasColumn:=True)

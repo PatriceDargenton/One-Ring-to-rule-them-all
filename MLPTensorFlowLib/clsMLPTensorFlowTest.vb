@@ -136,14 +136,14 @@ Namespace TensorFlowMLP
         End Sub
 
         <TestMethod()>
-        Public Sub TensorFlowMLP1XORHTangent261()
+        Public Sub TensorFlowMLP1XORTanh261()
 
-            TestMLP1XORHTangent261(m_mlp, learningMode:=enumLearningMode.Vectorial)
+            TestMLP1XORTanh261(m_mlp, learningMode:=enumLearningMode.Vectorial)
 
         End Sub
 
         <TestMethod()>
-        Public Sub TensorFlowMLP1XORHTangent()
+        Public Sub TensorFlowMLP1XORTanh()
 
             InitXOR()
             m_mlp.Initialize(learningRate:=0.2!)
@@ -183,7 +183,7 @@ Namespace TensorFlowMLP
         ' Does not work:
 
         '<TestMethod()>
-        'Public Sub TensorFlowMLP2XORHTangent()
+        'Public Sub TensorFlowMLP2XORTanh()
 
         '    Init2XOR()
         '    m_mlp.Initialize(learningRate:=0.1!)
@@ -212,23 +212,23 @@ Namespace TensorFlowMLP
         'End Sub
 
         '<TestMethod()>
-        'Public Sub TensorFlowMLP2XORHTangent462()
+        'Public Sub TensorFlowMLP2XORTanh462()
 
-        '    TestMLP2XORHTangent462(m_mlp, nbIterations:=10000)
-
-        'End Sub
-
-        '<TestMethod()>
-        'Public Sub TensorFlowMLP3XORHTangent()
-
-        '    TestMLP3XORHTangent(m_mlp) 
+        '    TestMLP2XORTanh462(m_mlp, nbIterations:=10000)
 
         'End Sub
 
         '<TestMethod()>
-        'Public Sub TensorFlowMLP3XORHTangent()
+        'Public Sub TensorFlowMLP3XORTanh()
 
-        '    TestMLP3XORHTangent(m_mlp, learningMode:=enumLearningMode.Vectorial)
+        '    TestMLP3XORTanh(m_mlp) 
+
+        'End Sub
+
+        '<TestMethod()>
+        'Public Sub TensorFlowMLP3XORTanh()
+
+        '    TestMLP3XORTanh(m_mlp, learningMode:=enumLearningMode.Vectorial)
 
         'End Sub
 

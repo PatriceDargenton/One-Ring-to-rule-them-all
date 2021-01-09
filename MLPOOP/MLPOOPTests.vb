@@ -247,22 +247,22 @@ Namespace OOPMLP
         End Sub
 
         <TestMethod()>
-        Public Sub MLPOOP1XORHTangent()
+        Public Sub MLPOOP1XORTanh()
 
             ' OOP activation function: before Initialize()
             'm_mlp.ActivationFunction = New HyperbolicTangent(alpha:=2.4#)
 
-            TestMLP1XORHTangent(m_mlp)
+            TestMLP1XORTanh(m_mlp)
 
         End Sub
 
         <TestMethod()>
-        Public Sub MLPOOP1XORHTangent261()
+        Public Sub MLPOOP1XORTanh261()
 
             ' OOP activation function: before Initialize()
             'm_mlp.ActivationFunction = New HyperbolicTangent(alpha:=2.0#)
 
-            TestMLP1XORHTangent261(m_mlp, nbIterations:=500)
+            TestMLP1XORTanh261(m_mlp, nbIterations:=500)
 
         End Sub
 
@@ -284,29 +284,29 @@ Namespace OOPMLP
         End Sub
 
         <TestMethod()>
-        Public Sub MLPOOP2XORHTangent()
+        Public Sub MLPOOP2XORTanh()
 
             ' OOP activation function: before Initialize()
             'm_mlp.ActivationFunction = New HyperbolicTangent(alpha:=2.0#)
 
-            TestMLP2XORHTangent(m_mlp)
+            TestMLP2XORTanh(m_mlp)
 
         End Sub
 
         <TestMethod()>
-        Public Sub MLPOOP2XORHTangent2()
+        Public Sub MLPOOP2XORTanh2()
 
-            TestMLP2XORHTangent2(m_mlp, nbIterations:=600)
+            TestMLP2XORTanh2(m_mlp, nbIterations:=600)
 
         End Sub
 
         <TestMethod()>
-        Public Sub MLPOOP2XORHTangent462()
+        Public Sub MLPOOP2XORTanh462()
 
             ' OOP activation function: before Initialize()
             'm_mlp.ActivationFunction = New HyperbolicTangent(alpha:=2.0#)
 
-            TestMLP2XORHTangent462(m_mlp, nbIterations:=9000)
+            TestMLP2XORTanh462(m_mlp, nbIterations:=9000)
 
         End Sub
 
@@ -321,12 +321,12 @@ Namespace OOPMLP
         End Sub
 
         <TestMethod()>
-        Public Sub MLPOOP3XORHTangent()
+        Public Sub MLPOOP3XORTanh()
 
             ' OOP activation function: before Initialize()
             'm_mlp.ActivationFunction = New HyperbolicTangent(alpha:=1.0#)
 
-            TestMLP3XORHTangent(m_mlp)
+            TestMLP3XORTanh(m_mlp)
 
         End Sub
 

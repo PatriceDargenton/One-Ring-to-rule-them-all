@@ -171,24 +171,42 @@ Namespace AccordMLP
         End Sub
 
         <TestMethod()>
-        Public Sub AccordMLP1XORHTangent()
+        Public Sub AccordMLP1XORSigmoidRProp()
 
-            TestMLP1XORHTangent(m_mlp)
+            m_mlp.RBPLAlgo = True
+            TestMLP1XORSigmoidRProp(m_mlp)
+            m_mlp.RBPLAlgo = False
 
         End Sub
 
         <TestMethod()>
-        Public Sub AccordMLP1XORHTangentVect()
+        Public Sub AccordMLP1XORTanh()
 
-            TestMLP1XORHTangent(m_mlp, learningMode:=enumLearningMode.Vectorial)
+            TestMLP1XORTanh(m_mlp)
+
+        End Sub
+
+        <TestMethod()>
+        Public Sub AccordMLP1XORTanhVect()
+
+            TestMLP1XORTanh(m_mlp, learningMode:=enumLearningMode.Vectorial)
+
+        End Sub
+
+        <TestMethod()>
+        Public Sub AccordMLP1XORTanhRProp()
+
+            m_mlp.RBPLAlgo = True
+            TestMLP1XORTanhRProp(m_mlp, nbIterations:=350)
+            m_mlp.RBPLAlgo = False
 
         End Sub
 
         ' useBias=False not implemented
         '<TestMethod()>
-        'Public Sub MLP1XORHTangent261()
+        'Public Sub MLP1XORTanh261()
 
-        '    TestMLP1XORHTangent261(m_mlp, nbIterations:=500,
+        '    TestMLP1XORTanh261(m_mlp, nbIterations:=500,
         '        learningMode:=enumLearningMode.Vectorial)
 
         'End Sub
@@ -201,43 +219,43 @@ Namespace AccordMLP
         End Sub
 
         <TestMethod()>
-        Public Sub AccordMLP2XORHTangent()
+        Public Sub AccordMLP2XORTanh()
 
-            TestMLP2XORHTangent(m_mlp)
-
-        End Sub
-
-        <TestMethod()>
-        Public Sub AccordMLP2XORHTangentVect()
-
-            TestMLP2XORHTangent(m_mlp, learningMode:=enumLearningMode.Vectorial)
+            TestMLP2XORTanh(m_mlp)
 
         End Sub
 
         <TestMethod()>
-        Public Sub AccordMLP2XORHTangent2()
+        Public Sub AccordMLP2XORTanhVect()
 
-            TestMLP2XORHTangent2(m_mlp)
+            TestMLP2XORTanh(m_mlp, learningMode:=enumLearningMode.Vectorial)
 
         End Sub
 
         <TestMethod()>
-        Public Sub AccordMLP2XORHTangent2Vect()
+        Public Sub AccordMLP2XORTanh2()
 
-            TestMLP2XORHTangent2(m_mlp, learningMode:=enumLearningMode.Vectorial)
+            TestMLP2XORTanh2(m_mlp)
+
+        End Sub
+
+        <TestMethod()>
+        Public Sub AccordMLP2XORTanh2Vect()
+
+            TestMLP2XORTanh2(m_mlp, learningMode:=enumLearningMode.Vectorial)
 
         End Sub
 
         ' useBias=False not implemented
         '<TestMethod()>
-        'Public Sub AccordMLP2XORHTangent462()
+        'Public Sub AccordMLP2XORTanh462()
 
-        '    TestMLP2XORHTangent462(m_mlp)
+        '    TestMLP2XORTanh462(m_mlp)
 
         'End Sub
 
         <TestMethod()>
-        Public Sub AccordMLP2XORHTangentVectRProp()
+        Public Sub AccordMLP2XORTanhVectRProp()
 
             m_mlp.PRBPLAlgo = True
 
@@ -291,16 +309,16 @@ Namespace AccordMLP
         End Sub
 
         <TestMethod()>
-        Public Sub AccordMLP3XORHTangent()
+        Public Sub AccordMLP3XORTanh()
 
-            TestMLP3XORHTangent(m_mlp)
+            TestMLP3XORTanh(m_mlp)
 
         End Sub
 
         <TestMethod()>
-        Public Sub AccordMLP3XORHTangentVect()
+        Public Sub AccordMLP3XORTanhVect()
 
-            TestMLP3XORHTangent(m_mlp, learningMode:=enumLearningMode.Vectorial)
+            TestMLP3XORTanh(m_mlp, learningMode:=enumLearningMode.Vectorial)
 
         End Sub
 

@@ -264,7 +264,7 @@ Namespace KerasMLP
         End Sub
 
         <TestMethod()>
-        Public Sub KerasMLP1XORHTangent()
+        Public Sub KerasMLP1XORTanh()
 
             InitXOR()
             m_mlp.Initialize(learningRate:=0.02!)
@@ -362,7 +362,7 @@ Namespace KerasMLP
         End Sub
 
         <TestMethod()>
-        Public Sub KerasMLP2XORHTangent()
+        Public Sub KerasMLP2XORTanh()
 
             Init2XOR()
             m_mlp.Initialize(learningRate:=0.02!)
@@ -479,7 +479,7 @@ Namespace KerasMLP
         End Sub
 
         <TestMethod()>
-        Public Sub KerasMLP3XORHTangent()
+        Public Sub KerasMLP3XORTanh()
 
             Init3XOR()
             m_mlp.Initialize(learningRate:=0.02!)

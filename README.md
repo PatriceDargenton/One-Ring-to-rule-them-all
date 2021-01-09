@@ -152,6 +152,9 @@ Packages added:
 
 # Versions
 
+09/01/2021 V1.29
+- HTangent -> Tanh
+
 08/01/2021 V1.28
 - Matrix.ToArraySingle -> ToArrayOfSingle
 

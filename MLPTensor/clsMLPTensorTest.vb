@@ -579,7 +579,7 @@ Namespace TensorMLP
         End Sub
 
         <TestMethod()>
-        Public Sub TensorMLP2XORHTangent()
+        Public Sub TensorMLP2XORTanh()
 
             Init2XOR()
             m_mlp.learningRate = 0.05

@@ -191,16 +191,16 @@ Namespace ClassicMLP
         End Sub
 
         <TestMethod()>
-        Public Sub MLP1XORHTangent()
+        Public Sub MLP1XORTanh()
 
-            TestMLP1XORHTangent(m_mlp)
+            TestMLP1XORTanh(m_mlp)
 
         End Sub
 
         <TestMethod()>
-        Public Sub MLP1XORHTangent261()
+        Public Sub MLP1XORTanh261()
 
-            TestMLP1XORHTangent261(m_mlp, nbIterations:=600)
+            TestMLP1XORTanh261(m_mlp, nbIterations:=600)
 
         End Sub
 
@@ -315,23 +315,23 @@ Namespace ClassicMLP
         End Sub
 
         <TestMethod()>
-        Public Sub MLP2XORHTangent()
+        Public Sub MLP2XORTanh()
 
-            TestMLP2XORHTangent(m_mlp)
-
-        End Sub
-
-        <TestMethod()>
-        Public Sub MLP2XORHTangent2()
-
-            TestMLP2XORHTangent2(m_mlp)
+            TestMLP2XORTanh(m_mlp)
 
         End Sub
 
         <TestMethod()>
-        Public Sub MLP2XORHTangent462()
+        Public Sub MLP2XORTanh2()
 
-            TestMLP2XORHTangent462(m_mlp, nbIterations:=5000)
+            TestMLP2XORTanh2(m_mlp)
+
+        End Sub
+
+        <TestMethod()>
+        Public Sub MLP2XORTanh462()
+
+            TestMLP2XORTanh462(m_mlp, nbIterations:=5000)
 
         End Sub
 
@@ -448,9 +448,9 @@ Namespace ClassicMLP
         End Sub
 
         <TestMethod()>
-        Public Sub MLP3XORHTangent()
+        Public Sub MLP3XORTanh()
 
-            TestMLP3XORHTangent(m_mlp, nbIterations:=1100)
+            TestMLP3XORTanh(m_mlp, nbIterations:=1100)
 
         End Sub
 
