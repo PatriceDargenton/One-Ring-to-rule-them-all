@@ -93,6 +93,14 @@ Module modMLPTest
 
 #End Region
 
+    Public Sub InitSunspot(mlp As clsMLPGeneric)
+        mlp.seriesArray = m_sunspotArray
+        mlp.windowsSize = 7
+        mlp.nbLinesToLearn = 48
+        mlp.nbLinesToPredict = 10 '75
+        mlp.InitializeStruct({7, 20, 1}, addBiasColumn:=True)
+    End Sub
+
 #Region "Standard tests"
 
     Public Sub TestMLP1XORSemiStochastic(mlp As clsMLPGeneric,
@@ -1564,5 +1572,224 @@ Module modMLPTest
     End Sub
 
 #End Region
+
+    Public Sub TestMLPSunspotSigmoid(mlp As clsMLPGeneric,
+        Optional nbIterations% = 200,
+        Optional expectedSuccess# = 0.7#,
+        Optional expectedSuccessPrediction# = 0.9#,
+        Optional expectedLoss# = 0.08#,
+        Optional learningRate! = 0.1!,
+        Optional weightAdjustment! = 0.1!,
+        Optional gain! = 1,
+        Optional learningMode As enumLearningMode = enumLearningMode.Defaut)
+
+        InitSunspot(mlp)
+        mlp.nbLinesToLearn = 49 ' With 49 samples, works only using ThreadCount = 1: multithread does not work yet!
+        mlp.InitializeStruct({7, 13, 1}, addBiasColumn:=True)
+        mlp.Initialize(learningRate, weightAdjustment)
+
+        mlp.nbIterations = nbIterations
+        mlp.SetActivationFunction(enumActivationFunction.Sigmoid, gain)
+
+        mlp.InitializeWeights(1, {
+            {-0.44, 0.16, -0.28, -0.05, -0.05, 0.11, 0.45, 0.32, 0.24, -0.14, -0.27},
+            {-0.28, 0.2, -0.02, -0.3, -0.29, 0.09, 0.29, 0.28, 0.46, 0.3, 0.3},
+            {-0.25, 0.29, 0.35, 0.42, 0.2, -0.37, -0.19, 0.24, -0.03, 0.37, 0.43},
+            {0.42, 0.38, 0.29, -0.33, 0.14, 0.07, 0.21, -0.17, -0.5, -0.36, -0.29},
+            {0.05, -0.41, -0.45, -0.13, -0.09, 0.03, -0.02, -0.47, -0.45, 0.41, -0.24},
+            {-0.09, -0.07, 0.09, 0.03, 0.41, 0.32, 0.01, 0.5, 0.39, -0.14, -0.21},
+            {0.29, 0.09, -0.09, -0.46, -0.4, -0.35, -0.29, -0.26, -0.03, 0.3, -0.39},
+            {0.08, -0.19, 0.33, 0.15, 0.25, 0.4, -0.29, 0.48, 0.34, 0.38, -0.5},
+            {0.13, -0.12, 0.24, 0.4, -0.39, 0.16, 0.39, 0.32, -0.5, -0.25, 0.35},
+            {-0.24, -0.19, -0.04, 0.46, -0.13, -0.07, -0.17, 0.32, 0.31, -0.06, -0.05},
+            {-0.2, 0.36, -0.21, 0.2, -0.24, -0.43, 0.12, 0.28, 0.41, 0.02, -0.09},
+            {0.28, 0.47, -0.47, -0.19, -0.3, -0.46, 0.05, -0.15, 0.15, 0.3, 0.35},
+            {0.23, -0.45, 0.02, -0.31, 0.29, 0.02, 0.28, 0.15, -0.48, -0.43, 0.06}})
+        mlp.InitializeWeights(2, {
+            {-0.33, -0.42, 0.38, 0.11, -0.09, -0.1, 0.32, -0.3, -0.28, -0.16, -0.17, 0.35, 0.02, 0.44}})
+
+        mlp.minimalSuccessTreshold = 0.1
+
+        mlp.Train(learningMode)
+
+        Dim success! = mlp.successPC
+        Dim successRounded# = Math.Round(success, 3)
+        Assert.AreEqual(True, successRounded >= expectedSuccess)
+
+        Dim loss# = mlp.averageError
+        Dim lossRounded# = Math.Round(loss, 3)
+        Assert.AreEqual(True, lossRounded <= expectedLoss)
+
+        mlp.TestAllSamples(mlp.inputArrayTest, mlp.targetArrayTest, nbOutputs:=mlp.nbLinesToPredict)
+        Dim successPrediction! = mlp.successPC
+        Dim successPredictionRounded# = Math.Round(successPrediction, 3)
+        Assert.AreEqual(True, successPredictionRounded >= expectedSuccessPrediction)
+
+    End Sub
+
+    Public Sub TestMLPSunspotTanh(mlp As clsMLPGeneric,
+        Optional nbIterations% = 200,
+        Optional expectedSuccess# = 0.7#,
+        Optional expectedSuccessPrediction# = 1.0#,
+        Optional expectedLoss# = 0.08#,
+        Optional learningRate! = 0.1!,
+        Optional weightAdjustment! = 0.1!,
+        Optional gain! = 1,
+        Optional learningMode As enumLearningMode = enumLearningMode.Defaut)
+
+        InitSunspot(mlp)
+        mlp.InitializeStruct({7, 13, 1}, addBiasColumn:=True)
+        mlp.Initialize(learningRate, weightAdjustment)
+
+        mlp.nbIterations = nbIterations
+        mlp.SetActivationFunction(enumActivationFunction.HyperbolicTangent, gain)
+
+        mlp.InitializeWeights(1, {
+            {0.12, 0.09, 0.27, -0.48, 0.18, -0.39, -0.35, 0.49},
+            {0.03, 0.36, -0.41, -0.35, 0.26, 0.38, 0.41, 0.02},
+            {0.39, 0.3, 0.32, -0.23, -0.3, -0.18, -0.39, -0.43},
+            {0.1, -0.41, -0.03, -0.17, -0.27, -0.43, -0.29, -0.02},
+            {-0.23, -0.49, -0.25, 0.22, 0.07, 0.27, -0.13, 0.23},
+            {0.37, 0.06, -0.04, -0.06, 0.03, 0.47, 0.2, 0.45},
+            {-0.07, -0.41, 0.49, 0.15, -0.08, -0.23, 0.16, 0.45},
+            {-0.43, -0.48, 0.18, 0.17, -0.2, -0.07, 0.15, 0.11},
+            {0.38, 0.24, 0.13, -0.31, 0.46, -0.38, -0.07, -0.42},
+            {-0.1, 0.14, 0.36, 0.17, 0.03, 0.14, -0.11, 0.46},
+            {-0.12, 0.23, 0.14, -0.38, 0.12, 0.09, 0.48, -0.44},
+            {0.12, 0.2, -0.15, -0.45, -0.3, -0.25, -0.47, 0.29},
+            {0.42, -0.41, 0.46, 0.38, 0.26, 0.04, -0.19, 0.16}})
+        mlp.InitializeWeights(2, {
+            {0.41, -0.25, 0.28, -0.09, 0.48, -0.09, -0.06, 0.13, 0.22, -0.21, 0.07, 0.29, 0.03, -0.38}})
+
+        mlp.minimalSuccessTreshold = 0.1
+
+        'mlp.PrintWeights()
+        'mlp.printOutput_ = True
+        'mlp.printOutputMatrix = True
+
+        mlp.Train(learningMode)
+
+        Dim success! = mlp.successPC
+        Dim successRounded# = Math.Round(success, 3)
+        Assert.AreEqual(True, successRounded >= expectedSuccess)
+
+        Dim loss# = mlp.averageError
+        Dim lossRounded# = Math.Round(loss, 3)
+        Assert.AreEqual(True, lossRounded <= expectedLoss)
+
+        mlp.TestAllSamples(mlp.inputArrayTest, mlp.targetArrayTest, nbOutputs:=mlp.nbLinesToPredict)
+        Dim successPrediction! = mlp.successPC
+        Dim successPredictionRounded# = Math.Round(successPrediction, 3)
+        Assert.AreEqual(True, successPredictionRounded >= expectedSuccessPrediction)
+
+    End Sub
+
+    Public Sub TestMLPSunspotTanh2(mlp As clsMLPGeneric,
+        Optional nbIterations% = 100,
+        Optional expectedSuccess# = 0.938#,
+        Optional expectedSuccessPrediction# = 0.9#,
+        Optional expectedLoss# = 0.05#,
+        Optional learningRate! = 0!,
+        Optional weightAdjustment! = 0!,
+        Optional gain! = 2,
+        Optional learningMode As enumLearningMode = enumLearningMode.Defaut)
+
+        InitSunspot(mlp)
+        mlp.InitializeStruct({7, 17, 1}, addBiasColumn:=True)
+        mlp.Initialize(learningRate, weightAdjustment)
+
+        mlp.nbIterations = nbIterations
+        mlp.SetActivationFunction(enumActivationFunction.HyperbolicTangent, gain)
+
+        mlp.InitializeWeights(1, {
+            {0.05, 0.13, 0.33, -0.04, -0.13, -0.49, -0.41, 0.44},
+            {-0.35, -0.47, 0.26, 0.34, 0.21, -0.1, 0.42, -0.18},
+            {0.22, 0.23, 0.44, -0.44, 0.2, 0.28, -0.4, -0.28},
+            {-0.35, 0.4, -0.21, 0.12, 0.49, -0.16, 0.13, -0.38},
+            {-0.32, -0.43, -0.02, -0.23, -0.02, 0.32, 0.24, 0.25},
+            {0.22, 0.2, 0.32, -0.02, 0.48, 0.17, -0.04, -0.02},
+            {0.41, -0.27, -0.15, 0.5, 0.12, 0.27, -0.3, 0.27},
+            {0.03, 0.1, -0.19, -0.03, 0.22, -0.03, 0.45, 0.3},
+            {-0.1, 0.15, 0.16, 0.14, 0.42, 0.15, 0.34, 0.4},
+            {0.5, -0.31, -0.16, -0.49, 0.46, 0.12, -0.26, -0.02},
+            {-0.06, 0.32, 0.21, 0.26, 0.5, 0.13, -0.09, 0.37},
+            {0.21, 0.24, 0.37, 0.01, -0.23, -0.47, -0.25, 0.25},
+            {-0.49, -0.42, -0.17, -0.49, 0.32, 0.05, -0.24, -0.11},
+            {-0.05, -0.5, -0.07, -0.07, -0.31, 0.31, 0.41, -0.14},
+            {0.33, -0.47, 0.41, 0.27, -0.31, 0.31, 0.27, -0.35},
+            {-0.25, 0.27, -0.28, 0.41, 0.47, -0.11, 0.23, -0.35},
+            {-0.41, -0.24, 0.45, 0.04, 0.41, -0.03, 0.12, -0.24}})
+        mlp.InitializeWeights(2, {
+            {-0.05, -0.14, 0.05, 0.13, -0.43, 0.48, 0.18, 0.4, 0.33, 0.01, 0.18, -0.27, -0.37, -0.01, 0.05, -0.3, -0.19, -0.31}})
+
+        mlp.minimalSuccessTreshold = 0.1
+
+        mlp.Train(learningMode)
+
+        Dim success! = mlp.successPC
+        Dim successRounded# = Math.Round(success, 3)
+        Assert.AreEqual(True, successRounded >= expectedSuccess)
+
+        Dim loss# = mlp.averageError
+        Dim lossRounded# = Math.Round(loss, 3)
+        Assert.AreEqual(True, lossRounded <= expectedLoss)
+
+        mlp.TestAllSamples(mlp.inputArrayTest, mlp.targetArrayTest, nbOutputs:=mlp.nbLinesToPredict)
+        Dim successPrediction! = mlp.successPC
+        Dim successPredictionRounded# = Math.Round(successPrediction, 3)
+        Assert.AreEqual(True, successPredictionRounded >= expectedSuccessPrediction)
+
+    End Sub
+
+    Public Sub MLPGenericSunspotTest(mlp As clsMLPGeneric, testName$,
+            Optional nbIterations% = 500,
+            Optional addBiasColumn As Boolean = True,
+            Optional nbHiddenLayersFromInput As Boolean = False,
+            Optional sigmoid As Boolean = False,
+            Optional minValue! = -0.5, Optional maxValue! = 0.5, Optional gain! = 1)
+
+        mlp.ShowMessage(testName)
+
+        mlp.nbIterations = nbIterations
+
+        mlp.Initialize(learningRate:=0.1!, weightAdjustment:=0.1!)
+
+        mlp.minimalSuccessTreshold = 0.1
+        mlp.printOutput_ = True
+        mlp.printOutputMatrix = False
+
+        mlp.seriesArray = m_sunspotArray
+        mlp.windowsSize = 10
+        mlp.nbLinesToLearn = 48
+        mlp.nbLinesToPredict = 10
+
+        If nbHiddenLayersFromInput Then
+            ' clsMLPTensor: Set activation function before InitializeStruct
+            mlp.SetActivationFunctionOptimized(enumActivationFunctionOptimized.Sigmoid, gain)
+            mlp.InitializeStruct({10, 10, 1}, addBiasColumn)
+        Else
+            mlp.InitializeStruct({10, 20, 1}, addBiasColumn)
+        End If
+
+        If sigmoid Then
+            mlp.SetActivationFunction(enumActivationFunction.Sigmoid, gain)
+        Else
+            mlp.SetActivationFunction(enumActivationFunction.HyperbolicTangent, gain)
+        End If
+
+        mlp.Randomize(minValue, maxValue)
+
+        mlp.PrintParameters()
+
+        WaitForKeyToStart()
+
+        mlp.Train()
+
+        mlp.TestAllSamples(mlp.inputArrayTest, mlp.targetArrayTest, nbOutputs:=mlp.windowsSize)
+        mlp.PrintSuccessPrediction()
+
+        mlp.ShowMessage(testName & ": Done.")
+
+    End Sub
 
 End Module

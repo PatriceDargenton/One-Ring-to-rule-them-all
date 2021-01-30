@@ -21,6 +21,10 @@ Module modMatrixVecMLPTest
         MLPGenericIrisFlowerTestAnalog(New VectorizedMatrixMLP.clsVectorizedMatrixMLP,
             "Vectorized Matrix MLP Iris flower test", sigmoid:=True)
 
+        ' Works only using sigmoid activation
+        MLPGenericSunspotTest(New VectorizedMatrixMLP.clsVectorizedMatrixMLP,
+            "Vectorized Matrix MLP Sunspot test", sigmoid:=True)
+
     End Sub
 
     Public Sub XORTest()

@@ -194,15 +194,18 @@ Public Class clsMLPHelper
         Return True
     End Function
 
-    Public Shared Function CompareArray1DSingle(array1Da!(), array1Db!()) As Boolean
+    Public Shared Function CompareArray1DSingle(array1Da!(), array1Db!(),
+        Optional lengthMax% = 0, Optional startingFrom% = 0) As Boolean
         If IsNothing(array1Da) Then Return False
         If IsNothing(array1Db) Then Return False
         Dim length0a = array1Da.GetLength(0)
         Dim length0b = array1Db.GetLength(0)
+        If lengthMax > 0 AndAlso length0a > lengthMax Then length0a = lengthMax
+        If lengthMax > 0 AndAlso length0b > lengthMax Then length0b = lengthMax
         If length0a <> length0b Then Return False
         For i = 0 To length0a - 1
             Dim va = array1Da(i)
-            Dim vb = array1Db(i)
+            Dim vb = array1Db(i + startingFrom)
             If va <> vb Then
                 Return False
             End If

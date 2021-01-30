@@ -412,6 +412,31 @@ Namespace OOPMLP
 
         End Sub
 
+        <TestMethod()>
+        Public Sub MLPOOPSunspotSigmoid()
+
+            ' OOP activation function: before Initialize()
+            'm_mlp.ActivationFunction = New Sigmoid(alpha:=1.0#)
+
+            ' 90.0% prediction, 73.5% learning with 400 iterations in 220 msec.
+
+            TestMLPSunspotSigmoid(m_mlp, nbIterations:=400, expectedSuccess:=0.735,
+                expectedSuccessPrediction:=0.9, expectedLoss:=0.07)
+
+        End Sub
+
+        <TestMethod()>
+        Public Sub MLPOOPSunspotTanh()
+
+            ' OOP activation function: before Initialize()
+            'm_mlp.ActivationFunction = New HyperbolicTangent(alpha:=1.0#)
+
+            ' 90.0% prediction, 75% learning with 200 iterations in 105 msec.
+
+            TestMLPSunspotTanh(m_mlp, expectedSuccess:=0.75, expectedSuccessPrediction:=0.9)
+
+        End Sub
+
     End Class
 
 End Namespace

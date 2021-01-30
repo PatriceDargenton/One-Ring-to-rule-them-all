@@ -138,8 +138,8 @@ Namespace RPropMLP
         <TestMethod()>
         Public Sub RPropMLP1XORSigmoidRProp()
 
-            TestMLP1XORSigmoidRProp(m_mlp, nbIterations:=350)
-            'TestMLP1XORSigmoidRProp(m_mlp, nbIterations:=350, learningMode:=enumLearningMode.VectorialBatch)
+            TestMLP1XORSigmoidRProp(m_mlp, nbIterations:=350,
+                learningMode:=enumLearningMode.VectorialBatch)
 
         End Sub
 
@@ -153,8 +153,8 @@ Namespace RPropMLP
         <TestMethod()>
         Public Sub RPropMLP1XORTanhRProp()
 
-            TestMLP1XORTanhRProp(m_mlp, nbIterations:=500)
-            'TestMLP1XORTanhRProp(m_mlp, nbIterations:=500, learningMode:=enumLearningMode.VectorialBatch)
+            TestMLP1XORTanhRProp(m_mlp, nbIterations:=500,
+                learningMode:=enumLearningMode.VectorialBatch)
 
         End Sub
 
@@ -875,6 +875,44 @@ Namespace RPropMLP
             Dim successPrediction! = m_mlp.successPC
             Dim successPredictionRounded# = Math.Round(successPrediction, 3)
             Assert.AreEqual(True, successPredictionRounded >= expectedSuccessPrediction)
+
+        End Sub
+
+        <TestMethod()>
+        Public Sub RPropMLPSunspotSigmoid()
+
+            ' 90.0% prediction, 70.8% learning with 200 iterations in 45 msec.
+
+            TestMLPSunspotSigmoid(m_mlp, learningMode:=enumLearningMode.Vectorial)
+
+        End Sub
+
+        '<TestMethod()>
+        'Public Sub RPropMLPSunspotSigmoidMultiThread()
+
+        '    ' 90.0% prediction, 70.8% learning with 200 iterations in 45 msec.
+        '    ' With 49 samples, works only using ThreadCount = 1: it does not work yet!
+        '    m_mlp.multiThread = True
+        '    TestMLPSunspotSigmoid(m_mlp, learningMode:=enumLearningMode.Vectorial)
+
+        'End Sub
+
+        <TestMethod()>
+        Public Sub RPropMLPSunspotTanh()
+
+            ' 100.0% prediction, 70.8% learning with 200 iterations in 45 msec.
+
+            TestMLPSunspotTanh(m_mlp, learningMode:=enumLearningMode.Vectorial)
+
+        End Sub
+
+        <TestMethod()>
+        Public Sub RPropMLPSunspotTanhStdrMultiThread()
+
+            ' 100.0% prediction, 70.8% learning with 200 iterations in 45 msec.
+
+            m_mlp.multiThread = True ' Ok with 48 samples, but not with 49 samples!
+            TestMLPSunspotTanh(m_mlp, learningMode:=enumLearningMode.Vectorial)
 
         End Sub
 

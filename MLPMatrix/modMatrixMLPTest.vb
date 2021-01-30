@@ -21,6 +21,9 @@ Module modMatrixMLPTest
         MLPGenericIrisFlowerTestAnalog(New MatrixMLP.MultiLayerPerceptron,
             "Matrix MLP Iris flower test", nbIterations:=4000, threeLayers:=True)
 
+        MLPGenericSunspotTest(New MatrixMLP.MultiLayerPerceptron,
+            "Matrix MLP Sunspot test")
+
     End Sub
 
     Public Sub XORTest()

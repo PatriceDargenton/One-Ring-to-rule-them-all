@@ -3,7 +3,7 @@ One Ring to rule them all
 
 Functional tests for Multi-Layer Perceptron implementations, using OOP paradigm
 
-This is the classical XOR test, and the [Iris flower](https://en.wikipedia.org/wiki/Iris_flower_data_set) test.
+This is the classical XOR test, the [Iris flower](https://en.wikipedia.org/wiki/Iris_flower_data_set) test, and [Sunspots](https://courses.cs.washington.edu/courses/cse599/01wi/admin/Assignments/nn.html) test.
 
 <!-- TOC -->
 
@@ -151,6 +151,10 @@ Packages added:
 ```
 
 # Versions
+
+30/01/2021 V1.31
+- Sunspots dataset added (time series dataset)
+- clsMLPGeneric: series array (for example time series)
 
 09/01/2021 V1.30
 - clsMLPGeneric.nbHiddenNeurons -> moved to specific classes

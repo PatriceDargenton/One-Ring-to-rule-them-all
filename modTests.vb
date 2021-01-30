@@ -13,6 +13,7 @@ Retry:
         Console.WriteLine("3: 3 XOR")
         Console.WriteLine("4: IRIS (Logical)")
         Console.WriteLine("5: IRIS (Analog)")
+        Console.WriteLine("6: Sunspot")
 
         Dim k = Console.ReadKey
         Select Case k.KeyChar
@@ -22,6 +23,7 @@ Retry:
             Case "3"c : XORTest(nbXor:=3)
             Case "4"c : IrisFlowerTestLogical()
             Case "5"c : IrisFlowerTestAnalog()
+            Case "6"c : SunspotTest()
         End Select
 
         GoTo Retry
@@ -172,6 +174,53 @@ Retry:
 
         '' Works only using sigmoid activation
         'MLPGenericIrisFlowerTestAnalog(New clsMLPKeras, "Keras.NET MLP Iris flower test",
+        '    nbIterations:=100, sigmoid:=True)
+        'NextTest()
+
+    End Sub
+
+    Public Sub SunspotTest()
+
+        Console.WriteLine("")
+
+        MLPGenericSunspotTest(New clsMLPRProp,
+            "RProp MLP Sunspot test", sigmoid:=True, nbIterations:=300)
+        NextTest()
+
+        MLPGenericSunspotTest(New clsMLPClassic, "Classic MLP Sunspot test")
+        NextTest()
+
+        MLPGenericSunspotTest(New NetworkOOP.MultilayerPerceptron,
+            "Object-oriented programming MLP Sunspot test")
+        NextTest()
+
+        MLPGenericSunspotTest(New MatrixMLP.MultiLayerPerceptron,
+            "Matrix MLP Sunspot test")
+        NextTest()
+
+        ' Works only using sigmoid activation
+        MLPGenericSunspotTest(New VectorizedMatrixMLP.clsVectorizedMatrixMLP,
+            "Vectorized Matrix MLP Sunspot test", sigmoid:=True)
+        NextTest()
+
+        ' Nb hidden neurons = nb input neurons, works only using sigmoid activation
+        MLPGenericSunspotTest(New clsMLPTensor, "Tensor MLP Sunspot test",
+            nbHiddenLayersFromInput:=True, sigmoid:=True)
+        NextTest()
+
+        MLPGenericSunspotTest(New clsMLPAccord, "Accord MLP Sunspot test")
+        NextTest()
+
+        MLPGenericSunspotTest(New clsMLPEncog, "Encog MLP Sunspot test")
+        NextTest()
+
+        '' No bias, poor result!
+        'MLPGenericSunspotTest(New clsMLPTensorFlow, "TensorFlow MLP Sunspot test",
+        '    nbIterations:=4000, addBiasColumn:=False)
+        'NextTest()
+
+        '' Works only using sigmoid activation
+        'MLPGenericSunspotTest(New clsMLPKeras, "Keras.NET MLP Sunspot test",
         '    nbIterations:=100, sigmoid:=True)
         'NextTest()
 

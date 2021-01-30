@@ -1092,6 +1092,130 @@ Namespace VectorizedMatrixMLP
 
         End Sub
 
+        <TestMethod()>
+        Public Sub VecMatrixMLPSunspotSigmoid()
+
+            ' 80.0% prediction, 89.9% learning with 200 iterations in 200 msec.
+
+            InitSunspot(m_mlp)
+            m_mlp.windowsSize = 10
+            m_mlp.nbLinesToLearn = 49
+            m_mlp.InitializeStruct({10, 10, 1}, addBiasColumn:=True)
+            m_mlp.Initialize(learningRate:=0.1!)
+
+            m_mlp.nbIterations = 200
+            m_mlp.minimalSuccessTreshold = 0.1
+            m_mlp.SetActivationFunctionOptimized(
+                enumActivationFunctionOptimized.Sigmoid, gain:=1.2)
+
+            m_mlp.InitializeWeights(1, {
+                {-0.24, -0.36, -0.48, -0.17, -0.18, -0.04, 0.3, -0.05, -0.3, 0.05},
+                {-0.24, 0.48, 0.48, 0.26, -0.13, -0.47, 0.2, -0.16, 0.22, -0.37},
+                {-0.2, 0.43, 0.27, -0.39, -0.41, 0.12, -0.44, -0.34, 0.16, 0.45},
+                {0.31, 0.32, 0.33, 0.05, -0.4, -0.22, 0.37, -0.3, -0.36, -0.43},
+                {-0.02, 0.41, 0.11, -0.19, -0.04, 0.17, 0.09, 0.41, 0.27, -0.21},
+                {0.13, -0.12, 0.2, 0.22, 0.5, -0.17, -0.13, 0.41, -0.26, 0.2},
+                {-0.1, 0.14, 0.29, -0.25, 0.24, -0.06, -0.35, -0.07, 0.16, -0.41},
+                {-0.34, -0.31, 0.15, 0.15, -0.11, -0.17, -0.05, 0.16, -0.08, -0.47},
+                {-0.35, -0.11, -0.13, -0.17, -0.07, -0.38, -0.39, 0.06, 0.28, 0.41},
+                {0.46, 0.45, -0.06, 0.17, 0.34, -0.38, -0.15, 0.07, -0.48, 0.01},
+                {-0.34, -0.25, 0.18, -0.37, -0.38, -0.31, -0.45, -0.43, 0.1, -0.5}})
+            m_mlp.InitializeWeights(2, {
+                {0.42},
+                {-0.24},
+                {0.32},
+                {0.17},
+                {-0.25},
+                {-0.26},
+                {-0.09},
+                {0.43},
+                {-0.18},
+                {-0.18},
+                {-0.46}})
+
+            m_mlp.Train(learningMode:=enumLearningMode.Defaut)
+
+            Dim expectedSuccess# = 0.898
+            Dim success! = m_mlp.successPC
+            Dim successRounded# = Math.Round(success, 3)
+            Assert.AreEqual(True, successRounded >= expectedSuccess)
+
+            Const expectedLoss# = 0.06
+            Dim loss# = m_mlp.averageError
+            Dim lossRounded# = Math.Round(loss, 3)
+            Assert.AreEqual(True, lossRounded <= expectedLoss)
+
+            m_mlp.TestAllSamples(m_mlp.inputArrayTest, m_mlp.targetArrayTest,
+                nbOutputs:=m_mlp.nbLinesToPredict)
+            Dim expectedSuccessPrediction# = 0.8
+            Dim successPrediction! = m_mlp.successPC
+            Dim successPredictionRounded# = Math.Round(successPrediction, 3)
+            Assert.AreEqual(True, successPredictionRounded >= expectedSuccessPrediction)
+
+        End Sub
+
+        <TestMethod()>
+        Public Sub VecMatrixMLPSunspotTanh()
+
+            ' 70.0% prediction, 91.8% learning with 200 iterations in 200 msec.
+
+            InitSunspot(m_mlp)
+            m_mlp.windowsSize = 10
+            m_mlp.nbLinesToLearn = 49
+            m_mlp.InitializeStruct({10, 10, 1}, addBiasColumn:=True)
+            m_mlp.Initialize(learningRate:=0.1!)
+
+            m_mlp.nbIterations = 200
+            m_mlp.minimalSuccessTreshold = 0.1
+            m_mlp.SetActivationFunctionOptimized(
+                enumActivationFunctionOptimized.HyperbolicTangent, gain:=2)
+
+            m_mlp.InitializeWeights(1, {
+                {-0.34, -0.09, 0.11, 0.1, -0.12, 0.38, 0.29, -0.06, 0.44, -0.12},
+                {-0.43, -0.23, -0.28, -0.33, 0.05, -0.2, -0.11, -0.18, -0.31, -0.13},
+                {-0.21, 0.27, 0.41, 0.14, 0.37, 0.38, -0.37, 0.29, -0.2, -0.14},
+                {0.41, -0.18, 0.44, 0.33, -0.39, -0.13, 0.4, 0.13, -0.03, -0.1},
+                {-0.17, -0.44, -0.4, 0.5, 0.37, -0.34, 0.46, 0.39, -0.19, 0.29},
+                {0.08, 0.38, -0.29, 0.38, 0.14, 0.2, 0.45, 0.01, 0.5, 0.16},
+                {0.15, 0.14, -0.47, -0.34, 0.45, -0.23, -0.16, -0.45, -0.31, -0.48},
+                {-0.08, 0.06, -0.47, 0.48, 0.46, 0.21, 0.31, 0.15, -0.5, 0.22},
+                {-0.33, 0.4, 0.49, 0.07, -0.16, -0.06, 0.23, 0.45, 0.36, -0.09},
+                {-0.08, -0.11, 0.13, 0.3, 0.25, 0.19, -0.47, 0.44, -0.45, 0.09},
+                {0.32, 0.41, 0.2, -0.21, -0.13, -0.49, 0.35, -0.26, 0.42, 0.43}})
+            m_mlp.InitializeWeights(2, {
+                {0.39},
+                {-0.2},
+                {0.01},
+                {-0.22},
+                {0.25},
+                {0.15},
+                {-0.04},
+                {0.32},
+                {0.05},
+                {-0.11},
+                {-0.31}})
+
+            m_mlp.Train(learningMode:=enumLearningMode.Defaut)
+
+            Dim expectedSuccess# = 0.918
+            Dim success! = m_mlp.successPC
+            Dim successRounded# = Math.Round(success, 3)
+            Assert.AreEqual(True, successRounded >= expectedSuccess)
+
+            Const expectedLoss# = 0.05
+            Dim loss# = m_mlp.averageError
+            Dim lossRounded# = Math.Round(loss, 3)
+            Assert.AreEqual(True, lossRounded <= expectedLoss)
+
+            m_mlp.TestAllSamples(m_mlp.inputArrayTest, m_mlp.targetArrayTest,
+                nbOutputs:=m_mlp.nbLinesToPredict)
+            Dim expectedSuccessPrediction# = 0.7
+            Dim successPrediction! = m_mlp.successPC
+            Dim successPredictionRounded# = Math.Round(successPrediction, 3)
+            Assert.AreEqual(True, successPredictionRounded >= expectedSuccessPrediction)
+
+        End Sub
+
     End Class
 
 End Namespace

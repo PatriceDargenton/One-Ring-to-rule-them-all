@@ -154,6 +154,7 @@
     <Compile Include="Dataset\modIrisFlowerTargetLogical.vb" />
     <Compile Include="Dataset\modIrisFlowerTargetAnalogOriginal.vb" />
     <Compile Include="Dataset\modIrisFlowerTargetAnalog.vb" />
+    <Compile Include="Dataset\modSunspot.vb" />
     <Compile Include="MLPRProp\clsMLPRProp.vb" />
     <Compile Include="MLPRProp\modMLPRPropTest.vb" />
     <Compile Include="MLPClassic\clsMLPClassic.vb" />

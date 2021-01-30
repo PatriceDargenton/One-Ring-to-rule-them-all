@@ -35,13 +35,6 @@ Friend Class clsMLPClassic : Inherits clsMLPGeneric
         Dim Neurons() As TNeuron
     End Structure
 
-    Public Enum TBias ' Bias Type
-        Disabled = 0
-        WeightAdded = 1
-        NeuronAdded = 2
-        NeuronAddedSpecial = 3
-    End Enum
-
     Public biasType As TBias = TBias.WeightAdded
 
     Private Layers() As TLayer = Nothing
@@ -51,7 +44,7 @@ Friend Class clsMLPClassic : Inherits clsMLPGeneric
 
 #End Region
 
-#Region "Init"
+#Region "Initialization"
 
     Public Overrides Sub InitializeStruct(neuronCount%(), addBiasColumn As Boolean)
 

@@ -1084,6 +1084,34 @@ Namespace EncogMLP
 
         End Sub
 
+        <TestMethod()>
+        Public Sub EncogMLPSunspotSigmoid()
+
+            ' 90.0% prediction, 95.9% learning with 100 iterations in 5 msec.
+
+            TestMLPSunspotSigmoid(m_mlp, nbIterations:=100, expectedSuccess:=0.959,
+                expectedSuccessPrediction:=0.9, expectedLoss:=0.04)
+
+        End Sub
+
+        <TestMethod()>
+        Public Sub EncogMLPSunspotTanh()
+
+            ' 80.0% prediction, 75% learning with 200 iterations in 9 msec.
+
+            TestMLPSunspotTanh(m_mlp, expectedSuccess:=0.75, expectedSuccessPrediction:=0.8)
+
+        End Sub
+
+        <TestMethod()>
+        Public Sub EncogMLPSunspotTanh2()
+
+            ' 90.0% prediction, 93.8% learning with 100 iterations in 5 msec.
+
+            TestMLPSunspotTanh2(m_mlp)
+
+        End Sub
+
     End Class
 
 End Namespace

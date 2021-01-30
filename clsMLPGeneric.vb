@@ -10,13 +10,56 @@ Public MustInherit Class clsMLPGeneric
 
 #Region "Declaration"
 
+    Public Enum TBias ' Bias Type
+        Disabled = 0
+        WeightAdded = 1
+        NeuronAdded = 2
+        NeuronAddedSpecial = 3
+    End Enum
+
     Public Overridable Sub InitializeStruct(neuronCount%(), addBiasColumn As Boolean)
+
         Me.useBias = addBiasColumn
         Me.layerCount = neuronCount.Length
         Me.neuronCount = neuronCount
         Me.nbInputNeurons = Me.neuronCount(0)
         'Me.nbHiddenNeurons = Me.neuronCount(1)
         Me.nbOutputNeurons = Me.neuronCount(Me.layerCount - 1)
+
+        Me.useSeriesArray = False
+        If Me.windowsSize > 0 AndAlso Not IsNothing(Me.seriesArray) Then
+
+            Me.useSeriesArray = True
+
+            ReDim Me.inputArray(Me.nbLinesToLearn - 1, Me.windowsSize - 1)
+            ReDim Me.targetArray(Me.nbLinesToLearn - 1, Me.nbOutputNeurons - 1)
+            For i = 0 To Me.nbLinesToLearn - 1
+                For j = 0 To Me.windowsSize - 1
+                    Me.inputArray(i, j) = Me.seriesArray(i + j)
+                Next
+                For j = 0 To Me.nbOutputNeurons - 1
+                    Me.targetArray(i, j) = Me.seriesArray(i + Me.windowsSize + j)
+                Next
+            Next
+
+            Dim startLine = Me.nbLinesToLearn '+ Me.windowsSize
+            Dim endLine = startLine + Me.nbLinesToPredict + Me.windowsSize
+            Dim length = Me.seriesArray.Count
+            If endLine > length Then Me.nbLinesToPredict = length - startLine - Me.windowsSize
+
+            ReDim Me.inputArrayTest(Me.nbLinesToPredict - 1, Me.windowsSize - 1)
+            ReDim Me.targetArrayTest(Me.nbLinesToPredict - 1, Me.nbOutputNeurons - 1)
+            For i = 0 To Me.nbLinesToPredict - 1
+                For j = 0 To Me.windowsSize - 1
+                    Me.inputArrayTest(i, j) = Me.seriesArray(startLine + i + j)
+                Next
+                For j = 0 To Me.nbOutputNeurons - 1
+                    Me.targetArrayTest(i, j) = Me.seriesArray(startLine + i + Me.windowsSize + j)
+                Next
+            Next
+
+        End If
+
     End Sub
 
     Public MustOverride Sub InitializeWeights(layer%, weights#(,))
@@ -76,6 +119,38 @@ Public MustInherit Class clsMLPGeneric
     Public printOutput_ As Boolean = False
     Public printOutputMatrix As Boolean = False
     Public useBias As Boolean = False
+
+#Region "Series array (for example time series)"
+
+    ''' <summary>
+    ''' Series array
+    ''' </summary>
+    Public seriesArray!()
+
+    ''' <summary>
+    ''' Use series array (for example time series)
+    ''' </summary>
+    Public useSeriesArray As Boolean
+
+    ''' <summary>
+    ''' Size of the window for the series array
+    ''' </summary>
+    Public windowsSize%
+
+    ''' <summary>
+    ''' Number of lines to learn
+    ''' </summary>
+    Public nbLinesToLearn%
+
+    ''' <summary>
+    ''' Number of lines to predict
+    ''' </summary>
+    Public nbLinesToPredict%
+
+    Public inputArrayTest!(,)
+    Public targetArrayTest!(,)
+
+#End Region
 
     Public inputArray!(,)
     Public targetArray!(,)
@@ -613,6 +688,15 @@ Public MustInherit Class clsMLPGeneric
             sb.AppendLine("use Nguyen-Widrow weights initialization=True")
         If Me.minimalSuccessTreshold <> 0 Then sb.AppendLine(
             "minimal success treshold=" & Me.minimalSuccessTreshold)
+
+        If Me.useSeriesArray Then
+            sb.AppendLine("use series array=True")
+            sb.AppendLine("windows size=" & Me.windowsSize)
+            sb.AppendLine("nb lines to predict=" & Me.nbLinesToPredict)
+            sb.AppendLine("nb lines to learn=" & Me.nbLinesToLearn)
+            sb.AppendLine("nb lines total=" & Me.seriesArray.Length)
+        End If
+
         sb.AppendLine("")
 
         Return sb.ToString()

@@ -307,8 +307,11 @@ Friend Class clsMLPRProp : Inherits clsVectorizedMLPGeneric
     Public Overrides Sub TrainSystematic(inputs!(,), targets!(,),
         Optional learningMode As enumLearningMode = enumLearningMode.Defaut)
 
-        TrainVectorBatch() ' This is the main learning mode for this MLP
-        'TrainVector() ' Does not work fine
+        If learningMode = enumLearningMode.Vectorial Then
+            TrainVector() ' Does not work fine
+        Else
+            TrainVectorBatch() ' This is the main learning mode for this MLP
+        End If
 
     End Sub
 
@@ -632,7 +635,13 @@ Friend Class clsMLPRProp : Inherits clsVectorizedMLPGeneric
         Public field#()()
         Public xValues#()
         Public tValues#()
+        ''' <summary>
+        ''' Sum
+        ''' </summary>
         Public delim1#
+        ''' <summary>
+        ''' Average
+        ''' </summary>
         Public delim2#
         Public sumSquaredErrors#()
     End Structure
@@ -642,7 +651,13 @@ Friend Class clsMLPRProp : Inherits clsVectorizedMLPGeneric
         Public xValues#()
         Public tValues#()
         Public field#()()
+        ''' <summary>
+        ''' Sum
+        ''' </summary>
         Public delim1#
+        ''' <summary>
+        ''' Average
+        ''' </summary>
         Public delim2#
         Public sumSquaredErrors#()
     End Structure
@@ -830,6 +845,8 @@ Friend Class clsMLPRProp : Inherits clsVectorizedMLPGeneric
         Const displayMod% = 100 ' 10
         Const showProgress = False
         Const displayMod2% = 5
+        Const sumIndice% = 0
+        Const averageIndice% = 1
 
         Protected ReadOnly Rnd As Random
 
@@ -1106,6 +1123,7 @@ Friend Class clsMLPRProp : Inherits clsVectorizedMLPGeneric
                 Me.ThreadCount = Environment.ProcessorCount - 1
                 ' Round ThreadCount to a pair value to reproduce exactly the tests ?
                 If Me.ThreadCount Mod 2 > 0 Then Me.ThreadCount -= 1
+                'Me.ThreadCount = 1 ' multithread disabled
             End If
 
             If Me.consoleDemo Then
@@ -1438,8 +1456,8 @@ Friend Class clsMLPRProp : Inherits clsVectorizedMLPGeneric
                 For j = 0 To outputSize - 1
                     Dim delta# = yValues(j) - tValues(j)
                     Dim err# = delta * delta 'Math.Pow(delta, 2)
-                    sumSquaredErrors(0) += err / trainData.Length
-                    sumSquaredErrors(1) += err / trainData.Length / Me.Sizes(Me.LayerCount - 1)
+                    sumSquaredErrors(sumIndice) += err / trainData.Length
+                    sumSquaredErrors(averageIndice) += err / trainData.Length / Me.Sizes(Me.LayerCount - 1)
                 Next
 
             Next
@@ -1467,12 +1485,10 @@ Friend Class clsMLPRProp : Inherits clsVectorizedMLPGeneric
             'Dim chunk_size% = CInt(innerTrainData.Count * 0.8 / Me.ThreadCount)
             'Dim rest% = CInt(innerTrainData.Count * 0.8) Mod Me.ThreadCount
             ' Warning: this solution will not always work:
+            'Debug.WriteLine("ThreadCount=" & Me.ThreadCount)
+            'Debug.WriteLine("innerTrainData.Count=" & innerTrainData.Count)
             Dim chunk_size% = CInt(innerTrainData.Count / Me.ThreadCount)
-            'Dim sum = 0
-            'For i = 0 To Me.ThreadCount - 1
-            '    sum += innerTrainData(i).Count
-            '    Debug.WriteLine(sum)
-            'Next
+            'Debug.WriteLine("chunk_size=" & chunk_size)
 
             While innerTrainData.Count > 0
                 Dim currentThread% = -1
@@ -1496,9 +1512,6 @@ Friend Class clsMLPRProp : Inherits clsVectorizedMLPGeneric
                 End While
 
                 threadInputData(currentThread).trainDatum = innerTrainDataChunk.ToArray()
-
-                'sum += threadInputData(currentThread).trainDatum.Count
-                'Debug.WriteLine(sum)
 
                 For layer = 1 To Me.LayerCount - 1
                     ' zero-out values from prev. iteration
@@ -1535,8 +1548,8 @@ Friend Class clsMLPRProp : Inherits clsVectorizedMLPGeneric
             Dim sumSquaredErrorItem# = 0
             Dim sumSquaredError# = 0
             For i = 0 To Me.ThreadCount - 1
-                sumSquaredError += threadInputData(i).sumSquaredErrors(0)
-                sumSquaredErrorItem += threadInputData(i).sumSquaredErrors(1)
+                sumSquaredError += threadInputData(i).sumSquaredErrors(sumIndice)
+                sumSquaredErrorItem += threadInputData(i).sumSquaredErrors(averageIndice)
             Next
 
             Dim d#() = {Math.Sqrt(sumSquaredErrorItem), Math.Sqrt(sumSquaredError)}
@@ -1585,12 +1598,12 @@ Friend Class clsMLPRProp : Inherits clsVectorizedMLPGeneric
 
                 For layer = lastLayerId To 0 + 1 Step -1
                     ' add input to h-o component to make h-o weight gradients, and accumulate
-                    For j1 = 0 To Me.Sizes(layer) - 1
-                        Dim grad# = gradTerms(layer)(j1)
-                        inputDatum.allGradsAcc(layer).Biases(j1) += grad
+                    For j = 0 To Me.Sizes(layer) - 1
+                        Dim grad# = gradTerms(layer)(j)
+                        inputDatum.allGradsAcc(layer).Biases(j) += grad
                         For i = 0 To Me.Sizes(layer - 1) - 1
-                            grad = gradTerms(layer)(j1) * inputDatum.field(layer - 1)(i)
-                            inputDatum.allGradsAcc(layer).Weights(j1)(i) += grad
+                            grad = gradTerms(layer)(j) * inputDatum.field(layer - 1)(i)
+                            inputDatum.allGradsAcc(layer).Weights(j)(i) += grad
                         Next
                     Next
                 Next
@@ -1599,8 +1612,8 @@ Friend Class clsMLPRProp : Inherits clsVectorizedMLPGeneric
                     'Dim err# = Math.Pow(yValues(j) - inputDatum.tValues(j), 2)
                     Dim delta = yValues(j) - inputDatum.tValues(j)
                     Dim err# = delta * delta
-                    inputDatum.sumSquaredErrors(0) += err * inputDatum.delim1
-                    inputDatum.sumSquaredErrors(1) += err * inputDatum.delim2
+                    inputDatum.sumSquaredErrors(sumIndice) += err * inputDatum.delim1
+                    inputDatum.sumSquaredErrors(averageIndice) += err * inputDatum.delim2
                 Next
 
             Next
@@ -1659,8 +1672,8 @@ Friend Class clsMLPRProp : Inherits clsVectorizedMLPGeneric
             Dim sumSquaredErrorItem# = 0
             Dim sumSquaredError# = 0
             For i = 0 To Me.ThreadCount - 1
-                sumSquaredError += threadInputData(i).sumSquaredErrors(0)
-                sumSquaredErrorItem += threadInputData(i).sumSquaredErrors(1)
+                sumSquaredError += threadInputData(i).sumSquaredErrors(sumIndice)
+                sumSquaredErrorItem += threadInputData(i).sumSquaredErrors(averageIndice)
             Next
 
             Dim d#() = {Math.Sqrt(sumSquaredErrorItem), Math.Sqrt(sumSquaredError)}
@@ -1701,8 +1714,8 @@ Friend Class clsMLPRProp : Inherits clsVectorizedMLPGeneric
                     'Dim err# = Math.Pow(yValues(j) - threadInputDatum.tValues(j), 2)
                     Dim delta# = yValues(j) - threadInputDatum.tValues(j)
                     Dim err# = delta * delta
-                    threadInputDatum.sumSquaredErrors(0) += err * threadInputDatum.delim1
-                    threadInputDatum.sumSquaredErrors(1) += err * threadInputDatum.delim2
+                    threadInputDatum.sumSquaredErrors(sumIndice) += err * threadInputDatum.delim1
+                    threadInputDatum.sumSquaredErrors(averageIndice) += err * threadInputDatum.delim2
                 Next
             Next
 

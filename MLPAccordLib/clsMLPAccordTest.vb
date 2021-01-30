@@ -369,6 +369,25 @@ Namespace AccordMLP
 
         End Sub
 
+        <TestMethod()>
+        Public Sub AccordMLPSunspotSigmoid()
+
+            ' 90.0% prediction, 73.5% learning with 500 iterations in 40 msec.
+
+            TestMLPSunspotSigmoid(m_mlp, nbIterations:=500, expectedSuccess:=0.735,
+                expectedSuccessPrediction:=0.9, expectedLoss:=0.07)
+
+        End Sub
+
+        <TestMethod()>
+        Public Sub AccordMLPSunspotTanh()
+
+            ' 90.0% prediction, 75% learning with 200 iterations in 15 msec.
+
+            TestMLPSunspotTanh(m_mlp, expectedSuccess:=0.75, expectedSuccessPrediction:=0.9)
+
+        End Sub
+
     End Class
 
 End Namespace
