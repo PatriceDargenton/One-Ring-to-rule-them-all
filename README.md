@@ -3,7 +3,7 @@ One Ring to rule them all
 
 Functional tests for Multi-Layer Perceptron implementations, using OOP paradigm
 
-This is the classical XOR test, the [Iris flower](https://en.wikipedia.org/wiki/Iris_flower_data_set) test, and [Sunspots](https://courses.cs.washington.edu/courses/cse599/01wi/admin/Assignments/nn.html) test.
+This is the classical XOR test, the [Iris flower](https://en.wikipedia.org/wiki/Iris_flower_data_set) test, and the [Sunspots](https://courses.cs.washington.edu/courses/cse599/01wi/admin/Assignments/nn.html) test.
 
 <!-- TOC -->
 
