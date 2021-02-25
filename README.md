@@ -1,54 +1,116 @@
 One Ring to rule them all
 ---
 
-Functional tests for Multi-Layer Perceptron implementations, using OOP paradigm
+Functional tests for Multi-Layer Perceptron implementations, using O.O.P. paradigm (Object-Oriented Programming)
+==
 
-This is the classical XOR test, the [Iris flower](https://en.wikipedia.org/wiki/Iris_flower_data_set) test, and the [Sunspots](https://courses.cs.washington.edu/courses/cse599/01wi/admin/Assignments/nn.html) test.
+# Introduction
+What is a functional test? It is a test which allows to verify the entire functioning of a process, while a unit test allows to check a function, a class, an elementary process. How can we do a functional test for a neural network whereas weights initialization is random, how to guarantee learning process with this part of hazard? Precisely, it is necessary to eliminate any random part in order to be able to carry out a functional test. For this, it is necessary to capture the weights after the initialization of the network, check if the network works well with this random draw (if not, start again) and as soon as this draw makes it possible to reach the desired result, a new functional test is ready: it is sufficient to initialize the network identically, to reload these weights, to redo the training (with the same number of iterations), and to check that the training, the loss and the prediction are indeed always identical, whatever modifications you will now be able to make to the source code with confidence. If the datasets are very small, if the size of the network is minimal, then this list of weights is not very large, we can very well include it in the source code of a functional test. Sometimes a neural network comes with a save and reload system, that includes the whole structure of the network with its weights, but we only need the weights, not the structure, since this structure will be already redefined in the functional test. We therefore need a procedure to display the network weights, rounded for example to two decimal digits, as well as a procedure to reload these weights.
+
+# Example
+Let see a functionnal test for a small learning example:
+```
+    Public Sub TestMLP1XOR(mlp As clsMLPGeneric,
+        Optional nbIterations% = 8000,
+        Optional expectedLoss# = 0.03#,
+        Optional learningRate! = 0.05!,
+        Optional weightAdjustment! = 0.1!,
+        Optional gain! = 2)
+
+        mlp.inputArray = {
+            {1, 0},
+            {0, 0},
+            {0, 1},
+            {1, 1}}
+        mlp.targetArray = {
+            {1},
+            {0},
+            {1},
+            {0}}
+        mlp.Initialize(learningRate, weightAdjustment)
+        mlp.InitializeStruct({2, 2, 1}, addBiasColumn:=True)
+
+        mlp.nbIterations = nbIterations
+        mlp.SetActivationFunction(enumActivationFunction.Sigmoid, gain)
+
+        mlp.InitializeWeights(1, {
+            {-0.75, 0.64, -0.09},
+            {0.12, 0.75, -0.63}})
+        mlp.InitializeWeights(2, {
+            {-0.79, -0.13, 0.58}})
+
+        mlp.Train()
+
+        Dim expectedOutput = mlp.targetArray
+        Dim expectedMatrix As Matrix = expectedOutput ' Single(,) -> Matrix
+
+        Dim sOutput = mlp.output.ToStringWithFormat(dec:="0.0")
+
+        Dim sExpectedOutput = expectedMatrix.ToStringWithFormat(dec:="0.0")
+        Assert.AreEqual(sExpectedOutput, sOutput)
+
+        Dim loss# = mlp.averageError
+        Dim lossRounded# = Math.Round(loss, 2)
+        Assert.AreEqual(True, lossRounded <= expectedLoss)
+
+    End Sub
+```
+
+# Table of contents
 
 <!-- TOC -->
 
-- [Documentation](#documentation)
-    - [Why 2 XOR and 3 XOR?](#why-2-xor-and-3-xor)
-- [MLP implementations](#mlp-implementations)
-    - [MLP implementations in VB .Net](#mlp-implementations-in-vb-net)
-        - [Classic MLP](#classic-mlp)
-        - [Object-oriented programming MLP](#object-oriented-programming-mlp)
-        - [Matrix MLP: implementation using matrix products](#matrix-mlp-implementation-using-matrix-products)
-        - [Vectorized Matrix MLP: implementation using matrix products, including samples vector](#vectorized-matrix-mlp-implementation-using-matrix-products-including-samples-vector)
-        - [Tensor MLP: implementation using tensor](#tensor-mlp-implementation-using-tensor)
-        - [RProp MLP: implementation using Resilient Back Propagation algorithm](#rprop-mlp-implementation-using-resilient-back-propagation-algorithm)
-    - [MLP implementations using frameworks and libraries](#mlp-implementations-using-frameworks-and-libraries)
-        - [Accord.NET MLP: implementation using Accord.NET Framework](#accordnet-mlp-implementation-using-accordnet-framework)
-        - [Encog MLP: implementation using Encog Framework](#encog-mlp-implementation-using-encog-framework)
-        - [TensorFlow MLP: implementation using TensorFlow.NET Framework](#tensorflow-mlp-implementation-using-tensorflownet-framework)
-        - [Keras MLP: implementation using Keras.NET Framework](#keras-mlp-implementation-using-kerasnet-framework)
-- [Versions](#versions)
+- [Functional tests for Multi-Layer Perceptron implementations, using O.O.P. paradigm Object-Oriented Programming](#functional-tests-for-multi-layer-perceptron-implementations-using-oop-paradigm-object-oriented-programming)
+- [Introduction](#introduction)
+- [Example](#example)
+- [Table of contents](#table-of-contents)
+- [List of small datasets tested](#list-of-small-datasets-tested)
+- [List of frameworks and libraries remaining to be tested](#list-of-frameworks-and-libraries-remaining-to-be-tested)
+- [MLP implementations in VB .Net](#mlp-implementations-in-vb-net)
+    - [Classic MLP](#classic-mlp)
+    - [Object-oriented programming MLP](#object-oriented-programming-mlp)
+    - [Matrix MLP: implementation using matrix products](#matrix-mlp-implementation-using-matrix-products)
+    - [Vectorized Matrix MLP: implementation using matrix products, including samples vector](#vectorized-matrix-mlp-implementation-using-matrix-products-including-samples-vector)
+    - [Tensor MLP: implementation using tensor](#tensor-mlp-implementation-using-tensor)
+    - [RProp MLP: implementation using Resilient Back Propagation algorithm](#rprop-mlp-implementation-using-resilient-back-propagation-algorithm)
+- [MLP implementations using frameworks and libraries](#mlp-implementations-using-frameworks-and-libraries)
+    - [Accord.NET MLP: implementation using Accord.NET Framework](#accordnet-mlp-implementation-using-accordnet-framework)
+    - [Encog MLP: implementation using Encog Framework](#encog-mlp-implementation-using-encog-framework)
+    - [TensorFlow MLP: implementation using TensorFlow.NET Framework](#tensorflow-mlp-implementation-using-tensorflownet-framework)
+    - [Keras MLP: implementation using Keras.NET Framework](#keras-mlp-implementation-using-kerasnet-framework)
+- [MLP comparison](#mlp-comparison)
+- [Version history](#version-history)
 
 <!-- /TOC -->
 
-# Documentation
+# List of small datasets tested
+- The classical XOR test, and also 2 XOR and 3 XOR (to reduce hazard and improve learning stability, see [MLPComparison.xls](MLPComparison.xls));
+- The [Iris flower](https://en.wikipedia.org/wiki/Iris_flower_data_set) test;
+- The [Sunspots](https://courses.cs.washington.edu/courses/cse599/01wi/admin/Assignments/nn.html) test.
 
-## Why 2 XOR and 3 XOR?
+# List of frameworks and libraries remaining to be tested
+- [ML.NET](https://github.com/dotnet/machinelearning) (Microsoft Machine Learning for .NET): ML.NET requires the definition of a class representing the object to learn and predict, if we want to be able to avoid this definition and do tests in a generic way, then it is specified in the FAQ that it is necessary to use the FeatureVector, but I did not find any example of implementation!
+- [CNTK](https://github.com/microsoft/CNTK) (Microsoft Cognitive Toolkit)
+- [Gym.NET](https://github.com/SciSharp/Gym.NET)
+- [Bright Wire](https://github.com/jdermody/brightwire)
+- [NeuralNet.NET](https://github.com/Sergio0694/NeuralNetwork.NET) (comming soon!)
+- (forgot some?)
 
--> To reduce hazard and improve learning stability, see [MLPComparison.xls](MLPComparison.xls).
+# MLP implementations in VB .Net
 
-# MLP implementations
-
-## MLP implementations in VB .Net
-
-### Classic MLP
+## Classic MLP
 http://patrice.dargenton.free.fr/ia/ialab/perceptron.html (french)
 
 From C++ (at 22/08/2000): https://github.com/sylbarth/mlp
 
 
-### Object-oriented programming MLP
+## Object-oriented programming MLP
 https://github.com/PatriceDargenton/multilayer-perceptron-vb (VB .Net)
 
 From : https://github.com/RutledgePaulV/multilayer-perceptron-vb (VB .Net)
 
 
-### Matrix MLP: implementation using matrix products
+## Matrix MLP: implementation using matrix products
 https://github.com/PatriceDargenton/Matrix-MultiLayerPerceptron (VB .Net)
 
 From C#: https://github.com/PatriceDargenton/perceptrons
@@ -56,7 +118,7 @@ From C#: https://github.com/PatriceDargenton/perceptrons
 From C#: https://github.com/nlabiris/perceptrons
 
 
-### Vectorized Matrix MLP: implementation using matrix products, including samples vector
+## Vectorized Matrix MLP: implementation using matrix products, including samples vector
 https://github.com/PatriceDargenton/Vectorized_MultilayerPerceptron (VB .Net)
 
 From C#: https://github.com/PatriceDargenton/Vectorized-multilayer-neural-network
@@ -64,21 +126,22 @@ From C#: https://github.com/PatriceDargenton/Vectorized-multilayer-neural-networ
 From C#: https://github.com/HectorPulido/Vectorized-multilayer-neural-network
 
 
-### Tensor MLP: implementation using tensor
+## Tensor MLP: implementation using tensor
 
 From C#: https://github.com/HectorPulido/Machine-learning-Framework-Csharp
 
 
-### RProp MLP: implementation using Resilient Back Propagation algorithm
+## RProp MLP: implementation using Resilient Back Propagation algorithm
 
 From C#: https://github.com/nokitakaze/ResilientBackProp
 
+Note: Multithread mode doesn't work very well, it only works well when the ThreadCount is an exact multiple of the sample number in the dataset. A solution remains to be found therefore.
 
-## MLP implementations using frameworks and libraries
+# MLP implementations using frameworks and libraries
 
 Note: do the first compilation in debug mode! (there is actually a bug in VS 2019 if you do the first compilation in release mode, the packages will not be referenced in debug mode after!)
 
-### Accord.NET MLP: implementation using Accord.NET Framework
+## Accord.NET MLP: implementation using Accord.NET Framework
 
 From C#: http://accord-framework.net/docs/html/T_Accord_Neuro_Learning_BackPropagationLearning.htm
 
@@ -94,7 +157,7 @@ Packages added:
   <package id="Accord.Statistics" version="3.8.2-alpha" targetFramework="net452" />
 ```
 
-### Encog MLP: implementation using Encog Framework
+## Encog MLP: implementation using Encog Framework
 
 From C#: https://github.com/encog/encog-dotnet-core
 
@@ -105,7 +168,7 @@ Package added:
   <package id="encog-dotnet-core" version="3.4.0" targetFramework="net472" />
 ```
 
-### TensorFlow MLP: implementation using TensorFlow.NET Framework
+## TensorFlow MLP: implementation using TensorFlow.NET Framework
 
 From C#: https://github.com/SciSharp/SciSharp-Stack-Examples/blob/master/src/TensorFlowNET.Examples/NeuralNetworks/NeuralNetXor.cs
 
@@ -126,7 +189,7 @@ Packages added:
   <package id="TensorFlow.NET" version="0.15.1" targetFramework="net472" />
 ```
 
-### Keras MLP: implementation using Keras.NET Framework
+## Keras MLP: implementation using Keras.NET Framework
 
 From C#: https://github.com/SciSharp/Keras.NET
 
@@ -150,7 +213,11 @@ Packages added:
  python -mpip install tensorflow : fix "Keras requires TensorFlow 2.2 or higher"
 ```
 
-# Versions
+# MLP comparison
+
+[MLPComparison.xls](MLPComparison.xls)
+
+# Version history
 
 30/01/2021 V1.31
 - Sunspots dataset added (time series dataset)
