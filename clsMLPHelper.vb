@@ -118,18 +118,18 @@ Public Class clsMLPHelper
 
     End Function
 
-    Public Shared Function Transform1DArrayToJaggedArray(array1D!(), length%) As Double()()
+    Public Shared Function Transform2DArrayToJaggedArraySingle(array2D!(,)) As Single()()
 
-        ' Transform a 1D array into a jagged array
+        ' Transform a 2D array into a jagged array
 
-        Dim length0 = array1D.GetLength(0)
-        Dim length1 = length
-        Dim arr As Double()() = New Double(length0 - 1)() {}
+        Dim length0 = array2D.GetLength(0)
+        Dim length1 = array2D.GetLength(1)
+        Dim arr As Single()() = New Single(length0 - 1)() {}
         For i = 0 To length0 - 1
-            arr(i) = New Double() {}
+            arr(i) = New Single() {}
             ReDim arr(i)(length1 - 1)
             For j = 0 To length1 - 1
-                arr(i)(j) = array1D(i + length0 * j)
+                arr(i)(j) = array2D(i, j)
             Next j
         Next i
 

@@ -11,8 +11,8 @@ What is a functional test? It is a test which allows to verify the entire functi
 Let see a functionnal test for a small learning example:
 ```
     Public Sub TestMLP1XOR(mlp As clsMLPGeneric,
-        Optional nbIterations% = 8000,
-        Optional expectedLoss# = 0.03#,
+        Optional nbIterations% = 5000,
+        Optional expectedLoss# = 0.04#,
         Optional learningRate! = 0.05!,
         Optional weightAdjustment! = 0.1!,
         Optional gain! = 2)
@@ -43,10 +43,8 @@ Let see a functionnal test for a small learning example:
 
         Dim expectedOutput = mlp.targetArray
         Dim expectedMatrix As Matrix = expectedOutput ' Single(,) -> Matrix
-
-        Dim sOutput = mlp.output.ToStringWithFormat(dec:="0.0")
-
         Dim sExpectedOutput = expectedMatrix.ToStringWithFormat(dec:="0.0")
+        Dim sOutput = mlp.output.ToStringWithFormat(dec:="0.0")
         Assert.AreEqual(sExpectedOutput, sOutput)
 
         Dim loss# = mlp.averageError
@@ -78,6 +76,7 @@ Let see a functionnal test for a small learning example:
     - [Encog MLP: implementation using Encog Framework](#encog-mlp-implementation-using-encog-framework)
     - [TensorFlow MLP: implementation using TensorFlow.NET Framework](#tensorflow-mlp-implementation-using-tensorflownet-framework)
     - [Keras MLP: implementation using Keras.NET Framework](#keras-mlp-implementation-using-kerasnet-framework)
+    - [NeuralNet MLP: implementation using NeuralNet.NET Framework](#neuralnet-mlp-implementation-using-neuralnetnet-framework)
 - [MLP comparison](#mlp-comparison)
 - [Version history](#version-history)
 
@@ -93,7 +92,6 @@ Let see a functionnal test for a small learning example:
 - [CNTK](https://github.com/microsoft/CNTK) (Microsoft Cognitive Toolkit)
 - [Gym.NET](https://github.com/SciSharp/Gym.NET)
 - [Bright Wire](https://github.com/jdermody/brightwire)
-- [NeuralNet.NET](https://github.com/Sergio0694/NeuralNetwork.NET) (comming soon!)
 - (forgot some?)
 
 # MLP implementations in VB .Net
@@ -213,11 +211,59 @@ Packages added:
  python -mpip install tensorflow : fix "Keras requires TensorFlow 2.2 or higher"
 ```
 
+## NeuralNet MLP: implementation using NeuralNet.NET Framework
+
+From C# : https://github.com/Sergio0694/NeuralNetwork.NET
+
+https://www.nuget.org/packages/NeuralNetwork.NET Nuget install
+
+https://scisharp.github.io/SciSharp Other .NET Machine Learning projects
+
+GetWeights and SetWeights are required for functional tests, see there:
+https://github.com/PatriceDargenton/NeuralNetwork.NET/tree/get_set_weights
+
+The stable branch contains the get_set_weights and other branches:
+https://github.com/PatriceDargenton/NeuralNetwork.NET/tree/stable
+
+Packages updated:
+```
+System.Buffers.4.4.0 -> System.Buffers.4.5.1
+System.Numerics.Vectors.4.4.0 -> System.Numerics.Vectors.4.5.0
+```
+Packages added:
+```
+    Alea.3.0.4
+    FSharp.Core.4.2.3
+    JetBrains.Annotations.2018.2.1
+    Newtonsoft.Json.11.0.2
+    SharpZipLib.NETStandard.1.0.7
+    SixLabors.ImageSharp.1.0.0
+    NeuralNetwork.NET.2.1.3
+  <package id = "Keras.NET" version="3.7.4.2" targetFramework="net472" />
+  <package id = "Microsoft.CSharp" version="4.5.0" targetFramework="net472" />
+  <package id = "Numpy.Bare" version="3.7.1.11" targetFramework="net472" />
+  <package id = "Python.Runtime.NETStandard" version="3.7.1" targetFramework="net472" />
+  <package id = "System.Reflection.Emit" version="4.3.0" targetFramework="net472" />
+```
+```
+  To fix SixLabors.ImageSharp FileLoadException (0x80131040) bug:
+  Install-Package SixLabors.ImageSharp -Version 1.0.0-beta0007
+  (bug starting from 1.0.0-rc0001 version)
+```
+
+Note: To update the packages, you will need to restore this deleted line in the project file (in order to compile with VS2013):
+```
+<Import Project="packages\Microsoft.Net.Compilers.Toolset.3.1.0\build\Microsoft.Net.Compilers.Toolset.props" Condition="Exists('packages\Microsoft.Net.Compilers.Toolset.3.1.0\build\Microsoft.Net.Compilers.Toolset.props')" />
+```
+
 # MLP comparison
 
 [MLPComparison.xls](MLPComparison.xls)
 
 # Version history
+
+14/03/2021 V1.32
+- - clsMLPNeuralNetLib added: NeuralNet.Net Framework
 
 30/01/2021 V1.31
 - Sunspots dataset added (time series dataset)

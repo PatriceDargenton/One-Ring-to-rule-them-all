@@ -107,11 +107,12 @@ Namespace ClassicMLP
         Private m_mlp As New clsMLPClassic
 
         ' Weights are quite the same as MLP Classic, but not exactly:
-        'Private m_mlp As New NetworkOOP.MultilayerPerceptron ' 20 success, 15 fails
-        'Private m_mlp As New clsMLPAccord ' 15 success, 20 fails
-        'Private m_mlp As New clsMLPEncog  ' 8 success, 27 fails
-        'Private m_mlp As New clsMLPTensorFlow ' 1 success, 25 fails
-        'Private m_mlp As New clsMLPRProp  ' 4 success, 30 fails
+        'Private m_mlp As New NetworkOOP.MultilayerPerceptron ' 21 success, 16 fails
+        'Private m_mlp As New clsMLPAccord ' 15 success, 22 fails
+        'Private m_mlp As New clsMLPEncog  ' 7 success, 30 fails
+        'Private m_mlp As New clsMLPTensorFlow ' 2 success, 35 fails
+        'Private m_mlp As New clsMLPRProp  ' 6 success, 31 fails
+        'Private m_mlp As New clsMLPNeuralNet ' 3 success, 34 fails
 
         ' Weights are not stored in the same way:
         'Private m_mlp As New MatrixMLP.MultiLayerPerceptron ' 24/24 fails
@@ -138,6 +139,13 @@ Namespace ClassicMLP
             m_mlp.inputArray = m_inputArray3XOR
             m_mlp.targetArray = m_targetArray3XOR
             m_mlp.InitializeStruct(m_neuronCount3XOR, addBiasColumn:=True)
+        End Sub
+
+        <TestMethod()>
+        Public Sub MLP1XORSigmoidStandard()
+
+            TestMLP1XOR(m_mlp)
+
         End Sub
 
         <TestMethod()>

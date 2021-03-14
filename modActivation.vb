@@ -314,6 +314,10 @@ Namespace MLP.ActivationFunction
             If debugActivationFunction Then
                 Dim th# = Math.Tanh(-xg / 2)
                 If Not clsMLPHelper.Compare(y, th, dec:=5) Then Stop
+
+                Dim e2x# = Math.Exp(-xg)
+                Dim th2# = (e2x - 1) / (e2x + 1)
+                If Not clsMLPHelper.Compare(y, th2, dec:=5) Then Stop
             End If
 
             Return y

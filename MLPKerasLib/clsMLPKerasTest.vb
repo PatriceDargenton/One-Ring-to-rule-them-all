@@ -43,7 +43,6 @@ Module modMLPKerasTest
             mlp.targetArray = m_targetArrayXOR
             'mlp.InitializeStruct(m_neuronCountXOR, addBiasColumn:=True)
             'mlp.InitializeStruct(m_neuronCountXOR231, addBiasColumn:=True)
-            'mlp.InitializeStruct(m_neuronCountXOR281, addBiasColumn:=False)
             'mlp.InitializeStruct(m_neuronCountXOR291, addBiasColumn:=False)
             'mlp.InitializeStruct(m_neuronCountXOR2_10_1, addBiasColumn:=False)
             mlp.InitializeStruct(m_neuronCountXOR2_16_1, addBiasColumn:=False)

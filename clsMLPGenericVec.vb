@@ -4,6 +4,7 @@ Public MustInherit Class clsVectorizedMLPGeneric : Inherits clsMLPGeneric
     Public vectorizedLearningMode As Boolean = True
 
     Public exampleCount%
+    Public minBatchSize% = 1
 
     'Protected neuronCount%()
 
@@ -45,6 +46,7 @@ Public MustInherit Class clsVectorizedMLPGeneric : Inherits clsMLPGeneric
 
             Dim nbIterationsBatch0 = Me.nbIterationsBatch
             Dim nbIterations0 = CInt(Me.nbIterations / nbIterationsBatch0)
+            If Me.nbIterations < nbIterationsBatch0 Then nbIterations0 = 1
             Dim iteration = 0
             Dim iterationTot = 0
             Do While iteration < nbIterations0
@@ -57,14 +59,15 @@ Public MustInherit Class clsVectorizedMLPGeneric : Inherits clsMLPGeneric
                 iterationTot += nbIterationsBatch0
             Loop
             'Debug.WriteLine(iterationTot & "/" & Me.nbIterations)
-
         Else
 
+            Dim minBatchSizeFound = False
             Dim iteration = 0
             Do While iteration < Me.nbIterations
 
-                Dim nbIterationsBatch0 = 1
+                Dim nbIterationsBatch0%
                 If iteration < 10 - 1 Then
+                    nbIterationsBatch0 = 1
                 ElseIf iteration < 100 - 1 Then
                     nbIterationsBatch0 = 10
                 ElseIf iteration < 1000 - 1 Then
@@ -72,6 +75,12 @@ Public MustInherit Class clsVectorizedMLPGeneric : Inherits clsMLPGeneric
                 Else
                     nbIterationsBatch0 = 1000
                 End If
+
+                If nbIterationsBatch0 < Me.minBatchSize Then
+                    nbIterationsBatch0 = Me.minBatchSize
+                    minBatchSizeFound = True
+                End If
+
                 If iteration + nbIterationsBatch0 > Me.nbIterations Then
                     nbIterationsBatch0 = Me.nbIterations - iteration
                 End If
@@ -82,7 +91,11 @@ Public MustInherit Class clsVectorizedMLPGeneric : Inherits clsMLPGeneric
 
                 TrainVectorBatch(nbIterationsBatch0)
 
-                PrintOutput(iteration)
+                If minBatchSizeFound AndAlso iteration > 0 Then
+                    PrintOutput(iteration - 1)
+                Else
+                    PrintOutput(iteration)
+                End If
                 If iteration + nbIterationsBatch0 >= Me.nbIterations Then
                     iteration = Me.nbIterations - 1
                     Exit Do
@@ -91,7 +104,8 @@ Public MustInherit Class clsVectorizedMLPGeneric : Inherits clsMLPGeneric
 
             Loop
 
-            If Not ShowThisIteration(iteration) Then PrintOutput(iteration, force:=True)
+            If minBatchSizeFound OrElse Not ShowThisIteration(iteration) Then _
+                PrintOutput(iteration, force:=True)
 
         End If
 
@@ -141,8 +155,7 @@ Public MustInherit Class clsVectorizedMLPGeneric : Inherits clsMLPGeneric
 
         If force OrElse ShowThisIteration(iteration) Then
             If Not Me.vectorizedLearningMode Then
-                'Dim nbTargets = Me.targetArray.GetLength(1)
-                TestAllSamples(Me.inputArray) ', nbOutputs:=nbTargets)
+                TestAllSamples(Me.inputArray)
             Else
                 SetOuput1D()
                 ComputeAverageError()

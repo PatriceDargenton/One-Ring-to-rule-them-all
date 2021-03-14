@@ -16,6 +16,8 @@ Module modMLPTest
     Public ReadOnly m_neuronCountXOR2_16_1%() = {2, 16, 1}
 
     Public ReadOnly m_neuronCount2XOR%() = {4, 4, 2}
+    Public ReadOnly m_neuronCount2XOR4Layers%() = {4, 4, 4, 2}
+    Public ReadOnly m_neuronCount2XOR5Layers%() = {4, 4, 4, 4, 2}
     Public ReadOnly m_neuronCount2XOR452%() = {4, 5, 2}
     Public ReadOnly m_neuronCount2XOR462%() = {4, 6, 2} ' TensorFlow minimal size
     Public ReadOnly m_neuronCount2XOR472%() = {4, 7, 2}
@@ -23,6 +25,8 @@ Module modMLPTest
     Public ReadOnly m_neuronCount2XOR4_10_2%() = {4, 10, 2}
     Public ReadOnly m_neuronCount2XOR4_32_2%() = {4, 32, 2} ' Keras minimal size: stable!
     Public ReadOnly m_neuronCount3XOR%() = {6, 6, 3}
+    Public ReadOnly m_neuronCount3XOR4Layers%() = {6, 6, 6, 3}
+    Public ReadOnly m_neuronCount3XOR5Layers%() = {6, 6, 6, 6, 3}
     Public ReadOnly m_neuronCount3XOR673%() = {6, 7, 3}
     Public ReadOnly m_neuronCount3XOR683%() = {6, 8, 3}
     Public ReadOnly m_neuronCount3XOR6_10_3%() = {6, 10, 3} ' Keras minimal size: stable!
@@ -36,19 +40,19 @@ Module modMLPTest
     Public ReadOnly m_neuronCountXOR5Layers23331%() = {2, 3, 3, 3, 1}
     Public ReadOnly m_neuronCountXOR5Layers27771%() = {2, 7, 7, 7, 1} ' Keras minimal size
 
-    Private Sub InitXOR(mlp As clsMLPGeneric)
+    Public Sub InitXOR(mlp As clsMLPGeneric)
         mlp.Initialize(learningRate:=0.01!)
         mlp.inputArray = m_inputArrayXOR
         mlp.targetArray = m_targetArrayXOR
     End Sub
 
-    Private Sub Init2XOR(mlp As clsMLPGeneric)
+    Public Sub Init2XOR(mlp As clsMLPGeneric)
         mlp.Initialize(learningRate:=0.01!)
         mlp.inputArray = m_inputArray2XOR
         mlp.targetArray = m_targetArray2XOR
     End Sub
 
-    Private Sub Init3XOR(mlp As clsMLPGeneric)
+    Public Sub Init3XOR(mlp As clsMLPGeneric)
         mlp.Initialize(learningRate:=0.01!)
         mlp.inputArray = m_inputArray3XOR
         mlp.targetArray = m_targetArray3XOR
@@ -65,6 +69,7 @@ Module modMLPTest
     Public ReadOnly m_neuronCountIrisFlowerLogical%() = {4, 16, 16, 3}
     Public ReadOnly m_neuronCountIrisFlowerLogical443%() = {4, 4, 3}
     Public ReadOnly m_neuronCountIrisFlowerLogical453%() = {4, 5, 3}
+    Public ReadOnly m_neuronCountIrisFlowerLogical463%() = {4, 6, 3}
     Public ReadOnly m_neuronCountIrisFlowerLogical4663%() = {4, 6, 6, 3}
     Public ReadOnly m_neuronCountIrisFlowerLogical4773%() = {4, 7, 7, 3}
     Public ReadOnly m_neuronCountIrisFlowerLogical4883%() = {4, 8, 8, 3}
@@ -102,6 +107,49 @@ Module modMLPTest
     End Sub
 
 #Region "Standard tests"
+
+    Public Sub TestMLP1XOR(mlp As clsMLPGeneric,
+        Optional nbIterations% = 5000,
+        Optional expectedLoss# = 0.04#,
+        Optional learningRate! = 0.05!,
+        Optional weightAdjustment! = 0.1!,
+        Optional gain! = 2)
+
+        mlp.inputArray = {
+            {1, 0},
+            {0, 0},
+            {0, 1},
+            {1, 1}}
+        mlp.targetArray = {
+            {1},
+            {0},
+            {1},
+            {0}}
+        mlp.Initialize(learningRate, weightAdjustment)
+        mlp.InitializeStruct({2, 2, 1}, addBiasColumn:=True)
+
+        mlp.nbIterations = nbIterations
+        mlp.SetActivationFunction(enumActivationFunction.Sigmoid, gain)
+
+        mlp.InitializeWeights(1, {
+            {-0.75, 0.64, -0.09},
+            {0.12, 0.75, -0.63}})
+        mlp.InitializeWeights(2, {
+            {-0.79, -0.13, 0.58}})
+
+        mlp.Train()
+
+        Dim expectedOutput = mlp.targetArray
+        Dim expectedMatrix As Matrix = expectedOutput ' Single(,) -> Matrix
+        Dim sExpectedOutput = expectedMatrix.ToStringWithFormat(dec:="0.0")
+        Dim sOutput = mlp.output.ToStringWithFormat(dec:="0.0")
+        Assert.AreEqual(sExpectedOutput, sOutput)
+
+        Dim loss# = mlp.averageError
+        Dim lossRounded# = Math.Round(loss, 2)
+        Assert.AreEqual(True, lossRounded <= expectedLoss)
+
+    End Sub
 
     Public Sub TestMLP1XORSemiStochastic(mlp As clsMLPGeneric,
         Optional nbIterations% = 8000,

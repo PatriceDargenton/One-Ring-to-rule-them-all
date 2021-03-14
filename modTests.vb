@@ -34,9 +34,12 @@ Retry:
 
         Console.WriteLine("")
 
-        RPropMLPXorTest(nbXor)
+        NeuralNetMLPXorTest(nbXor)
         NextTest()
         Exit Sub
+
+        RPropMLPXorTest(nbXor)
+        NextTest()
 
         ClassicMLPXorTest(nbXor)
         NextTest()
@@ -71,6 +74,12 @@ Retry:
 
         Console.WriteLine("")
 
+        MLPGenericIrisFlowerTest(New clsMLPNeuralNet, "NeuralNet MLP Iris flower test",
+            nbIterations:=3000, threeLayers:=True, sigmoid:=False)
+        NextTest()
+        Exit Sub
+
+
         Dim mlpRProp As New clsMLPRProp
         mlpRProp.classificationObjective = True ' Sometimes 100% prediction
         MLPGenericIrisFlowerTest(mlpRProp, "RProp MLP Iris flower test",
@@ -84,7 +93,7 @@ Retry:
         'MLPGenericIrisFlowerTest(New clsMLPRProp, "RProp MLP Iris flower test",
         '    nbIterations:=200, sigmoid:=True)
         'NextTest()
-        Exit Sub
+
 
         ' Works only using sigmoid activation
         MLPGenericIrisFlowerTest(New clsMLPClassic, "Classic MLP Iris flower test",
@@ -133,10 +142,14 @@ Retry:
 
         Console.WriteLine("")
 
+        MLPGenericIrisFlowerTestAnalog(New clsMLPNeuralNet,
+            "NeuralNet MLP Iris flower test", nbIterations:=3000, sigmoid:=False)
+        NextTest()
+        Exit Sub
+
         MLPGenericIrisFlowerTestAnalog(New clsMLPRProp,
             "RProp MLP Iris flower test", sigmoid:=True, nbIterations:=300) ' minValue:=-10, maxValue:=10, gain:=0.5!)
         NextTest()
-        Exit Sub
 
         MLPGenericIrisFlowerTestAnalog(New clsMLPClassic, "Classic MLP Iris flower test")
         NextTest()
@@ -182,6 +195,11 @@ Retry:
     Public Sub SunspotTest()
 
         Console.WriteLine("")
+
+        MLPGenericSunspotTest(New clsMLPNeuralNet,
+            "NeuralNet MLP Sunspot test", sigmoid:=True, nbIterations:=3000)
+        NextTest()
+        Exit Sub
 
         MLPGenericSunspotTest(New clsMLPRProp,
             "RProp MLP Sunspot test", sigmoid:=True, nbIterations:=300)
