@@ -9,35 +9,39 @@ Module modMatrixMLPTest
 
     Public Sub MatrixMLPTest()
 
-        XORTest()
-        NextTest()
+Retry:
+        Console.WriteLine("")
+        Console.WriteLine("")
+        Console.WriteLine("Matrix MLP Test, choose an option from the following list:")
+        Console.WriteLine("0: Exit")
+        Console.WriteLine("1: 1 XOR")
+        Console.WriteLine("2: 2 XOR")
+        Console.WriteLine("3: 3 XOR")
+        Console.WriteLine("4: IRIS (Logical)")
+        Console.WriteLine("5: IRIS (Analog)")
+        Console.WriteLine("6: Sunspot")
 
-        ' Three layers only, good results!
-        MLPGenericIrisFlowerTest(New MatrixMLP.MultiLayerPerceptron,
-            "Matrix MLP Iris flower test", nbIterations:=4000, threeLayers:=True)
-        NextTest()
+        Dim k = Console.ReadKey
+        Console.WriteLine("")
+        Select Case k.KeyChar
+            Case "0"c : Exit Sub
+            Case "1"c : MatrixMLPXorTest(nbXor:=1)
+            Case "2"c : MatrixMLPXorTest(nbXor:=2)
+            Case "3"c : MatrixMLPXorTest(nbXor:=3)
+            Case "4"c
+                ' Three layers only, good results!
+                MLPGenericIrisFlowerTest(New MatrixMLP.MultiLayerPerceptron,
+                    "Matrix MLP Iris flower logical test", nbIterations:=4000, threeLayers:=True)
+            Case "5"c
+                ' Three layers only, good results!
+                MLPGenericIrisFlowerTestAnalog(New MatrixMLP.MultiLayerPerceptron,
+                    "Matrix MLP Iris flower analog test", nbIterations:=4000, threeLayers:=True)
+            Case "6"c
+                MLPGenericSunspotTest(New MatrixMLP.MultiLayerPerceptron,
+                    "Matrix MLP Sunspot test")
+        End Select
 
-        ' Three layers only, good results!
-        MLPGenericIrisFlowerTestAnalog(New MatrixMLP.MultiLayerPerceptron,
-            "Matrix MLP Iris flower test", nbIterations:=4000, threeLayers:=True)
-
-        MLPGenericSunspotTest(New MatrixMLP.MultiLayerPerceptron,
-            "Matrix MLP Sunspot test")
-
-    End Sub
-
-    Public Sub XORTest()
-
-        Console.WriteLine("Matrix-MultiLayerPerceptron with the classical XOR test.")
-        Console.WriteLine("Matrix-MLP may not converge each time, run again if not.")
-
-        MatrixMLPXorTest()
-        NextTest()
-
-        MatrixMLPXorTest(nbXor:=2)
-        NextTest()
-
-        MatrixMLPXorTest(nbXor:=3)
+        GoTo Retry
 
     End Sub
 

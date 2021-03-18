@@ -11,7 +11,7 @@ Imports Microsoft.VisualStudio.TestTools.UnitTesting
 Module modMLPNeuralNetTest
 
     Sub Main()
-        Console.WriteLine("NeuralNet MLP with the classical XOR test.")
+        Console.WriteLine("NeuralNet.NET MLP with the classical XOR test.")
         NeuralNetMLPXorTest()
         Console.WriteLine("Press a key to quit.")
         Console.ReadKey()
@@ -21,8 +21,8 @@ Module modMLPNeuralNetTest
 
         Dim mlp As New clsMLPNeuralNet
 
-        mlp.ShowMessage("NeuralNet MLP test")
-        mlp.ShowMessage("------------------")
+        mlp.ShowMessage("NeuralNet.NET MLP test")
+        mlp.ShowMessage("----------------------")
 
         mlp.inputArray = m_inputArrayXOR
         mlp.targetArray = m_targetArrayXOR
@@ -64,7 +64,7 @@ Module modMLPNeuralNetTest
 
         mlp.Train(learningMode:=enumLearningMode.VectorialBatch) ' Works fine
 
-        mlp.ShowMessage("NeuralNet MLP test: Done.")
+        mlp.ShowMessage("NeuralNet.NET MLP test: Done.")
 
         If nbXor > 1 Then Exit Sub
 

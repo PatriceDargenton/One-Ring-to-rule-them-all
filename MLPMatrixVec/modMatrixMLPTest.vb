@@ -9,35 +9,40 @@ Module modMatrixVecMLPTest
 
     Public Sub VectorizedMatrixMLPTest()
 
-        XORTest()
-        NextTest()
+Retry:
+        Console.WriteLine("")
+        Console.WriteLine("")
+        Console.WriteLine("Vectorized Matrix MLP Test, choose an option from the following list:")
+        Console.WriteLine("0: Exit")
+        Console.WriteLine("1: 1 XOR")
+        Console.WriteLine("2: 2 XOR")
+        Console.WriteLine("3: 3 XOR")
+        Console.WriteLine("4: IRIS (Logical)")
+        Console.WriteLine("5: IRIS (Analog)")
+        Console.WriteLine("6: Sunspot")
 
-        ' Works only using sigmoid activation
-        MLPGenericIrisFlowerTest(New VectorizedMatrixMLP.clsVectorizedMatrixMLP,
-            "Vectorized Matrix MLP Iris flower test", nbIterations:=1000, sigmoid:=True)
-        NextTest()
+        Dim k = Console.ReadKey
+        Console.WriteLine("")
+        Select Case k.KeyChar
+            Case "0"c : Exit Sub
+            Case "1"c : VectorizedMatrixMLPXorTest(nbXor:=1)
+            Case "2"c : VectorizedMatrixMLPXorTest(nbXor:=2)
+            Case "3"c : VectorizedMatrixMLPXorTest(nbXor:=3)
+            Case "4"c
+                ' Works only using sigmoid activation
+                MLPGenericIrisFlowerTest(New VectorizedMatrixMLP.clsVectorizedMatrixMLP,
+                    "Vectorized Matrix MLP Iris flower logical test", nbIterations:=1000, sigmoid:=True)
+            Case "5"c
+                ' Works only using sigmoid activation, poor results!
+                MLPGenericIrisFlowerTestAnalog(New VectorizedMatrixMLP.clsVectorizedMatrixMLP,
+                    "Vectorized Matrix MLP Iris flower analog test", sigmoid:=True)
+            Case "6"c
+                ' Works only using sigmoid activation
+                MLPGenericSunspotTest(New VectorizedMatrixMLP.clsVectorizedMatrixMLP,
+                    "Vectorized Matrix MLP Sunspot test", sigmoid:=True)
+        End Select
 
-        ' Works only using sigmoid activation, poor results!
-        MLPGenericIrisFlowerTestAnalog(New VectorizedMatrixMLP.clsVectorizedMatrixMLP,
-            "Vectorized Matrix MLP Iris flower test", sigmoid:=True)
-
-        ' Works only using sigmoid activation
-        MLPGenericSunspotTest(New VectorizedMatrixMLP.clsVectorizedMatrixMLP,
-            "Vectorized Matrix MLP Sunspot test", sigmoid:=True)
-
-    End Sub
-
-    Public Sub XORTest()
-
-        Console.WriteLine("Vectorized Matrix MLP with the classical XOR test.")
-
-        VectorizedMatrixMLPXorTest()
-        NextTest()
-
-        VectorizedMatrixMLPXorTest(nbXor:=2)
-        NextTest()
-
-        VectorizedMatrixMLPXorTest(nbXor:=3)
+        GoTo Retry
 
     End Sub
 

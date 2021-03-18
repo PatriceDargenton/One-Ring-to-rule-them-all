@@ -262,6 +262,9 @@ Note: To update the packages, you will need to restore this deleted line in the 
 
 # Version history
 
+18/03/2021 V1.34
+- Console demo: MLP menu added
+
 18/03/2021 V1.33
 - Packages updated:
 ```
