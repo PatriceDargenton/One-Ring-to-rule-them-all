@@ -253,7 +253,7 @@ Packages added:
 
 Note: To update the packages, you will need to restore this deleted line in the project file (in order to compile with VS2013):
 ```
-<Import Project="packages\Microsoft.Net.Compilers.Toolset.3.1.0\build\Microsoft.Net.Compilers.Toolset.props" Condition="Exists('packages\Microsoft.Net.Compilers.Toolset.3.1.0\build\Microsoft.Net.Compilers.Toolset.props')" />
+<Import Project="packages\Microsoft.Net.Compilers.Toolset.3.9.0\build\Microsoft.Net.Compilers.Toolset.props" Condition="Exists('packages\Microsoft.Net.Compilers.Toolset.3.9.0\build\Microsoft.Net.Compilers.Toolset.props')" />
 ```
 
 # MLP comparison
@@ -262,8 +262,38 @@ Note: To update the packages, you will need to restore this deleted line in the 
 
 # Version history
 
+18/03/2021 V1.33
+- Packages updated:
+```
+Packages updated:
+----------------
+Protobuf.Text.0.4.0 -> Protobuf.Text.0.5.0
+NumSharp.Lite.0.1.7 -> NumSharp.Lite.0.1.12
+Google.Protobuf.3.11.4 -> Google.Protobuf.3.15.6
+System.Memory.4.5.3 -> System.Memory.4.5.4
+System.Runtime.CompilerServices.Unsafe.4.5.2 -> System.Runtime.CompilerServices.Unsafe.5.0.0
+Keras.NET.3.7.4.2 -> Keras.NET.3.8.5
+Numpy.Bare.3.7.1.11 -> Numpy.Bare.3.8.1.25
+System.Reflection.Emit.4.3.0 -> System.Reflection.Emit.4.7.0
+Newtonsoft.Json.11.0.2 -> Newtonsoft.Json.12.0.3
+Microsoft.Net.Compilers.Toolset.3.1.0 -> Microsoft.Net.Compilers.Toolset.3.9.0
+Microsoft.CSharp.4.5.0 -> Microsoft.CSharp.4.7.0
+JetBrains.Annotations.2018.2.1 -> JetBrains.Annotations.2020.3.0
+FSharp.Core.4.2.3 -> FSharp.Core.5.0.1
+
+Package added:
+-------------
+pythonnet_netstandard_py38_win.2.5.1 -> pythonnet_netstandard_py38_win.2.5.1.1
+
+Packages not updated:
+--------------------
+SixLabors.ImageSharp.1.0.0-beta0007 -> SixLabors.ImageSharp.1.0.3: FileLoadException (0x80131040)
+TensorFlow.NET.0.15.1 -> TensorFlow.NET.0.40.0: tf.placeholder() is not compatible with eager execution
+```
+- Python 3.7 -> Python 3.8
+
 14/03/2021 V1.32
-- - clsMLPNeuralNetLib added: NeuralNet.Net Framework
+- clsMLPNeuralNetLib added: NeuralNet.Net Framework
 
 30/01/2021 V1.31
 - Sunspots dataset added (time series dataset)

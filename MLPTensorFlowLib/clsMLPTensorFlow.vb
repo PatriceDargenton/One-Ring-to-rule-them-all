@@ -95,6 +95,7 @@ Public Class clsMLPTensorFlow : Inherits clsVectorizedMLPGeneric
 
         Dim graph = tf.Graph.as_default
         Me.exampleCount = Me.inputArray.GetLength(0)
+        ' TensorFlow.NET version="0.20.1" : tf.placeholder() is not compatible with eager execution
         Me.features = tf.placeholder(tf.float32,
             New TensorShape(Me.exampleCount, Me.nbInputNeurons))
         Me.labels = tf.placeholder(tf.int32,

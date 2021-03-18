@@ -6,14 +6,14 @@
 ' https://keras.io Documentation (not only for Keras.NET but Keras)
 
 ' Keras.NET -> packages added:
-' <package id = "Keras.NET" version="3.7.4.2" targetFramework="net472" />
-' <package id = "Microsoft.CSharp" version="4.5.0" targetFramework="net472" />
-' <package id = "Numpy.Bare" version="3.7.1.11" targetFramework="net472" />
+' <package id = "Keras.NET" version="3.8.5" targetFramework="net472" />
+' <package id = "Microsoft.CSharp" version="4.7.0" targetFramework="net472" />
+' <package id = "Numpy.Bare" version="3.8.1.25" targetFramework="net472" />
 ' <package id = "Python.Runtime.NETStandard" version="3.7.1" targetFramework="net472" />
-' <package id = "System.Reflection.Emit" version="4.3.0" targetFramework="net472" />
+' <package id = "System.Reflection.Emit" version="4.7.0" targetFramework="net472" />
 
-' Python 3.7 is required at runtime:
-' https://www.python.org/ftp/python/3.7.9/python-3.7.9-amd64.exe
+' Python 3.8 is required at runtime:
+' https://www.python.org/ftp/python/3.8.8/python-3.8.8-amd64.exe
 ' https://www.python.org/downloads
 ' For PowerShell installations, type:
 ' python -mpip install numpy      : fix "No module named 'numpy'"
