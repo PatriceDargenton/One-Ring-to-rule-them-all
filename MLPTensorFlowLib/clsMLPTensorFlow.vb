@@ -15,7 +15,7 @@ Imports Tensorflow.Binding
 Imports System.Text
 
 ' Tuples are not available for Visual Studio 2013: Set 0: Off
-#Const Implementation = 0 ' 0: Off, 1: On
+#Const Implementation = 1 ' 0: Off, 1: On
 
 Public Class clsMLPTensorFlow : Inherits clsVectorizedMLPGeneric
 

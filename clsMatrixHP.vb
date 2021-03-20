@@ -495,7 +495,7 @@ Namespace Utility
 
             Dim a#(,) = m1
             Dim b#(,) = m2
-            Dim c = New Double(m1.r - 1, m2.c - 1) {}
+            Dim c = New Double(m1.r - 1, m1.c - 1) {}
 
             MatrixLoop(
                 (Sub(i, j)

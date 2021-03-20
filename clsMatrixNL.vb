@@ -455,6 +455,9 @@ Namespace Utility
         ''' </summary>
         Private Sub Add(m As Matrix)
 
+            If Me.r <> m.r OrElse Me.c <> m.c Then _
+                Throw New ArgumentException("Matrix must have the same dimensions") ' 20/03/2021
+
             For i = 0 To Me.r - 1
                 For j = 0 To Me.c - 1
                     Me.data(i, j) += m.data(i, j)
@@ -481,6 +484,9 @@ Namespace Utility
         ''' </summary>
         Private Overloads Sub Subtract(m As Matrix)
 
+            If Me.r <> m.r OrElse Me.c <> m.c Then _
+                Throw New ArgumentException("Matrix must have the same dimensions") ' 20/03/2021
+
             For i = 0 To Me.r - 1
                 For j = 0 To Me.c - 1
                     Me.data(i, j) -= m.data(i, j)
@@ -493,6 +499,9 @@ Namespace Utility
         ''' Subtract 2 matrices and return a new matrix
         ''' </summary>
         Private Overloads Shared Function Subtract(a As Matrix, b As Matrix) As Matrix
+
+            If a.r <> b.r OrElse a.c <> b.c Then _
+                Throw New ArgumentException("Matrix must have the same dimensions") ' 20/03/2021
 
             Dim c As New Matrix(a.r, a.c)
 
@@ -525,6 +534,9 @@ Namespace Utility
         ''' </summary>
         Private Overloads Sub Multiply(m As Matrix)
 
+            'If Me.c <> m.r Then _
+            '    Throw New Exception("Columns of matrix must match rows of matrix m")
+
             For i = 0 To Me.r - 1
                 For j = 0 To Me.c - 1
                     Me.data(i, j) *= m.data(i, j)
@@ -538,9 +550,8 @@ Namespace Utility
         ''' </summary>
         Private Overloads Shared Function Multiply(a As Matrix, b As Matrix) As Matrix
 
-            If a.c <> b.r Then
-                Throw New Exception("Columns of A must match columns of B")
-            End If
+            If a.c <> b.r Then _
+                Throw New Exception("Columns of A must match rows of B")
 
             Dim ab As New Matrix(a.r, b.c)
 

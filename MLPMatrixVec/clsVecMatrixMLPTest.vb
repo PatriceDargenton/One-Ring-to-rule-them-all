@@ -1145,8 +1145,9 @@ Namespace VectorizedMatrixMLP
             Dim lossRounded# = Math.Round(loss, 3)
             Assert.AreEqual(True, lossRounded <= expectedLoss)
 
-            m_mlp.TestAllSamples(m_mlp.inputArrayTest, m_mlp.targetArrayTest,
-                nbOutputs:=m_mlp.nbLinesToPredict)
+            'm_mlp.TestAllSamples(m_mlp.inputArrayTest, m_mlp.targetArrayTest,
+            '   nbOutputs:=m_mlp.nbLinesToPredict)
+            m_mlp.TestAllSamples(m_mlp.inputArrayTest, m_mlp.targetArrayTest, nbOutputs:=1)
             Dim expectedSuccessPrediction# = 0.8
             Dim successPrediction! = m_mlp.successPC
             Dim successPredictionRounded# = Math.Round(successPrediction, 3)
@@ -1207,8 +1208,9 @@ Namespace VectorizedMatrixMLP
             Dim lossRounded# = Math.Round(loss, 3)
             Assert.AreEqual(True, lossRounded <= expectedLoss)
 
-            m_mlp.TestAllSamples(m_mlp.inputArrayTest, m_mlp.targetArrayTest,
-                nbOutputs:=m_mlp.nbLinesToPredict)
+            'm_mlp.TestAllSamples(m_mlp.inputArrayTest, m_mlp.targetArrayTest,
+            '   nbOutputs:=m_mlp.nbLinesToPredict)
+            m_mlp.TestAllSamples(m_mlp.inputArrayTest, m_mlp.targetArrayTest, nbOutputs:=1)
             Dim expectedSuccessPrediction# = 0.7
             Dim successPrediction! = m_mlp.successPC
             Dim successPredictionRounded# = Math.Round(successPrediction, 3)

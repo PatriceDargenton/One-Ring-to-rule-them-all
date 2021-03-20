@@ -262,6 +262,9 @@ Note: To update the packages, you will need to restore this deleted line in the 
 
 # Version history
 
+20/03/2021 V1.35
+- Sunspots tests and matrix size checks fixed
+
 18/03/2021 V1.34
 - Console demo: MLP menu added
 

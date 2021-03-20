@@ -1668,7 +1668,8 @@ Module modMLPTest
         Dim lossRounded# = Math.Round(loss, 3)
         Assert.AreEqual(True, lossRounded <= expectedLoss)
 
-        mlp.TestAllSamples(mlp.inputArrayTest, mlp.targetArrayTest, nbOutputs:=mlp.nbLinesToPredict)
+        'mlp.TestAllSamples(mlp.inputArrayTest, mlp.targetArrayTest, nbOutputs:=mlp.nbLinesToPredict)
+        mlp.TestAllSamples(mlp.inputArrayTest, mlp.targetArrayTest, nbOutputs:=1)
         Dim successPrediction! = mlp.successPC
         Dim successPredictionRounded# = Math.Round(successPrediction, 3)
         Assert.AreEqual(True, successPredictionRounded >= expectedSuccessPrediction)
@@ -1725,7 +1726,8 @@ Module modMLPTest
         Dim lossRounded# = Math.Round(loss, 3)
         Assert.AreEqual(True, lossRounded <= expectedLoss)
 
-        mlp.TestAllSamples(mlp.inputArrayTest, mlp.targetArrayTest, nbOutputs:=mlp.nbLinesToPredict)
+        'mlp.TestAllSamples(mlp.inputArrayTest, mlp.targetArrayTest, nbOutputs:=mlp.nbLinesToPredict)
+        mlp.TestAllSamples(mlp.inputArrayTest, mlp.targetArrayTest, nbOutputs:=1)
         Dim successPrediction! = mlp.successPC
         Dim successPredictionRounded# = Math.Round(successPrediction, 3)
         Assert.AreEqual(True, successPredictionRounded >= expectedSuccessPrediction)
@@ -1782,7 +1784,8 @@ Module modMLPTest
         Dim lossRounded# = Math.Round(loss, 3)
         Assert.AreEqual(True, lossRounded <= expectedLoss)
 
-        mlp.TestAllSamples(mlp.inputArrayTest, mlp.targetArrayTest, nbOutputs:=mlp.nbLinesToPredict)
+        'mlp.TestAllSamples(mlp.inputArrayTest, mlp.targetArrayTest, nbOutputs:=mlp.nbLinesToPredict)
+        mlp.TestAllSamples(mlp.inputArrayTest, mlp.targetArrayTest, nbOutputs:=1)
         Dim successPrediction! = mlp.successPC
         Dim successPredictionRounded# = Math.Round(successPrediction, 3)
         Assert.AreEqual(True, successPredictionRounded >= expectedSuccessPrediction)
@@ -1833,7 +1836,8 @@ Module modMLPTest
 
         mlp.Train()
 
-        mlp.TestAllSamples(mlp.inputArrayTest, mlp.targetArrayTest, nbOutputs:=mlp.windowsSize)
+        'mlp.TestAllSamples(mlp.inputArrayTest, mlp.targetArrayTest, nbOutputs:=mlp.windowsSize)
+        mlp.TestAllSamples(mlp.inputArrayTest, mlp.targetArrayTest, nbOutputs:=1)
         mlp.PrintSuccessPrediction()
 
         mlp.ShowMessage(testName & ": Done.")
