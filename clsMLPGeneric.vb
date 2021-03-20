@@ -25,6 +25,7 @@ Public MustInherit Class clsMLPGeneric
         Me.nbInputNeurons = Me.neuronCount(0)
         'Me.nbHiddenNeurons = Me.neuronCount(1)
         Me.nbOutputNeurons = Me.neuronCount(Me.layerCount - 1)
+        Me.trainingAlgorithm = enumTrainingAlgorithm.Default
 
         Me.useSeriesArray = False
         If Me.windowsSize > 0 AndAlso Not IsNothing(Me.seriesArray) Then
@@ -353,6 +354,74 @@ Public MustInherit Class clsMLPGeneric
 
 #End Region
 
+#Region "Training algorithm"
+
+    Public Enum enumTrainingAlgorithm
+
+        ''' <summary>
+        ''' Undefined
+        ''' </summary>
+        Undefined
+
+        ''' <summary>
+        ''' The plain stochastic gradient descent (SGD) training algorithm, by Yann Le Cun (1986)
+        ''' (readen in his book "Quand la machine apprend", p. 50)
+        ''' see https://en.wikipedia.org/wiki/Stochastic_gradient_descent
+        ''' </summary>
+        StochasticGradientDescent
+
+        ''' <summary>
+        ''' A variant of the stochastic gradient descent algorithm with momentum (1986)
+        ''' </summary>
+        Momentum
+
+        ''' <summary>
+        ''' Resilient Back Propagation, by Martin Riedmiller and Heinrich Braun (1992)
+        ''' see https://en.wikipedia.org/wiki/Rprop
+        ''' </summary>
+        RProp
+
+        ''' <summary>
+        ''' The AdaGrad learning method, by John Duchi, Elad Hazan and Yoram Singer (2011)
+        ''' see http://www.jmlr.org/papers/volume12/duchi11a/duchi11a.pdf
+        ''' </summary>
+        AdaGrad
+
+        ''' <summary>
+        ''' The AdaDelta adaptive learning method, by Matthew D. Zeiler (2012)
+        ''' see https://arxiv.org/abs/1212.5701
+        ''' </summary>
+        AdaDelta
+
+        ''' <summary>
+        ''' The RMSProp learning method, by Geoffrey Hinton ("unpublished", 2012)
+        ''' see http://www.cs.toronto.edu/~tijmen/csc321/slides/lecture_slides_lec6.pdf
+        ''' (Root Mean Square Propagation: a mini-batch version of RProp, slide 29)
+        ''' </summary>
+        RMSProp
+
+        ''' <summary>
+        ''' The Adam learning method, by Diederik P. Kingma and Jimmy Lei Ba (2014)
+        ''' see https://arxiv.org/pdf/1412.6980v8.pdf
+        ''' </summary>
+        Adam
+
+        ''' <summary>
+        ''' The AdaMax learning method, by Diederik P. Kingma and Jimmy Lei Ba (2015)
+        ''' see section 7.1 of https://arxiv.org/pdf/1412.6980v8.pdf
+        ''' </summary>
+        AdaMax
+
+        ''' <summary>
+        ''' Default: Stochastic Gradient Descent (SGD)
+        ''' </summary>
+        [Default] = StochasticGradientDescent
+
+    End Enum
+    Public trainingAlgorithm As enumTrainingAlgorithm = enumTrainingAlgorithm.Default
+
+#End Region
+
 #Region "Randomize"
 
     ''' <summary>
@@ -670,6 +739,8 @@ Public MustInherit Class clsMLPGeneric
         sb.AppendLine("")
         If Me.learningMode <> enumLearningMode.Defaut Then sb.AppendLine(
             "learning mode=" & clsMLPHelper.ReadEnumDescription(Me.learningMode))
+        If Me.trainingAlgorithm <> enumTrainingAlgorithm.Default Then sb.AppendLine(
+            "Training algorithm=" & clsMLPHelper.ReadEnumDescription(Me.trainingAlgorithm))
         sb.AppendLine("layer count=" & Me.layerCount)
         sb.AppendLine("neuron count=" & clsMLPHelper.ArrayToString(Me.neuronCount))
         sb.AppendLine("use bias=" & Me.useBias)

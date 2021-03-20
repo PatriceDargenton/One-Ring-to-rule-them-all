@@ -22,7 +22,6 @@ Public Class clsMLPAccord : Inherits clsVectorizedMLPGeneric
     ''' <summary>
     ''' Resilient Backpropagation Learning
     ''' </summary>
-    Public RBPLAlgo As Boolean = False
     Private teacherRBPL As ResilientBackpropagationLearning
 
     ''' <summary>
@@ -112,11 +111,11 @@ Public Class clsMLPAccord : Inherits clsVectorizedMLPGeneric
                 Me.activFnc = Nothing
         End Select
 
-        If RBPLAlgo Then
+        If Me.trainingAlgorithm = enumTrainingAlgorithm.RProp AndAlso Not PRBPLAlgo Then
             Me.teacherRBPL = New ResilientBackpropagationLearning(Me.network)
             Me.teacherRBPL.LearningRate = Me.learningRate ' default value: 0.0125
             Me.weightAdjustment = 0
-        ElseIf PRBPLAlgo Then
+        ElseIf Me.trainingAlgorithm = enumTrainingAlgorithm.RProp AndAlso PRBPLAlgo Then
             Me.teacherPRBPL = New ParallelResilientBackpropagationLearning(Me.network)
             'Me.teacherPRBPL.Reset(Me.learningRate)
             'Me.teacherPRBPL.DecreaseFactor = 0.5 ' eta minus
@@ -211,9 +210,9 @@ Public Class clsMLPAccord : Inherits clsVectorizedMLPGeneric
     Public Overrides Sub TrainVectorOneIteration()
 
         Dim avgError#
-        If RBPLAlgo Then
+        If Me.trainingAlgorithm = enumTrainingAlgorithm.RProp AndAlso Not PRBPLAlgo Then
             avgError = Me.teacherRBPL.RunEpoch(Me.inputJaggedDblArray, Me.targetJaggedDblArray)
-        ElseIf PRBPLAlgo Then
+        ElseIf Me.trainingAlgorithm = enumTrainingAlgorithm.RProp AndAlso PRBPLAlgo Then
             avgError = Me.teacherPRBPL.RunEpoch(Me.inputJaggedDblArray, Me.targetJaggedDblArray)
         Else
             avgError = Me.teacherBPL.RunEpoch(Me.inputJaggedDblArray, Me.targetJaggedDblArray)
@@ -253,9 +252,9 @@ Public Class clsMLPAccord : Inherits clsVectorizedMLPGeneric
         Dim targetArrayDbl = clsMLPHelper.Convert1DArrayOfSingleToDouble(target)
 
         Dim avgError#
-        If RBPLAlgo Then
+        If Me.trainingAlgorithm = enumTrainingAlgorithm.RProp AndAlso Not PRBPLAlgo Then
             avgError = Me.teacherRBPL.Run(inputArrayDbl, targetArrayDbl)
-        ElseIf PRBPLAlgo Then
+        ElseIf Me.trainingAlgorithm = enumTrainingAlgorithm.RProp AndAlso PRBPLAlgo Then
             avgError = Me.teacherPRBPL.Run(inputArrayDbl, targetArrayDbl)
         Else
             avgError = Me.teacherBPL.Run(inputArrayDbl, targetArrayDbl)

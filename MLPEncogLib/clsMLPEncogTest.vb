@@ -244,9 +244,7 @@ Namespace EncogMLP
         <TestMethod()>
         Public Sub EncogMLP1XORSigmoidRProp()
 
-            'm_mlp.RBPLAlgo = True ' Default
-            TestMLP1XORSigmoidRProp(m_mlp)
-            'TestMLP1XORSigmoidRProp(m_mlp, learningMode:=enumLearningMode.VectorialBatch)
+            TestMLP1XORSigmoidRProp(m_mlp, trainingAlgorithm:=enumTrainingAlgorithm.RProp)
 
         End Sub
 
@@ -297,9 +295,7 @@ Namespace EncogMLP
         <TestMethod()>
         Public Sub EncogMLP1XORTanhRProp()
 
-            'm_mlp.RBPLAlgo = True ' Default
-            TestMLP1XORTanhRProp(m_mlp)
-            'TestMLP1XORTanhRProp(m_mlp, learningMode:=enumLearningMode.VectorialBatch)
+            TestMLP1XORTanhRProp(m_mlp, trainingAlgorithm:=enumTrainingAlgorithm.RProp)
 
         End Sub
 
@@ -314,7 +310,6 @@ Namespace EncogMLP
         <TestMethod()>
         Public Sub EncogMLP2XORSigmoidStdr()
 
-            m_mlp.RBPLAlgo = False
             TestMLP2XORSigmoid(m_mlp)
 
         End Sub

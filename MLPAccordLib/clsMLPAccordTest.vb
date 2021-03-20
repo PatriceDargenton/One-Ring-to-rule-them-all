@@ -173,10 +173,7 @@ Namespace AccordMLP
         <TestMethod()>
         Public Sub AccordMLP1XORSigmoidRProp()
 
-            m_mlp.RBPLAlgo = True
-            TestMLP1XORSigmoidRProp(m_mlp)
-            'TestMLP1XORSigmoidRProp(m_mlp, learningMode:=enumLearningMode.VectorialBatch)
-            m_mlp.RBPLAlgo = False
+            TestMLP1XORSigmoidRProp(m_mlp, trainingAlgorithm:=enumTrainingAlgorithm.RProp)
 
         End Sub
 
@@ -197,10 +194,10 @@ Namespace AccordMLP
         <TestMethod()>
         Public Sub AccordMLP1XORTanhRProp()
 
-            m_mlp.RBPLAlgo = True
-            TestMLP1XORTanhRProp(m_mlp, nbIterations:=350)
+            'm_mlp.RBPLAlgo = True
+            TestMLP1XORTanhRProp(m_mlp, nbIterations:=350, trainingAlgorithm:=enumTrainingAlgorithm.RProp)
             'TestMLP1XORTanhRProp(m_mlp, nbIterations:=350, learningMode:=enumLearningMode.VectorialBatch)
-            m_mlp.RBPLAlgo = False
+            'm_mlp.RBPLAlgo = False
 
         End Sub
 
@@ -259,13 +256,13 @@ Namespace AccordMLP
         <TestMethod()>
         Public Sub AccordMLP2XORTanhVectRProp()
 
-            m_mlp.PRBPLAlgo = True
-
             Init2XOR()
             m_mlp.Initialize(learningRate:=0.1!, weightAdjustment:=0.05!)
 
             m_mlp.nbIterations = 700
             m_mlp.InitializeStruct(m_neuronCount2XOR, addBiasColumn:=True)
+            m_mlp.trainingAlgorithm = enumTrainingAlgorithm.RProp
+            m_mlp.PRBPLAlgo = True
             m_mlp.SetActivationFunction(enumActivationFunction.HyperbolicTangent, gain:=1.9!)
 
             m_mlp.InitializeWeights(1, {

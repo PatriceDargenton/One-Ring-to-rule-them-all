@@ -47,8 +47,9 @@ Module modMLPNeuralNetTest
             mlp.InitializeStruct(m_neuronCount3XOR673, addBiasColumn:=True)
         End If
 
-        mlp.trainingAlgorithm = TrainingAlgorithmType.RMSProp
+        mlp.trainingAlgorithm = enumTrainingAlgorithm.RMSProp
 
+        'mlp.nbIterationsBatch = mlp.minBatchSize ' Can be 1 using Sigmoid and RMSProp
         'mlp.nbIterations = 15000 ' Sigmoid: works
         'mlp.SetActivationFunction(enumActivationFunction.Sigmoid)
 
@@ -86,19 +87,19 @@ Namespace NeuralNetMLP
         Public Sub NNMLP1XORSigmoidBatch1RMSProp() ' 270 msec
 
             InitXOR(m_mlp)
-            m_mlp.Initialize(learningRate:=0!)
+            m_mlp.Initialize(learningRate:=0.0!)
             m_mlp.InitializeStruct(m_neuronCountXOR, addBiasColumn:=True)
-            m_mlp.trainingAlgorithm = TrainingAlgorithmType.RMSProp
+            m_mlp.trainingAlgorithm = enumTrainingAlgorithm.RMSProp
             m_mlp.nbIterationsBatch = 1
 
             m_mlp.nbIterations = 2100
             m_mlp.SetActivationFunction(enumActivationFunction.Sigmoid)
 
             m_mlp.InitializeWeights(1, {
-                {-1.14, -0.66, 0.00},
-                {-1.15, 0.74, 0.00}})
+                {-1.14, -0.66, 0.0},
+                {-1.15, 0.74, 0.0}})
             m_mlp.InitializeWeights(2, {
-               {0.89, -1.37, 0.00}})
+               {0.89, -1.37, 0.0}})
 
             m_mlp.Train(learningMode:=enumLearningMode.Vectorial)
             'm_mlp.Train(learningMode:=enumLearningMode.VectorialBatch)
@@ -120,9 +121,9 @@ Namespace NeuralNetMLP
         Public Sub NNMLP1XORSigmoidBatch200RMSProp() ' 90 msec
 
             InitXOR(m_mlp)
-            m_mlp.Initialize(learningRate:=0!)
+            m_mlp.Initialize(learningRate:=0.0!)
             m_mlp.InitializeStruct(m_neuronCountXOR, addBiasColumn:=True)
-            m_mlp.trainingAlgorithm = TrainingAlgorithmType.RMSProp
+            m_mlp.trainingAlgorithm = enumTrainingAlgorithm.RMSProp
             m_mlp.nbIterationsBatch = 200
 
             m_mlp.nbIterations = 2600
@@ -153,9 +154,9 @@ Namespace NeuralNetMLP
         Public Sub NNMLP1XORTanhBatch10RMSProp()
 
             InitXOR(m_mlp)
-            m_mlp.Initialize(learningRate:=0!)
+            m_mlp.Initialize(learningRate:=0.0!)
             m_mlp.InitializeStruct(m_neuronCountXOR231, addBiasColumn:=True)
-            m_mlp.trainingAlgorithm = TrainingAlgorithmType.RMSProp
+            m_mlp.trainingAlgorithm = enumTrainingAlgorithm.RMSProp
             m_mlp.nbIterationsBatch = 10
 
             'm_mlp.nbIterations = 5000 ' 3000 batch
@@ -191,9 +192,9 @@ Namespace NeuralNetMLP
         Public Sub NNMLP1XORTanhBatch100RMSProp()
 
             InitXOR(m_mlp)
-            m_mlp.Initialize(learningRate:=0!)
+            m_mlp.Initialize(learningRate:=0.0!)
             m_mlp.InitializeStruct(m_neuronCountXOR, addBiasColumn:=True)
-            m_mlp.trainingAlgorithm = TrainingAlgorithmType.RMSProp
+            m_mlp.trainingAlgorithm = enumTrainingAlgorithm.RMSProp
             m_mlp.nbIterationsBatch = 100
 
             m_mlp.nbIterations = 5000 ' 100 batch
@@ -224,9 +225,9 @@ Namespace NeuralNetMLP
         Public Sub NNMLP1XOR4LayersTanhBatch100RMSProp() ' 150 msec
 
             InitXOR(m_mlp)
-            m_mlp.Initialize(learningRate:=0!)
+            m_mlp.Initialize(learningRate:=0.0!)
             m_mlp.InitializeStruct(m_neuronCountXOR4Layers, addBiasColumn:=True)
-            m_mlp.trainingAlgorithm = TrainingAlgorithmType.RMSProp
+            m_mlp.trainingAlgorithm = enumTrainingAlgorithm.RMSProp
             m_mlp.nbIterationsBatch = 100
 
             m_mlp.nbIterations = 600
@@ -260,9 +261,9 @@ Namespace NeuralNetMLP
         Public Sub NNMLP1XOR5LayersTanhBatch100RMSProp() ' 30 msec
 
             InitXOR(m_mlp)
-            m_mlp.Initialize(learningRate:=0!)
+            m_mlp.Initialize(learningRate:=0.0!)
             m_mlp.InitializeStruct(m_neuronCountXOR5Layers, addBiasColumn:=True)
-            m_mlp.trainingAlgorithm = TrainingAlgorithmType.RMSProp
+            m_mlp.trainingAlgorithm = enumTrainingAlgorithm.RMSProp
             m_mlp.nbIterationsBatch = 100
 
             m_mlp.nbIterations = 500
@@ -299,9 +300,9 @@ Namespace NeuralNetMLP
         Public Sub NNMLP2XORSigmoidBatch100RMSProp() ' 400 msec
 
             Init2XOR(m_mlp)
-            m_mlp.Initialize(learningRate:=0!)
+            m_mlp.Initialize(learningRate:=0.0!)
             m_mlp.InitializeStruct(m_neuronCount2XOR, addBiasColumn:=True)
-            m_mlp.trainingAlgorithm = TrainingAlgorithmType.RMSProp ' AdaMax ?
+            m_mlp.trainingAlgorithm = enumTrainingAlgorithm.RMSProp ' AdaMax ?
             m_mlp.nbIterationsBatch = 100
 
             m_mlp.nbIterations = 10000
@@ -335,16 +336,16 @@ Namespace NeuralNetMLP
         Public Sub NNMLP2XORSigmoidBatch200RMSProp3() ' 460 msec
 
             Init2XOR(m_mlp)
-            m_mlp.Initialize(learningRate:=0!)
+            m_mlp.Initialize(learningRate:=0.0!)
             m_mlp.InitializeStruct(m_neuronCount2XOR, addBiasColumn:=True)
-            m_mlp.trainingAlgorithm = TrainingAlgorithmType.RMSProp
+            m_mlp.trainingAlgorithm = enumTrainingAlgorithm.RMSProp
             m_mlp.nbIterationsBatch = 200
 
             m_mlp.nbIterations = 11000
             m_mlp.SetActivationFunction(enumActivationFunction.Sigmoid)
 
             m_mlp.InitializeWeights(1, {
-                {-0.2, 0.25, 0.68, 0.00, 0},
+                {-0.2, 0.25, 0.68, 0.0, 0},
                 {-0.09, -0.07, -0.53, 0.02, 0},
                 {0.85, -0.15, 0.27, 0.04, 0},
                 {0.12, 0.53, -0.4, 0.11, 0}})
@@ -371,9 +372,9 @@ Namespace NeuralNetMLP
         Public Sub NNMLP2XORTanhBatch100RMSProp()
 
             Init2XOR(m_mlp)
-            m_mlp.Initialize(learningRate:=0!)
+            m_mlp.Initialize(learningRate:=0.0!)
             m_mlp.InitializeStruct(m_neuronCount2XOR, addBiasColumn:=True)
-            m_mlp.trainingAlgorithm = TrainingAlgorithmType.RMSProp
+            m_mlp.trainingAlgorithm = enumTrainingAlgorithm.RMSProp
             m_mlp.nbIterationsBatch = 100
 
             m_mlp.nbIterations = 5000
@@ -407,9 +408,9 @@ Namespace NeuralNetMLP
         Public Sub NNMLP2XORTanhBatch200RMSProp() ' 110 msec
 
             Init2XOR(m_mlp)
-            m_mlp.Initialize(learningRate:=0!)
+            m_mlp.Initialize(learningRate:=0.0!)
             m_mlp.InitializeStruct(m_neuronCount2XOR, addBiasColumn:=True)
-            m_mlp.trainingAlgorithm = TrainingAlgorithmType.RMSProp
+            m_mlp.trainingAlgorithm = enumTrainingAlgorithm.RMSProp
             m_mlp.nbIterationsBatch = 200
 
             m_mlp.nbIterations = 2800
@@ -443,9 +444,9 @@ Namespace NeuralNetMLP
         Public Sub NNMLP2XOR4LayersTanhBatch100RMSProp() ' 150 msec
 
             Init2XOR(m_mlp)
-            m_mlp.Initialize(learningRate:=0!)
+            m_mlp.Initialize(learningRate:=0.0!)
             m_mlp.InitializeStruct(m_neuronCount2XOR4Layers, addBiasColumn:=True)
-            m_mlp.trainingAlgorithm = TrainingAlgorithmType.RMSProp
+            m_mlp.trainingAlgorithm = enumTrainingAlgorithm.RMSProp
             m_mlp.nbIterationsBatch = 100
 
             m_mlp.nbIterations = 2400
@@ -484,9 +485,9 @@ Namespace NeuralNetMLP
         Public Sub NNMLP2XOR5LayersTanhBatch100RMSProp() ' 350 msec
 
             Init2XOR(m_mlp)
-            m_mlp.Initialize(learningRate:=0!)
+            m_mlp.Initialize(learningRate:=0.0!)
             m_mlp.InitializeStruct(m_neuronCount2XOR5Layers, addBiasColumn:=True)
-            m_mlp.trainingAlgorithm = TrainingAlgorithmType.RMSProp
+            m_mlp.trainingAlgorithm = enumTrainingAlgorithm.RMSProp
             m_mlp.nbIterationsBatch = 100
 
             m_mlp.nbIterations = 2500
@@ -504,7 +505,7 @@ Namespace NeuralNetMLP
                 {-0.16, 0.03, -0.72, 0.8, 0}})
             m_mlp.InitializeWeights(3, {
                 {-0.34, 0.32, 0.81, 0.51, 0},
-                {0.00, -0.05, 0.43, -0.73, 0},
+                {0.0, -0.05, 0.43, -0.73, 0},
                 {0.28, -0.27, 0.71, 0.85, 0},
                 {-0.79, -0.77, 0.01, 0.02, 0}})
             m_mlp.InitializeWeights(4, {
@@ -530,9 +531,9 @@ Namespace NeuralNetMLP
         Public Sub NNMLP3XORSigmoidBatch100AdaMax() ' 390 msec
 
             Init3XOR(m_mlp)
-            m_mlp.Initialize(learningRate:=0!)
+            m_mlp.Initialize(learningRate:=0.0!)
             m_mlp.InitializeStruct(m_neuronCount3XOR, addBiasColumn:=True)
-            m_mlp.trainingAlgorithm = TrainingAlgorithmType.AdaMax
+            m_mlp.trainingAlgorithm = enumTrainingAlgorithm.AdaMax
             m_mlp.nbIterationsBatch = 100
 
             m_mlp.nbIterations = 6000
@@ -547,7 +548,7 @@ Namespace NeuralNetMLP
                 {-0.47, -0.3, -0.47, -0.15, 0.17, 0.3, 0}})
             m_mlp.InitializeWeights(2, {
                 {0.12, 0.67, -0.31, -0.74, 0.74, 0.56, 0},
-                {-0.81, 0.22, -0.34, 0.00, -0.5, 0.23, 0},
+                {-0.81, 0.22, -0.34, 0.0, -0.5, 0.23, 0},
                 {-0.02, -0.12, -0.46, 0.14, -0.75, 0.15, 0}})
 
             m_mlp.Train()
@@ -569,9 +570,9 @@ Namespace NeuralNetMLP
         Public Sub NNMLP3XORTanhBatch100AdaMax() ' 160 msec
 
             Init3XOR(m_mlp)
-            m_mlp.Initialize(learningRate:=0!)
+            m_mlp.Initialize(learningRate:=0.0!)
             m_mlp.InitializeStruct(m_neuronCount3XOR, addBiasColumn:=True)
-            m_mlp.trainingAlgorithm = TrainingAlgorithmType.AdaMax
+            m_mlp.trainingAlgorithm = enumTrainingAlgorithm.AdaMax
             m_mlp.nbIterationsBatch = 100
 
             m_mlp.nbIterations = 1400
@@ -608,9 +609,9 @@ Namespace NeuralNetMLP
         Public Sub NNMLP3XORTanhBatch500AdaMax() ' 250 msec
 
             Init3XOR(m_mlp)
-            m_mlp.Initialize(learningRate:=0!)
+            m_mlp.Initialize(learningRate:=0.0!)
             m_mlp.InitializeStruct(m_neuronCount3XOR, addBiasColumn:=True)
-            m_mlp.trainingAlgorithm = TrainingAlgorithmType.AdaMax
+            m_mlp.trainingAlgorithm = enumTrainingAlgorithm.AdaMax
             m_mlp.nbIterationsBatch = 500
 
             m_mlp.nbIterations = 2500
@@ -647,9 +648,9 @@ Namespace NeuralNetMLP
         Public Sub NNMLP3XORTanhBatch200AdaMax() ' 470 msec
 
             Init3XOR(m_mlp)
-            m_mlp.Initialize(learningRate:=0!)
+            m_mlp.Initialize(learningRate:=0.0!)
             m_mlp.InitializeStruct(m_neuronCount3XOR, addBiasColumn:=True)
-            m_mlp.trainingAlgorithm = TrainingAlgorithmType.AdaMax
+            m_mlp.trainingAlgorithm = enumTrainingAlgorithm.AdaMax
             m_mlp.nbIterationsBatch = 200
 
             m_mlp.nbIterations = 4000
@@ -660,7 +661,7 @@ Namespace NeuralNetMLP
                 {-0.55, -0.04, -0.41, 0.6, 0.36, -0.17, 0},
                 {0.17, -0.25, 0.07, 0.06, 0.26, 0.11, 0},
                 {0.63, -0.64, -0.1, 0.09, 0.42, -0.4, 0},
-                {-0.33, 0.54, 0.00, 0.36, -0.56, 0.44, 0},
+                {-0.33, 0.54, 0.0, 0.36, -0.56, 0.44, 0},
                 {0.13, -0.3, -0.1, -0.61, -0.31, 0.08, 0}})
             m_mlp.InitializeWeights(2, {
                 {-0.43, -0.75, 0.64, 0.23, -0.23, -0.34, 0},
@@ -686,9 +687,9 @@ Namespace NeuralNetMLP
         Public Sub NNMLP3XORTanhBatch100Adam() ' 210 msec
 
             Init3XOR(m_mlp)
-            m_mlp.Initialize(learningRate:=0!)
+            m_mlp.Initialize(learningRate:=0.0!)
             m_mlp.InitializeStruct(m_neuronCount3XOR, addBiasColumn:=True)
-            m_mlp.trainingAlgorithm = TrainingAlgorithmType.Adam
+            m_mlp.trainingAlgorithm = enumTrainingAlgorithm.Adam
             m_mlp.nbIterationsBatch = 100
 
             m_mlp.nbIterations = 3200
@@ -728,7 +729,7 @@ Namespace NeuralNetMLP
 
             InitIrisFlowerAnalog4Layers(m_mlp)
             m_mlp.Initialize(learningRate:=0)
-            m_mlp.trainingAlgorithm = TrainingAlgorithmType.AdaDelta
+            m_mlp.trainingAlgorithm = enumTrainingAlgorithm.AdaDelta
             m_mlp.nbIterationsBatch = 80
 
             m_mlp.nbIterations = 4000
@@ -736,27 +737,27 @@ Namespace NeuralNetMLP
             m_mlp.SetActivationFunction(enumActivationFunction.Sigmoid)
 
             m_mlp.InitializeWeights(1, {
-                {0.08, 0.49, -0.27, 0.36, 0.00},
-                {0.22, -0.34, 0.57, -0.26, 0.00},
-                {-0.64, -0.55, 0.62, -0.26, 0.00},
-                {-0.46, -0.47, 0.19, -0.48, 0.00},
-                {0.6, -0.21, -0.14, 0.09, 0.00},
-                {0.39, 0.31, 0.53, -0.04, 0.00},
-                {-0.2, 0.41, -0.19, -0.47, 0.00},
-                {0.38, -0.22, -0.27, 0.42, 0.00},
-                {-0.56, 0.4, 0.36, 0.02, 0.00}})
+                {0.08, 0.49, -0.27, 0.36, 0.0},
+                {0.22, -0.34, 0.57, -0.26, 0.0},
+                {-0.64, -0.55, 0.62, -0.26, 0.0},
+                {-0.46, -0.47, 0.19, -0.48, 0.0},
+                {0.6, -0.21, -0.14, 0.09, 0.0},
+                {0.39, 0.31, 0.53, -0.04, 0.0},
+                {-0.2, 0.41, -0.19, -0.47, 0.0},
+                {0.38, -0.22, -0.27, 0.42, 0.0},
+                {-0.56, 0.4, 0.36, 0.02, 0.0}})
             m_mlp.InitializeWeights(2, {
-                {-0.53, -0.52, 0.27, -0.23, -0.56, 0.52, 0.55, -0.08, -0.15, 0.00},
-                {0.53, 0.05, -0.2, 0.09, 0.44, -0.55, -0.45, -0.19, -0.02, 0.00},
-                {0.3, 0.41, -0.09, -0.23, 0.25, -0.46, -0.54, -0.36, -0.58, 0.00},
-                {-0.26, 0.42, 0.57, 0.01, 0.1, 0.34, 0.33, 0.4, 0.55, 0.00},
-                {-0.23, 0.29, -0.21, -0.47, 0.53, 0.44, -0.31, 0.22, 0.37, 0.00},
-                {0.27, 0.33, -0.43, 0.01, 0.25, 0.08, 0.23, 0.09, 0.01, 0.00},
-                {0.5, -0.47, 0.49, -0.49, -0.55, -0.15, 0.07, 0.14, -0.28, 0.00},
-                {-0.07, -0.24, 0.51, 0.51, 0.17, 0.16, 0.4, 0.21, -0.05, 0.00},
-                {-0.04, -0.01, -0.06, 0.28, -0.19, 0.46, 0.39, -0.29, 0.47, 0.00}})
+                {-0.53, -0.52, 0.27, -0.23, -0.56, 0.52, 0.55, -0.08, -0.15, 0.0},
+                {0.53, 0.05, -0.2, 0.09, 0.44, -0.55, -0.45, -0.19, -0.02, 0.0},
+                {0.3, 0.41, -0.09, -0.23, 0.25, -0.46, -0.54, -0.36, -0.58, 0.0},
+                {-0.26, 0.42, 0.57, 0.01, 0.1, 0.34, 0.33, 0.4, 0.55, 0.0},
+                {-0.23, 0.29, -0.21, -0.47, 0.53, 0.44, -0.31, 0.22, 0.37, 0.0},
+                {0.27, 0.33, -0.43, 0.01, 0.25, 0.08, 0.23, 0.09, 0.01, 0.0},
+                {0.5, -0.47, 0.49, -0.49, -0.55, -0.15, 0.07, 0.14, -0.28, 0.0},
+                {-0.07, -0.24, 0.51, 0.51, 0.17, 0.16, 0.4, 0.21, -0.05, 0.0},
+                {-0.04, -0.01, -0.06, 0.28, -0.19, 0.46, 0.39, -0.29, 0.47, 0.0}})
             m_mlp.InitializeWeights(3, {
-                {0.32, -0.52, 0.4, 0.19, -0.05, 0.51, 0.66, -0.41, -0.58, 0.00}})
+                {0.32, -0.52, 0.4, 0.19, -0.05, 0.51, 0.66, -0.41, -0.58, 0.0}})
 
             m_mlp.Train(learningMode:=enumLearningMode.VectorialBatch)
 
@@ -786,7 +787,7 @@ Namespace NeuralNetMLP
 
             InitIrisFlowerLogical4Layers(m_mlp)
             m_mlp.Initialize(learningRate:=0)
-            m_mlp.trainingAlgorithm = TrainingAlgorithmType.RMSProp
+            m_mlp.trainingAlgorithm = enumTrainingAlgorithm.RMSProp
             m_mlp.nbIterationsBatch = 120
 
             m_mlp.nbIterations = 12000
@@ -794,35 +795,35 @@ Namespace NeuralNetMLP
             m_mlp.SetActivationFunction(enumActivationFunction.HyperbolicTangent, gain:=2)
 
             m_mlp.InitializeWeights(1, {
-                {0.33, -0.06, 0.19, -0.44, 0.00},
-                {-0.17, 0.53, -0.42, 0.28, 0.00},
-                {0.31, -0.44, -0.13, -0.32, 0.00},
-                {0.44, -0.48, -0.06, -0.2, 0.00},
-                {0.31, -0.3, -0.55, 0.16, 0.00},
-                {0.44, -0.23, -0.17, 0.5, 0.00},
-                {-0.23, 0.2, -0.54, -0.41, 0.00},
-                {0.13, 0.12, 0.53, -0.15, 0.00},
-                {0.51, 0.23, -0.48, -0.34, 0.00},
-                {-0.39, 0.19, -0.48, -0.49, 0.00},
-                {0.42, 0.39, 0.4, -0.04, 0.00},
-                {-0.12, -0.11, 0.01, -0.42, 0.00},
-                {-0.26, -0.2, -0.52, -0.05, 0.00},
-                {-0.46, 0.48, -0.42, 0.24, 0.00},
-                {0.55, -0.49, 0.52, -0.28, 0.00},
-                {0.45, 0.31, 0.48, -0.17, 0.00}})
+                {0.33, -0.06, 0.19, -0.44, 0.0},
+                {-0.17, 0.53, -0.42, 0.28, 0.0},
+                {0.31, -0.44, -0.13, -0.32, 0.0},
+                {0.44, -0.48, -0.06, -0.2, 0.0},
+                {0.31, -0.3, -0.55, 0.16, 0.0},
+                {0.44, -0.23, -0.17, 0.5, 0.0},
+                {-0.23, 0.2, -0.54, -0.41, 0.0},
+                {0.13, 0.12, 0.53, -0.15, 0.0},
+                {0.51, 0.23, -0.48, -0.34, 0.0},
+                {-0.39, 0.19, -0.48, -0.49, 0.0},
+                {0.42, 0.39, 0.4, -0.04, 0.0},
+                {-0.12, -0.11, 0.01, -0.42, 0.0},
+                {-0.26, -0.2, -0.52, -0.05, 0.0},
+                {-0.46, 0.48, -0.42, 0.24, 0.0},
+                {0.55, -0.49, 0.52, -0.28, 0.0},
+                {0.45, 0.31, 0.48, -0.17, 0.0}})
             m_mlp.InitializeWeights(2, {
-                {-0.15, 0.02, -0.47, 0.24, -0.41, 0.4, -0.45, 0.34, -0.39, -0.05, 0.36, 0.09, -0.34, 0.3, -0.28, -0.23, 0.00},
-                {0.37, 0.3, 0.11, 0.00, -0.16, 0.11, 0.4, 0.12, 0.15, 0.44, -0.2, 0.18, -0.02, 0.01, -0.44, -0.04, 0.00},
-                {-0.46, -0.47, -0.27, -0.38, 0.13, -0.46, 0.25, 0.03, 0.48, 0.34, 0.28, 0.47, -0.21, -0.25, -0.37, 0.31, 0.00},
-                {0.1, -0.32, -0.44, -0.06, 0.41, 0.17, 0.07, -0.05, -0.06, 0.38, -0.41, -0.41, -0.27, 0.34, 0.32, 0.14, 0.00},
-                {-0.48, 0.13, 0.49, 0.49, 0.4, 0.08, -0.25, 0.26, -0.46, 0.46, 0.26, 0.00, 0.02, 0.4, 0.23, -0.26, 0.00},
-                {-0.28, -0.42, -0.33, -0.23, 0.1, -0.09, -0.47, -0.29, -0.38, 0.31, 0.4, -0.23, -0.05, -0.31, -0.47, -0.18, 0.00},
-                {0.00, -0.08, -0.14, -0.42, 0.32, 0.19, 0.24, 0.08, -0.49, -0.42, 0.49, 0.14, 0.45, -0.48, -0.42, 0.23, 0.00},
-                {0.29, 0.14, -0.47, -0.07, -0.17, -0.46, 0.16, -0.42, 0.5, 0.22, -0.27, -0.12, -0.4, 0.12, -0.26, 0.31, 0.00}})
+                {-0.15, 0.02, -0.47, 0.24, -0.41, 0.4, -0.45, 0.34, -0.39, -0.05, 0.36, 0.09, -0.34, 0.3, -0.28, -0.23, 0.0},
+                {0.37, 0.3, 0.11, 0.0, -0.16, 0.11, 0.4, 0.12, 0.15, 0.44, -0.2, 0.18, -0.02, 0.01, -0.44, -0.04, 0.0},
+                {-0.46, -0.47, -0.27, -0.38, 0.13, -0.46, 0.25, 0.03, 0.48, 0.34, 0.28, 0.47, -0.21, -0.25, -0.37, 0.31, 0.0},
+                {0.1, -0.32, -0.44, -0.06, 0.41, 0.17, 0.07, -0.05, -0.06, 0.38, -0.41, -0.41, -0.27, 0.34, 0.32, 0.14, 0.0},
+                {-0.48, 0.13, 0.49, 0.49, 0.4, 0.08, -0.25, 0.26, -0.46, 0.46, 0.26, 0.0, 0.02, 0.4, 0.23, -0.26, 0.0},
+                {-0.28, -0.42, -0.33, -0.23, 0.1, -0.09, -0.47, -0.29, -0.38, 0.31, 0.4, -0.23, -0.05, -0.31, -0.47, -0.18, 0.0},
+                {0.0, -0.08, -0.14, -0.42, 0.32, 0.19, 0.24, 0.08, -0.49, -0.42, 0.49, 0.14, 0.45, -0.48, -0.42, 0.23, 0.0},
+                {0.29, 0.14, -0.47, -0.07, -0.17, -0.46, 0.16, -0.42, 0.5, 0.22, -0.27, -0.12, -0.4, 0.12, -0.26, 0.31, 0.0}})
             m_mlp.InitializeWeights(3, {
-                {0.05, 0.01, -0.32, 0.00, 0.17, 0.7, 0.04, -0.39, 0.00},
-                {0.51, -0.37, 0.45, -0.2, -0.54, 0.05, -0.14, 0.57, 0.00},
-                {-0.38, 0.16, -0.65, 0.71, 0.49, 0.25, -0.11, 0.73, 0.00}})
+                {0.05, 0.01, -0.32, 0.0, 0.17, 0.7, 0.04, -0.39, 0.0},
+                {0.51, -0.37, 0.45, -0.2, -0.54, 0.05, -0.14, 0.57, 0.0},
+                {-0.38, 0.16, -0.65, 0.71, 0.49, 0.25, -0.11, 0.73, 0.0}})
 
             m_mlp.Train(learningMode:=enumLearningMode.VectorialBatch)
 
@@ -852,7 +853,7 @@ Namespace NeuralNetMLP
 
             InitIrisFlowerLogical4Layers(m_mlp)
             m_mlp.Initialize(learningRate:=0)
-            m_mlp.trainingAlgorithm = TrainingAlgorithmType.RMSProp
+            m_mlp.trainingAlgorithm = enumTrainingAlgorithm.RMSProp
             m_mlp.nbIterationsBatch = 100
 
             m_mlp.nbIterations = 5000
@@ -860,35 +861,35 @@ Namespace NeuralNetMLP
             m_mlp.SetActivationFunction(enumActivationFunction.Sigmoid)
 
             m_mlp.InitializeWeights(1, {
-                {0.52, 0.07, 0.25, -0.31, 0.00},
-                {0.42, -0.35, 0.53, 0.3, 0.00},
-                {0.09, -0.35, 0.07, -0.06, 0.00},
-                {0.51, 0.04, -0.44, -0.27, 0.00},
-                {0.23, 0.36, 0.15, 0.13, 0.00},
-                {0.24, 0.52, 0.09, 0.28, 0.00},
-                {-0.48, 0.04, -0.42, -0.51, 0.00},
-                {0.3, 0.5, 0.28, -0.31, 0.00},
-                {0.03, -0.49, 0.52, 0.36, 0.00},
-                {0.31, -0.01, 0.39, -0.01, 0.00},
-                {-0.15, 0.02, 0.12, -0.18, 0.00},
-                {-0.52, -0.04, 0.37, 0.16, 0.00},
-                {-0.2, 0.28, -0.35, 0.01, 0.00},
-                {0.3, 0.09, 0.13, -0.31, 0.00},
-                {0.52, -0.22, 0.34, -0.14, 0.00},
-                {0.12, 0.08, -0.46, -0.48, 0.00}})
+                {0.52, 0.07, 0.25, -0.31, 0.0},
+                {0.42, -0.35, 0.53, 0.3, 0.0},
+                {0.09, -0.35, 0.07, -0.06, 0.0},
+                {0.51, 0.04, -0.44, -0.27, 0.0},
+                {0.23, 0.36, 0.15, 0.13, 0.0},
+                {0.24, 0.52, 0.09, 0.28, 0.0},
+                {-0.48, 0.04, -0.42, -0.51, 0.0},
+                {0.3, 0.5, 0.28, -0.31, 0.0},
+                {0.03, -0.49, 0.52, 0.36, 0.0},
+                {0.31, -0.01, 0.39, -0.01, 0.0},
+                {-0.15, 0.02, 0.12, -0.18, 0.0},
+                {-0.52, -0.04, 0.37, 0.16, 0.0},
+                {-0.2, 0.28, -0.35, 0.01, 0.0},
+                {0.3, 0.09, 0.13, -0.31, 0.0},
+                {0.52, -0.22, 0.34, -0.14, 0.0},
+                {0.12, 0.08, -0.46, -0.48, 0.0}})
             m_mlp.InitializeWeights(2, {
-                {-0.27, -0.41, -0.02, 0.37, -0.04, 0.03, -0.3, -0.46, -0.4, -0.19, 0.08, -0.09, -0.11, 0.2, -0.13, -0.05, 0.00},
-                {-0.32, -0.19, -0.46, 0.49, 0.4, 0.17, 0.46, 0.35, 0.41, 0.39, 0.47, 0.42, -0.03, 0.02, 0.00, 0.3, 0.00},
-                {0.49, -0.03, 0.01, -0.15, 0.04, 0.18, 0.27, 0.24, 0.27, -0.04, -0.33, 0.13, 0.16, -0.48, -0.14, 0.27, 0.00},
-                {0.47, -0.27, -0.24, 0.39, -0.33, -0.35, -0.19, -0.06, -0.47, -0.14, -0.38, 0.49, -0.3, -0.05, 0.48, 0.1, 0.00},
-                {0.37, -0.06, -0.46, -0.22, -0.44, -0.34, 0.34, -0.15, 0.2, -0.2, -0.05, -0.28, -0.45, 0.2, 0.2, -0.07, 0.00},
-                {-0.26, 0.28, 0.02, 0.27, -0.1, 0.41, -0.2, -0.06, -0.24, 0.43, -0.25, 0.18, 0.49, 0.18, 0.04, -0.43, 0.00},
-                {-0.16, 0.34, -0.06, -0.09, -0.41, -0.32, -0.31, -0.27, 0.3, 0.27, -0.44, 0.1, 0.36, -0.23, -0.07, 0.47, 0.00},
-                {0.06, 0.39, -0.27, 0.14, -0.09, 0.3, 0.33, -0.03, -0.31, -0.35, -0.14, -0.01, -0.1, -0.05, 0.47, -0.06, 0.00}})
+                {-0.27, -0.41, -0.02, 0.37, -0.04, 0.03, -0.3, -0.46, -0.4, -0.19, 0.08, -0.09, -0.11, 0.2, -0.13, -0.05, 0.0},
+                {-0.32, -0.19, -0.46, 0.49, 0.4, 0.17, 0.46, 0.35, 0.41, 0.39, 0.47, 0.42, -0.03, 0.02, 0.0, 0.3, 0.0},
+                {0.49, -0.03, 0.01, -0.15, 0.04, 0.18, 0.27, 0.24, 0.27, -0.04, -0.33, 0.13, 0.16, -0.48, -0.14, 0.27, 0.0},
+                {0.47, -0.27, -0.24, 0.39, -0.33, -0.35, -0.19, -0.06, -0.47, -0.14, -0.38, 0.49, -0.3, -0.05, 0.48, 0.1, 0.0},
+                {0.37, -0.06, -0.46, -0.22, -0.44, -0.34, 0.34, -0.15, 0.2, -0.2, -0.05, -0.28, -0.45, 0.2, 0.2, -0.07, 0.0},
+                {-0.26, 0.28, 0.02, 0.27, -0.1, 0.41, -0.2, -0.06, -0.24, 0.43, -0.25, 0.18, 0.49, 0.18, 0.04, -0.43, 0.0},
+                {-0.16, 0.34, -0.06, -0.09, -0.41, -0.32, -0.31, -0.27, 0.3, 0.27, -0.44, 0.1, 0.36, -0.23, -0.07, 0.47, 0.0},
+                {0.06, 0.39, -0.27, 0.14, -0.09, 0.3, 0.33, -0.03, -0.31, -0.35, -0.14, -0.01, -0.1, -0.05, 0.47, -0.06, 0.0}})
             m_mlp.InitializeWeights(3, {
-                {0.19, 0.18, 0.27, -0.42, 0.2, 0.56, 0.38, -0.73, 0.00},
-                {-0.6, -0.53, 0.58, 0.42, 0.56, -0.58, -0.14, -0.44, 0.00},
-                {-0.65, 0.24, -0.29, -0.05, -0.32, -0.1, -0.38, 0.51, 0.00}})
+                {0.19, 0.18, 0.27, -0.42, 0.2, 0.56, 0.38, -0.73, 0.0},
+                {-0.6, -0.53, 0.58, 0.42, 0.56, -0.58, -0.14, -0.44, 0.0},
+                {-0.65, 0.24, -0.29, -0.05, -0.32, -0.1, -0.38, 0.51, 0.0}})
 
             m_mlp.Train(learningMode:=enumLearningMode.VectorialBatch)
 
@@ -920,7 +921,7 @@ Namespace NeuralNetMLP
             m_mlp.nbLinesToLearn = 49
             m_mlp.InitializeStruct({7, 14, 1}, addBiasColumn:=True)
             m_mlp.Initialize(learningRate:=0)
-            m_mlp.trainingAlgorithm = TrainingAlgorithmType.AdaDelta
+            m_mlp.trainingAlgorithm = enumTrainingAlgorithm.AdaDelta
             m_mlp.nbIterationsBatch = 100
 
             m_mlp.nbIterations = 100
@@ -928,22 +929,22 @@ Namespace NeuralNetMLP
             m_mlp.SetActivationFunction(enumActivationFunction.Sigmoid)
 
             m_mlp.InitializeWeights(1, {
-                {-0.13, -0.15, -0.28, 0.37, -0.45, 0.07, -0.29, 0.00},
-                {-0.09, -0.2, -0.42, 0.43, 0.01, 0.08, 0.45, 0.00},
-                {0.21, -0.19, -0.36, 0.12, -0.47, -0.46, -0.49, 0.00},
-                {-0.38, -0.48, -0.31, 0.34, -0.02, -0.23, -0.37, 0.00},
-                {0.11, 0.02, 0.34, -0.1, -0.45, -0.5, -0.48, 0.00},
-                {-0.24, 0.31, 0.22, 0.04, -0.43, 0.05, 0.08, 0.00},
-                {-0.32, 0.36, 0.31, -0.35, -0.11, -0.27, -0.53, 0.00},
-                {0.1, -0.1, -0.12, 0.13, 0.34, -0.4, -0.22, 0.00},
-                {-0.42, 0.41, -0.41, 0.33, -0.19, -0.37, -0.35, 0.00},
-                {0.49, -0.07, 0.35, 0.41, 0.45, 0.27, 0.24, 0.00},
-                {0.28, 0.41, -0.18, -0.27, 0.13, -0.13, -0.46, 0.00},
-                {0.27, -0.32, -0.36, -0.53, -0.35, 0.22, 0.25, 0.00},
-                {0.09, 0.22, 0.02, -0.09, -0.34, -0.43, 0.35, 0.00},
-                {0.17, -0.08, -0.39, -0.23, -0.11, -0.08, -0.38, 0.00}})
+                {-0.13, -0.15, -0.28, 0.37, -0.45, 0.07, -0.29, 0.0},
+                {-0.09, -0.2, -0.42, 0.43, 0.01, 0.08, 0.45, 0.0},
+                {0.21, -0.19, -0.36, 0.12, -0.47, -0.46, -0.49, 0.0},
+                {-0.38, -0.48, -0.31, 0.34, -0.02, -0.23, -0.37, 0.0},
+                {0.11, 0.02, 0.34, -0.1, -0.45, -0.5, -0.48, 0.0},
+                {-0.24, 0.31, 0.22, 0.04, -0.43, 0.05, 0.08, 0.0},
+                {-0.32, 0.36, 0.31, -0.35, -0.11, -0.27, -0.53, 0.0},
+                {0.1, -0.1, -0.12, 0.13, 0.34, -0.4, -0.22, 0.0},
+                {-0.42, 0.41, -0.41, 0.33, -0.19, -0.37, -0.35, 0.0},
+                {0.49, -0.07, 0.35, 0.41, 0.45, 0.27, 0.24, 0.0},
+                {0.28, 0.41, -0.18, -0.27, 0.13, -0.13, -0.46, 0.0},
+                {0.27, -0.32, -0.36, -0.53, -0.35, 0.22, 0.25, 0.0},
+                {0.09, 0.22, 0.02, -0.09, -0.34, -0.43, 0.35, 0.0},
+                {0.17, -0.08, -0.39, -0.23, -0.11, -0.08, -0.38, 0.0}})
             m_mlp.InitializeWeights(2, {
-                {-0.16, 0.08, 0.61, -0.02, -0.1, 0.28, -0.21, -0.09, -0.16, -0.27, -0.47, -0.12, -0.06, -0.26, 0.00}})
+                {-0.16, 0.08, 0.61, -0.02, -0.1, 0.28, -0.21, -0.09, -0.16, -0.27, -0.47, -0.12, -0.06, -0.26, 0.0}})
 
             m_mlp.Train(learningMode:=enumLearningMode.VectorialBatch)
 
@@ -975,7 +976,7 @@ Namespace NeuralNetMLP
             m_mlp.nbLinesToLearn = 49
             m_mlp.InitializeStruct({7, 14, 1}, addBiasColumn:=True)
             m_mlp.Initialize(learningRate:=0)
-            m_mlp.trainingAlgorithm = TrainingAlgorithmType.AdaDelta
+            m_mlp.trainingAlgorithm = enumTrainingAlgorithm.AdaDelta
             m_mlp.nbIterationsBatch = 60
 
             m_mlp.nbIterations = 60
@@ -983,22 +984,22 @@ Namespace NeuralNetMLP
             m_mlp.SetActivationFunction(enumActivationFunction.HyperbolicTangent, gain:=2)
 
             m_mlp.InitializeWeights(1, {
-                {0.27, 0.33, -0.29, 0.24, 0.31, 0.38, -0.42, 0.00},
-                {-0.12, 0.44, -0.04, -0.01, -0.28, -0.14, 0.05, 0.00},
-                {0.1, -0.03, -0.22, 0.35, -0.22, 0.37, 0.47, 0.00},
-                {0.19, 0.41, 0.29, -0.06, 0.28, -0.41, -0.45, 0.00},
-                {-0.2, -0.34, 0.52, 0.42, 0.25, 0.17, 0.24, 0.00},
-                {0.49, -0.45, -0.14, 0.49, 0.37, -0.35, 0.31, 0.00},
-                {-0.17, -0.13, -0.13, -0.1, -0.3, -0.46, 0.53, 0.00},
-                {-0.09, 0.19, -0.1, 0.24, 0.44, 0.46, -0.18, 0.00},
-                {-0.25, 0.36, 0.1, -0.23, -0.25, -0.25, 0.24, 0.00},
-                {-0.03, -0.2, -0.14, 0.39, 0.12, -0.15, -0.19, 0.00},
-                {0.3, 0.22, 0.04, 0.43, -0.36, -0.49, -0.1, 0.00},
-                {-0.32, -0.19, 0.00, -0.45, 0.07, -0.18, 0.41, 0.00},
-                {0.44, -0.11, -0.33, 0.28, 0.34, 0.51, 0.46, 0.00},
-                {-0.44, -0.13, 0.06, 0.02, -0.26, 0.06, -0.3, 0.00}})
+                {0.27, 0.33, -0.29, 0.24, 0.31, 0.38, -0.42, 0.0},
+                {-0.12, 0.44, -0.04, -0.01, -0.28, -0.14, 0.05, 0.0},
+                {0.1, -0.03, -0.22, 0.35, -0.22, 0.37, 0.47, 0.0},
+                {0.19, 0.41, 0.29, -0.06, 0.28, -0.41, -0.45, 0.0},
+                {-0.2, -0.34, 0.52, 0.42, 0.25, 0.17, 0.24, 0.0},
+                {0.49, -0.45, -0.14, 0.49, 0.37, -0.35, 0.31, 0.0},
+                {-0.17, -0.13, -0.13, -0.1, -0.3, -0.46, 0.53, 0.0},
+                {-0.09, 0.19, -0.1, 0.24, 0.44, 0.46, -0.18, 0.0},
+                {-0.25, 0.36, 0.1, -0.23, -0.25, -0.25, 0.24, 0.0},
+                {-0.03, -0.2, -0.14, 0.39, 0.12, -0.15, -0.19, 0.0},
+                {0.3, 0.22, 0.04, 0.43, -0.36, -0.49, -0.1, 0.0},
+                {-0.32, -0.19, 0.0, -0.45, 0.07, -0.18, 0.41, 0.0},
+                {0.44, -0.11, -0.33, 0.28, 0.34, 0.51, 0.46, 0.0},
+                {-0.44, -0.13, 0.06, 0.02, -0.26, 0.06, -0.3, 0.0}})
             m_mlp.InitializeWeights(2, {
-                {0.37, -0.2, 0.59, 0.43, 0.1, -0.25, 0.36, 0.42, -0.13, -0.6, -0.32, -0.3, -0.58, 0.5, 0.00}})
+                {0.37, -0.2, 0.59, 0.43, 0.1, -0.25, 0.36, 0.42, -0.13, -0.6, -0.32, -0.3, -0.58, 0.5, 0.0}})
 
             m_mlp.Train(learningMode:=enumLearningMode.VectorialBatch)
 

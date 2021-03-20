@@ -262,6 +262,9 @@ Note: To update the packages, you will need to restore this deleted line in the 
 
 # Version history
 
+20/03/2021 V1.36
+- trainingAlgorithm moved in clsMLPGeneric
+
 20/03/2021 V1.35
 - Sunspots tests and matrix size checks fixed
 

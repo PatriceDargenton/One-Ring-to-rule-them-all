@@ -524,12 +524,15 @@ Module modMLPTest
             Optional learningRate! = 0.1!,
             Optional weightAdjustment! = 0.1!,
             Optional gain! = 1,
-            Optional learningMode As enumLearningMode = enumLearningMode.Vectorial)
+            Optional learningMode As enumLearningMode = enumLearningMode.Vectorial,
+            Optional trainingAlgorithm As enumTrainingAlgorithm =
+                enumTrainingAlgorithm.Default)
 
         InitXOR(mlp)
         mlp.Initialize(learningRate, weightAdjustment)
         mlp.nbIterations = nbIterations
         mlp.InitializeStruct(m_neuronCountXOR231, addBiasColumn:=True)
+        mlp.trainingAlgorithm = trainingAlgorithm
         mlp.SetActivationFunction(enumActivationFunction.Sigmoid, gain)
 
         mlp.InitializeWeights(1, {
@@ -538,10 +541,6 @@ Module modMLPTest
             {-0.26, 0.09, 0.1}})
         mlp.InitializeWeights(2, {
             {-0.38, 0.08, -0.2, -0.01}})
-
-        'mlp.printOutput_ = True
-        'mlp.printOutputMatrix = True
-        'mlp.PrintWeights()
 
         mlp.Train(learningMode)
 
@@ -576,12 +575,15 @@ Module modMLPTest
             Optional learningRate! = 0.1!,
             Optional weightAdjustment! = 0.1!,
             Optional gain! = 2,
-            Optional learningMode As enumLearningMode = enumLearningMode.Vectorial)
+            Optional learningMode As enumLearningMode = enumLearningMode.Vectorial,
+            Optional trainingAlgorithm As enumTrainingAlgorithm =
+                enumTrainingAlgorithm.Default)
 
         InitXOR(mlp)
         mlp.Initialize(learningRate, weightAdjustment)
         mlp.nbIterations = nbIterations
         mlp.InitializeStruct(m_neuronCountXOR231, addBiasColumn:=True)
+        mlp.trainingAlgorithm = trainingAlgorithm
         mlp.SetActivationFunction(enumActivationFunction.HyperbolicTangent, gain)
 
         mlp.InitializeWeights(1, {
@@ -590,10 +592,6 @@ Module modMLPTest
             {0.14, -0.12, -0.31}})
         mlp.InitializeWeights(2, {
             {-0.41, 0.27, -0.41, 0.46}})
-
-        'mlp.printOutput_ = True
-        'mlp.printOutputMatrix = True
-        'mlp.PrintWeights()
 
         mlp.Train(learningMode)
 
@@ -704,12 +702,15 @@ Module modMLPTest
             Optional learningRate! = 0.1!,
             Optional weightAdjustment! = 0.1!,
             Optional gain! = 1.0!,
-            Optional learningMode As enumLearningMode = enumLearningMode.Defaut)
+            Optional learningMode As enumLearningMode = enumLearningMode.Defaut,
+            Optional trainingAlgorithm As enumTrainingAlgorithm =
+                enumTrainingAlgorithm.Default)
 
         Init2XOR(mlp)
         mlp.Initialize(learningRate, weightAdjustment)
         mlp.nbIterations = nbIterations
         mlp.InitializeStruct(m_neuronCount2XOR, addBiasColumn:=True)
+        mlp.trainingAlgorithm = trainingAlgorithm
         mlp.SetActivationFunction(
             enumActivationFunction.Sigmoid, gain)
 

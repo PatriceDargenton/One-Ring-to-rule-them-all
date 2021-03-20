@@ -25,6 +25,7 @@ Friend Class clsMLPRProp : Inherits clsVectorizedMLPGeneric
     Public Overrides Sub InitializeStruct(neuronCount%(), addBiasColumn As Boolean)
 
         MyBase.InitializeStruct(neuronCount, addBiasColumn)
+        Me.trainingAlgorithm = enumTrainingAlgorithm.RProp
 
         ' Randomize weights between [0 - 1] instead of [-0.5 - 0.5] ?
         Me.useNguyenWidrowWeightsInitialization = False

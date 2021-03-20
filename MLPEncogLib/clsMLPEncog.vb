@@ -17,11 +17,6 @@ Imports System.Text
 
 Public Class clsMLPEncog : Inherits clsVectorizedMLPGeneric
 
-    ''' <summary>
-    ''' Resilient Backpropagation Learning
-    ''' </summary>
-    Public RBPLAlgo As Boolean = True
-
     Private network As BasicNetwork
     Private trainingSet As IMLDataSet
     Private imlTrain As IMLTrain
@@ -36,6 +31,7 @@ Public Class clsMLPEncog : Inherits clsVectorizedMLPGeneric
     Public Overrides Sub InitializeStruct(neuronCount%(), addBiasColumn As Boolean)
 
         MyBase.InitializeStruct(neuronCount, addBiasColumn)
+        Me.trainingAlgorithm = enumTrainingAlgorithm.RProp
 
         If IsNothing(Me.inputArray) Then Exit Sub
         Dim inputArrayDbl = clsMLPHelper.Convert2DArrayOfSingleToDouble(Me.inputArray)
@@ -53,7 +49,7 @@ Public Class clsMLPEncog : Inherits clsVectorizedMLPGeneric
         If actFnc = enumActivationFunction.HyperbolicTangent Then gain = 2
         center = 0
 
-        If RBPLAlgo Then
+        If Me.trainingAlgorithm = enumTrainingAlgorithm.RProp Then
             Me.weightAdjustment = 0 ' Not used
             Me.learningRate = 0 ' Learning rate is not use with ResilientPropagation:
             ' http://heatonresearch-site.s3-website-us-east-1.amazonaws.com/javadoc/encog-3.3/org/encog/neural/networks/training/propagation/resilient/ResilientPropagation.html
@@ -102,13 +98,13 @@ Public Class clsMLPEncog : Inherits clsVectorizedMLPGeneric
 
         Me.trainingSet = New BasicMLDataSet(Me.inputJaggedDblArray, Me.targetJaggedDblArray)
 
-        If RBPLAlgo Then
-            'maxStep: The maximum that a delta can reach
+        If Me.trainingAlgorithm = enumTrainingAlgorithm.RProp Then
+            ' maxStep: The maximum that a delta can reach
             Me.imlTrain = New ResilientPropagation(Me.network, Me.trainingSet,
-                initialUpdate:=0.1#, maxStep:=50.0#)
+            initialUpdate:=0.1#, maxStep:=50.0#)
         Else
             Me.imlTrain = New Backpropagation(Me.network, Me.trainingSet,
-                Me.learningRate, momentum:=Me.weightAdjustment)
+            Me.learningRate, momentum:=Me.weightAdjustment)
         End If
 
     End Sub

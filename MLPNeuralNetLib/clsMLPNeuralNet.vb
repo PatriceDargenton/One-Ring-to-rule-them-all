@@ -13,9 +13,6 @@ Imports NeuralNetworkNET.APIs.Enums
 Imports NeuralNetworkNET.APIs.Structs
 Imports NeuralNetworkNET.Networks.Cost ' CostFunctionType
 
-' BC40025: Type of this member is not CLS-compliant:
-'Imports NeuralNetworkNET.SupervisedLearning.Algorithms ' TrainingAlgorithmType
-
 Imports System.Text
 
 ' Without GetWeights, SetWeights, functional tests will fails
@@ -33,54 +30,6 @@ Imports System.Text
 ' https://github.com/PatriceDargenton/NeuralNetwork.NET/tree/stable
 
 Public Class clsMLPNeuralNet : Inherits clsVectorizedMLPGeneric
-
-    '#Disable Warning BC40025 ' Type of this member is not CLS-compliant
-    'Public trainingAlgorithm As TrainingAlgorithmType = TrainingAlgorithmType.RMSProp
-    '#Enable Warning BC40025
-    Public Enum TrainingAlgorithmType 'As Integer
-
-        ''' <summary>
-        ''' Undefined
-        ''' </summary>
-        Undefined
-
-        ''' <summary>
-        ''' The plain stochastic gradient descent training algorithm
-        ''' </summary>
-        StochasticGradientDescent
-
-        ''' <summary>
-        ''' A variant of the stochastic gradient descent algorithm with momentum
-        ''' </summary>
-        Momentum
-
-        ''' <summary>
-        ''' The AdaGrad learning method, by John Duchi, Elad Hazan and Yoram Singer, see http://www.jmlr.org/papers/volume12/duchi11a/duchi11a.pdf
-        ''' </summary>
-        AdaGrad
-
-        ''' <summary>
-        ''' The AdaDelta adaptive learning method, by Matthew D. Zeiler, see https://arxiv.org/abs/1212.5701
-        ''' </summary>
-        AdaDelta
-
-        ''' <summary>
-        ''' The Adam learning method, by Diederik P. Kingma and Jimmy Lei Ba, see https://arxiv.org/pdf/1412.6980v8.pdf
-        ''' </summary>
-        Adam
-
-        ''' <summary>
-        ''' The AdaMax learning method, by Diederik P. Kingma and Jimmy Lei Ba, see section 7.1 of https://arxiv.org/pdf/1412.6980v8.pdf
-        ''' </summary>
-        AdaMax
-
-        ''' <summary>
-        ''' The RMSProp learning method, see http://www.cs.toronto.edu/~tijmen/csc321/slides/lecture_slides_lec6.pdf
-        ''' </summary>
-        RMSProp
-
-    End Enum
-    Public trainingAlgorithm As TrainingAlgorithmType = TrainingAlgorithmType.RMSProp
 
     Private network As Interfaces.INeuralNetwork
     Private output2D!(,)
@@ -111,6 +60,7 @@ Public Class clsMLPNeuralNet : Inherits clsVectorizedMLPGeneric
         End If
 
         MyBase.InitializeStruct(neuronCount, addBiasColumn)
+        Me.trainingAlgorithm = enumTrainingAlgorithm.RMSProp
         Me.learningRate = 0
         Me.weightAdjustment = 0
 
@@ -445,29 +395,32 @@ Public Class clsMLPNeuralNet : Inherits clsVectorizedMLPGeneric
     Private Sub TrainNetwork(dataset As Interfaces.Data.ITrainingDataset)
 
         Select Case Me.trainingAlgorithm
-            Case TrainingAlgorithmType.AdaMax
+            Case enumTrainingAlgorithm.AdaMax
                 NetworkManager.TrainNetworkAsync(Me.network, dataset,
                     TrainingAlgorithms.AdaMax(), epochs:=nbIterationsBatch).Wait()
-            Case TrainingAlgorithmType.AdaGrad
+            Case enumTrainingAlgorithm.AdaGrad
                 NetworkManager.TrainNetworkAsync(Me.network, dataset,
                     TrainingAlgorithms.AdaGrad(), epochs:=nbIterationsBatch).Wait()
-            Case TrainingAlgorithmType.Adam
+            Case enumTrainingAlgorithm.Adam
                 NetworkManager.TrainNetworkAsync(Me.network, dataset,
                     TrainingAlgorithms.Adam(), epochs:=nbIterationsBatch).Wait()
-            Case TrainingAlgorithmType.Momentum
+            Case enumTrainingAlgorithm.Momentum
                 NetworkManager.TrainNetworkAsync(Me.network, dataset,
                     TrainingAlgorithms.Momentum(), epochs:=nbIterationsBatch).Wait()
-            Case TrainingAlgorithmType.RMSProp
+            Case enumTrainingAlgorithm.RMSProp
                 NetworkManager.TrainNetworkAsync(Me.network, dataset,
                     TrainingAlgorithms.RMSProp(), epochs:=nbIterationsBatch).Wait()
-            Case TrainingAlgorithmType.AdaDelta
+            Case enumTrainingAlgorithm.AdaDelta
                 NetworkManager.TrainNetworkAsync(Me.network, dataset,
                     TrainingAlgorithms.AdaDelta(), epochs:=nbIterationsBatch).Wait()
-            Case TrainingAlgorithmType.StochasticGradientDescent
+            Case enumTrainingAlgorithm.StochasticGradientDescent
                 NetworkManager.TrainNetworkAsync(Me.network, dataset,
                     TrainingAlgorithms.StochasticGradientDescent(), epochs:=nbIterationsBatch).Wait()
-            Case Else : Throw New NotImplementedException(
-                    "This training algorithm is not available!")
+            Case Else
+                'Throw New NotImplementedException("This training algorithm is not available!")
+                ' Default training algorithm: RMSProp
+                NetworkManager.TrainNetworkAsync(Me.network, dataset,
+                    TrainingAlgorithms.RMSProp(), epochs:=nbIterationsBatch).Wait()
         End Select
 
     End Sub

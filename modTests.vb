@@ -14,7 +14,7 @@ Retry:
         Console.WriteLine("")
         Console.WriteLine("MLP Test, choose an option from the following list:")
         Console.WriteLine("0: Exit")
-        Console.WriteLine("a: Accord MLP MLP")
+        Console.WriteLine("a: Accord MLP")
         Console.WriteLine("c: Classical MLP")
         Console.WriteLine("e: Encog MLP")
         Console.WriteLine("f: TensorFlow.NET MLP")
