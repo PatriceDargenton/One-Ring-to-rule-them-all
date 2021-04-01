@@ -706,21 +706,30 @@ Namespace ClassicMLP
         End Sub
 
         <TestMethod()>
-        Public Sub MLPSunspotSigmoid()
+        Public Sub MLPSunspot1Sigmoid()
 
             ' 90.0% prediction, 73.5% learning with 400 iterations in 120 msec.
 
-            TestMLPSunspotSigmoid(m_mlp, nbIterations:=400, expectedSuccess:=0.735,
+            TestMLPSunspot1Sigmoid(m_mlp, nbIterations:=400, expectedSuccess:=0.735,
                 expectedSuccessPrediction:=0.9, expectedLoss:=0.07)
 
         End Sub
 
         <TestMethod()>
-        Public Sub MLPSunspotTanh()
+        Public Sub MLPSunspot1Tanh()
 
             ' 90.0% prediction, 75% learning with 200 iterations in 60 msec.
 
-            TestMLPSunspotTanh(m_mlp, expectedSuccess:=0.75, expectedSuccessPrediction:=0.9)
+            TestMLPSunspot1Tanh(m_mlp, expectedSuccess:=0.75, expectedSuccessPrediction:=0.9)
+
+        End Sub
+
+        <TestMethod()>
+        Public Sub MLPSunspot2Tanh()
+
+            ' 93.4% prediction, 93.1% learning with 100 iterations in 57 msec.
+
+            TestMLPSunspotTanh2(m_mlp)
 
         End Sub
 

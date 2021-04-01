@@ -1080,30 +1080,31 @@ Namespace EncogMLP
         End Sub
 
         <TestMethod()>
-        Public Sub EncogMLPSunspotSigmoid()
+        Public Sub EncogMLPSunspot1Sigmoid()
 
             ' 90.0% prediction, 95.9% learning with 100 iterations in 5 msec.
 
-            TestMLPSunspotSigmoid(m_mlp, nbIterations:=100, expectedSuccess:=0.959,
+            TestMLPSunspot1Sigmoid(m_mlp, nbIterations:=100, expectedSuccess:=0.959,
                 expectedSuccessPrediction:=0.9, expectedLoss:=0.04)
 
         End Sub
 
         <TestMethod()>
-        Public Sub EncogMLPSunspotTanh()
+        Public Sub EncogMLPSunspot1Tanh()
 
             ' 80.0% prediction, 75% learning with 200 iterations in 9 msec.
 
-            TestMLPSunspotTanh(m_mlp, expectedSuccess:=0.75, expectedSuccessPrediction:=0.8)
+            TestMLPSunspot1Tanh(m_mlp, expectedSuccess:=0.75, expectedSuccessPrediction:=0.8)
 
         End Sub
 
         <TestMethod()>
-        Public Sub EncogMLPSunspotTanh2()
+        Public Sub EncogMLPSunspot2Tanh()
 
-            ' 90.0% prediction, 93.8% learning with 100 iterations in 5 msec.
+            ' 95.2% prediction, 94.8% learning with 400 iterations in 33 msec.
 
-            TestMLPSunspotTanh2(m_mlp)
+            TestMLPSunspotTanh2(m_mlp, nbIterations:=400, expectedPredictionAccuracy:=0.952,
+                expectedLearningAccuracy:=0.948, learningMode:=enumLearningMode.Vectorial)
 
         End Sub
 

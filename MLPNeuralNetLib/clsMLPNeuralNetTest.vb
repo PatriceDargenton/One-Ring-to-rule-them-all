@@ -302,7 +302,7 @@ Namespace NeuralNetMLP
             Init2XOR(m_mlp)
             m_mlp.Initialize(learningRate:=0.0!)
             m_mlp.InitializeStruct(m_neuronCount2XOR, addBiasColumn:=True)
-            m_mlp.trainingAlgorithm = enumTrainingAlgorithm.RMSProp ' AdaMax ?
+            m_mlp.trainingAlgorithm = enumTrainingAlgorithm.RMSProp
             m_mlp.nbIterationsBatch = 100
 
             m_mlp.nbIterations = 10000
@@ -913,11 +913,11 @@ Namespace NeuralNetMLP
         End Sub
 
         <TestMethod()>
-        Public Sub NNMLPSunspotSigmoidBatch100()
+        Public Sub NNMLPSunspot1SigmoidBatch100()
 
             ' 100% prediction, 85.7% learning with 100 iterations in 8 msec.
 
-            InitSunspot(m_mlp)
+            InitSunspot1(m_mlp)
             m_mlp.nbLinesToLearn = 49
             m_mlp.InitializeStruct({7, 14, 1}, addBiasColumn:=True)
             m_mlp.Initialize(learningRate:=0)
@@ -968,11 +968,11 @@ Namespace NeuralNetMLP
         End Sub
 
         <TestMethod()>
-        Public Sub NNMLPSunspotTanhBatch100()
+        Public Sub NNMLPSunspot1TanhBatch100()
 
             ' 100% prediction, 98% learning with 60 iterations in 5 msec.
 
-            InitSunspot(m_mlp)
+            InitSunspot1(m_mlp)
             m_mlp.nbLinesToLearn = 49
             m_mlp.InitializeStruct({7, 14, 1}, addBiasColumn:=True)
             m_mlp.Initialize(learningRate:=0)
@@ -1065,21 +1065,31 @@ Namespace NeuralNetMLP
         End Sub
 
         <TestMethod()>
-        Public Sub NNMLPSunspotSigmoid()
+        Public Sub NNMLPSunspot1Sigmoid()
 
             ' 90.0% prediction, 73.5% learning with 4000 iterations in 300 msec.
 
-            TestMLPSunspotSigmoid(m_mlp, nbIterations:=4000, expectedSuccess:=0.735)
+            TestMLPSunspot1Sigmoid(m_mlp, nbIterations:=4000, expectedSuccess:=0.735)
 
         End Sub
 
         <TestMethod()>
-        Public Sub NNMLPSunspotTanh()
+        Public Sub NNMLPSunspot1Tanh()
 
             ' 90.0% prediction, 93.8% learning with 3000 iterations in 230 msec.
 
-            TestMLPSunspotTanh(m_mlp, nbIterations:=3000, expectedSuccess:=0.938,
+            TestMLPSunspot1Tanh(m_mlp, nbIterations:=3000, expectedSuccess:=0.938,
                 expectedSuccessPrediction:=0.9)
+
+        End Sub
+
+        <TestMethod()>
+        Public Sub NNMLPSunspot2Tanh()
+
+            ' 93.4% prediction, 93% learning with 1000 iterations in 90 msec.
+
+            TestMLPSunspotTanh2(m_mlp, nbIterations:=1000, expectedLearningAccuracy:=0.93,
+                learningMode:=enumLearningMode.VectorialBatch)
 
         End Sub
 

@@ -345,6 +345,7 @@ Friend Class clsMLPRProp : Inherits clsVectorizedMLPGeneric
     Public Overrides Function ShowWeights$()
 
         Dim sb As New StringBuilder
+        sb.AppendLine("nb iterations batch=" & Me.nbIterationsBatch)
         sb.Append(Me.ShowParameters())
 
         For i = 0 To Me.layerCount - 1

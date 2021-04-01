@@ -101,10 +101,10 @@ Public Class clsMLPEncog : Inherits clsVectorizedMLPGeneric
         If Me.trainingAlgorithm = enumTrainingAlgorithm.RProp Then
             ' maxStep: The maximum that a delta can reach
             Me.imlTrain = New ResilientPropagation(Me.network, Me.trainingSet,
-            initialUpdate:=0.1#, maxStep:=50.0#)
+                initialUpdate:=0.1#, maxStep:=50.0#)
         Else
             Me.imlTrain = New Backpropagation(Me.network, Me.trainingSet,
-            Me.learningRate, momentum:=Me.weightAdjustment)
+                Me.learningRate, momentum:=Me.weightAdjustment)
         End If
 
     End Sub

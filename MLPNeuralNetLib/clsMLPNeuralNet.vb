@@ -243,10 +243,8 @@ Public Class clsMLPNeuralNet : Inherits clsVectorizedMLPGeneric
     End Sub
 
     Public Sub ReDimWeights()
-        'If IsNothing(Me.m_weights) OrElse IsNothing(Me.m_biases) Then
         ReDim Me.m_weights(0 To Me.layerCount - 2)
         ReDim Me.m_biases(0 To Me.layerCount - 2)
-        'End If
         For i = 0 To Me.layerCount - 2
             Dim nbBiases = Me.neuronCount(i + 1)
             Dim n = nbBiases * Me.neuronCount(i)
@@ -321,7 +319,7 @@ Public Class clsMLPNeuralNet : Inherits clsVectorizedMLPGeneric
         Me.learningMode = enumLearningMode.Vectorial
         Me.vectorizedLearningMode = True
 
-        If nbIterationsBatch <> Me.m_nbIterationsBatchLast Then
+        If Me.nbIterationsBatch <> Me.m_nbIterationsBatchLast Then
             Me.m_dataset = DatasetLoader.Training2(Me.inputJaggedArray, Me.targetJaggedArray, size:=1)
         End If
 
@@ -397,30 +395,30 @@ Public Class clsMLPNeuralNet : Inherits clsVectorizedMLPGeneric
         Select Case Me.trainingAlgorithm
             Case enumTrainingAlgorithm.AdaMax
                 NetworkManager.TrainNetworkAsync(Me.network, dataset,
-                    TrainingAlgorithms.AdaMax(), epochs:=nbIterationsBatch).Wait()
+                    TrainingAlgorithms.AdaMax(), epochs:=Me.nbIterationsBatch).Wait()
             Case enumTrainingAlgorithm.AdaGrad
                 NetworkManager.TrainNetworkAsync(Me.network, dataset,
-                    TrainingAlgorithms.AdaGrad(), epochs:=nbIterationsBatch).Wait()
+                    TrainingAlgorithms.AdaGrad(), epochs:=Me.nbIterationsBatch).Wait()
             Case enumTrainingAlgorithm.Adam
                 NetworkManager.TrainNetworkAsync(Me.network, dataset,
-                    TrainingAlgorithms.Adam(), epochs:=nbIterationsBatch).Wait()
+                    TrainingAlgorithms.Adam(), epochs:=Me.nbIterationsBatch).Wait()
             Case enumTrainingAlgorithm.Momentum
                 NetworkManager.TrainNetworkAsync(Me.network, dataset,
-                    TrainingAlgorithms.Momentum(), epochs:=nbIterationsBatch).Wait()
+                    TrainingAlgorithms.Momentum(), epochs:=Me.nbIterationsBatch).Wait()
             Case enumTrainingAlgorithm.RMSProp
                 NetworkManager.TrainNetworkAsync(Me.network, dataset,
-                    TrainingAlgorithms.RMSProp(), epochs:=nbIterationsBatch).Wait()
+                    TrainingAlgorithms.RMSProp(), epochs:=Me.nbIterationsBatch).Wait()
             Case enumTrainingAlgorithm.AdaDelta
                 NetworkManager.TrainNetworkAsync(Me.network, dataset,
-                    TrainingAlgorithms.AdaDelta(), epochs:=nbIterationsBatch).Wait()
+                    TrainingAlgorithms.AdaDelta(), epochs:=Me.nbIterationsBatch).Wait()
             Case enumTrainingAlgorithm.StochasticGradientDescent
                 NetworkManager.TrainNetworkAsync(Me.network, dataset,
-                    TrainingAlgorithms.StochasticGradientDescent(), epochs:=nbIterationsBatch).Wait()
+                    TrainingAlgorithms.StochasticGradientDescent(), epochs:=Me.nbIterationsBatch).Wait()
             Case Else
                 'Throw New NotImplementedException("This training algorithm is not available!")
                 ' Default training algorithm: RMSProp
                 NetworkManager.TrainNetworkAsync(Me.network, dataset,
-                    TrainingAlgorithms.RMSProp(), epochs:=nbIterationsBatch).Wait()
+                    TrainingAlgorithms.RMSProp(), epochs:=Me.nbIterationsBatch).Wait()
         End Select
 
     End Sub
@@ -503,7 +501,6 @@ Public Class clsMLPNeuralNet : Inherits clsVectorizedMLPGeneric
     Public Overrides Function ShowWeights$()
 
         Dim sb As New StringBuilder
-        sb.AppendLine("Training algorithm=" & clsMLPHelper.ReadEnumDescription(Me.trainingAlgorithm))
         sb.AppendLine("nb iterations batch=" & Me.nbIterationsBatch)
         sb.Append(Me.ShowParameters())
 

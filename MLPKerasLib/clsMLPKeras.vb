@@ -32,7 +32,7 @@ Public Class clsMLPKeras : Inherits clsVectorizedMLPGeneric
     Private inputNDA, targetNDA As NDarray
     Private model As Model
     Dim weightsNDA As List(Of NDarray)
-    Private Const batch_size% = 2
+    Public Const batch_size% = 2
     Private nbHiddenNeurons%
 
     Public inputJaggedDblArray#()()
@@ -47,6 +47,7 @@ Public Class clsMLPKeras : Inherits clsVectorizedMLPGeneric
         MyBase.InitializeStruct(neuronCount, addBiasColumn)
         Me.nbHiddenNeurons = Me.neuronCount(Me.layerCount - 2) ' lastHidden
         Me.useBias = False 'addBiasColumn
+        Me.nbIterationsBatch = batch_size
 
         If IsNothing(Me.inputArray) Then Exit Sub
         Dim inputArrayDbl = clsMLPHelper.Convert2DArrayOfSingleToDouble(Me.inputArray)
@@ -326,6 +327,7 @@ Public Class clsMLPKeras : Inherits clsVectorizedMLPGeneric
     Public Overrides Function ShowWeights$()
 
         Dim sb As New StringBuilder
+        sb.AppendLine("nb iterations batch=" & Me.nbIterationsBatch)
         sb.Append(Me.ShowParameters())
 
         For i = 0 To Me.layerCount - 1

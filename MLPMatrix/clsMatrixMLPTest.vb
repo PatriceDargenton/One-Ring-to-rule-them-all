@@ -507,11 +507,11 @@ Namespace MatrixMLP
         End Sub
 
         <TestMethod()>
-        Public Sub MatrixMLPSunspotSigmoid()
+        Public Sub MatrixMLPSunspot1Sigmoid()
 
             ' 70% prediction, 87.8% learning with 200 iterations in 120 msec.
 
-            InitSunspot(m_mlp)
+            InitSunspot1(m_mlp)
             m_mlp.windowsSize = 10
             m_mlp.nbLinesToLearn = 49
             m_mlp.InitializeStruct({10, 10, 1}, addBiasColumn:=True)
@@ -572,11 +572,11 @@ Namespace MatrixMLP
         End Sub
 
         <TestMethod()>
-        Public Sub MatrixMLPSunspotTanh()
+        Public Sub MatrixMLPSunspot1Tanh()
 
             ' 70% prediction, 90% learning with 200 iterations in 120 msec.
 
-            InitSunspot(m_mlp)
+            InitSunspot1(m_mlp)
             m_mlp.windowsSize = 10
             m_mlp.nbLinesToLearn = 49
             m_mlp.InitializeStruct({10, 10, 1}, addBiasColumn:=True)
@@ -630,6 +630,66 @@ Namespace MatrixMLP
             '   nbOutputs:=m_mlp.nbLinesToPredict)
             m_mlp.TestAllSamples(m_mlp.inputArrayTest, m_mlp.targetArrayTest, nbOutputs:=1)
             Dim expectedSuccessPrediction# = 0.7
+            Dim successPrediction! = m_mlp.successPC
+            Dim successPredictionRounded# = Math.Round(successPrediction, 3)
+            Assert.AreEqual(True, successPredictionRounded >= expectedSuccessPrediction)
+
+        End Sub
+
+        <TestMethod()>
+        Public Sub MatrixMLPSunspot2Tanh()
+
+            ' 93% prediction, 93.1% learning with 200 iterations in 135 msec.
+
+            InitSunspot2(m_mlp)
+            m_mlp.InitializeStruct({3, 4, 1}, addBiasColumn:=True)
+            m_mlp.Initialize(learningRate:=0.3!)
+
+            m_mlp.nbIterations = 200
+            m_mlp.minimalSuccessTreshold = 0.1
+            m_mlp.SetActivationFunctionOptimized(
+                enumActivationFunctionOptimized.HyperbolicTangent, gain:=0.8!)
+
+            m_mlp.weights_ih = {
+                {0.11, 0.21, 0.37},
+                {0.26, 0.43, -0.41},
+                {0.1, -0.23, -0.4},
+                {0.08, 0.27, -0.4}}
+            m_mlp.weights_ho = {
+                {0.02, 0.43, 0.36, 0.36}}
+            m_mlp.bias_h = {
+                {-0.14},
+                {0.21},
+                {-0.17},
+                {-0.34}}
+            m_mlp.bias_o = {
+                {0.37}}
+
+            m_mlp.Train()
+
+            Const expectedSuccess# = 0.747
+            Const expectedLearningAccuracy# = 0.931
+            Const expectedLoss# = 0.07
+            Const expectedPredictionAccuracy# = 0.93
+            Const expectedSuccessPrediction# = 0.75
+
+            Dim success! = m_mlp.successPC
+            Dim successRounded# = Math.Round(success, 3)
+            Assert.AreEqual(True, successRounded >= expectedSuccess)
+
+            Dim loss# = m_mlp.averageError
+            Dim learningAccuracy = 1 - loss
+            Dim learningAccuracyR = Math.Round(learningAccuracy, 3)
+            Assert.AreEqual(True, learningAccuracyR >= expectedLearningAccuracy)
+            Dim lossRounded# = Math.Round(loss, 3)
+            Assert.AreEqual(True, lossRounded <= expectedLoss)
+
+            m_mlp.TestAllSamples(m_mlp.inputArrayTest, m_mlp.targetArrayTest, nbOutputs:=1)
+            Dim predictionLoss# = m_mlp.averageError
+            Dim predictionAccuracy = 1 - predictionLoss
+            Dim predictionAccuracyR = Math.Round(predictionAccuracy, 3)
+            Assert.AreEqual(True, predictionAccuracyR >= expectedPredictionAccuracy)
+
             Dim successPrediction! = m_mlp.successPC
             Dim successPredictionRounded# = Math.Round(successPrediction, 3)
             Assert.AreEqual(True, successPredictionRounded >= expectedSuccessPrediction)

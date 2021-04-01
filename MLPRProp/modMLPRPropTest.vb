@@ -32,11 +32,9 @@ Module modMLPRPROPTTest
 
         mlp.Initialize(learningRate:=0!)
 
-        Dim nbIterations% = 3000
-
         mlp.printOutput_ = True
         mlp.printOutputMatrix = False
-        mlp.nbIterations = nbIterations
+        mlp.nbIterations = 1000
 
         If nbXor = 1 Then
             mlp.inputArray = m_inputArrayXOR
@@ -58,7 +56,9 @@ Module modMLPRPROPTTest
         End If
 
         'mlp.SetActivationFunction(enumActivationFunction.HyperbolicTangent, gain:=0.2!)
-        mlp.SetActivationFunction(enumActivationFunction.Sigmoid, gain:=0.2!)
+        'mlp.SetActivationFunction(enumActivationFunction.Sigmoid, gain:=0.2!)
+        mlp.SetActivationFunction(enumActivationFunction.Sigmoid, gain:=0.7!)
+        mlp.nbIterationsBatch = 10
 
         mlp.Randomize()
         'mlp.Randomize(minValue:=-10, maxValue:=10)
@@ -86,18 +86,6 @@ Namespace RPropMLP
     Public Class MultiLayerPerceptronTest
 
         Private m_mlp As New clsMLPRProp
-
-        ' ToDo
-        ' Weights are quite the same as MLP Classic, but not exactly:
-        'Private m_mlp As New NetworkOOP.MultilayerPerceptron ' 15 success, 15 fails
-        'Private m_mlp As New clsMLPAccord ' 14 success, 16 fails
-        'Private m_mlp As New clsMLPEncog  ' 7 success, 23 fails
-        'Private m_mlp As New clsMLPTensorFlow ' 1 success, 25 fails
-
-        ' Weights are not stored in the same way:
-        'Private m_mlp As New MatrixMLP.MultiLayerPerceptron ' 24/24 fails
-        'Private m_mlp As New VectorizedMatrixMLP.clsVectorizedMatrixMLP ' 24/24 fails
-        'Private m_mlp As New clsMLPTensor ' 24/24 fails
 
         <TestInitialize()>
         Public Sub Init()
@@ -158,39 +146,6 @@ Namespace RPropMLP
 
         End Sub
 
-
-        '<TestMethod()>
-        Public Sub RPropMLP1XORTanH()
-
-            InitXOR()
-            m_mlp.Initialize(learningRate:=0.1!, weightAdjustment:=0.1!)
-
-            m_mlp.nbIterations = 400
-            m_mlp.SetActivationFunction(enumActivationFunction.HyperbolicTangent, gain:=0.9)
-
-            m_mlp.InitializeWeights(1, {
-                {0.07, 0.79, 0.94},
-                {0.33, 0.33, 0.93}})
-            m_mlp.InitializeWeights(2, {
-                {0.63, 0.79, 0.69}})
-
-            m_mlp.Train()
-
-            Dim expectedOutput = m_targetArrayXOR
-            Dim expectedMatrix As Matrix = expectedOutput ' Single(,) -> Matrix
-
-            Dim sOutput = m_mlp.output.ToStringWithFormat(dec:="0.0")
-
-            Dim sExpectedOutput = expectedMatrix.ToStringWithFormat(dec:="0.0")
-            Assert.AreEqual(sExpectedOutput, sOutput)
-
-            Const expectedLoss# = 0.04
-            Dim loss# = m_mlp.averageError
-            Dim lossRounded# = Math.Round(loss, 2)
-            Assert.AreEqual(True, lossRounded <= expectedLoss)
-
-        End Sub
-
         <TestMethod()>
         Public Sub RPropMLP2XORSigmoid()
 
@@ -206,14 +161,91 @@ Namespace RPropMLP
         End Sub
 
         '<TestMethod()>
-        Public Sub RPropMLP3XORSigmoidStdr()
+        'Public Sub RPropMLP3XORSigmoidStdr()
 
-            TestMLP3XORSigmoid(m_mlp, nbIterations:=10000)
+        '    TestMLP3XORSigmoid(m_mlp, learningMode:=enumLearningMode.VectorialBatch,
+        '        nbIterations:=20000)
+
+        'End Sub
+
+        <TestMethod()>
+        Public Sub RPropMLP3XORSigmoid() ' 77 msec
+
+            Init3XOR()
+            m_mlp.Initialize(learningRate:=0)
+
+            m_mlp.nbIterationsBatch = 13
+            m_mlp.nbIterations = 400
+            m_mlp.SetActivationFunction(enumActivationFunction.Sigmoid, gain:=0.7!)
+
+            m_mlp.InitializeWeights(1, {
+                {0.23, -0.4, -0.08, 0.15, 0.46, -0.11, -0.46},
+                {0.39, 0.42, -0.36, 0.02, 0.13, 0.36, -0.34},
+                {0.36, -0.2, 0.13, -0.22, -0.22, 0.26, 0.14},
+                {-0.27, -0.03, -0.4, 0.43, 0.06, -0.28, 0.14},
+                {-0.21, -0.08, 0.42, -0.46, 0.31, -0.35, 0.42},
+                {0.02, -0.17, -0.49, 0.45, 0.02, 0.34, -0.03}})
+            m_mlp.InitializeWeights(2, {
+                {0.27, -0.19, 0.08, -0.18, 0.12, -0.06, -0.38},
+                {0.48, -0.3, 0.17, -0.04, -0.24, 0.21, 0.13},
+                {-0.18, 0.21, -0.09, -0.33, -0.1, 0.09, -0.28}})
+
+            m_mlp.Train(learningMode:=enumLearningMode.VectorialBatch)
+
+            Dim sOutput = m_mlp.output.ToStringWithFormat(dec:="0.0")
+
+            Dim expectedOutput = m_targetArray3XOR
+            Dim expectedMatrix As Matrix = expectedOutput ' Single(,) -> Matrix
+            Dim sExpectedOutput = expectedMatrix.ToStringWithFormat(dec:="0.0")
+            Assert.AreEqual(sExpectedOutput, sOutput)
+
+            Const expectedLoss# = 0.02
+            Dim loss# = m_mlp.averageError
+            Dim lossRounded# = Math.Round(loss, 2)
+            Assert.AreEqual(True, lossRounded <= expectedLoss)
 
         End Sub
 
         <TestMethod()>
-        Public Sub RPropMLP3XORSigmoid()
+        Public Sub RPropMLP3XORSigmoid2() ' 210 msec
+
+            Init3XOR()
+            m_mlp.Initialize(learningRate:=0)
+
+            m_mlp.nbIterationsBatch = 10
+            m_mlp.nbIterations = 900
+            m_mlp.SetActivationFunction(enumActivationFunction.Sigmoid, gain:=0.5!)
+
+            m_mlp.InitializeWeights(1, {
+                {-0.15, 0.09, 0.33, 0.04, 0.29, 0.31, -0.36},
+                {-0.25, -0.03, 0.46, -0.27, -0.37, 0.37, -0.06},
+                {0.17, -0.16, -0.06, -0.02, 0.07, -0.3, 0.1},
+                {0.17, 0.13, 0.43, -0.13, -0.12, 0.25, -0.5},
+                {0.37, 0.39, 0.5, 0.2, -0.06, 0.3, -0.17},
+                {-0.1, -0.45, -0.14, 0.49, 0.5, -0.28, -0.22}})
+            m_mlp.InitializeWeights(2, {
+                {-0.12, 0.11, 0.24, -0.05, -0.4, -0.22, 0.37},
+                {-0.33, -0.35, 0.38, -0.35, -0.35, -0.2, 0.18},
+                {0.46, 0.4, -0.33, -0.08, -0.44, -0.36, -0.12}})
+
+            m_mlp.Train(learningMode:=enumLearningMode.VectorialBatch)
+
+            Dim sOutput = m_mlp.output.ToStringWithFormat(dec:="0.0")
+
+            Dim expectedOutput = m_targetArray3XOR
+            Dim expectedMatrix As Matrix = expectedOutput ' Single(,) -> Matrix
+            Dim sExpectedOutput = expectedMatrix.ToStringWithFormat(dec:="0.0")
+            Assert.AreEqual(sExpectedOutput, sOutput)
+
+            Const expectedLoss# = 0.01
+            Dim loss# = m_mlp.averageError
+            Dim lossRounded# = Math.Round(loss, 2)
+            Assert.AreEqual(True, lossRounded <= expectedLoss)
+
+        End Sub
+
+        <TestMethod()>
+        Public Sub RPropMLP3XORSigmoid3() ' 300 msec
 
             Init3XOR()
             m_mlp.Initialize(learningRate:=0)
@@ -248,39 +280,39 @@ Namespace RPropMLP
 
         End Sub
 
+
+
         <TestMethod()>
-        Public Sub RPropMLP3XORTanhStdr()
+        Public Sub RPropMLP3XORTanhStdr() ' 2.1 sec
 
             TestMLP3XORTanh(m_mlp, nbIterations:=8000, gain:=0.1)
 
         End Sub
 
         <TestMethod()>
-        Public Sub RPropMLP3XORTanh()
+        Public Sub RPropMLP3XORTanh() ' 770 msec
 
             Init3XOR()
-            m_mlp.InitializeStruct(m_neuronCount3XOR673, addBiasColumn:=True)
+            m_mlp.InitializeStruct(m_neuronCount3XOR, addBiasColumn:=True)
 
             m_mlp.Initialize(learningRate:=0)
-
-            m_mlp.nbIterations = 4000
+            m_mlp.nbIterationsBatch = 10
+            m_mlp.nbIterations = 3200
             m_mlp.SetActivationFunction(enumActivationFunction.HyperbolicTangent, gain:=0.1!)
 
             m_mlp.InitializeWeights(1, {
-                {7.92, 7.42, 5.91, -7.47, -8.62, 2.21, 6.11},
-                {4.89, -7.41, -6.78, 5.16, 7.24, -2.04, -0.77},
-                {4.08, 3.4, -1.62, 6.51, 7.11, 0.36, 3.15},
-                {9.35, 4.58, -4.86, -0.76, -5.03, -3.15, -6.04},
-                {7.47, -1.99, 4.5, 9.02, -8.14, 5.59, -1.82},
-                {5.56, 7.46, -7.2, -6.04, -5.75, -1.96, 7.38},
-                {-5.01, 8.25, -4.68, 4.37, 4.79, -7.37, 7.03}})
+                {0.39, -0.41, -0.4, -0.49, -0.25, 0.07, 0.49},
+                {-0.12, -0.3, 0.17, 0.1, -0.33, 0.28, -0.29},
+                {0.38, 0.25, 0.3, 0.01, -0.38, 0.24, 0.46},
+                {-0.26, 0.35, 0.22, 0.28, -0.13, 0.26, 0.27},
+                {-0.05, 0.03, -0.04, -0.21, -0.15, 0.25, 0.28},
+                {-0.17, -0.29, -0.11, -0.32, -0.39, -0.47, -0.05}})
             m_mlp.InitializeWeights(2, {
-                {-2.94, -0.38, 4.42, 5.67, 5.32, 7.96, 8.57, -7.16},
-                {0.77, 3.29, 6.41, -4.64, 2.15, 7.42, 4.58, -1.27},
-                {6.14, 5.38, 2.37, -8.95, 8.52, 5.93, -4.42, 2.55}})
+                {0.18, -0.44, 0.34, 0.08, -0.36, -0.28, -0.36},
+                {0.5, 0.43, 0.35, -0.25, -0.21, -0.03, -0.3},
+                {-0.28, 0.11, 0.21, -0.28, -0.39, 0.14, -0.18}})
 
-            'm_mlp.TrainVector() ' Does not work fine
-            m_mlp.Train()
+            m_mlp.Train(learningMode:=enumLearningMode.VectorialBatch)
 
             Dim sOutput = m_mlp.output.ToStringWithFormat(dec:="0.0")
 
@@ -879,40 +911,51 @@ Namespace RPropMLP
         End Sub
 
         <TestMethod()>
-        Public Sub RPropMLPSunspotSigmoid()
+        Public Sub RPropMLPSunspot1Sigmoid()
 
             ' 90.0% prediction, 70.8% learning with 200 iterations in 45 msec.
 
-            TestMLPSunspotSigmoid(m_mlp, learningMode:=enumLearningMode.Vectorial)
+            TestMLPSunspot1Sigmoid(m_mlp, learningMode:=enumLearningMode.Vectorial)
 
         End Sub
 
         '<TestMethod()>
-        'Public Sub RPropMLPSunspotSigmoidMultiThread()
+        'Public Sub RPropMLPSunspot1SigmoidMultiThread()
 
         '    ' 90.0% prediction, 70.8% learning with 200 iterations in 45 msec.
         '    ' With 49 samples, works only using ThreadCount = 1: it does not work yet!
         '    m_mlp.multiThread = True
-        '    TestMLPSunspotSigmoid(m_mlp, learningMode:=enumLearningMode.Vectorial)
+        '    TestMLPSunspot1Sigmoid(m_mlp, learningMode:=enumLearningMode.Vectorial)
 
         'End Sub
 
         <TestMethod()>
-        Public Sub RPropMLPSunspotTanh()
+        Public Sub RPropMLPSunspot1Tanh()
 
             ' 100.0% prediction, 70.8% learning with 200 iterations in 45 msec.
 
-            TestMLPSunspotTanh(m_mlp, learningMode:=enumLearningMode.Vectorial)
+            TestMLPSunspot1Tanh(m_mlp, learningMode:=enumLearningMode.Vectorial)
 
         End Sub
 
         <TestMethod()>
-        Public Sub RPropMLPSunspotTanhStdrMultiThread()
+        Public Sub RPropMLPSunspot1TanhStdrMultiThread()
 
             ' 100.0% prediction, 70.8% learning with 200 iterations in 45 msec.
 
             m_mlp.multiThread = True ' Ok with 48 samples, but not with 49 samples!
-            TestMLPSunspotTanh(m_mlp, learningMode:=enumLearningMode.Vectorial)
+            TestMLPSunspot1Tanh(m_mlp, learningMode:=enumLearningMode.Vectorial)
+
+        End Sub
+
+        <TestMethod()>
+        Public Sub RPropMLPSunspot2Tanh()
+
+            ' 94.5% prediction, 93.6% learning with 500 iterations in 233 msec.
+
+            TestMLPSunspotTanh2(m_mlp, nbIterations:=500, expectedLearningAccuracy:=0.936,
+                expectedSuccessPrediction:=0.86,
+                learningMode:=enumLearningMode.VectorialBatch)
 
         End Sub
 

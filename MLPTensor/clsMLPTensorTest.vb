@@ -1004,7 +1004,7 @@ Namespace TensorMLP
         End Sub
 
         <TestMethod()>
-        Public Sub TensorMLPSunspotSigmoid()
+        Public Sub TensorMLPSunspot1Sigmoid()
 
             ' 90.0% prediction, 75.5% learning with 500 iterations in 2.3 sec.
 
@@ -1118,6 +1118,87 @@ Namespace TensorMLP
             '   nbOutputs:=m_mlp.nbLinesToPredict)
             m_mlp.TestAllSamples(m_mlp.inputArrayTest, m_mlp.targetArrayTest, nbOutputs:=1)
             Dim expectedSuccessPrediction# = 0.9
+            Dim successPrediction! = m_mlp.successPC
+            Dim successPredictionRounded# = Math.Round(successPrediction, 3)
+            Assert.AreEqual(True, successPredictionRounded >= expectedSuccessPrediction)
+
+        End Sub
+
+        <TestMethod()>
+        Public Sub TensorMLPSunspot2Sigmoid()
+
+            ' 92.6% prediction, 93% learning with 300 iterations in 1.1 sec.
+
+            'InitSunspot2(m_mlp)
+            m_mlp.seriesArray = m_sunspotArray
+            m_mlp.windowsSize = 3
+            m_mlp.nbLinesToLearn = 95
+            m_mlp.nbLinesToPredict = 100
+            m_mlp.SetActivationFunctionOptimized(
+                enumActivationFunctionOptimized.Sigmoid, gain:=1)
+            m_mlp.InitializeStruct({3, 3, 1}, addBiasColumn:=True)
+            m_mlp.Initialize(learningRate:=0.2!, weightAdjustment:=0.2!)
+
+            m_mlp.nbIterations = 300
+            m_mlp.minimalSuccessTreshold = 0.1
+
+            m_mlp.InitializeWeights(1, {
+                {-0.45, 0.39, -0.29, 0.24},
+                {-0.48, 0.13, 0.01, -0.45},
+                {-0.04, -0.37, 0.38, -0.2}})
+            m_mlp.InitializeWeights(2, {
+                {0.22},
+                {-0.26},
+                {-0.08},
+                {-0.43}})
+
+            m_mlp.WeightInitLayerLinear(1, {
+                {-0.2, -0.64, -1.84, -0.74, -0.6, -0.14, -0.48},
+                {-0.46, -0.8, -0.5, -0.06, -0.08, -2.0, -1.6},
+                {-1.5, -0.12, -0.5, -1.12, -1.54, -1.16, -1.46}})
+            m_mlp.WeightInitLayerLinear(2, {
+                {-0.24, -1.9, -1.56, -0.82, -0.52, -0.76, -0.58},
+                {-0.4, -0.6, -0.4, -1.18, -1.92, -1.82, -0.08},
+                {-1.54, -0.34, -0.42, -1.64, -1.76, -1.76, -1.12},
+                {-1.72, -1.46, -0.68, -0.9, -1.92, -1.48, -0.24},
+                {-0.12, -0.92, -1.44, -2.0, 0.00, -0.38, -1.96},
+                {-0.74, -0.3, -1.92, -0.08, -1.36, -1.88, -0.06},
+                {-0.2, -0.1, -0.88, -0.16, -0.18, -1.52, -1.96}})
+            m_mlp.WeightInitLayerLinear(3, {
+                {-1.78},
+                {-0.08},
+                {-1.48},
+                {-1.76},
+                {-1.4},
+                {-0.34},
+                {-0.52}})
+            m_mlp.InitializeGradient()
+
+            m_mlp.Train()
+
+            Const expectedSuccess# = 0.768
+            Const expectedLearningAccuracy# = 0.93
+            Const expectedLoss# = 0.07
+            Const expectedPredictionAccuracy# = 0.926
+            Const expectedSuccessPrediction# = 0.72
+
+            Dim success! = m_mlp.successPC
+            Dim successRounded# = Math.Round(success, 3)
+            Assert.AreEqual(True, successRounded >= expectedSuccess)
+
+            Dim loss# = m_mlp.averageError
+            Dim learningAccuracy = 1 - loss
+            Dim learningAccuracyR = Math.Round(learningAccuracy, 3)
+            Assert.AreEqual(True, learningAccuracyR >= expectedLearningAccuracy)
+            Dim lossRounded# = Math.Round(loss, 3)
+            Assert.AreEqual(True, lossRounded <= expectedLoss)
+
+            m_mlp.TestAllSamples(m_mlp.inputArrayTest, m_mlp.targetArrayTest, nbOutputs:=1)
+            Dim predictionLoss# = m_mlp.averageError
+            Dim predictionAccuracy = 1 - predictionLoss
+            Dim predictionAccuracyR = Math.Round(predictionAccuracy, 3)
+            Assert.AreEqual(True, predictionAccuracyR >= expectedPredictionAccuracy)
+
             Dim successPrediction! = m_mlp.successPC
             Dim successPredictionRounded# = Math.Round(successPrediction, 3)
             Assert.AreEqual(True, successPredictionRounded >= expectedSuccessPrediction)

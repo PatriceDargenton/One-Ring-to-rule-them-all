@@ -367,21 +367,30 @@ Namespace AccordMLP
         End Sub
 
         <TestMethod()>
-        Public Sub AccordMLPSunspotSigmoid()
+        Public Sub AccordMLPSunspot1Sigmoid()
 
             ' 90.0% prediction, 73.5% learning with 500 iterations in 40 msec.
 
-            TestMLPSunspotSigmoid(m_mlp, nbIterations:=500, expectedSuccess:=0.735,
+            TestMLPSunspot1Sigmoid(m_mlp, nbIterations:=500, expectedSuccess:=0.735,
                 expectedSuccessPrediction:=0.9, expectedLoss:=0.07)
 
         End Sub
 
         <TestMethod()>
-        Public Sub AccordMLPSunspotTanh()
+        Public Sub AccordMLPSunspot1Tanh()
 
             ' 90.0% prediction, 75% learning with 200 iterations in 15 msec.
 
-            TestMLPSunspotTanh(m_mlp, expectedSuccess:=0.75, expectedSuccessPrediction:=0.9)
+            TestMLPSunspot1Tanh(m_mlp, expectedSuccess:=0.75, expectedSuccessPrediction:=0.9)
+
+        End Sub
+
+        <TestMethod()>
+        Public Sub AccordMLPSunspot2Tanh()
+
+            ' 93.4% prediction, 93.1% learning with 100 iterations in 9 msec.
+
+            TestMLPSunspotTanh2(m_mlp, learningMode:=enumLearningMode.Vectorial)
 
         End Sub
 

@@ -90,7 +90,7 @@ Public Module modFctAct
 
         ''' <summary>
         ''' Specific code and optimized (use only specific code with only optimized activation function)
-        ''' (ex.: MLPTensor)
+        ''' (ex.: MLPTensor, MLPRProp)
         ''' </summary>
         SpecificCodeOptimized = 3
 
@@ -114,7 +114,7 @@ Public Module modFctAct
 
         ''' <summary>
         ''' Library (can use only optimized activation function proposed in the library)
-        ''' (ex.: MLPAccord, MLPKeras, MLPTensorFlow)
+        ''' (ex.: MLPAccord, MLPKeras, MLPTensorFlow, MLPNeuralNet)
         ''' </summary>
         LibraryOptimized = 7
 

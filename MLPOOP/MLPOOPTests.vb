@@ -388,7 +388,16 @@ Namespace OOPMLP
         End Sub
 
         <TestMethod()>
-        Public Sub MLPOOPIrisFlowerLogical()
+        Public Sub MLPOOPIrisFlowerLogicalSinus()
+
+            ' 97.8% prediction, 93.9% learning with 200 iterations in 410 msec.
+
+            TestMLPIrisFlowerLogicalSinus(m_mlp)
+
+        End Sub
+
+        <TestMethod()>
+        Public Sub MLPOOPIrisFlowerLogicalTanh()
 
             ' 97.8% prediction, 98.9% learning with 1200 iterations in 3.7 sec.
 
@@ -413,27 +422,38 @@ Namespace OOPMLP
         End Sub
 
         <TestMethod()>
-        Public Sub MLPOOPSunspotSigmoid()
+        Public Sub MLPOOPSunspot1Sigmoid()
 
             ' OOP activation function: before Initialize()
             'm_mlp.ActivationFunction = New Sigmoid(alpha:=1.0#)
 
             ' 90.0% prediction, 73.5% learning with 400 iterations in 220 msec.
 
-            TestMLPSunspotSigmoid(m_mlp, nbIterations:=400, expectedSuccess:=0.735,
+            TestMLPSunspot1Sigmoid(m_mlp, nbIterations:=400, expectedSuccess:=0.735,
                 expectedSuccessPrediction:=0.9, expectedLoss:=0.07)
 
         End Sub
 
         <TestMethod()>
-        Public Sub MLPOOPSunspotTanh()
+        Public Sub MLPOOPSunspot1Tanh()
 
             ' OOP activation function: before Initialize()
             'm_mlp.ActivationFunction = New HyperbolicTangent(alpha:=1.0#)
 
             ' 90.0% prediction, 75% learning with 200 iterations in 105 msec.
 
-            TestMLPSunspotTanh(m_mlp, expectedSuccess:=0.75, expectedSuccessPrediction:=0.9)
+            TestMLPSunspot1Tanh(m_mlp, expectedSuccess:=0.75, expectedSuccessPrediction:=0.9)
+
+        End Sub
+
+        <TestMethod()>
+        Public Sub MLPOOPSunspot2Tanh()
+
+            ' 92.8% prediction, 91.6% learning with 200 iterations in 210 msec.
+
+            TestMLPSunspotTanh2(m_mlp, nbIterations:=200, expectedSuccess:=0.695,
+                expectedLearningAccuracy:=0.916, expectedLoss:=0.084,
+                expectedPredictionAccuracy:=0.928, expectedSuccessPrediction:=0.75)
 
         End Sub
 

@@ -262,6 +262,10 @@ Note: To update the packages, you will need to restore this deleted line in the 
 
 # Version history
 
+01/04/2021 V1.37
+- [MLPComparison.xls](MLPComparison.xls) updated
+- New Sunspots test added
+
 20/03/2021 V1.36
 - trainingAlgorithm moved in clsMLPGeneric
 
