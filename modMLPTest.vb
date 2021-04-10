@@ -319,44 +319,6 @@ Module modMLPTest
 
     End Sub
 
-    'Public Sub TestMLP1XORWithoutBias231b(mlp As clsMLPGeneric,
-    '    Optional nbIterations% = 60000,
-    '    Optional expectedLoss# = 0.03#,
-    '    Optional learningRate! = 0.09!,
-    '    Optional weightAdjustment! = 0.05!,
-    '    Optional gain! = 1,
-    '    Optional center! = 2.2!)
-
-    '    InitXOR(mlp)
-    '    mlp.Initialize(learningRate, weightAdjustment)
-    '    mlp.InitializeStruct(m_neuronCountXOR, addBiasColumn:=False)
-
-    '    mlp.nbIterations = nbIterations
-    '    mlp.SetActivationFunction(enumActivationFunction.Sigmoid, gain, center)
-
-    '    mlp.InitializeWeights(1, {
-    '        {0.66, 0.53},
-    '        {0.65, 0.69},
-    '        {0.82, 0.56}})
-    '    mlp.InitializeWeights(2, {
-    '        {0.62, 0.54, 0.5}})
-
-    '    mlp.Train()
-
-    '    Dim expectedOutput = m_targetArrayXOR
-    '    Dim expectedMatrix As Matrix = expectedOutput ' Single(,) -> Matrix
-
-    '    Dim sOutput = mlp.output.ToStringWithFormat(dec:="0.0")
-
-    '    Dim sExpectedOutput = expectedMatrix.ToStringWithFormat(dec:="0.0")
-    '    Assert.AreEqual(sExpectedOutput, sOutput)
-
-    '    Dim loss# = mlp.averageError
-    '    Dim lossRounded# = Math.Round(loss, 2)
-    '    Assert.AreEqual(True, lossRounded <= expectedLoss)
-
-    'End Sub
-
     Public Sub TestMLP1XORELU(mlp As clsMLPGeneric,
             Optional nbIterations% = 600,
             Optional expectedLoss# = 0.01#,
@@ -881,8 +843,7 @@ Module modMLPTest
         mlp.Initialize(learningRate, weightAdjustment)
         mlp.nbIterations = nbIterations
         mlp.InitializeStruct(m_neuronCount3XOR, addBiasColumn:=True)
-        mlp.SetActivationFunction(
-            enumActivationFunction.Sigmoid, gain)
+        mlp.SetActivationFunction(enumActivationFunction.Sigmoid, gain)
 
         mlp.InitializeWeights(1, {
             {-0.45, -0.45, -0.17, -0.29, -0.03, -0.19, 0.58},
@@ -896,6 +857,47 @@ Module modMLPTest
             {-0.14, 0.31, -0.49, -0.46, 0.25, 0.32, -0.4},
             {-0.6, 0.43, -0.06, -0.03, -0.18, 0.5, -0.24},
             {-0.17, -0.53, -0.11, -0.55, 0.13, -0.4, 0.29}})
+
+        mlp.Train(learningMode)
+
+        Dim expectedOutput = m_targetArray3XOR
+
+        Dim sOutput$ = mlp.output.ToStringWithFormat(dec:="0.0")
+        Dim expectedMatrix As Matrix = expectedOutput ' Single(,) -> Matrix
+        Dim sExpectedOutput = expectedMatrix.ToStringWithFormat(dec:="0.0")
+        Assert.AreEqual(sExpectedOutput, sOutput)
+
+        Dim loss# = mlp.averageError
+        Dim lossRounded# = Math.Round(loss, 2)
+        Assert.AreEqual(True, lossRounded <= expectedLoss)
+
+    End Sub
+
+    Public Sub TestMLP3XORSigmoid2(mlp As clsMLPGeneric,
+            Optional nbIterations% = 600,
+            Optional expectedLoss# = 0.03#,
+            Optional learningRate! = 0.2!,
+            Optional weightAdjustment! = 0.2!,
+            Optional gain! = 1,
+            Optional learningMode As enumLearningMode = enumLearningMode.Defaut)
+
+        Init3XOR(mlp)
+        mlp.Initialize(learningRate, weightAdjustment)
+        mlp.nbIterations = nbIterations
+        mlp.InitializeStruct(m_neuronCount3XOR, addBiasColumn:=True)
+        mlp.SetActivationFunction(enumActivationFunction.Sigmoid, gain)
+
+        mlp.InitializeWeights(1, {
+            {0.19, 0.16, 0.11, -0.16, 0.2, 0.25, -0.06},
+            {0.03, -0.04, -0.45, -0.28, -0.26, -0.47, -0.47},
+            {-0.15, 0.14, -0.08, 0.3, 0.07, 0.33, -0.08},
+            {0.29, -0.15, -0.28, 0.08, 0.42, 0.13, -0.42},
+            {-0.22, -0.28, -0.04, -0.23, 0.14, 0.36, -0.03},
+            {-0.46, -0.02, 0.12, -0.09, 0.36, 0.04, -0.19}})
+        mlp.InitializeWeights(2, {
+            {0.45, -0.1, 0.29, 0.4, 0.44, 0.36, -0.5},
+            {0.5, -0.25, -0.3, 0.03, 0.3, -0.32, 0.27},
+            {-0.05, -0.32, -0.23, 0.04, 0.47, -0.31, 0.09}})
 
         mlp.Train(learningMode)
 
@@ -939,6 +941,172 @@ Module modMLPTest
             {0.77, 0.49, -0.99, 0.03, -0.09, -0.61, -0.47, 0.09},
             {-0.57, 0.32, 0.26, -0.47, -0.22, -0.18, 0.17, -0.11},
             {0.68, -0.33, 0.79, 0.65, -0.01, 0.7, -0.18, -0.71}})
+
+        mlp.Train(learningMode)
+
+        Dim expectedOutput = m_targetArray3XOR
+
+        Dim sOutput$ = mlp.output.ToStringWithFormat(dec:="0.0")
+        Dim expectedMatrix As Matrix = expectedOutput ' Single(,) -> Matrix
+        Dim sExpectedOutput = expectedMatrix.ToStringWithFormat(dec:="0.0")
+        Assert.AreEqual(sExpectedOutput, sOutput)
+
+        Dim loss# = mlp.averageError
+        Dim lossRounded# = Math.Round(loss, 2)
+        Assert.AreEqual(True, lossRounded <= expectedLoss)
+
+    End Sub
+
+    Public Sub TestMLP3XORTanh2(mlp As clsMLPGeneric,
+            Optional nbIterations% = 1700,
+            Optional expectedLoss# = 0.02#,
+            Optional learningRate! = 0.2!,
+            Optional weightAdjustment! = 0.05!,
+            Optional gain! = 0.2!,
+            Optional learningMode As enumLearningMode = enumLearningMode.Defaut)
+
+        Init3XOR(mlp)
+        mlp.Initialize(learningRate, weightAdjustment)
+        mlp.nbIterations = nbIterations
+        mlp.InitializeStruct(m_neuronCount3XOR, addBiasColumn:=True)
+        mlp.SetActivationFunction(
+            enumActivationFunction.HyperbolicTangent, gain)
+
+        mlp.InitializeWeights(1, {
+            {0.89, 4.58, -4.45, 2.06, 2.27, 9.88, -3.54},
+            {7.13, -2.0, -4.49, 1.85, 1.15, 7.36, -1.34},
+            {-5.21, -6.99, -8.11, -6.19, 8.36, 4.09, -0.82},
+            {7.52, -5.66, -3.38, -7.76, -4.6, 0.26, 5.3},
+            {-4.54, -1.19, 3.66, 1.97, -7.85, 9.82, -3.4},
+            {-0.86, 9.62, -8.06, -9.22, 9.43, 3.04, -6.54}})
+        mlp.InitializeWeights(2, {
+            {-5.2, 9.2, -4.82, 5.79, 0.12, -4.73, -3.79},
+            {-0.91, 3.61, -0.6, 4.63, -2.67, -8.18, -4.84},
+            {-6.79, -4.89, -4.11, -1.08, 9.92, 9.2, -4.15}})
+
+        mlp.Train(learningMode)
+
+        Dim expectedOutput = m_targetArray3XOR
+
+        Dim sOutput$ = mlp.output.ToStringWithFormat(dec:="0.0")
+        Dim expectedMatrix As Matrix = expectedOutput ' Single(,) -> Matrix
+        Dim sExpectedOutput = expectedMatrix.ToStringWithFormat(dec:="0.0")
+        Assert.AreEqual(sExpectedOutput, sOutput)
+
+        Dim loss# = mlp.averageError
+        Dim lossRounded# = Math.Round(loss, 2)
+        Assert.AreEqual(True, lossRounded <= expectedLoss)
+
+    End Sub
+
+    Public Sub TestMLP3XORGaussian(mlp As clsMLPGeneric,
+            Optional nbIterations% = 400,
+            Optional expectedLoss# = 0#,
+            Optional learningRate! = 0.15!,
+            Optional weightAdjustment! = 0.25!,
+            Optional gain! = 0.5!,
+            Optional center! = 0.3!,
+            Optional learningMode As enumLearningMode = enumLearningMode.Defaut)
+
+        Init3XOR(mlp)
+        mlp.Initialize(learningRate, weightAdjustment)
+        mlp.nbIterations = nbIterations
+        mlp.InitializeStruct(m_neuronCount3XOR, addBiasColumn:=True)
+        mlp.SetActivationFunction(enumActivationFunction.Gaussian, gain, center)
+
+        mlp.InitializeWeights(1, {
+            {0.39, 0.1, 0.21, 0.56, 0.84, 0.37, 0.06},
+            {0.88, 0.81, 0.94, 0.82, 0.97, 0.24, 0.13},
+            {0.96, 0.88, 0.49, 0.84, 0.74, 0.64, 0.98},
+            {0.04, 0.39, 0.68, 0.06, 0.32, 0.38, 0.73},
+            {0.44, 0.35, 0.89, 0.62, 0.51, 0.69, 0.67},
+            {0.17, 0.29, 0.08, 0.83, 0.65, 0.49, 0.47}})
+        mlp.InitializeWeights(2, {
+            {0.8, 0.63, 0.21, 0.62, 0.58, 0.7, 0.33},
+            {0.15, 0.13, 0.79, 0.39, 0.94, 0.35, 0.71},
+            {0.53, 0.55, 0.77, 0.04, 0.68, 0.15, 0.36}})
+
+        mlp.Train(learningMode)
+
+        Dim expectedOutput = m_targetArray3XOR
+
+        Dim sOutput$ = mlp.output.ToStringWithFormat(dec:="0.0")
+        Dim expectedMatrix As Matrix = expectedOutput ' Single(,) -> Matrix
+        Dim sExpectedOutput = expectedMatrix.ToStringWithFormat(dec:="0.0")
+        Assert.AreEqual(sExpectedOutput, sOutput)
+
+        Dim loss# = mlp.averageError
+        Dim lossRounded# = Math.Round(loss, 2)
+        Assert.AreEqual(True, lossRounded <= expectedLoss)
+
+    End Sub
+
+    Public Sub TestMLP3XORSinus(mlp As clsMLPGeneric,
+            Optional nbIterations% = 200,
+            Optional expectedLoss# = 0#,
+            Optional learningRate! = 0.1!,
+            Optional weightAdjustment! = 0.1!,
+            Optional gain! = 1,
+            Optional learningMode As enumLearningMode = enumLearningMode.Defaut)
+
+        Init3XOR(mlp)
+        mlp.Initialize(learningRate, weightAdjustment)
+        mlp.nbIterations = nbIterations
+        mlp.InitializeStruct(m_neuronCount3XOR, addBiasColumn:=True)
+        mlp.SetActivationFunction(enumActivationFunction.Sinus, gain)
+
+        mlp.InitializeWeights(1, {
+            {0.41, 0.31, 0.33, 0.61, 0.57, 0.59, 0.73},
+            {0.65, 0.67, 0.25, 0.64, 0.65, 0.56, 0.73},
+            {0.4, 0.78, 0.24, 0.16, 0.79, 0.39, 0.64},
+            {0.89, 0.48, 0.61, 0.83, 0.46, 0.93, 0.75},
+            {0.46, 0.13, 0.26, 0.27, 0.14, 0.59, 0.26},
+            {0.23, 0.54, 0.45, 0.4, 0.93, 0.9, 0.98}})
+        mlp.InitializeWeights(2, {
+            {0.93, 0.49, 0.22, 0.1, 0.84, 0.48, 0.33},
+            {0.49, 0.39, 0.93, 0.59, 0.22, 0.76, 0.41},
+            {0.85, 1.0, 0.74, 0.13, 0.8, 0.9, 0.21}})
+
+        mlp.Train(learningMode)
+
+        Dim expectedOutput = m_targetArray3XOR
+
+        Dim sOutput$ = mlp.output.ToStringWithFormat(dec:="0.0")
+        Dim expectedMatrix As Matrix = expectedOutput ' Single(,) -> Matrix
+        Dim sExpectedOutput = expectedMatrix.ToStringWithFormat(dec:="0.0")
+        Assert.AreEqual(sExpectedOutput, sOutput)
+
+        Dim loss# = mlp.averageError
+        Dim lossRounded# = Math.Round(loss, 2)
+        Assert.AreEqual(True, lossRounded <= expectedLoss)
+
+    End Sub
+
+    Public Sub TestMLP3XORELU(mlp As clsMLPGeneric,
+            Optional nbIterations% = 250,
+            Optional expectedLoss# = 0.01#,
+            Optional learningRate! = 0.01!,
+            Optional weightAdjustment! = 0,
+            Optional gain! = 0.3!,
+            Optional learningMode As enumLearningMode = enumLearningMode.Defaut)
+
+        Init3XOR(mlp)
+        mlp.Initialize(learningRate, weightAdjustment)
+        mlp.nbIterations = nbIterations
+        mlp.InitializeStruct(m_neuronCount3XOR, addBiasColumn:=True)
+        mlp.SetActivationFunction(enumActivationFunction.ELU, gain)
+
+        mlp.InitializeWeights(1, {
+            {-0.49, 0.5, 0.06, -0.35, 0.25, -0.16, -0.03},
+            {-0.03, -0.26, 0.32, 0.4, 0.38, 0.49, -0.37},
+            {0.3, 0.44, -0.09, -0.16, -0.27, 0.26, 0.39},
+            {-0.09, 0.37, 0.36, -0.09, -0.41, -0.48, -0.03},
+            {0.35, 0.37, -0.41, -0.02, 0.09, -0.46, -0.13},
+            {0.06, 0.06, 0.18, 0.27, -0.21, -0.47, 0.26}})
+        mlp.InitializeWeights(2, {
+            {0.05, -0.14, 0.27, -0.1, 0.21, 0.16, -0.27},
+            {-0.19, -0.44, 0.34, 0.23, 0.41, 0.23, -0.49},
+            {-0.12, -0.36, 0.11, -0.47, -0.35, 0.09, 0.36}})
 
         mlp.Train(learningMode)
 

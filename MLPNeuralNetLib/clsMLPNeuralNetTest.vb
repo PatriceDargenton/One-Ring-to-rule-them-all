@@ -722,6 +722,22 @@ Namespace NeuralNetMLP
 
         End Sub
 
+        '<TestMethod()>
+        'Public Sub NNMLP3XORSigmoidStdr()
+
+        '    TestMLP3XORSigmoid(m_mlp, nbIterations:=10000,
+        '        learningMode:=enumLearningMode.VectorialBatch)
+
+        'End Sub
+
+        '<TestMethod()>
+        'Public Sub NNMLP3XORSigmoid2Stdr()
+
+        '    TestMLP3XORSigmoid2(m_mlp, nbIterations:=10000,
+        '        learningMode:=enumLearningMode.VectorialBatch)
+
+        'End Sub
+
         <TestMethod()>
         Public Sub NNMLPIrisFlowerAnalog()
 

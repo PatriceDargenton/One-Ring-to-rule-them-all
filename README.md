@@ -262,6 +262,9 @@ Note: To update the packages, you will need to restore this deleted line in the 
 
 # Version history
 
+10/04/2021 V1.38
+- clsMLPMatrix: standard weight initialization
+
 01/04/2021 V1.37
 - [MLPComparison.xls](MLPComparison.xls) updated
 - New Sunspots test added

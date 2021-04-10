@@ -210,8 +210,6 @@ Namespace OOPMLP
             ' OOP activation function: before Initialize()
             'm_mlp.ActivationFunction = New Sigmoid(alpha:=1, center:=2.2)
 
-            'TestMLP1XORWithoutBias231b(m_mlp) Work only there
-
             InitXOR()
             m_mlp.Initialize(learningRate:=0.9!, weightAdjustment:=0.05!)
             m_mlp.InitializeStruct(m_neuronCountXOR231, addBiasColumn:=False)
@@ -311,12 +309,22 @@ Namespace OOPMLP
         End Sub
 
         <TestMethod()>
-        Public Sub MLPOOP3XORSigmoid()
+        Public Sub MLPOOP3XORSigmoidStdr()
 
             ' OOP activation function: before Initialize()
             'm_mlp.ActivationFunction = New Sigmoid(alpha:=2)
 
             TestMLP3XORSigmoid(m_mlp)
+
+        End Sub
+
+        <TestMethod()>
+        Public Sub MLPOOP3XORSigmoidStdr2()
+
+            ' OOP activation function: before Initialize()
+            'm_mlp.ActivationFunction = New Sigmoid(alpha:=1)
+
+            TestMLP3XORSigmoid2(m_mlp, nbIterations:=1500)
 
         End Sub
 
@@ -327,6 +335,37 @@ Namespace OOPMLP
             'm_mlp.ActivationFunction = New HyperbolicTangent(alpha:=1.0#)
 
             TestMLP3XORTanh(m_mlp)
+
+        End Sub
+
+        <TestMethod()>
+        Public Sub MLPOOP3XORTanh2()
+
+            ' OOP activation function: before Initialize()
+            'm_mlp.ActivationFunction = New HyperbolicTangent(alpha:=1.0#)
+
+            TestMLP3XORTanh2(m_mlp, nbIterations:=10000)
+
+        End Sub
+
+        <TestMethod()>
+        Public Sub MLPOOP3XORGaussianStdr()
+
+            TestMLP3XORGaussian(m_mlp)
+
+        End Sub
+
+        <TestMethod()>
+        Public Sub MLPOOP3XORSinusStdr()
+
+            TestMLP3XORSinus(m_mlp)
+
+        End Sub
+
+        <TestMethod()>
+        Public Sub MLPOOP3XORELUStdr() ' 166 msec
+
+            TestMLP3XORELU(m_mlp, nbIterations:=400)
 
         End Sub
 

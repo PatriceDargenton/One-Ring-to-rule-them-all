@@ -438,13 +438,51 @@ Namespace EncogMLP
 
         End Sub
 
+        '<TestMethod()>
+        'Public Sub EncogMLP3XORSigmoidStdr()
+
+        '    TestMLP3XORSigmoid(m_mlp, nbIterations:=10000, learningMode:=enumLearningMode.Vectorial)
+
+        'End Sub
+
+        '<TestMethod()>
+        'Public Sub EncogMLP3XORSigmoid2Stdr()
+
+        '    TestMLP3XORSigmoid2(m_mlp, nbIterations:=10000, learningMode:=enumLearningMode.Vectorial)
+
+        'End Sub
+
         <TestMethod()>
-        Public Sub EncogMLP3XORTanh()
+        Public Sub EncogMLP3XORTanhStdr()
 
             TestMLP3XORTanh(m_mlp, gain:=2,
                 learningMode:=enumLearningMode.Vectorial)
 
         End Sub
+
+        '<TestMethod()>
+        'Public Sub EncogMLP3XORTanh2Stdr()
+
+        '    TestMLP3XORTanh2(m_mlp, gain:=2, nbIterations:=10000,
+        '        learningMode:=enumLearningMode.Vectorial)
+
+        'End Sub
+
+        '<TestMethod()>
+        'Public Sub EncogMLP3XORGaussianStdr()
+
+        '    TestMLP3XORGaussian(m_mlp, nbIterations:=10000,
+        '        learningMode:=enumLearningMode.Vectorial)
+
+        'End Sub
+
+        '<TestMethod()>
+        'Public Sub EncogMLP3XORSinusStdr()
+
+        '    TestMLP3XORSinus(m_mlp, nbIterations:=20000,
+        '        learningMode:=enumLearningMode.Vectorial)
+
+        'End Sub
 
         <TestMethod()>
         Public Sub EncogMLP3XORSinus()

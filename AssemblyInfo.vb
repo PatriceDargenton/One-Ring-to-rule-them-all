@@ -15,4 +15,4 @@ Imports System.Runtime.InteropServices
 'Le GUID suivant est pour l'ID de la typelib si ce projet est exposé à COM
 <Assembly: Guid("0fcfbf59-38ad-4e08-ac72-0fee3624bc83")>
 
-<Assembly: AssemblyVersion("1.3.7")>
+<Assembly: AssemblyVersion("1.3.8")>

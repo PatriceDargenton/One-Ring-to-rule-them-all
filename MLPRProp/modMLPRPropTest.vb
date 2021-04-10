@@ -163,10 +163,18 @@ Namespace RPropMLP
         '<TestMethod()>
         'Public Sub RPropMLP3XORSigmoidStdr()
 
-        '    TestMLP3XORSigmoid(m_mlp, learningMode:=enumLearningMode.VectorialBatch,
-        '        nbIterations:=20000)
+        '    TestMLP3XORSigmoid(m_mlp, nbIterations:=20000,
+        '        learningMode:=enumLearningMode.VectorialBatch)
 
         'End Sub
+
+        <TestMethod()>
+        Public Sub RPropMLP3XORSigmoid2Stdr()
+
+            TestMLP3XORSigmoid2(m_mlp, nbIterations:=10000,
+                learningMode:=enumLearningMode.VectorialBatch)
+
+        End Sub
 
         <TestMethod()>
         Public Sub RPropMLP3XORSigmoid() ' 77 msec
@@ -280,14 +288,20 @@ Namespace RPropMLP
 
         End Sub
 
-
-
         <TestMethod()>
         Public Sub RPropMLP3XORTanhStdr() ' 2.1 sec
 
             TestMLP3XORTanh(m_mlp, nbIterations:=8000, gain:=0.1)
+            'TestMLP3XORTanh(m_mlp, nbIterations:=15000)
 
         End Sub
+
+        '<TestMethod()>
+        'Public Sub RPropMLP3XORTanh2Stdr()
+
+        '    TestMLP3XORTanh2(m_mlp, nbIterations:=20000)
+
+        'End Sub
 
         <TestMethod()>
         Public Sub RPropMLP3XORTanh() ' 770 msec
@@ -327,6 +341,13 @@ Namespace RPropMLP
             Assert.AreEqual(True, lossRounded <= expectedLoss)
 
         End Sub
+
+        '<TestMethod()>
+        'Public Sub RPropMLP3XORELUStdr()
+
+        '    TestMLP3XORELU(m_mlp, nbIterations:=10000)
+
+        'End Sub
 
         <TestMethod()>
         Public Sub RPropMLPIrisFlowerAnalogTanh()

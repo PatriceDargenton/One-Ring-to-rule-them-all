@@ -396,11 +396,9 @@ Namespace Utility
             If m2.c <> 1 OrElse m2.r <> Me.r Then Throw New ArgumentException("Invalid dimensions")
 
             Dim newMatrix = New Double(Me.r - 1, Me.c + 1 - 1) {}
-            'Dim m = Me.data
             For i = 0 To Me.r - 1
                 newMatrix(i, 0) = m2.data(i, 0)
             Next
-            'MatrixLoop((Sub(i, j) newMatrix(i, j + 1) = m(i, j)), r, c)
             MatrixLoop((Sub(i, j) newMatrix(i, j + 1) = Me.data(i, j)), r, c)
 
             Dim result As Matrix = newMatrix

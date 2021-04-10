@@ -17,29 +17,27 @@ Namespace MatrixMLP
         ''' <summary>
         ''' hidden x input weights matrix
         ''' </summary>
-        Public weights_ih As Matrix
+        Private weights_ih As Matrix
 
         ''' <summary>
         ''' ouput x hidden weights matrix
         ''' </summary>
-        Public weights_ho As Matrix
+        Private weights_ho As Matrix
 
         ''' <summary>
         ''' Hidden bias matrix
         ''' </summary>
-        Public bias_h As Matrix
+        Private bias_h As Matrix
 
         ''' <summary>
         ''' Output bias matrix
         ''' </summary>
-        Public bias_o As Matrix
+        Private bias_o As Matrix
+
+        Private m_weights!()()
+        Private m_biases!()()
 
         Private input, hidden As Matrix
-
-        ' ''' <summary>
-        ' ''' Output matrix (returned to compute average error, and discrete error)
-        ' ''' </summary>
-        'Public output As Matrix
 
         Private nbHiddenNeurons%
 
@@ -52,8 +50,8 @@ Namespace MatrixMLP
 
             If Me.layerCount <> 3 Then
                 ' ToDo: declare and use Me.weights_ih2 to compute 2 hidden layers
-                MsgBox("This Matrix implementation can only compute one hidden layer!",
-                    MsgBoxStyle.Exclamation)
+                Throw New ArgumentException(
+                    "This Matrix implementation can only compute one hidden layer!")
                 Me.layerCount = 3
             End If
 
@@ -93,8 +91,55 @@ Namespace MatrixMLP
         End Sub
 
         Public Overrides Sub InitializeWeights(layer%, weights#(,))
-            Throw New NotImplementedException(
-                "InitializeWeights() is not implemented for clsMatrixMLP!")
+
+            If layer = 1 Then
+                ReDim Me.m_weights(0 To Me.layerCount - 2)
+                ReDim Me.m_biases(0 To Me.layerCount - 2)
+            End If
+
+            Dim i = layer - 1
+            Dim nbNeuronsLayer = Me.neuronCount(i + 1)
+            Dim nbBiases = nbNeuronsLayer
+            Dim n = nbBiases * Me.neuronCount(i)
+            ReDim Me.m_weights(i)(0 To n - 1)
+            ReDim Me.m_biases(i)(0 To nbBiases - 1)
+            For j = 0 To nbBiases - 1
+                Me.m_biases(i)(j) = 0
+            Next j
+            Dim nbNeuronsPreviousLayer = Me.neuronCount(i)
+            Dim l = 0
+            For j = 0 To nbNeuronsLayer - 1
+                Dim nbWeights = nbNeuronsPreviousLayer
+                For k = 0 To nbWeights - 1
+                    Dim r = weights(j, k)
+                    Me.m_weights(i)(l) = CSng(r)
+                    l += 1
+                Next k
+                If Me.useBias Then
+                    Dim r = weights(j, nbWeights)
+                    Me.m_biases(i)(j) = CSng(r)
+                End If
+            Next j
+
+            If layer = Me.layerCount - 1 Then
+
+                Dim w1, w2, b1, b2 As Matrix
+
+                Dim input = Me.nbInputNeurons
+                Dim hidden = Me.neuronCount(1)
+                Dim ouput = Me.nbOutputNeurons
+                w1 = clsMLPHelper.TransformArrayTo2DArray(Me.m_weights(0), hidden, input)
+                w2 = clsMLPHelper.TransformArrayTo2DArray(Me.m_weights(1), ouput, hidden)
+                b1 = clsMLPHelper.TransformArrayTo2DArray(Me.m_biases(0), hidden, 1)
+                b2 = clsMLPHelper.TransformArrayTo2DArray(Me.m_biases(1), ouput, 1)
+
+                Me.weights_ih = w1
+                Me.weights_ho = w2
+                Me.bias_h = b1
+                Me.bias_o = b2
+
+            End If
+
         End Sub
 
         ''' <summary>
@@ -210,28 +255,99 @@ Namespace MatrixMLP
             Dim sb As New StringBuilder
             sb.Append(Me.ShowParameters())
 
-            Dim inputNodes = Me.nbInputNeurons
-            Dim hiddenNodes = Me.nbHiddenNeurons
-            Dim outputNodes = Me.weights_ho.r
-            For i = 0 To Me.layerCount - 1
-                Dim iNeuronCount = inputNodes
-                If i > 0 Then iNeuronCount = hiddenNodes
-                If i >= Me.layerCount - 1 Then iNeuronCount = outputNodes
-                sb.AppendLine("Neuron count(" & i & ")=" & iNeuronCount)
+            sb.AppendLine("Neuron count(" & 0 & ")=" & Me.nbInputNeurons)
+            For i = 0 To Me.layerCount - 2
+                sb.AppendLine("Neuron count(" & i + 1 & ")=" & Me.neuronCount(i + 1))
             Next
 
-            sb.AppendLine("")
-            sb.AppendLine("Me.weights_ih=" & Me.weights_ih.ToString())
-            sb.AppendLine("Me.weights_ho=" & Me.weights_ho.ToString())
+            GetWeights()
 
-            If Me.useBias Then
-                sb.AppendLine("Me.bias_h=" & Me.bias_h.ToString())
-                sb.AppendLine("Me.bias_o=" & Me.bias_o.ToString())
-            End If
+            For i = 1 To Me.layerCount - 1
+
+                sb.AppendLine("W(" & i & ")={")
+
+                Dim nbNeuronsLayer = Me.neuronCount(i)
+                Dim nbNeuronsPreviousLayer = Me.neuronCount(i - 1)
+
+                Dim l% = 0
+                For j = 0 To nbNeuronsLayer - 1
+                    sb.Append(" {")
+
+                    Dim nbWeights = nbNeuronsPreviousLayer
+                    Dim k%
+                    For k = 0 To nbWeights - 1
+                        Dim weight = Me.m_weights(i - 1)(l)
+                        Dim sVal$ = weight.ToString(format2Dec).ReplaceCommaByDot()
+                        sb.Append(sVal)
+                        If Me.useBias OrElse k < nbWeights - 1 Then sb.Append(", ")
+                        l += 1
+                    Next k
+
+                    If Me.useBias Then
+                        Dim weightT = Me.m_biases(i - 1)(j)
+                        Dim sValT$ = weightT.ToString(format2Dec).ReplaceCommaByDot()
+                        sb.Append(sValT)
+                    End If
+
+                    sb.Append("}")
+                    If j < nbNeuronsLayer - 1 Then sb.Append("," & vbLf)
+                Next j
+                sb.Append("}" & vbLf)
+
+                If i < Me.layerCount - 1 Then sb.AppendLine()
+
+            Next i
 
             Return sb.ToString()
 
         End Function
+
+        Private Sub GetWeights()
+
+            ReDim Me.m_weights(0 To Me.layerCount - 2)
+            ReDim Me.m_biases(0 To Me.layerCount - 2)
+
+            Dim w1 As Double(,) = Me.weights_ih
+            Me.m_weights(0) = clsMLPHelper.Transform2DArrayDoubleToArraySingle(w1)
+
+            Dim w2 As Double(,) = Me.weights_ho
+            Me.m_weights(1) = clsMLPHelper.Transform2DArrayDoubleToArraySingle(w2)
+
+            Dim w3 As Double(,) = Me.bias_h
+            Me.m_biases(0) = clsMLPHelper.Transform2DArrayDoubleToArraySingle2(w3)
+
+            Dim w4 As Double(,) = Me.bias_o
+            Me.m_biases(1) = clsMLPHelper.Transform2DArrayDoubleToArraySingle2(w4)
+
+        End Sub
+
+        'Public Function ShowWeights_v1$()
+
+        '    Dim sb As New StringBuilder
+        '    sb.Append(Me.ShowParameters())
+
+        '    Dim inputNodes = Me.nbInputNeurons
+        '    Dim hiddenNodes = Me.nbHiddenNeurons
+        '    Dim outputNodes = Me.weights_ho.r
+        '    For i = 0 To Me.layerCount - 1
+        '        Dim iNeuronCount = inputNodes
+        '        If i > 0 Then iNeuronCount = hiddenNodes
+        '        If i >= Me.layerCount - 1 Then iNeuronCount = outputNodes
+        '        sb.AppendLine("Neuron count(" & i & ")=" & iNeuronCount)
+        '    Next
+
+        '    sb.AppendLine("")
+        '    sb.AppendLine("Me.weights_ih=" & Me.weights_ih.ToString())
+        '    sb.AppendLine("Me.weights_ho=" & Me.weights_ho.ToString())
+
+        '    If Me.useBias Then
+        '        sb.AppendLine("Me.bias_h=" & Me.bias_h.ToString())
+        '        sb.AppendLine("Me.bias_o=" & Me.bias_o.ToString())
+        '    End If
+
+        '    Return sb.ToString()
+
+        'End Function
 
     End Class
 

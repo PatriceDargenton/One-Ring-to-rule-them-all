@@ -308,6 +308,13 @@ Namespace AccordMLP
         End Sub
 
         <TestMethod()>
+        Public Sub AccordMLP3XORSigmoid2()
+
+            TestMLP3XORSigmoid2(m_mlp, nbIterations:=1600)
+
+        End Sub
+
+        <TestMethod()>
         Public Sub AccordMLP3XORTanh()
 
             TestMLP3XORTanh(m_mlp)
@@ -318,6 +325,13 @@ Namespace AccordMLP
         Public Sub AccordMLP3XORTanhVect()
 
             TestMLP3XORTanh(m_mlp, learningMode:=enumLearningMode.Vectorial)
+
+        End Sub
+
+        <TestMethod()>
+        Public Sub AccordMLP3XORTanh2()
+
+            TestMLP3XORTanh2(m_mlp, nbIterations:=11000)
 
         End Sub
 

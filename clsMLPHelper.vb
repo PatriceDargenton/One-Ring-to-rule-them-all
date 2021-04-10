@@ -4,23 +4,23 @@ Imports System.Text ' StringBuilder
 
 Public Class clsMLPHelper
 
-    Public Shared Function GetVector(array1D!(,), index%) As Single()
+    Public Shared Function GetVector(array2D!(,), index%) As Single()
 
-        Dim length = array1D.GetLength(1)
+        Dim length = array2D.GetLength(1)
         Dim vect!(0 To length - 1)
         For k = 0 To length - 1
-            vect(k) = array1D(index, k)
+            vect(k) = array2D(index, k)
         Next
         Return vect
 
     End Function
 
-    Public Shared Function GetColumn(array1D!(,), index%) As Single()
+    Public Shared Function GetColumn(array2D!(,), index%) As Single()
 
-        Dim length = array1D.GetLength(0)
+        Dim length = array2D.GetLength(0)
         Dim vect!(0 To length - 1)
         For k = 0 To length - 1
-            vect(k) = array1D(k, index)
+            vect(k) = array2D(k, index)
         Next
         Return vect
 
@@ -62,8 +62,7 @@ Public Class clsMLPHelper
     End Sub
 
     Public Shared Sub Fill2DArrayOfDouble(array2D#(,), array1D#(), index%)
-        'Dim nbItems = array2D.GetLength(0)
-        Dim nbItems = array2D.GetLength(1) ' 30/10/2020
+        Dim nbItems = array2D.GetLength(1)
         For j = 0 To nbItems - 1
             array2D(index, j) = array1D(j)
         Next
@@ -134,6 +133,82 @@ Public Class clsMLPHelper
         Next i
 
         Return arr
+
+    End Function
+
+    Public Shared Function Transform2DArrayDoubleToJaggedArraySingle(array2D#(,)) As Single()()
+
+        ' Transform a 2D array into a jagged array
+
+        Dim length0 = array2D.GetLength(0)
+        Dim length1 = array2D.GetLength(1)
+        Dim arr As Single()() = New Single(length0 - 1)() {}
+        For i = 0 To length0 - 1
+            arr(i) = New Single() {}
+            ReDim arr(i)(length1 - 1)
+            For j = 0 To length1 - 1
+                arr(i)(j) = CSng(array2D(i, j))
+            Next j
+        Next i
+
+        Return arr
+
+    End Function
+
+    Public Shared Function Transform2DArrayDoubleToArraySingle(array2D#(,)) As Single()
+
+        ' Transform a 2D array into an array
+
+        Dim length0 = array2D.GetLength(0)
+        Dim length1 = array2D.GetLength(1)
+        Dim arr!(length0 * length1 - 1)
+        For i = 0 To length0 - 1
+            For j = 0 To length1 - 1
+                arr(i * length1 + j) = CSng(array2D(i, j))
+            Next j
+        Next i
+
+        Return arr
+
+    End Function
+
+    Public Shared Function Transform2DArrayDoubleToArraySingle2(array2D#(,)) As Single()
+
+        ' Transform a 2D array into an array
+
+        Dim length0 = array2D.GetLength(0)
+        Dim length1 = array2D.GetLength(1)
+        Dim arr!(length0 * length1 - 1)
+        For i = 0 To length1 - 1
+            For j = 0 To length0 - 1
+                arr(i * length1 + j) = CSng(array2D(j, i))
+            Next j
+        Next i
+
+        Return arr
+
+    End Function
+
+    ' Inspired from:
+    ' https://stackoverflow.com/questions/26291609/converting-jagged-array-to-2d-array-c-sharp
+    Public Shared Function TransformArrayTo2DArray(Of T)(ByVal source() As T,
+                firstDim%, secondDim%) As T(,)
+
+        Try
+            Dim result = New T(firstDim - 1, secondDim - 1) {}
+            Dim i% = 0
+            Do While i < firstDim
+                Dim j% = 0
+                Do While j < secondDim
+                    result(i, j) = source(i * secondDim + j)
+                    j += 1
+                Loop
+                i += 1
+            Loop
+            Return result
+        Catch ex As InvalidOperationException
+            Throw New InvalidOperationException("Wrong size!")
+        End Try
 
     End Function
 
