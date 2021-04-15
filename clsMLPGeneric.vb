@@ -66,7 +66,6 @@ Public MustInherit Class clsMLPGeneric
     Public MustOverride Sub InitializeWeights(layer%, weights#(,))
 
     Protected nbInputNeurons%
-    'Protected nbHiddenNeurons%
     Protected nbOutputNeurons%
 
     ''' <summary>
@@ -718,8 +717,48 @@ Public MustInherit Class clsMLPGeneric
         ShowMessage(ShowWeights())
     End Sub
 
-    Public Overridable Function ShowWeights$()
-        Return ""
+    Public Overridable Function ShowWeights$(Optional format$ = format2Dec)
+
+        Dim sb As New StringBuilder
+        sb.Append(Me.ShowParameters())
+
+        For i = 0 To Me.layerCount - 1
+            sb.AppendLine("Neuron count(" & i & ")=" & Me.neuronCount(i))
+        Next
+
+        sb.AppendLine()
+
+        For i = 1 To Me.layerCount - 1
+
+            sb.AppendLine("W(" & i & ")={")
+
+            Dim nbNeuronsLayer = Me.neuronCount(i)
+            Dim nbNeuronsPreviousLayer = Me.neuronCount(i - 1)
+            For j = 0 To nbNeuronsLayer - 1
+                sb.Append(" {")
+                Dim nbWeights = nbNeuronsPreviousLayer
+                If Me.useBias Then nbWeights += 1
+                For k = 0 To nbWeights - 1
+                    Dim weight = GetWeight(i, j, k)
+                    Dim sVal$ = weight.ToString(format).ReplaceCommaByDot()
+                    sb.Append(sVal)
+                    If k < nbWeights - 1 Then sb.Append(", ")
+                Next k
+                sb.Append("}")
+                If j < nbNeuronsLayer - 1 Then sb.Append("," & vbCrLf)
+            Next j
+            sb.Append("}" & vbCrLf)
+
+            If i < Me.layerCount - 1 Then sb.AppendLine()
+
+        Next i
+
+        Return sb.ToString()
+
+    End Function
+
+    Public Overridable Function GetWeight!(layer%, neuron%, weight%)
+        Return 0.0!
     End Function
 
     Public Overridable Sub PrintOutput(iteration%, Optional force As Boolean = False)

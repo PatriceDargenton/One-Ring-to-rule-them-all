@@ -287,50 +287,19 @@ Public Class clsMLPAccord : Inherits clsVectorizedMLPGeneric
 
     End Sub
 
-    Public Overrides Function ShowWeights$()
+    Public Overrides Function GetWeight!(layer%, neuron%, weight%)
 
-        Dim sb As New StringBuilder
-        sb.Append(Me.ShowParameters())
-
-        sb.AppendLine("Neuron count(" & 0 & ")=" & Me.nbInputNeurons) ' 24/10/2020
-        For i = 0 To Me.network.Layers.Count - 1
-            sb.AppendLine("Neuron count(" & i + 1 & ")=" & Me.network.Layers(i).Neurons.Count)
-        Next
-
-        sb.AppendLine("")
-
-        For i = 0 To Me.network.Layers.Count - 1
-
-            sb.AppendLine("W(" & i + 1 & ")={")
-
-            Dim nbNeurons = Me.network.Layers(i).Neurons.Count
-            For j = 0 To nbNeurons - 1
-                sb.Append(" {")
-                Dim neuron = CType(Me.network.Layers(i).Neurons(j), ActivationNeuron)
-                Dim nbWeights = neuron.Weights.Count
-                For k = 0 To nbWeights - 1
-                    Dim weight = neuron.Weights(k)
-                    Dim sVal$ = weight.ToString(format2Dec).ReplaceCommaByDot()
-                    sb.Append(sVal)
-                    If Me.useBias OrElse k < nbWeights - 1 Then sb.Append(", ")
-                Next k
-
-                If Me.useBias Then
-                    Dim weightT = neuron.Threshold
-                    Dim sValT$ = weightT.ToString(format2Dec).ReplaceCommaByDot()
-                    sb.Append(sValT)
-                End If
-
-                sb.Append("}")
-                If j < nbNeurons - 1 Then sb.Append("," & vbLf)
-            Next j
-            sb.Append("}" & vbLf)
-
-            If i < Me.layerCount - 1 Then sb.AppendLine()
-
-        Next i
-
-        Return sb.ToString()
+        Dim layer_ = Me.network.Layers(layer - 1)
+        Dim neuron_ = CType(layer_.Neurons(neuron), ActivationNeuron)
+        Dim nbWeights = neuron_.Weights.Count
+        Dim w#
+        If weight < nbWeights Then
+            w = neuron_.Weights(weight)
+        Else
+            w = neuron_.Threshold
+        End If
+        Dim wSng = CSng(w)
+        Return wSng
 
     End Function
 

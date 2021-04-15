@@ -324,7 +324,7 @@ Public Class clsMLPKeras : Inherits clsVectorizedMLPGeneric
 
     End Sub
 
-    Public Overrides Function ShowWeights$()
+    Public Overrides Function ShowWeights$(Optional format$ = format2Dec)
 
         Dim sb As New StringBuilder
         sb.AppendLine("nb iterations batch=" & Me.nbIterationsBatch)
@@ -360,7 +360,7 @@ Public Class clsMLPKeras : Inherits clsVectorizedMLPGeneric
                 Dim nbWeights = nbNeuronsLayer
                 For k = 0 To nbWeights - 1
                     Dim weight = wsi(l)
-                    Dim sVal$ = weight.ToString(format2Dec).ReplaceCommaByDot()
+                    Dim sVal$ = weight.ToString(format).ReplaceCommaByDot()
                     sb.Append(sVal)
                     If Me.useBias OrElse k < nbWeights - 1 Then sb.Append(", ")
                     l += 1

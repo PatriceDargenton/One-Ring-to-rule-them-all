@@ -225,7 +225,7 @@ Namespace VectorizedMatrixMLP
 
         End Sub
 
-        Public Overrides Function ShowWeights$()
+        Public Overrides Function ShowWeights$(Optional format$ = format2Dec)
 
             Dim sb As New System.Text.StringBuilder
             sb.Append(Me.ShowParameters())
@@ -244,13 +244,18 @@ Namespace VectorizedMatrixMLP
 
         End Function
 
+        Public Overrides Function GetWeight!(layer%, neuron%, weight%)
+            Dim wDbl# = Me.w(layer - 1).GetValue(weight, neuron)
+            Dim wSng = CSng(wDbl)
+            Return wSng
+        End Function
+
         Public Overrides Sub PrintOutput(iteration%, Optional force As Boolean = False)
 
             If force OrElse ShowThisIteration(iteration) Then
 
                 If Not Me.vectorizedLearningMode Then
-                    'Dim nbTargets = Me.targetArray.GetLength(1)
-                    TestAllSamples(Me.inputArray) ', nbOutputs:=nbTargets)
+                    TestAllSamples(Me.inputArray)
                 Else
                     ComputeAverageError()
                 End If

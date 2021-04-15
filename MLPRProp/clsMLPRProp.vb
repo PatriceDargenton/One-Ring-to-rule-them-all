@@ -18,6 +18,8 @@ Friend Class clsMLPRProp : Inherits clsVectorizedMLPGeneric
     Dim m_nbWeights%
     Dim m_gnn As NeuralNetwork
 
+    Private m_weights#()
+
     Public Overrides Function GetActivationFunctionType() As enumActivationFunctionType
         Return enumActivationFunctionType.SpecificCodeOptimized
     End Function
@@ -342,59 +344,34 @@ Friend Class clsMLPRProp : Inherits clsVectorizedMLPGeneric
 
     End Sub
 
-    Public Overrides Function ShowWeights$()
+    Public Overrides Function ShowWeights$(Optional format$ = format2Dec)
+
+        Me.m_weights = Me.m_gnn.GetWeights()
 
         Dim sb As New StringBuilder
         sb.AppendLine("nb iterations batch=" & Me.nbIterationsBatch)
-        sb.Append(Me.ShowParameters())
+        If Me.useNguyenWidrowWeightsInitialization Then format = format4Dec
+        Dim weightsBase = MyBase.ShowWeights(format)
+        sb.Append(weightsBase)
+        Dim weights = sb.ToString
+        Return weights
 
-        For i = 0 To Me.layerCount - 1
-            sb.AppendLine("Neuron count(" & i & ")=" & Me.neuronCount(i))
-        Next
+    End Function
 
-        sb.AppendLine("")
+    Public Overrides Function GetWeight!(layer%, neuron%, weight%)
 
-        Dim sFormat = format2Dec
-        If Me.useNguyenWidrowWeightsInitialization Then sFormat = format4Dec
-
-        Dim weights#() = Me.m_gnn.GetWeights()
-        Dim l = 0
-        For i = 1 To Me.layerCount - 1
-
-            sb.AppendLine("W(" & i & ")={")
-
+        Dim l% = weight
+        For i% = 1 To layer
             Dim nbNeuronsLayer = Me.neuronCount(i)
             Dim nbNeuronsPreviousLayer = Me.neuronCount(i - 1)
-
-            For j = 0 To nbNeuronsLayer - 1
-                sb.Append(" {")
-
-                Dim nbWeights = nbNeuronsPreviousLayer
-                For k = 0 To nbWeights - 1
-                    Dim weight = weights(l)
-                    Dim sVal$ = weight.ToString(sFormat).ReplaceCommaByDot()
-                    sb.Append(sVal)
-                    If Me.useBias OrElse k < nbWeights - 1 Then sb.Append(", ")
-                    l += 1
-                Next k
-
-                If Me.useBias Then
-                    Dim weightT = weights(l)
-                    Dim sValT$ = weightT.ToString(sFormat).ReplaceCommaByDot()
-                    sb.Append(sValT)
-                    l += 1
-                End If
-
-                sb.Append("}")
-                If j < nbNeuronsLayer - 1 Then sb.Append("," & vbLf)
-            Next j
-            sb.Append("}" & vbLf)
-
-            If i < Me.layerCount - 1 Then sb.AppendLine()
-
-        Next i
-
-        Return sb.ToString()
+            If Me.useBias Then nbNeuronsPreviousLayer += 1
+            Dim mult = neuron
+            If i < layer Then mult = nbNeuronsLayer
+            l += nbNeuronsPreviousLayer * mult
+        Next
+        Dim weightDbl = Me.m_weights(l)
+        Dim weightSng = CSng(weightDbl)
+        Return weightSng
 
     End Function
 

@@ -312,42 +312,8 @@ Friend Class clsMLPClassic : Inherits clsMLPGeneric
 
 #Region "Print"
 
-    Public Overrides Function ShowWeights$()
-
-        Dim sb As New StringBuilder
-        sb.Append(Me.ShowParameters())
-
-        For i = 0 To Me.layerCount - 1
-            sb.AppendLine("Neuron count(" & i & ")=" & Me.Layers(i).nbNeurons)
-        Next
-
-        sb.AppendLine()
-
-        For i = 1 To Me.layerCount - 1
-
-            sb.AppendLine("W(" & i & ")={")
-
-            Dim nbNeurons = Me.Layers(i).nbNeurons
-            For j = 0 To nbNeurons - 1
-                sb.Append(" {")
-                Dim nbWeights = Me.Layers(i - 1).nbWeights
-                For k = 0 To nbWeights - 1
-                    Dim weight = Me.Layers(i).Neurons(j).w(k)
-                    Dim sVal$ = weight.ToString(format2Dec).ReplaceCommaByDot()
-                    sb.Append(sVal)
-                    If k < nbWeights - 1 Then sb.Append(", ")
-                Next k
-                sb.Append("}")
-                If j < nbNeurons - 1 Then sb.Append("," & vbLf)
-            Next j
-            sb.Append("}" & vbLf)
-
-            If i < Me.layerCount - 1 Then sb.AppendLine()
-
-        Next i
-
-        Return sb.ToString()
-
+    Public Overrides Function GetWeight!(layer%, neuron%, weight%)
+        Return Me.Layers(layer).Neurons(neuron).w(weight)
     End Function
 
 #End Region

@@ -257,51 +257,11 @@ Public Class clsMLPEncog : Inherits clsVectorizedMLPGeneric
 
     End Sub
 
-    Public Overrides Function ShowWeights$()
+    Public Overrides Function GetWeight!(layer%, neuron%, weight%)
 
-        Dim sb As New StringBuilder
-        sb.Append(Me.ShowParameters())
-
-        For i = 0 To Me.layerCount - 1
-            sb.AppendLine("Neuron count(" & i & ")=" & Me.neuronCount(i))
-        Next
-
-        sb.AppendLine("")
-
-        For i = 1 To Me.layerCount - 1
-
-            sb.AppendLine("W(" & i & ")={")
-
-            Dim nbNeuronsLayer = Me.network.GetLayerNeuronCount(i)
-            Dim nbNeuronsPreviousLayer = Me.network.GetLayerNeuronCount(i - 1)
-
-            For j = 0 To nbNeuronsLayer - 1
-                sb.Append(" {")
-
-                Dim nbWeights = nbNeuronsPreviousLayer
-                For k = 0 To nbWeights - 1
-                    Dim weight = Me.network.GetWeight(i - 1, k, j)
-                    Dim sVal$ = weight.ToString(format2Dec).ReplaceCommaByDot()
-                    sb.Append(sVal)
-                    If Me.useBias OrElse k < nbWeights - 1 Then sb.Append(", ")
-                Next k
-
-                If Me.useBias Then
-                    Dim weightT = Me.network.GetWeight(i - 1, nbWeights, j)
-                    Dim sValT$ = weightT.ToString(format2Dec).ReplaceCommaByDot()
-                    sb.Append(sValT)
-                End If
-
-                sb.Append("}")
-                If j < nbNeuronsLayer - 1 Then sb.Append("," & vbLf)
-            Next j
-            sb.Append("}" & vbLf)
-
-            If i < Me.layerCount - 1 Then sb.AppendLine()
-
-        Next i
-
-        Return sb.ToString()
+        Dim weightDbl = Me.network.GetWeight(layer - 1, weight, neuron)
+        Dim weightSng = CSng(weightDbl)
+        Return weightSng
 
     End Function
 

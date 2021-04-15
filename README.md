@@ -262,6 +262,9 @@ Note: To update the packages, you will need to restore this deleted line in the 
 
 # Version history
 
+15/04/2021 V1.39
+- ShowWeights moved into clsMLPGeneric
+
 10/04/2021 V1.38
 - clsMLPMatrix: standard weight initialization
 

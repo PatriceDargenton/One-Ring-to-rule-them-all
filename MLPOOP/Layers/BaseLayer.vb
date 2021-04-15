@@ -95,43 +95,6 @@ Namespace Layers
             Next
         End Sub
 
-        Public Function PrintWeights$()
-
-            Dim sb As New System.Text.StringBuilder("{" & vbCrLf)
-
-            Dim nbNeurons = Me.Neurons.Count
-            Dim numNeuron = 0
-            For Each n2 As Neuron In Me.Neurons
-                numNeuron += 1
-                If n2.Type = NeuronType.Input Then Continue For
-                sb.Append(" {")
-                Dim nbW = n2.WeightsToParent.Count
-                Dim numW = 0
-                For Each rVal In n2.WeightsToParent
-                    numW += 1
-                    sb.Append(rVal.Value.ToString(format2Dec).ReplaceCommaByDot())
-                    If numW < nbW Then sb.Append(", ")
-                Next
-
-                If Not IsNothing(n2.WeightToBias) Then
-                    sb.Append(", " & n2.WeightToBias.Value.ToString(format2Dec).ReplaceCommaByDot())
-                End If
-
-                Dim comma$ = ""
-                If numNeuron < nbNeurons Then
-                    comma = ","
-                Else
-                    comma = "}"
-                End If
-
-                sb.Append("}" & comma & vbCrLf)
-
-            Next
-
-            Return sb.ToString
-
-        End Function
-
         Public Sub RestoreWeightsWithBias(weightsWithBias#(,),
             useBias As Boolean, bias As Neuron, layerParent As BaseLayer)
 

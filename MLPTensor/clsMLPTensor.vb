@@ -291,7 +291,7 @@ Public Class clsMLPTensor : Inherits clsVectorizedMLPGeneric
         Return Me.averageError
     End Function
 
-    Public Overrides Function ShowWeights$()
+    Public Overrides Function ShowWeights$(Optional format$ = format2Dec)
 
         Dim sb As New StringBuilder
         sb.Append(Me.ShowParameters())

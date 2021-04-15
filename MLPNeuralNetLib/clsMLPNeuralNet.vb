@@ -498,69 +498,37 @@ Public Class clsMLPNeuralNet : Inherits clsVectorizedMLPGeneric
 
 #If GetWeightsImplementation Or GetWeightsImplementationVS2013 Then
 
-    Public Overrides Function ShowWeights$()
-
-        Dim sb As New StringBuilder
-        sb.AppendLine("nb iterations batch=" & Me.nbIterationsBatch)
-        sb.Append(Me.ShowParameters())
-
-        sb.AppendLine("Neuron count(" & 0 & ")=" & Me.nbInputNeurons)
-        For i = 0 To Me.network.Layers.Count - 1
-            sb.AppendLine("Neuron count(" & i + 1 & ")=" & Me.neuronCount(i + 1))
-        Next
+    Public Overrides Function ShowWeights$(Optional format$ = format2Dec)
 
         ReDimWeights()
         GetWeights()
 
-        sb.AppendLine("")
+        Dim sb As New StringBuilder
+        sb.AppendLine("nb iterations batch=" & Me.nbIterationsBatch)
+        Dim weightsBase = MyBase.ShowWeights(format)
+        sb.Append(weightsBase)
+        Dim weights = sb.ToString
+        Return weights
 
-        For i = 1 To Me.layerCount - 1
+    End Function
 
-            sb.AppendLine("W(" & i & ")={")
+    Public Overrides Function GetWeight!(layer%, neuron%, weight%)
 
-            'Dim layer = Me.network.Layers(i)
-            ' Not available (but available inside Visual Studio Debug mode!)
-            'Dim w = layer.Weights
-            'Dim b = layer.Biases
-
-            Dim nbNeuronsLayer = Me.neuronCount(i) ' Me.network.GetLayerNeuronCount(i)
-            Dim nbNeuronsPreviousLayer = Me.neuronCount(i - 1) ' Me.network.GetLayerNeuronCount(i - 1)
-
-            Dim l% = 0
-            For j = 0 To nbNeuronsLayer - 1
-                sb.Append(" {")
-
-                Dim nbWeights = nbNeuronsPreviousLayer
-                For k = 0 To nbWeights - 1
-                    Dim weight = Me.m_weights(i - 1)(l)
-                    Dim sVal$ = weight.ToString(format2Dec).ReplaceCommaByDot()
-                    sb.Append(sVal)
-                    If Me.useBias OrElse k < nbWeights - 1 Then sb.Append(", ")
-                    l += 1
-                Next k
-
-                If Me.useBias Then
-                    Dim weightT = Me.m_biases(i - 1)(j)
-                    Dim sValT$ = weightT.ToString(format2Dec).ReplaceCommaByDot()
-                    sb.Append(sValT)
-                End If
-
-                sb.Append("}")
-                If j < nbNeuronsLayer - 1 Then sb.Append("," & vbLf)
-            Next j
-            sb.Append("}" & vbLf)
-
-            If i < Me.layerCount - 1 Then sb.AppendLine()
-
-        Next i
-
-        Return sb.ToString()
+        Dim nbNeuronsPreviousLayer = Me.neuronCount(layer - 1)
+        If weight >= nbNeuronsPreviousLayer Then
+            Dim l2% = weight - nbNeuronsPreviousLayer + neuron
+            Dim bias_ = Me.m_biases(layer - 1)(l2)
+            Return bias_
+        End If
+        Dim l% = neuron * nbNeuronsPreviousLayer + weight
+        Dim weight_ = Me.m_weights(layer - 1)(l)
+        Return weight_
 
     End Function
 
 #Else
 
-    Public Overrides Function ShowWeights$()
+    Public Overrides Function ShowWeights$(Optional format$ = format2Dec)
 
         Dim sb As New StringBuilder
         sb.Append(Me.ShowParameters())

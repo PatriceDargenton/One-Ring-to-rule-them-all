@@ -250,55 +250,11 @@ Namespace MatrixMLP
 
         End Sub
 
-        Public Overrides Function ShowWeights$()
-
-            Dim sb As New StringBuilder
-            sb.Append(Me.ShowParameters())
-
-            sb.AppendLine("Neuron count(" & 0 & ")=" & Me.nbInputNeurons)
-            For i = 0 To Me.layerCount - 2
-                sb.AppendLine("Neuron count(" & i + 1 & ")=" & Me.neuronCount(i + 1))
-            Next
+        Public Overrides Function ShowWeights$(Optional format$ = format2Dec)
 
             GetWeights()
-
-            For i = 1 To Me.layerCount - 1
-
-                sb.AppendLine("W(" & i & ")={")
-
-                Dim nbNeuronsLayer = Me.neuronCount(i)
-                Dim nbNeuronsPreviousLayer = Me.neuronCount(i - 1)
-
-                Dim l% = 0
-                For j = 0 To nbNeuronsLayer - 1
-                    sb.Append(" {")
-
-                    Dim nbWeights = nbNeuronsPreviousLayer
-                    Dim k%
-                    For k = 0 To nbWeights - 1
-                        Dim weight = Me.m_weights(i - 1)(l)
-                        Dim sVal$ = weight.ToString(format2Dec).ReplaceCommaByDot()
-                        sb.Append(sVal)
-                        If Me.useBias OrElse k < nbWeights - 1 Then sb.Append(", ")
-                        l += 1
-                    Next k
-
-                    If Me.useBias Then
-                        Dim weightT = Me.m_biases(i - 1)(j)
-                        Dim sValT$ = weightT.ToString(format2Dec).ReplaceCommaByDot()
-                        sb.Append(sValT)
-                    End If
-
-                    sb.Append("}")
-                    If j < nbNeuronsLayer - 1 Then sb.Append("," & vbLf)
-                Next j
-                sb.Append("}" & vbLf)
-
-                If i < Me.layerCount - 1 Then sb.AppendLine()
-
-            Next i
-
-            Return sb.ToString()
+            Dim weights = MyBase.ShowWeights(format)
+            Return weights
 
         End Function
 
@@ -321,33 +277,19 @@ Namespace MatrixMLP
 
         End Sub
 
-        'Public Function ShowWeights_v1$()
+        Public Overrides Function GetWeight!(layer%, neuron%, weight%)
 
-        '    Dim sb As New StringBuilder
-        '    sb.Append(Me.ShowParameters())
+            Dim nbNeuronsPreviousLayer = Me.neuronCount(layer - 1)
+            If weight >= nbNeuronsPreviousLayer Then
+                Dim l2% = weight - nbNeuronsPreviousLayer + neuron
+                Dim bias_ = Me.m_biases(layer - 1)(l2)
+                Return bias_
+            End If
+            Dim l% = neuron * nbNeuronsPreviousLayer + weight
+            Dim weight_ = Me.m_weights(layer - 1)(l)
+            Return weight_
 
-        '    Dim inputNodes = Me.nbInputNeurons
-        '    Dim hiddenNodes = Me.nbHiddenNeurons
-        '    Dim outputNodes = Me.weights_ho.r
-        '    For i = 0 To Me.layerCount - 1
-        '        Dim iNeuronCount = inputNodes
-        '        If i > 0 Then iNeuronCount = hiddenNodes
-        '        If i >= Me.layerCount - 1 Then iNeuronCount = outputNodes
-        '        sb.AppendLine("Neuron count(" & i & ")=" & iNeuronCount)
-        '    Next
-
-        '    sb.AppendLine("")
-        '    sb.AppendLine("Me.weights_ih=" & Me.weights_ih.ToString())
-        '    sb.AppendLine("Me.weights_ho=" & Me.weights_ho.ToString())
-
-        '    If Me.useBias Then
-        '        sb.AppendLine("Me.bias_h=" & Me.bias_h.ToString())
-        '        sb.AppendLine("Me.bias_o=" & Me.bias_o.ToString())
-        '    End If
-
-        '    Return sb.ToString()
-
-        'End Function
+        End Function
 
     End Class
 

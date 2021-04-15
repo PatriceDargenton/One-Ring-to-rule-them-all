@@ -416,7 +416,7 @@ Public Class clsMLPTensorFlow : Inherits clsVectorizedMLPGeneric
 
 #End If
 
-    Public Overrides Function ShowWeights$()
+    Public Overrides Function ShowWeights$(Optional format$ = format2Dec)
 
         Dim sb As New StringBuilder
         sb.Append(Me.ShowParameters())
@@ -455,14 +455,14 @@ Public Class clsMLPTensorFlow : Inherits clsVectorizedMLPGeneric
                         If l <= lMax Then weight = Me.outputWeights(l)
                     End If
                     l += 1
-                    Dim sVal$ = weight.ToString(format2Dec).ReplaceCommaByDot()
+                    Dim sVal$ = weight.ToString(format).ReplaceCommaByDot()
                     sb.Append(sVal)
                     If Me.useBias OrElse k < nbWeights - 1 Then sb.Append(", ")
                 Next k
 
                 If Me.useBias Then
-                    Dim weightT = 0
-                    Dim sValT$ = weightT.ToString(format2Dec).ReplaceCommaByDot()
+                    Dim weightT = 0 ' useBias is not implemented here
+                    Dim sValT$ = weightT.ToString(format).ReplaceCommaByDot()
                     sb.Append(sValT)
                 End If
 
@@ -484,18 +484,14 @@ Public Class clsMLPTensorFlow : Inherits clsVectorizedMLPGeneric
         If force OrElse ShowThisIteration(iteration) Then
 
             If computeScoreOneByOne Then
-                'Dim nbTargets = Me.targetArray.GetLength(1)
-                TestAllSamples(Me.inputArray) ', nbOutputs:=nbTargets)
+                TestAllSamples(Me.inputArray)
                 If IsNothing(Me.outputs1D) Then
                     ShowMessage(vbLf & "Iteration n°" & iteration + 1 & "/" & nbIterations & vbLf &
                         "Output: nothing!")
                     Exit Sub
                 End If
             Else
-                If Not Me.vectorizedLearningMode Then
-                    'Dim nbTargets = Me.targetArray.GetLength(1)
-                    TestAllSamples(Me.inputArray) ', nbOutputs:=nbTargets)
-                End If
+                If Not Me.vectorizedLearningMode Then TestAllSamples(Me.inputArray)
                 If IsNothing(Me.outputs1D) Then
                     ShowMessage(vbLf & "Iteration n°" & iteration + 1 & "/" & nbIterations & vbLf &
                         "Output: nothing!")

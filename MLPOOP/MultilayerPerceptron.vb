@@ -275,45 +275,17 @@ Namespace NetworkOOP
 
         End Sub
 
-        Public Overrides Function ShowWeights$()
-
-            Dim sb As New StringBuilder
-            sb.Append(Me.ShowParameters())
-
-            For i = 0 To Me.Layers.Count - 1
-                sb.AppendLine("Neuron count(" & i & ")=" & Me.Layers(i).Neurons.Count)
-            Next
-
-            sb.AppendLine("")
-
-            For i = 1 To Me.Layers.Count - 1
-                sb.AppendLine("W(" & i & ")=" & Layers(i).PrintWeights())
-            Next
-
-            Return sb.ToString()
-
-        End Function
-
-        Public Function PrintOutputOOP$()
-
-            Dim sb As New System.Text.StringBuilder("{" & vbCrLf)
-            Dim nbOuputs = Me.Outputs.Count
-            Dim numOuput = 0
-            For Each outp In Me.Outputs
-                Dim nbd = outp.Count
-                Dim numd = 0
-                sb.Append(" {")
-                For Each ld In outp
-                    sb.Append(ld.ToString(format2Dec).ReplaceCommaByDot())
-                    numd += 1
-                    If numd < nbd Then sb.Append(", ")
-                Next
-                numOuput += 1
-                If numOuput < nbOuputs Then sb.Append("}," & vbCrLf)
-            Next
-            sb.Append("}}")
-            Return sb.ToString
-
+        Public Overrides Function GetWeight!(layer%, neuron%, weight%)
+            Dim neuron_ = Me.Layers(layer).Neurons(neuron)
+            Dim nbWeights = neuron_.WeightsToParent.Count
+            If weight >= nbWeights Then
+                Dim wB# = neuron_.WeightToBias.Value
+                Dim wBSng = CSng(wB)
+                Return wBSng
+            End If
+            Dim w# = neuron_.WeightsToParent(weight).Value
+            Dim wSng = CSng(w)
+            Return wSng
         End Function
 
     End Class
