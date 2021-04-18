@@ -6,7 +6,7 @@ Functional tests for Multi-Layer Perceptron implementations, using O.O.P. paradi
 
 
 <img src = "http://patrice.dargenton.free.fr/ia/perceptron/xor/xor-tanh-221.gif"
- title = "Machine Learning and Deep Learning simply minimize the distance between the crosses and the curve" >
+ title = "Machine Learning and Deep Learning simply minimize the distance between the crosses and the curve (this is the XOR example here: Exclusive or)" >
 
 
 # Introduction
