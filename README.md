@@ -5,9 +5,42 @@ Functional tests for Multi-Layer Perceptron implementations, using O.O.P. paradi
 ==
 
 
-<img src = "http://patrice.dargenton.free.fr/ia/perceptron/xor/xor-tanh-221.gif"
+<img src = "http://patrice.dargenton.free.fr/ai/perceptron/xor/xor-tanh-221-big.gif"
  title = "Machine Learning and Deep Learning simply minimize the distance between the crosses and the curve (this is the XOR example here: Exclusive or)" >
 
+# Table of contents
+
+<!-- TOC -->
+
+- [Functional tests for Multi-Layer Perceptron implementations, using O.O.P. paradigm Object-Oriented Programming](#functional-tests-for-multi-layer-perceptron-implementations-using-oop-paradigm-object-oriented-programming)
+- [Table of contents](#table-of-contents)
+- [More animated gif](#more-animated-gif)
+- [Introduction](#introduction)
+- [Example](#example)
+- [List of small datasets tested](#list-of-small-datasets-tested)
+- [List of frameworks and libraries remaining to be tested](#list-of-frameworks-and-libraries-remaining-to-be-tested)
+- [MLP implementations in VB .Net](#mlp-implementations-in-vb-net)
+    - [Classic MLP](#classic-mlp)
+    - [Object-oriented programming MLP](#object-oriented-programming-mlp)
+    - [Matrix MLP: implementation using matrix products](#matrix-mlp-implementation-using-matrix-products)
+    - [Vectorized Matrix MLP: implementation using matrix products, including samples vector](#vectorized-matrix-mlp-implementation-using-matrix-products-including-samples-vector)
+    - [Tensor MLP: implementation using tensor](#tensor-mlp-implementation-using-tensor)
+    - [RProp MLP: implementation using Resilient Back Propagation algorithm](#rprop-mlp-implementation-using-resilient-back-propagation-algorithm)
+- [MLP implementations using frameworks and libraries](#mlp-implementations-using-frameworks-and-libraries)
+    - [Accord.NET MLP: implementation using Accord.NET Framework](#accordnet-mlp-implementation-using-accordnet-framework)
+    - [Encog MLP: implementation using Encog Framework](#encog-mlp-implementation-using-encog-framework)
+    - [TensorFlow MLP: implementation using TensorFlow.NET Framework](#tensorflow-mlp-implementation-using-tensorflownet-framework)
+    - [Keras MLP: implementation using Keras.NET Framework](#keras-mlp-implementation-using-kerasnet-framework)
+    - [NeuralNet MLP: implementation using NeuralNet.NET Framework](#neuralnet-mlp-implementation-using-neuralnetnet-framework)
+- [MLP comparison](#mlp-comparison)
+- [Version history](#version-history)
+
+<!-- /TOC -->
+
+# More animated gif
+
+<img src = "http://patrice.dargenton.free.fr/ai/perceptron/xor/xor-tanh-221.gif"
+ title = "XOR: activation: tanh, structure: {2, 2, 1}" >
 
 # Introduction
 What is a functional test? It is a test which allows to verify the entire functioning of a process, while a unit test allows to check a function, a class, an elementary process. How can we do a functional test for a neural network whereas weights initialization is random, how to guarantee learning process with this part of hazard? Precisely, it is necessary to eliminate any random part in order to be able to carry out a functional test. For this, it is necessary to capture the weights after the initialization of the network, check if the network works well with this random draw (if not, start again) and as soon as this draw makes it possible to reach the desired result, a new functional test is ready: it is sufficient to initialize the network identically, to reload these weights, to redo the training (with the same number of iterations), and to check that the training, the loss and the prediction are indeed always identical, whatever modifications you will now be able to make to the source code with confidence. If the datasets are very small, if the size of the network is minimal, then this list of weights is not very large, we can very well include it in the source code of a functional test. Sometimes a neural network comes with a save and reload system, that includes the whole structure of the network with its weights, but we only need the weights, not the structure, since this structure will be already redefined in the functional test. We therefore need a procedure to display the network weights, rounded for example to two decimal digits, as well as a procedure to reload these weights.
@@ -59,33 +92,7 @@ Let see a functionnal test for a small learning example:
     End Sub
 ```
 
-# Table of contents
 
-<!-- TOC -->
-
-- [Functional tests for Multi-Layer Perceptron implementations, using O.O.P. paradigm Object-Oriented Programming](#functional-tests-for-multi-layer-perceptron-implementations-using-oop-paradigm-object-oriented-programming)
-- [Introduction](#introduction)
-- [Example](#example)
-- [Table of contents](#table-of-contents)
-- [List of small datasets tested](#list-of-small-datasets-tested)
-- [List of frameworks and libraries remaining to be tested](#list-of-frameworks-and-libraries-remaining-to-be-tested)
-- [MLP implementations in VB .Net](#mlp-implementations-in-vb-net)
-    - [Classic MLP](#classic-mlp)
-    - [Object-oriented programming MLP](#object-oriented-programming-mlp)
-    - [Matrix MLP: implementation using matrix products](#matrix-mlp-implementation-using-matrix-products)
-    - [Vectorized Matrix MLP: implementation using matrix products, including samples vector](#vectorized-matrix-mlp-implementation-using-matrix-products-including-samples-vector)
-    - [Tensor MLP: implementation using tensor](#tensor-mlp-implementation-using-tensor)
-    - [RProp MLP: implementation using Resilient Back Propagation algorithm](#rprop-mlp-implementation-using-resilient-back-propagation-algorithm)
-- [MLP implementations using frameworks and libraries](#mlp-implementations-using-frameworks-and-libraries)
-    - [Accord.NET MLP: implementation using Accord.NET Framework](#accordnet-mlp-implementation-using-accordnet-framework)
-    - [Encog MLP: implementation using Encog Framework](#encog-mlp-implementation-using-encog-framework)
-    - [TensorFlow MLP: implementation using TensorFlow.NET Framework](#tensorflow-mlp-implementation-using-tensorflownet-framework)
-    - [Keras MLP: implementation using Keras.NET Framework](#keras-mlp-implementation-using-kerasnet-framework)
-    - [NeuralNet MLP: implementation using NeuralNet.NET Framework](#neuralnet-mlp-implementation-using-neuralnetnet-framework)
-- [MLP comparison](#mlp-comparison)
-- [Version history](#version-history)
-
-<!-- /TOC -->
 
 # List of small datasets tested
 - The classical XOR test, and also 2 XOR and 3 XOR (to reduce hazard and improve learning stability, see [MLPComparison.xls](MLPComparison.xls));
