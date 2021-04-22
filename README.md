@@ -14,7 +14,7 @@ Functional tests for Multi-Layer Perceptron implementations, using O.O.P. paradi
 
 - [Functional tests for Multi-Layer Perceptron implementations, using O.O.P. paradigm Object-Oriented Programming](#functional-tests-for-multi-layer-perceptron-implementations-using-oop-paradigm-object-oriented-programming)
 - [Table of contents](#table-of-contents)
-- [More animated gif](#more-animated-gif)
+- [More animated gifs](#more-animated-gifs)
 - [Introduction](#introduction)
 - [Example](#example)
 - [List of small datasets tested](#list-of-small-datasets-tested)
@@ -37,12 +37,16 @@ Functional tests for Multi-Layer Perceptron implementations, using O.O.P. paradi
 
 <!-- /TOC -->
 
-# More animated gif
+# More animated gifs
 
 <img src = "http://patrice.dargenton.free.fr/ai/perceptron/xor/xor-tanh-221.gif"
  title = "XOR: activation: tanh, structure: {2, 2, 1}" >
 <img src = "http://patrice.dargenton.free.fr/ai/perceptron/xor/xor-tanh-231.gif"
  title = "XOR: activation: tanh, structure: {2, 3, 1}" >
+ <img src = "http://patrice.dargenton.free.fr/ai/perceptron/xor/xor-tanh-2221.gif"
+ title = "XOR: activation: tanh, structure: {2, 2, 2, 1}" >
+ <img src = "http://patrice.dargenton.free.fr/ai/perceptron/xor/xor-sigmoid-221.gif"
+ title = "XOR: activation: sigmoid, structure: {2, 2, 1}" >
 
 # Introduction
 What is a functional test? It is a test which allows to verify the entire functioning of a process, while a unit test allows to check a function, a class, an elementary process. How can we do a functional test for a neural network whereas weights initialization is random, how to guarantee learning process with this part of hazard? Precisely, it is necessary to eliminate any random part in order to be able to carry out a functional test. For this, it is necessary to capture the weights after the initialization of the network, check if the network works well with this random draw (if not, start again) and as soon as this draw makes it possible to reach the desired result, a new functional test is ready: it is sufficient to initialize the network identically, to reload these weights, to redo the training (with the same number of iterations), and to check that the training, the loss and the prediction are indeed always identical, whatever modifications you will now be able to make to the source code with confidence. If the datasets are very small, if the size of the network is minimal, then this list of weights is not very large, we can very well include it in the source code of a functional test. Sometimes a neural network comes with a save and reload system, that includes the whole structure of the network with its weights, but we only need the weights, not the structure, since this structure will be already redefined in the functional test. We therefore need a procedure to display the network weights, rounded for example to two decimal digits, as well as a procedure to reload these weights.
