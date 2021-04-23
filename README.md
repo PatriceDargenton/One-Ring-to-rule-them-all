@@ -5,7 +5,7 @@ Functional tests for Multi-Layer Perceptron implementations, using O.O.P. paradi
 ==
 
 <p align="center">
-<img src="http://patrice.dargenton.free.fr/ai/perceptron/xor/xor-tanh-221-big.gif" alt="xor-tanh-221-big.gif"
+<img src="http://patrice.dargenton.free.fr/ai/perceptron/xor/xor-tanh-221-big_.gif" alt="xor-tanh-221-big.gif"
   title = "Machine Learning and Deep Learning simply minimize the distance between the crosses and the curve (this is the XOR example here: Exclusive or)" />
     <br>
     <em>XOR: activation: tanh, structure: {2, 2, 1}</em>
@@ -43,10 +43,10 @@ Functional tests for Multi-Layer Perceptron implementations, using O.O.P. paradi
 # More animated gifs
 
 <p align="center">
-    <img src = "http://patrice.dargenton.free.fr/ai/perceptron/xor/xor-tanh-221.gif"
+    <img src = "http://patrice.dargenton.free.fr/ai/perceptron/xor/xor-tanh-221_.gif"
         title = "XOR: activation: tanh, structure: {2, 2, 1}" />
     <br><em>XOR: activation: tanh, structure: {2, 2, 1}</em>
-    <br><br><img src = "http://patrice.dargenton.free.fr/ai/perceptron/xor/xor-tanh-231.gif"
+    <br><br><img src = "http://patrice.dargenton.free.fr/ai/perceptron/xor/xor-tanh-231_.gif"
         title = "XOR: activation: tanh, structure: {2, 3, 1}" />
     <br><em>XOR: activation: tanh, structure: {2, 3, 1}</em>
     <br><br><img src = "http://patrice.dargenton.free.fr/ai/perceptron/xor/xor-tanh-2221.gif"
