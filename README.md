@@ -43,18 +43,57 @@ Functional tests for Multi-Layer Perceptron implementations, using O.O.P. paradi
 # More animated gifs
 
 <p align="center">
-    <img src = "http://patrice.dargenton.free.fr/ai/perceptron/xor/xor-tanh-221.gif"
+    img src = "http://patrice.dargenton.free.fr/ai/perceptron/xor/xor-tanh-221.gif"
         title = "XOR: activation: tanh, structure: {2, 2, 1}" />
     <br><em>XOR: activation: tanh, structure: {2, 2, 1}</em>
-    <br><br><img src = "http://patrice.dargenton.free.fr/ai/perceptron/xor/xor-tanh-231.gif"
+    <br>
+    <br><img src = "http://patrice.dargenton.free.fr/ai/perceptron/xor/xor-tanh-231.gif"
         title = "XOR: activation: tanh, structure: {2, 3, 1}" />
     <br><em>XOR: activation: tanh, structure: {2, 3, 1}</em>
-    <br><br><img src = "http://patrice.dargenton.free.fr/ai/perceptron/xor/xor-tanh-2221.gif"
+    <br>
+    <br><img src = "http://patrice.dargenton.free.fr/ai/perceptron/xor/xor-tanh-2221.gif"
         title = "XOR: activation: tanh, structure: {2, 2, 2, 1}" />
     <br><em>XOR: activation: tanh, structure: {2, 2, 2, 1}</em>
-    <br><br><img src = "http://patrice.dargenton.free.fr/ai/perceptron/xor/xor-sigmoid-221.gif"
+    <br>
+    <br><img src = "http://patrice.dargenton.free.fr/ai/perceptron/xor/xor-sigmoid-221.gif"
         title = "XOR: activation: sigmoid, structure: {2, 2, 1}" />
     <br><em>XOR: activation: sigmoid, structure: {2, 2, 1}</em>
+    <br>
+    <br><img src = "http://patrice.dargenton.free.fr/ai/perceptron/xor/xor-elu-221.gif"
+        title = "XOR: activation: ELU (Exponential Linear Units), structure: {2, 2, 1}" />
+    <br><em>XOR: activation: ELU (Exponential Linear Units), structure: {2, 2, 1}</em>
+    <br>
+    <br><img src = "http://patrice.dargenton.free.fr/ai/perceptron/xor/xor-double-threshold-221.gif"
+        title = "XOR: activation: double threshold, structure: {2, 2, 1}" />
+    <br><em>XOR: activation: double threshold, structure: {2, 2, 1}</em>
+    <br>
+    <br><img src = "http://patrice.dargenton.free.fr/ai/perceptron/xor/xor-double-threshold-231.gif"
+        title = "XOR: activation: double threshold, structure: {2, 3, 1}" />
+    <br><em>XOR: activation: double threshold, structure: {2, 3, 1}</em>
+    <br>
+    <br><img src = "http://patrice.dargenton.free.fr/ai/perceptron/xor/xor-double-threshold-241.gif"
+        title = "XOR: activation: double threshold, structure: {2, 4, 1}" />
+    <br><em>XOR: activation: double threshold, structure: {2, 4, 1}</em>
+    <br>
+    <br><img src = "http://patrice.dargenton.free.fr/ai/perceptron/xor/xor-double-threshold-2221.gif"
+        title = "XOR: activation: double threshold, structure: {2, 2, 2, 1}" />
+    <br><em>XOR: activation: double threshold, structure: {2, 2, 2, 1}</em>
+    <br>
+    <br><img src = "http://patrice.dargenton.free.fr/ai/perceptron/xor/xor-double-threshold-2331.gif"
+        title = "XOR: activation: double threshold, structure: {2, 3, 3, 1}" />
+    <br><em>XOR: activation: double threshold, structure: {2, 3, 3, 1}</em>
+    <br>
+    <br><img src = "http://patrice.dargenton.free.fr/ai/perceptron/xor/xor-gaussian-221.gif"
+        title = "XOR: activation: gaussian, structure: {2, 2, 1}" />
+    <br><em>XOR: activation: gaussian, structure: {2, 2, 1}</em>
+    <br>
+    <br><img src = "http://patrice.dargenton.free.fr/ai/perceptron/xor/xor-sinus-221.gif"
+        title = "XOR: activation: sinus, structure: {2, 2, 1}" />
+    <br><em>XOR: activation: sinus, structure: {2, 2, 1}</em>
+    <br>
+    <br><img src = "http://patrice.dargenton.free.fr/ai/perceptron/xor/xor-sinus-221-zoomed-out.gif"
+        title = "XOR: activation: sinus, structure: {2, 2, 1} (from afar)" />
+    <br><em>XOR: activation: sinus, structure: {2, 2, 1} (from afar)</em>
 </p>
 
 # Introduction
