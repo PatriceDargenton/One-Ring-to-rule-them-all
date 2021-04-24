@@ -43,7 +43,7 @@ Functional tests for Multi-Layer Perceptron implementations, using O.O.P. paradi
 # More animated gifs
 
 <p align="center">
-    img src = "http://patrice.dargenton.free.fr/ai/perceptron/xor/xor-tanh-221.gif"
+    <br><img src = "http://patrice.dargenton.free.fr/ai/perceptron/xor/xor-tanh-221.gif"
         title = "XOR: activation: tanh, structure: {2, 2, 1}" />
     <br><em>XOR: activation: tanh, structure: {2, 2, 1}</em>
     <br>
