@@ -83,9 +83,25 @@ Functional tests for Multi-Layer Perceptron implementations, using O.O.P. paradi
         title = "XOR: activation: double threshold, structure: {2, 3, 3, 1}" />
     <br><em>XOR: activation: double threshold, structure: {2, 3, 3, 1}</em>
     <br>
+    <br><img src = "http://patrice.dargenton.free.fr/ai/perceptron/xor/xor-relu-221.gif"
+        title = "XOR: activation: ReLU (Rectified Linear Units), structure: {2, 2, 1}" />
+    <br><em>XOR: activation: ReLU (Rectified Linear Units), structure: {2, 2, 1}</em>
+    <br>
+    <br><img src = "http://patrice.dargenton.free.fr/ai/perceptron/xor/xor-relu-231.gif"
+        title = "XOR: activation: ReLU (Rectified Linear Units), structure: {2, 3, 1}" />
+    <br><em>XOR: activation: ReLU (Rectified Linear Units), structure: {2, 3, 1}</em>
+    <br>
+    <br><img src = "http://patrice.dargenton.free.fr/ai/perceptron/xor/xor-relu-241.gif"
+        title = "XOR: activation: ReLU (Rectified Linear Units), structure: {2, 4, 1}" />
+    <br><em>XOR: activation: ReLU (Rectified Linear Units), structure: {2, 4, 1}</em>
+    <br>
     <br><img src = "http://patrice.dargenton.free.fr/ai/perceptron/xor/xor-gaussian-221.gif"
         title = "XOR: activation: gaussian, structure: {2, 2, 1}" />
     <br><em>XOR: activation: gaussian, structure: {2, 2, 1}</em>
+    <br>
+    <br><img src = "http://patrice.dargenton.free.fr/ai/perceptron/xor/xor-arctan-221.gif"
+        title = "XOR: activation: arctan, structure: {2, 2, 1}" />
+    <br><em>XOR: activation: arctan, structure: {2, 2, 1}</em>
     <br>
     <br><img src = "http://patrice.dargenton.free.fr/ai/perceptron/xor/xor-sinus-221.gif"
         title = "XOR: activation: sinus, structure: {2, 2, 1}" />
@@ -94,6 +110,38 @@ Functional tests for Multi-Layer Perceptron implementations, using O.O.P. paradi
     <br><img src = "http://patrice.dargenton.free.fr/ai/perceptron/xor/xor-sinus-221-zoomed-out.gif"
         title = "XOR: activation: sinus, structure: {2, 2, 1} (from afar)" />
     <br><em>XOR: activation: sinus, structure: {2, 2, 1} (from afar)</em>
+    <br>
+    <br><img src = "http://patrice.dargenton.free.fr/ai/perceptron/xor/xor-tanh-231-sgd.gif"
+        title = "XOR: activation: tanh, structure: {2, 3, 1}, optimizer: SGD" />
+    <br><em>XOR: activation: tanh, structure: {2, 3, 1}, optimizer: SGD</em>
+    <br>
+    <br><img src = "http://patrice.dargenton.free.fr/ai/perceptron/xor/xor-tanh-231-momentum.gif"
+        title = "XOR: activation: tanh, structure: {2, 3, 1}, optimizer: Momentum" />
+    <br><em>XOR: activation: tanh, structure: {2, 3, 1}, optimizer: Momentum</em>
+    <br>
+    <br><img src = "http://patrice.dargenton.free.fr/ai/perceptron/xor/xor-tanh-231-adagrad.gif"
+        title = "XOR: activation: tanh, structure: {2, 3, 1}, optimizer: AdaGrad" />
+    <br><em>XOR: activation: tanh, structure: {2, 3, 1}, optimizer: AdaGrad</em>
+    <br>
+    <br><img src = "http://patrice.dargenton.free.fr/ai/perceptron/xor/xor-tanh-231-adadelta.gif"
+        title = "XOR: activation: tanh, structure: {2, 3, 1}, optimizer: AdaDelta" />
+    <br><em>XOR: activation: tanh, structure: {2, 3, 1}, optimizer: AdaDelta</em>
+    <br>
+    <br><img src = "http://patrice.dargenton.free.fr/ai/perceptron/xor/xor-tanh-231-rmsprop.gif"
+        title = "XOR: activation: tanh, structure: {2, 3, 1}, optimizer: RMSProp" />
+    <br><em>XOR: activation: tanh, structure: {2, 3, 1}, optimizer: RMSProp</em>
+    <br>
+    <br><img src = "http://patrice.dargenton.free.fr/ai/perceptron/xor/xor-tanh-231-adam.gif"
+        title = "XOR: activation: tanh, structure: {2, 3, 1}, optimizer: Adam" />
+    <br><em>XOR: activation: tanh, structure: {2, 3, 1}, optimizer: Adam</em>
+    <br>
+    <br><img src = "http://patrice.dargenton.free.fr/ai/perceptron/xor/xor-tanh-231-adamax.gif"
+        title = "XOR: activation: tanh, structure: {2, 3, 1}, optimizer: AdaMax" />
+    <br><em>XOR: activation: tanh, structure: {2, 3, 1}, optimizer: AdaMax</em>
+    <br>
+    <br><img src = "http://patrice.dargenton.free.fr/ai/perceptron/xor/xor-tanh-231-rprop.gif"
+        title = "XOR: activation: tanh, structure: {2, 3, 1}, optimizer: RProp" />
+    <br><em>XOR: activation: tanh, structure: {2, 3, 1}, optimizer: RProp</em>
 </p>
 
 # Introduction
