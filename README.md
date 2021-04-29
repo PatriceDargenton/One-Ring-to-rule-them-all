@@ -142,7 +142,7 @@ Functional tests for Multi-Layer Perceptron implementations, using O.O.P. paradi
         title = "XOR: activation: tanh, structure: {2, 3, 1}, optimizer: Adam" />
     <br><em>XOR: activation: tanh, structure: {2, 3, 1}, optimizer: Adam</em>
     <br>
-    <br><img src = "http://patrice.dargenton.free.fr/ai/perceptron/xor/xor-tanh-231-adamax__.gif"
+    <br><img src = "http://patrice.dargenton.free.fr/ai/perceptron/xor/xor-tanh-231-adamax.gif"
         title = "XOR: activation: tanh, structure: {2, 3, 1}, optimizer: AdaMax" />
     <br><em>XOR: activation: tanh, structure: {2, 3, 1}, optimizer: AdaMax</em>
     <br>
