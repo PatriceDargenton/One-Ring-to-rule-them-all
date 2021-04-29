@@ -9,6 +9,9 @@ Functional tests for Multi-Layer Perceptron implementations, using O.O.P. paradi
   title = "Machine Learning and Deep Learning simply minimize the distance between the crosses and the curve (this is the XOR example here: Exclusive or)" />
     <br>
     <em>XOR: activation: tanh, structure: {2, 2, 1}</em>
+    <br>
+    <em>Machine Learning and Deep Learning simply minimize the distance between the crosses and the curve (this is the XOR example here: Exclusive or)</em>
+    <br>
 </p>
 
 # Table of contents
@@ -54,6 +57,10 @@ Functional tests for Multi-Layer Perceptron implementations, using O.O.P. paradi
     <br><img src = "http://patrice.dargenton.free.fr/ai/perceptron/xor/xor-tanh-2221.gif"
         title = "XOR: activation: tanh, structure: {2, 2, 2, 1}" />
     <br><em>XOR: activation: tanh, structure: {2, 2, 2, 1}</em>
+    <br>
+    <br><img src = "http://patrice.dargenton.free.fr/ai/perceptron/xor/xor-tanh-281.gif"
+        title = "XOR: activation: tanh, structure: {2, 8, 1}" />
+    <br><em>XOR: activation: tanh, structure: {2, 8, 1}</em>
     <br>
     <br><img src = "http://patrice.dargenton.free.fr/ai/perceptron/xor/xor-sigmoid-221.gif"
         title = "XOR: activation: sigmoid, structure: {2, 2, 1}" />
@@ -135,7 +142,7 @@ Functional tests for Multi-Layer Perceptron implementations, using O.O.P. paradi
         title = "XOR: activation: tanh, structure: {2, 3, 1}, optimizer: Adam" />
     <br><em>XOR: activation: tanh, structure: {2, 3, 1}, optimizer: Adam</em>
     <br>
-    <br><img src = "http://patrice.dargenton.free.fr/ai/perceptron/xor/xor-tanh-231-adamax.gif"
+    <br><img src = "http://patrice.dargenton.free.fr/ai/perceptron/xor/xor-tanh-231-adamax_.gif"
         title = "XOR: activation: tanh, structure: {2, 3, 1}, optimizer: AdaMax" />
     <br><em>XOR: activation: tanh, structure: {2, 3, 1}, optimizer: AdaMax</em>
     <br>
