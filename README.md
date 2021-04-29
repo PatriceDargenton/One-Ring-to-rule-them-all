@@ -383,6 +383,10 @@ Note: To update the packages, you will need to restore this deleted line in the 
 
 # Version history
 
+29/04/2021 V1.40
+- Tests added with animated gifs of the learning process
+- Double threshold activation function: derivate fixed
+
 15/04/2021 V1.39
 - ShowWeights moved into clsMLPGeneric
 

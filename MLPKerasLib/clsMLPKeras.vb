@@ -327,7 +327,8 @@ Public Class clsMLPKeras : Inherits clsVectorizedMLPGeneric
     Public Overrides Function ShowWeights$(Optional format$ = format2Dec)
 
         Dim sb As New StringBuilder
-        sb.AppendLine("nb iterations batch=" & Me.nbIterationsBatch)
+        If Me.learningMode = enumLearningMode.VectorialBatch Then _
+            sb.AppendLine("nb iterations batch=" & Me.nbIterationsBatch)
         sb.Append(Me.ShowParameters())
 
         For i = 0 To Me.layerCount - 1

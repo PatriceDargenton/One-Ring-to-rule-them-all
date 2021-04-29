@@ -349,7 +349,8 @@ Friend Class clsMLPRProp : Inherits clsVectorizedMLPGeneric
         Me.m_weights = Me.m_gnn.GetWeights()
 
         Dim sb As New StringBuilder
-        sb.AppendLine("nb iterations batch=" & Me.nbIterationsBatch)
+        If Me.learningMode = enumLearningMode.VectorialBatch Then _
+            sb.AppendLine("nb iterations batch=" & Me.nbIterationsBatch)
         If Me.useNguyenWidrowWeightsInitialization Then format = format4Dec
         Dim weightsBase = MyBase.ShowWeights(format)
         sb.Append(weightsBase)

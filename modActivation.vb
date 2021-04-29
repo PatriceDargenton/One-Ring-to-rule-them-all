@@ -17,7 +17,7 @@ Public Module modFctAct
     ''' <summary>
     ''' For non-derivatable activation functions, use an alternate derivative function
     ''' </summary>
-    Public Const useAlternateDerivativeFunction As Boolean = True
+    Public Const useAlternateDerivativeFunction As Boolean = False
 
     Public Const debugActivationFunction As Boolean = False
 
@@ -656,9 +656,22 @@ Namespace MLP.ActivationFunction
         End Function
 
         Public Function Derivative#(x#, Optional gain# = 1, Optional center# = 0) Implements IActivationFunction.Derivative
+
             If useAlternateDerivativeFunction Then _
                 Return SigmoidFunction.CommonDerivative(x, gain, center)
-            Return 0
+
+            ' 24/04/2021
+            Dim xc# = ((x - center) * gain + 4) / 8
+            Dim y#
+            If xc < 0.33 Then
+                y = 0
+            ElseIf xc > 0.66 Then
+                y = 0
+            Else
+                y = 0.5 * gain
+            End If
+            Return y
+
         End Function
 
         Public Function DerivativeFromOriginalFunction#(fx#, gain#) Implements IActivationFunction.DerivativeFromOriginalFunction

@@ -353,7 +353,7 @@ Public MustInherit Class clsMLPGeneric
 
 #End Region
 
-#Region "Training algorithm"
+#Region "Training algorithm (gradient descent optimisation)"
 
     Public Enum enumTrainingAlgorithm
 
@@ -417,6 +417,10 @@ Public MustInherit Class clsMLPGeneric
         [Default] = StochasticGradientDescent
 
     End Enum
+
+    ''' <summary>
+    ''' Training algorithm (gradient descent optimisation)
+    ''' </summary>
     Public trainingAlgorithm As enumTrainingAlgorithm = enumTrainingAlgorithm.Default
 
 #End Region
@@ -806,6 +810,8 @@ Public MustInherit Class clsMLPGeneric
             sb.AppendLine("nb lines to learn=" & Me.nbLinesToLearn)
             sb.AppendLine("nb lines total=" & Me.seriesArray.Length)
         End If
+
+        sb.AppendLine("iterations=" & Me.nbIterations)
 
         sb.AppendLine("")
 

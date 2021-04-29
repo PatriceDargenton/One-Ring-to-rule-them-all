@@ -147,6 +147,43 @@ Namespace RPropMLP
         End Sub
 
         <TestMethod()>
+        Public Sub RPropMLP1XORTanh231Gif()
+
+            ' Video of the learning process:
+            ' http://patrice.dargenton.free.fr/ai/perceptron/xor/xor-tanh-231-rprop.gif
+
+            InitXOR()
+            m_mlp.InitializeStruct(m_neuronCountXOR231, addBiasColumn:=True)
+            m_mlp.Initialize(learningRate:=0)
+
+            m_mlp.nbIterations = 500
+            m_mlp.SetActivationFunction(enumActivationFunction.HyperbolicTangent, gain:=0.5!)
+
+            m_mlp.InitializeWeights(1, {
+                {-0.46, 0.34, -0.12},
+                {-0.12, 0.12, 0.1},
+                {0.46, -0.08, 0.23}})
+            m_mlp.InitializeWeights(2, {
+                {0.07, -0.29, 0.27, -0.11}})
+
+            m_mlp.Train()
+
+            Dim expectedOutput = m_targetArrayXOR
+            Dim expectedMatrix As Matrix = expectedOutput ' Single(,) -> Matrix
+
+            Dim sOutput = m_mlp.output.ToStringWithFormat(dec:="0.0")
+
+            Dim sExpectedOutput = expectedMatrix.ToStringWithFormat(dec:="0.0")
+            Assert.AreEqual(sExpectedOutput, sOutput)
+
+            Const expectedLoss# = 0.02
+            Dim loss# = m_mlp.averageError
+            Dim lossRounded# = Math.Round(loss, 2)
+            Assert.AreEqual(True, lossRounded <= expectedLoss)
+
+        End Sub
+
+        <TestMethod()>
         Public Sub RPropMLP2XORSigmoid()
 
             TestMLP2XORSigmoid(m_mlp, nbIterations:=300)

@@ -777,49 +777,46 @@ Namespace VectorizedMatrixMLP
 
         End Sub
 
+        ' useAlternateDerivativeFunction = True
+        '<TestMethod()>
+        'Public Sub VecMatrixMLP2XORDbleThreshold()
 
+        '    Init2XOR()
+        '    m_mlp.learningRate = 0.15
+        '    m_mlp.nbIterations = 900
+        '    m_mlp.SetActivationFunction(enumActivationFunction.DoubleThreshold, center:=0.2!)
 
-        <TestMethod()>
-        Public Sub VecMatrixMLP2XORDbleThreshold()
+        '    m_mlp.InitializeStruct(m_neuronCount2XOR, addBiasColumn:=True)
 
-            Init2XOR()
-            m_mlp.learningRate = 0.15
-            m_mlp.nbIterations = 900
-            m_mlp.SetActivationFunction(enumActivationFunction.DoubleThreshold, center:=0.2!)
+        '    m_mlp.InitializeWeights(1, {
+        '        {0.85, 0.95, 0.99, 0.63, 0.09},
+        '        {0.82, 0.05, 0.68, 0.26, 0.81},
+        '        {0.79, 0.58, 0.7, 0.95, 0.85},
+        '        {0.78, 0.07, 0.14, 0.46, 0.83},
+        '        {0.4, 0.81, 0.06, 0.21, 0.95}})
+        '    m_mlp.InitializeWeights(2, {
+        '        {0.42, 0.49},
+        '        {0.4, 0.98},
+        '        {0.42, 0.71},
+        '        {0.47, 0.75},
+        '        {0.2, 0.44},
+        '        {0.5, 0.21}})
 
-            m_mlp.InitializeStruct(m_neuronCount2XOR, addBiasColumn:=True)
+        '    m_mlp.Train()
 
-            m_mlp.InitializeWeights(1, {
-                {0.85, 0.95, 0.99, 0.63, 0.09},
-                {0.82, 0.05, 0.68, 0.26, 0.81},
-                {0.79, 0.58, 0.7, 0.95, 0.85},
-                {0.78, 0.07, 0.14, 0.46, 0.83},
-                {0.4, 0.81, 0.06, 0.21, 0.95}})
-            m_mlp.InitializeWeights(2, {
-                {0.42, 0.49},
-                {0.4, 0.98},
-                {0.42, 0.71},
-                {0.47, 0.75},
-                {0.2, 0.44},
-                {0.5, 0.21}})
+        '    Dim expectedOutput = m_targetArray2XOR
 
-            'm_mlp.TrainVector()
-            'm_mlp.Train(enumLearningMode.Vectorial)
-            m_mlp.Train()
+        '    Dim sOutput$ = m_mlp.output.ToStringWithFormat(dec:="0.0")
+        '    Dim expectedMatrix As Matrix = expectedOutput ' Single(,) -> Matrix
+        '    Dim sExpectedOutput = expectedMatrix.ToStringWithFormat(dec:="0.0")
+        '    Assert.AreEqual(sExpectedOutput, sOutput)
 
-            Dim expectedOutput = m_targetArray2XOR
+        '    Const expectedLoss# = 0.01
+        '    Dim loss# = m_mlp.averageError
+        '    Dim lossRounded# = Math.Round(loss, 2)
+        '    Assert.AreEqual(True, lossRounded <= expectedLoss)
 
-            Dim sOutput$ = m_mlp.output.ToStringWithFormat(dec:="0.0")
-            Dim expectedMatrix As Matrix = expectedOutput ' Single(,) -> Matrix
-            Dim sExpectedOutput = expectedMatrix.ToStringWithFormat(dec:="0.0")
-            Assert.AreEqual(sExpectedOutput, sOutput)
-
-            Const expectedLoss# = 0.01
-            Dim loss# = m_mlp.averageError
-            Dim lossRounded# = Math.Round(loss, 2)
-            Assert.AreEqual(True, lossRounded <= expectedLoss)
-
-        End Sub
+        'End Sub
 
         <TestMethod()>
         Public Sub VecMatrixMLP3XORSigmoid()
@@ -913,51 +910,52 @@ Namespace VectorizedMatrixMLP
 
         End Sub
 
-        <TestMethod()>
-        Public Sub VecMatrixMLP3XORDbleThreshold()
+        ' useAlternateDerivativeFunction = True
+        '<TestMethod()>
+        'Public Sub VecMatrixMLP3XORDbleThreshold()
 
-            Init3XOR()
-            m_mlp.learningRate = 0.8
-            m_mlp.nbIterations = 400
-            m_mlp.SetActivationFunction(enumActivationFunction.DoubleThreshold, center:=2)
+        '    Init3XOR()
+        '    m_mlp.learningRate = 0.8
+        '    m_mlp.nbIterations = 400
+        '    m_mlp.SetActivationFunction(enumActivationFunction.DoubleThreshold, center:=2)
 
-            m_mlp.InitializeStruct(m_neuronCount3XOR, addBiasColumn:=True)
+        '    m_mlp.InitializeStruct(m_neuronCount3XOR, addBiasColumn:=True)
 
-            m_mlp.InitializeWeights(1, {
-                {0.65, 0.98, 0.41, 0.71, 0.73, 0.69, 0.78},
-                {0.82, 1.0, 0.34, 0.07, 0.08, 0.4, 0.29},
-                {0.03, 0.86, 0.52, 0.98, 0.74, 0.91, 0.45},
-                {0.86, 0.74, 0.63, 0.82, 0.66, 0.28, 0.76},
-                {0.41, 0.47, 0.32, 0.34, 0.3, 0.16, 0.98},
-                {0.8, 0.15, 0.03, 0.88, 0.58, 0.11, 0.1},
-                {0.58, 0.02, 0.35, 0.75, 0.52, 0.47, 0.03}})
-            m_mlp.InitializeWeights(2, {
-                {0.28, 0.37, 0.8},
-                {1.0, 0.13, 0.2},
-                {0.11, 0.67, 0.38},
-                {0.89, 0.07, 0.41},
-                {0.03, 0.41, 0.53},
-                {0.03, 0.73, 0.79},
-                {0.23, 0.31, 0.23},
-                {0.72, 0.49, 0.1}})
+        '    m_mlp.InitializeWeights(1, {
+        '        {0.65, 0.98, 0.41, 0.71, 0.73, 0.69, 0.78},
+        '        {0.82, 1.0, 0.34, 0.07, 0.08, 0.4, 0.29},
+        '        {0.03, 0.86, 0.52, 0.98, 0.74, 0.91, 0.45},
+        '        {0.86, 0.74, 0.63, 0.82, 0.66, 0.28, 0.76},
+        '        {0.41, 0.47, 0.32, 0.34, 0.3, 0.16, 0.98},
+        '        {0.8, 0.15, 0.03, 0.88, 0.58, 0.11, 0.1},
+        '        {0.58, 0.02, 0.35, 0.75, 0.52, 0.47, 0.03}})
+        '    m_mlp.InitializeWeights(2, {
+        '        {0.28, 0.37, 0.8},
+        '        {1.0, 0.13, 0.2},
+        '        {0.11, 0.67, 0.38},
+        '        {0.89, 0.07, 0.41},
+        '        {0.03, 0.41, 0.53},
+        '        {0.03, 0.73, 0.79},
+        '        {0.23, 0.31, 0.23},
+        '        {0.72, 0.49, 0.1}})
 
-            'm_mlp.TrainVector()
-            'm_mlp.Train(enumLearningMode.Vectorial)
-            m_mlp.Train()
+        '    'm_mlp.TrainVector()
+        '    'm_mlp.Train(enumLearningMode.Vectorial)
+        '    m_mlp.Train()
 
-            Dim expectedOutput = m_targetArray3XOR
+        '    Dim expectedOutput = m_targetArray3XOR
 
-            Dim sOutput$ = m_mlp.output.ToStringWithFormat(dec:="0.0")
-            Dim expectedMatrix As Matrix = expectedOutput ' Single(,) -> Matrix
-            Dim sExpectedOutput = expectedMatrix.ToStringWithFormat(dec:="0.0")
-            Assert.AreEqual(sExpectedOutput, sOutput)
+        '    Dim sOutput$ = m_mlp.output.ToStringWithFormat(dec:="0.0")
+        '    Dim expectedMatrix As Matrix = expectedOutput ' Single(,) -> Matrix
+        '    Dim sExpectedOutput = expectedMatrix.ToStringWithFormat(dec:="0.0")
+        '    Assert.AreEqual(sExpectedOutput, sOutput)
 
-            Const expectedLoss# = 0.01
-            Dim loss# = m_mlp.averageError
-            Dim lossRounded# = Math.Round(loss, 2)
-            Assert.AreEqual(True, lossRounded <= expectedLoss)
+        '    Const expectedLoss# = 0.01
+        '    Dim loss# = m_mlp.averageError
+        '    Dim lossRounded# = Math.Round(loss, 2)
+        '    Assert.AreEqual(True, lossRounded <= expectedLoss)
 
-        End Sub
+        'End Sub
 
         <TestMethod()>
         Public Sub VecMatrixMLPIrisFlowerLogical()

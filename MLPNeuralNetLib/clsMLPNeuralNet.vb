@@ -504,7 +504,8 @@ Public Class clsMLPNeuralNet : Inherits clsVectorizedMLPGeneric
         GetWeights()
 
         Dim sb As New StringBuilder
-        sb.AppendLine("nb iterations batch=" & Me.nbIterationsBatch)
+        If Me.learningMode = enumLearningMode.VectorialBatch Then _
+            sb.AppendLine("nb iterations batch=" & Me.nbIterationsBatch)
         Dim weightsBase = MyBase.ShowWeights(format)
         sb.Append(weightsBase)
         Dim weights = sb.ToString
