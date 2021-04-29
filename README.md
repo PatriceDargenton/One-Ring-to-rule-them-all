@@ -211,8 +211,16 @@ Let see a functionnal test for a small learning example:
 # List of frameworks and libraries remaining to be tested
 - [ML.NET](https://github.com/dotnet/machinelearning) (Microsoft Machine Learning for .NET): ML.NET requires the definition of a class representing the object to learn and predict, if we want to be able to avoid this definition and do tests in a generic way, then it is specified in the FAQ that it is necessary to use the FeatureVector, but I did not find any example of implementation!
 - [CNTK](https://github.com/microsoft/CNTK) (Microsoft Cognitive Toolkit)
-- [Gym.NET](https://github.com/SciSharp/Gym.NET)
 - [Bright Wire](https://github.com/jdermody/brightwire)
+- [Synapses](https://github.com/mrdimosthenis/Synapses)
+- [Vulpes](https://github.com/fsprojects/Vulpes)
+- [OpenCVDotNet](https://code.google.com/archive/p/opencvdotnet)
+- [Emgu CV](https://emgu.com/wiki/index.php/Main_Page)
+- [MxNet.Sharp](https://github.com/deepakkumar1984/MxNet.Sharp)
+- [Gym.NET](https://github.com/SciSharp/Gym.NET)
+- [Torch.NET](https://github.com/SciSharp/Torch.NET)
+- [SciSharp-Learn](https://github.com/SciSharp/scikit-learn.net)
+- [SiaNet](https://github.com/SciSharp/SiaNet)
 - (forgot some?)
 
 # MLP implementations in VB .Net
@@ -249,6 +257,7 @@ From C#: https://github.com/HectorPulido/Vectorized-multilayer-neural-network
 
 From C#: https://github.com/HectorPulido/Machine-learning-Framework-Csharp
 
+What is the recommanded minimum structure with a tensor? See [NeuralNet.NET Framework](#neuralnet-mlp-implementation-using-neuralnetnet-framework)
 
 ## RProp MLP: implementation using Resilient Back Propagation algorithm
 
