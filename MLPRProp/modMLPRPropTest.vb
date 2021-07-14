@@ -147,7 +147,7 @@ Namespace RPropMLP
         End Sub
 
         <TestMethod()>
-        Public Sub RPropMLP1XORTanh231Gif()
+        Public Sub RPropMLP1XORGifTanh231()
 
             ' Video of the learning process:
             ' http://patrice.dargenton.free.fr/ai/perceptron/xor/xor-tanh-231-rprop.gif
@@ -156,15 +156,15 @@ Namespace RPropMLP
             m_mlp.InitializeStruct(m_neuronCountXOR231, addBiasColumn:=True)
             m_mlp.Initialize(learningRate:=0)
 
-            m_mlp.nbIterations = 500
-            m_mlp.SetActivationFunction(enumActivationFunction.HyperbolicTangent, gain:=0.5!)
+            m_mlp.nbIterations = 400
+            m_mlp.SetActivationFunction(enumActivationFunction.HyperbolicTangent)
 
             m_mlp.InitializeWeights(1, {
-                {-0.46, 0.34, -0.12},
-                {-0.12, 0.12, 0.1},
-                {0.46, -0.08, 0.23}})
+                {0.2, 0.3, 0.37},
+                {0.42, 0.47, 0.45},
+                {0.36, 0.15, 0.19}})
             m_mlp.InitializeWeights(2, {
-                {0.07, -0.29, 0.27, -0.11}})
+                {0.23, 0.23, 0.17, 0.33}})
 
             m_mlp.Train()
 

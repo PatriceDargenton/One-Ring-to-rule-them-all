@@ -130,11 +130,11 @@ Namespace TensorMLP
         Private m_mlp As New clsMLPTensor
 
         ' Some tests works, and not others?
-        'Private m_mlp As New VectorizedMatrixMLP.clsVectorizedMatrixMLP
+        'Private m_mlp As New clsVectorizedMatrixMLP
 
         'Private m_mlp As New clsMLPClassic ' Not same weight array size
-        'Private m_mlp As New MatrixMLP.MultiLayerPerceptron ' InitializeWeights not implemented
-        'Private m_mlp As New NetworkOOP.MultilayerPerceptron ' Not same weight array size
+        'Private m_mlp As New clsMPLMatrix ' InitializeWeights not implemented
+        'Private m_mlp As New clsMLPOOP ' Not same weight array size
 
         <TestInitialize()>
         Public Sub Init()

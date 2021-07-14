@@ -74,22 +74,6 @@ Functional tests for Multi-Layer Perceptron implementations, using O.O.P. paradi
         title = "XOR: activation: double threshold, structure: {2, 2, 1}" />
     <br><em>XOR: activation: double threshold, structure: {2, 2, 1}</em>
     <br>
-    <br><img src = "http://patrice.dargenton.free.fr/ai/perceptron/xor/xor-double-threshold-231.gif"
-        title = "XOR: activation: double threshold, structure: {2, 3, 1}" />
-    <br><em>XOR: activation: double threshold, structure: {2, 3, 1}</em>
-    <br>
-    <br><img src = "http://patrice.dargenton.free.fr/ai/perceptron/xor/xor-double-threshold-241.gif"
-        title = "XOR: activation: double threshold, structure: {2, 4, 1}" />
-    <br><em>XOR: activation: double threshold, structure: {2, 4, 1}</em>
-    <br>
-    <br><img src = "http://patrice.dargenton.free.fr/ai/perceptron/xor/xor-double-threshold-2221.gif"
-        title = "XOR: activation: double threshold, structure: {2, 2, 2, 1}" />
-    <br><em>XOR: activation: double threshold, structure: {2, 2, 2, 1}</em>
-    <br>
-    <br><img src = "http://patrice.dargenton.free.fr/ai/perceptron/xor/xor-double-threshold-2331.gif"
-        title = "XOR: activation: double threshold, structure: {2, 3, 3, 1}" />
-    <br><em>XOR: activation: double threshold, structure: {2, 3, 3, 1}</em>
-    <br>
     <br><img src = "http://patrice.dargenton.free.fr/ai/perceptron/xor/xor-relu-221.gif"
         title = "XOR: activation: ReLU (Rectified Linear Units), structure: {2, 2, 1}" />
     <br><em>XOR: activation: ReLU (Rectified Linear Units), structure: {2, 2, 1}</em>
@@ -117,6 +101,34 @@ Functional tests for Multi-Layer Perceptron implementations, using O.O.P. paradi
     <br><img src = "http://patrice.dargenton.free.fr/ai/perceptron/xor/xor-sinus-221-zoomed-out.gif"
         title = "XOR: activation: sinus, structure: {2, 2, 1} (from afar)" />
     <br><em>XOR: activation: sinus, structure: {2, 2, 1} (from afar)</em>
+    <br>
+    <br><img src = "http://patrice.dargenton.free.fr/ai/perceptron/xor/xor-mish-221.gif"
+        title = "XOR: activation: mish, structure: {2, 2, 1}" />
+    <br><em>XOR: activation: mish, structure: {2, 2, 1}</em>
+    <br>
+    <br><img src = "http://patrice.dargenton.free.fr/ai/perceptron/xor/xor-analog-elu-221.gif"
+        title = "XOR-analog: activation: ELU (Exponential Linear Units), structure: {2, 2, 1}" />
+    <br><em>XOR-analog: activation: ELU (Exponential Linear Units), structure: {2, 2, 1}</em>
+    <br>
+        <br><img src = "http://patrice.dargenton.free.fr/ai/perceptron/xor/xor-analog-elu-231.gif"
+        title = "XOR-analog: activation: ELU (Exponential Linear Units), structure: {2, 3, 1}" />
+    <br><em>XOR-analog: activation: ELU (Exponential Linear Units), structure: {2, 3, 1}</em>
+    <br>
+    <br><img src = "http://patrice.dargenton.free.fr/ai/perceptron/xor/xor-analog-tanh-231.gif"
+        title = "XOR-analog: activation: tanh, structure: {2, 3, 1}" />
+    <br><em>XOR-analog: activation: tanh, structure: {2, 3, 1}</em>
+    <br>
+    <br><img src = "http://patrice.dargenton.free.fr/ai/perceptron/xor/xor-analog-tanh-2331.gif"
+        title = "XOR-analog: activation: tanh, structure: {2, 3, 3, 1}" />
+    <br><em>XOR-analog: activation: tanh, structure: {2, 3, 3, 1}</em>
+    <br>
+    <br><img src = "http://patrice.dargenton.free.fr/ai/perceptron/xor/xor-analog-double-threshold-241.gif"
+        title = "XOR-analog: activation: double threshold, structure: {2, 4, 1}" />
+    <br><em>XOR-analog: activation: double threshold, structure: {2, 4, 1}</em>
+    <br>
+    <br><img src = "http://patrice.dargenton.free.fr/ai/perceptron/xor/xor-analog-relu-241.gif"
+        title = "XOR-analog: activation: ReLU (Rectified Linear Units), structure: {2, 4, 1}" />
+    <br><em>XOR-analog: activation: ReLU (Rectified Linear Units), structure: {2, 4, 1}</em>
     <br>
     <br><img src = "http://patrice.dargenton.free.fr/ai/perceptron/xor/xor-tanh-231-sgd.gif"
         title = "XOR: activation: tanh, structure: {2, 3, 1}, optimizer: SGD" />
@@ -205,6 +217,21 @@ Let see a functionnal test for a small learning example:
 
 # List of small datasets tested
 - The classical XOR test, and also 2 XOR and 3 XOR (to reduce hazard and improve learning stability, see [MLPComparison.xls](MLPComparison.xls));
+- What if the XOR logical operation was analogical instead of logical? See this truth table (xor-analog):
+```
+    | Input  |Output|
+    | A   B  |      |
+    |--------|------|
+    |  1   0 |    1 |
+    |  0   0 |    0 |
+    |  0   1 |    1 |
+    |  1   1 |    0 |
+    |0.9 0.1 |  0.9 |
+    |0.1 0.1 |  0.1 |
+    |0.1 0.9 |  0.9 |
+    |0.9 0.9 |  0.1 |
+    |0.5 0.5 |  0.5 |
+```
 - The [Iris flower](https://en.wikipedia.org/wiki/Iris_flower_data_set) test;
 - The [Sunspots](https://courses.cs.washington.edu/courses/cse599/01wi/admin/Assignments/nn.html) test.
 
@@ -391,6 +418,22 @@ Note: To update the packages, you will need to restore this deleted line in the 
 [MLPComparison.xls](MLPComparison.xls)
 
 # Version history
+
+14/07/2021 V1.41
+- Analog XOR dataset and tests added: see animated gifs
+- [Mish](https://github.com/Sergio0694/NeuralNetwork.NET/issues/93) activation function added (added also for [NeuralNet library](https://github.com/PatriceDargenton/NeuralNetwork.NET/tree/stable))
+- Average error computing: for one sample and for all samples
+- Signed error computing added
+- Animated gifs: first iterations offsets fixed using signed error adjustement around 0 (we can see the differences from previous gifs using the sign _ at the end of the gif name, for example "xor-tanh-221_.gif" there: http://patrice.dargenton.free.fr/ai/perceptron/xor/xor-tanh-221_.gif)
+- Animated gifs: information added during iterations: structure of the neural network, weight of neurons, activation function and derivative, output signal and target, history of the error curve
+- clsMLPOOP: Randomize range fixed
+- clsMLPTensor: ComputeAverageError: moved into clsMLPGeneric function
+- clsMLPAccord: averageError computing: moved into clsMLPGeneric function
+- clsMLPClassic test: MLP1XORTanh281Gif: neural network structure fixed: {2, 3, 1} -> {2, 8, 1}
+- clsMLPClassic test: MLP1XORSinus221Gif: activation function fixed: Gaussian -> Sinus
+- clsMLPGeneric: GetMLPType MustOverride function added
+- NetworkOOP.MultilayerPerceptron -> clsMLPOOP
+- MatrixMLP.MultiLayerPerceptron -> clsMLPMatrix
 
 29/04/2021 V1.40
 - Tests added with animated gifs of the learning process

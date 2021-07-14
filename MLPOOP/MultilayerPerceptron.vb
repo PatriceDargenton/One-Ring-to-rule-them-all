@@ -1,5 +1,5 @@
 ﻿
-' From: https://github.com/RutledgePaulV/multilayer-perceptron-vb
+' From https://github.com/RutledgePaulV/multilayer-perceptron-vb
 
 Imports Perceptron.Layers
 Imports Perceptron.Activation
@@ -9,285 +9,300 @@ Imports Perceptron.Randoms
 Imports Perceptron.Utility ' Matrix
 Imports System.Text ' StringBuilder
 
-Namespace NetworkOOP
+'Namespace NetworkOOP
 
-    Public Class MultilayerPerceptron : Inherits clsMLPGeneric
+Public Class clsMLPOOP : Inherits clsMLPGeneric
 
-        Public Property TotalError#
+    Public Property TotalSquaredError#
+    Public Property TotalAbsError#
+    Public Property TotalSignedError#
 
-        'Public Property Momentum# -> weightAdjustment
+    'Public Property Momentum# -> weightAdjustment
 
-        Public Property Bias As Neuron
-        Public Property Randomizer As BaseRandom
-        Public Property ActivationFunction As BaseActivation
+    Public Property Bias As Neuron
+    Public Property Randomizer As BaseRandom
+    Public Property ActivationFunction As BaseActivation
 
-        Public Property Layers As List(Of BaseLayer)
+    Public Property Layers As List(Of BaseLayer)
 
-        Public Property InputLayer As InputLayer
-        Public Property OutputLayer As OutputLayer
-        Public Property HiddenLayers As List(Of HiddenLayer)
+    Public Property InputLayer As InputLayer
+    Public Property OutputLayer As OutputLayer
+    Public Property HiddenLayers As List(Of HiddenLayer)
 
-        Public Property Outputs As List(Of List(Of Double))
+    Public Property Outputs As List(Of List(Of Double))
 
-        Public Sub New()
-            Dim standard As New Randoms.Standard(
-                New Utilities.Range(-1, 1), seed:=DateTime.Now.Millisecond)
-            Me.Randomizer = standard
-        End Sub
+    Public Sub New()
+        Dim standard As New Randoms.Standard(
+            New Utilities.Range(-1, 1), seed:=DateTime.Now.Millisecond)
+        Me.Randomizer = standard
+    End Sub
 
-        Public Sub New(learning_rate!, momentum!,
-            randomizer As BaseRandom, activation As BaseActivation)
+    Public Sub New(learning_rate!, momentum!,
+        randomizer As BaseRandom, activation As BaseActivation)
 
-            'setting properties
-            Me.weightAdjustment = momentum
-            Me.Randomizer = randomizer
-            Me.learningRate = learning_rate
-            Me.ActivationFunction = activation
+        'setting properties
+        Me.weightAdjustment = momentum
+        Me.Randomizer = randomizer
+        Me.learningRate = learning_rate
+        Me.ActivationFunction = activation
 
-        End Sub
+    End Sub
 
-        Public Overrides Function GetActivationFunctionType() As enumActivationFunctionType
-            Return enumActivationFunctionType.BothNormalAndSpecificCode
-        End Function
+    Public Overrides Function GetMLPType$()
+        Return System.Reflection.MethodBase.GetCurrentMethod().DeclaringType.Name
+    End Function
 
-        Public Overrides Sub InitializeStruct(neuronCount%(), addBiasColumn As Boolean)
+    Public Overrides Function GetActivationFunctionType() As enumActivationFunctionType
+        Return enumActivationFunctionType.BothNormalAndSpecificCode
+    End Function
 
-            MyBase.InitializeStruct(neuronCount, addBiasColumn)
+    Public Overrides Sub InitializeStruct(neuronCount%(), addBiasColumn As Boolean)
 
-            If addBiasColumn Then
-                'setting bias
-                Me.Bias = New Neuron(NeuronType.Input)
-                Me.Bias.Input = 1
-                Me.Bias.Output = 1
-            Else
-                Me.Bias = Nothing
-            End If
+        MyBase.InitializeStruct(neuronCount, addBiasColumn)
 
-            'initializing lists
-            Me.Layers = New List(Of BaseLayer)
-            Me.HiddenLayers = New List(Of HiddenLayer)
+        If addBiasColumn Then
+            'setting bias
+            Me.Bias = New Neuron(NeuronType.Input)
+            Me.Bias.Input = 1
+            Me.Bias.Output = 1
+        Else
+            Me.Bias = Nothing
+        End If
 
-            'creating layers
-            Me.InputLayer = New InputLayer(Me.nbInputNeurons, Me.ActivationFunction)
-            Me.Layers.Add(InputLayer)
-            Dim numLayer = 0
-            For Each i In neuronCount
-                numLayer += 1
-                If numLayer = 1 Then Continue For
-                If numLayer = Me.layerCount Then Exit For
-                Dim hiddenLayer = New HiddenLayer(i, Me.ActivationFunction)
-                Me.HiddenLayers.Add(hiddenLayer)
-                Me.Layers.Add(hiddenLayer)
-            Next
-            Me.OutputLayer = New OutputLayer(Me.nbOutputNeurons, Me.ActivationFunction)
-            Me.Layers.Add(OutputLayer)
-            Me.layerCount = Me.Layers.Count
+        'initializing lists
+        Me.Layers = New List(Of BaseLayer)
+        Me.HiddenLayers = New List(Of HiddenLayer)
 
-            WeightInitStruct()
+        'creating layers
+        Me.InputLayer = New InputLayer(Me.nbInputNeurons, Me.ActivationFunction)
+        Me.Layers.Add(InputLayer)
+        Dim numLayer = 0
+        For Each i In neuronCount
+            numLayer += 1
+            If numLayer = 1 Then Continue For
+            If numLayer = Me.layerCount Then Exit For
+            Dim hiddenLayer = New HiddenLayer(i, Me.ActivationFunction)
+            Me.HiddenLayers.Add(hiddenLayer)
+            Me.Layers.Add(hiddenLayer)
+        Next
+        Me.OutputLayer = New OutputLayer(Me.nbOutputNeurons, Me.ActivationFunction)
+        Me.Layers.Add(OutputLayer)
+        Me.layerCount = Me.Layers.Count
 
-        End Sub
+        WeightInitStruct()
 
-        Private Sub WeightInitStruct()
+    End Sub
 
-            'connecting layers (creating weights)
-            For x = 0 To Me.Layers.Count - 2
-                Me.Layers(x).ConnectChildInit(Layers(x + 1))
+    Private Sub WeightInitStruct()
 
-                'connecting bias
-                If Me.useBias Then Me.Layers(x + 1).ConnectBiasInit(Bias)
-            Next
+        'connecting layers (creating weights)
+        For x = 0 To Me.Layers.Count - 2
+            Me.Layers(x).ConnectChildInit(Layers(x + 1))
 
-        End Sub
+            'connecting bias
+            If Me.useBias Then Me.Layers(x + 1).ConnectBiasInit(Bias)
+        Next
 
-        Public Overrides Sub InitializeWeights(layer%, weights#(,))
+    End Sub
 
-            Me.Layers(layer).RestoreWeightsWithBias(weights, Me.useBias, Me.Bias,
-                Me.Layers(layer - 1))
+    Public Overrides Sub InitializeWeights(layer%, weights#(,))
 
-        End Sub
+        Me.Layers(layer).RestoreWeightsWithBias(weights, Me.useBias, Me.Bias,
+            Me.Layers(layer - 1))
 
-        Public Overrides Sub Randomize(Optional minValue! = -0.5!, Optional maxValue! = 0.5!)
+    End Sub
 
-            For x = 0 To Me.Layers.Count - 2
-                Me.Layers(x).InitChild(Layers(x + 1), Me.Randomizer)
-                If Me.useBias Then Me.Layers(x + 1).InitBias(Me.Bias, Me.Randomizer)
-            Next
+    Public Overrides Sub Randomize(Optional minValue! = -0.5!, Optional maxValue! = 0.5!)
 
-        End Sub
+        ' 06/06/2021
+        Me.Randomizer = New Randoms.Standard(
+            New Utilities.Range(minValue, maxValue), seed:=DateTime.Now.Millisecond)
 
-        Public Sub TrainOneSampleOOP(data As List(Of Training))
+        For x = 0 To Me.Layers.Count - 2
+            Me.Layers(x).InitChild(Layers(x + 1), Me.Randomizer)
+            If Me.useBias Then Me.Layers(x + 1).InitBias(Me.Bias, Me.Randomizer)
+        Next
 
-            Me.Outputs = New List(Of List(Of Double))
-            Me.TotalError = 0.0
-            For Each item In data
-                Me.InputLayer.SetInput(item.Input)
-                ForwardPropogateSignal()
-                Me.OutputLayer.AssignErrors(item.Output)
-                BackwardPropogateErrorComputeGradientAndAdjustWeights()
-                Me.TotalError += Me.OutputLayer.CalculateSquaredError()
-                Me.Outputs.Add(Me.OutputLayer.ExtractOutputs)
-            Next
+    End Sub
 
-        End Sub
+    Public Sub TrainOneSampleOOP(data As List(Of Training))
 
-        Public Sub TrainOneIteration(data As List(Of Training))
-
-            Me.Outputs = New List(Of List(Of Double))
-            Me.TotalError = 0.0
-            For Each item In data
-                Me.InputLayer.SetInput(item.Input)
-                ForwardPropogateSignal()
-                Me.OutputLayer.AssignErrors(item.Output)
-                BackwardPropogateErrorComputeGradientAndAdjustWeights()
-                Me.TotalError += Me.OutputLayer.CalculateSquaredError()
-                Me.Outputs.Add(Me.OutputLayer.ExtractOutputs)
-            Next
-
-        End Sub
-
-        Private Sub SetInputOneSample(input!())
-
-            Dim inputDble#() = clsMLPHelper.Convert1DArrayOfSingleToDouble(input)
-            Dim lst As List(Of Double) = inputDble.ToList
-            Dim data As New Testing(lst)
-            Me.InputLayer.SetInput(data.Input)
-
-        End Sub
-
-        Private Function SetInputAndTargetOneSample(input!(), target!()) As List(Of Training)
-
-            Dim data As New List(Of Training)
-            Dim inputDble#() = clsMLPHelper.Convert1DArrayOfSingleToDouble(input)
-            Dim targetDble#() = clsMLPHelper.Convert1DArrayOfSingleToDouble(target)
-            data.Add(New Training(inputDble, targetDble))
-            Return data
-
-        End Function
-
-        Public Overrides Sub TrainOneSample(input!(), target!())
-
-            Dim data = SetInputAndTargetOneSample(input, target)
-            TrainOneSampleOOP(data)
-            Me.averageError = Me.TotalError / target.GetLength(0)
-            SetOuput1D()
-
-        End Sub
-
-        Public Sub SetOuput1D()
-            Dim lst = Me.OutputLayer.ExtractOutputs()
-            Me.lastOutputArray1D = lst.ToArray()
-            Me.lastOutputArray1DSingle = clsMLPHelper.Convert1DArrayOfDoubleToSingle(Me.lastOutputArray1D)
-        End Sub
-
-        Private Sub SetOutput()
-            ' 29/11/2020
-            Dim outputs2D#(0, Me.nbOutputNeurons - 1)
-            clsMLPHelper.Fill2DArrayOfDouble(outputs2D, Me.lastOutputArray1D, 0)
-            Me.output = outputs2D
-        End Sub
-
-        Public Overrides Sub TestOneSample(input!())
-
-            SetInputOneSample(input)
+        Me.Outputs = New List(Of List(Of Double))
+        Me.TotalAbsError = 0
+        Me.TotalSquaredError = 0
+        Me.TotalSignedError = 0
+        For Each item In data
+            Me.InputLayer.SetInput(item.Input)
             ForwardPropogateSignal()
-            SetOuput1D()
-            SetOutput() ' 29/11/2020
+            Me.OutputLayer.AssignErrors(item.Output)
+            BackwardPropogateErrorComputeGradientAndAdjustWeights()
+            Me.TotalAbsError += Me.OutputLayer.CalculateAbsError()
+            Me.TotalSquaredError += Me.OutputLayer.CalculateSquaredError()
+            Me.TotalSignedError += Me.OutputLayer.CalculateSignedError()
+            Me.Outputs.Add(Me.OutputLayer.ExtractOutputs)
+        Next
 
-        End Sub
+    End Sub
 
-        Private Sub ForwardPropogateSignal()
+    Public Sub TrainOneIteration(data As List(Of Training))
 
-            For x = 1 To Me.Layers.Count - 1
-                For Each node In Me.Layers(x).Neurons
-                    node.Input = 0.0
-                    For Each w In node.WeightsToParent
-                        node.Input += w.Parent.Output * w.Value
-                    Next
-                    'adding bias
-                    If Me.useBias Then node.Input +=
-                        node.WeightToBias.Parent.Output * node.WeightToBias.Value
+        Me.Outputs = New List(Of List(Of Double))
+        Me.TotalSquaredError = 0
+        For Each item In data
+            Me.InputLayer.SetInput(item.Input)
+            ForwardPropogateSignal()
+            Me.OutputLayer.AssignErrors(item.Output)
+            BackwardPropogateErrorComputeGradientAndAdjustWeights()
+            Me.TotalSquaredError += Me.OutputLayer.CalculateSquaredError()
+            Me.Outputs.Add(Me.OutputLayer.ExtractOutputs)
+        Next
 
-                    If IsNothing(Me.lambdaFnc) AndAlso
-                       IsNothing(Layers(x).ActivationFunction) Then
-                        Throw New ArgumentException("Activation function undefined!")
-                    End If
+    End Sub
 
-                    If IsNothing(Me.ActivationFunction) Then
-                        ' Generic activation function
-                        node.Output = Me.lambdaFnc.Invoke(node.Input)
-                    Else
-                        ' OOP activation function
-                        node.Output = Me.Layers(x).ActivationFunction.Evaluate(node.Input)
-                    End If
+    Private Sub SetInputOneSample(input!())
+
+        Dim inputDble#() = clsMLPHelper.Convert1DArrayOfSingleToDouble(input)
+        Dim lst As List(Of Double) = inputDble.ToList
+        Dim data As New Testing(lst)
+        Me.InputLayer.SetInput(data.Input)
+
+    End Sub
+
+    Private Function SetInputAndTargetOneSample(input!(), target!()) As List(Of Training)
+
+        Dim data As New List(Of Training)
+        Dim inputDble#() = clsMLPHelper.Convert1DArrayOfSingleToDouble(input)
+        Dim targetDble#() = clsMLPHelper.Convert1DArrayOfSingleToDouble(target)
+        data.Add(New Training(inputDble, targetDble))
+        Return data
+
+    End Function
+
+    Public Overrides Sub TrainOneSample(input!(), target!())
+
+        Dim data = SetInputAndTargetOneSample(input, target)
+        TrainOneSampleOOP(data)
+        Me.averageErrorOneSample = Me.TotalSquaredError / target.GetLength(0)
+        Me.averageErrorOneSampleSigned = Me.TotalSignedError / target.GetLength(0)
+        SetOuput1D()
+
+    End Sub
+
+    Public Sub SetOuput1D()
+        Dim lst = Me.OutputLayer.ExtractOutputs()
+        Me.lastOutputArray1D = lst.ToArray()
+        Me.lastOutputArray1DSingle = clsMLPHelper.Convert1DArrayOfDoubleToSingle(Me.lastOutputArray1D)
+    End Sub
+
+    Private Sub SetOutput()
+        ' 29/11/2020
+        Dim outputs2D#(0, Me.nbOutputNeurons - 1)
+        clsMLPHelper.Fill2DArrayOfDouble(outputs2D, Me.lastOutputArray1D, 0)
+        Me.output = outputs2D
+    End Sub
+
+    Public Overrides Sub TestOneSample(input!())
+
+        SetInputOneSample(input)
+        ForwardPropogateSignal()
+        SetOuput1D()
+        SetOutput() ' 29/11/2020
+
+    End Sub
+
+    Private Sub ForwardPropogateSignal()
+
+        For x = 1 To Me.Layers.Count - 1
+            For Each node In Me.Layers(x).Neurons
+                node.Input = 0.0
+                For Each w In node.WeightsToParent
+                    node.Input += w.Parent.Output * w.Value
                 Next
+                'adding bias
+                If Me.useBias Then node.Input +=
+                    node.WeightToBias.Parent.Output * node.WeightToBias.Value
+
+                If IsNothing(Me.lambdaFnc) AndAlso
+                    IsNothing(Layers(x).ActivationFunction) Then
+                    Throw New ArgumentException("Activation function undefined!")
+                End If
+
+                If IsNothing(Me.ActivationFunction) Then
+                    ' Generic activation function
+                    node.Output = Me.lambdaFnc.Invoke(node.Input)
+                Else
+                    ' OOP activation function
+                    node.Output = Me.Layers(x).ActivationFunction.Evaluate(node.Input)
+                End If
             Next
+        Next
 
-        End Sub
+    End Sub
 
-        Private Sub BackwardPropogateErrorComputeGradientAndAdjustWeights()
+    Private Sub BackwardPropogateErrorComputeGradientAndAdjustWeights()
 
-            ' Backward propagate error from the output layer through to the first layer
-            ' Gradient descend: Compute gradient and adjust weights
+        ' Backward propagate error from the output layer through to the first layer
+        ' Gradient descend: Compute gradient and adjust weights
 
-            'updating weights for all other layers
-            For x = Me.Layers.Count - 1 To 1 Step -1
-                For Each node In Me.Layers(x).Neurons
+        'updating weights for all other layers
+        For x = Me.Layers.Count - 1 To 1 Step -1
+            For Each node In Me.Layers(x).Neurons
 
-                    'if not output layer, then errors need to be backpropogated from child layer to parent
-                    If node.Type <> NeuronType.Output Then
-                        node.ErrorDelta = 0.0
-                        For Each w In node.WeightsToChild
-                            node.ErrorDelta += w.Value * w.Child.ErrorDelta * w.Child.Primed
-                        Next
-                    End If
-
-                    'calculating derivative value of input
-                    'node.Primed = Layers(x).ActivationFunction.AbstractedDerivative(node.Output)
-                    If IsNothing(Me.ActivationFunction) Then
-                        node.Primed = Me.lambdaFncD.Invoke(node.Input)
-                    Else
-                        node.Primed = Me.Layers(x).ActivationFunction.Derivative(node.Input)
-                    End If
-
-                    'adjusting weight values between parent layer
-                    For Each w In node.WeightsToParent
-                        Dim adjustment = Me.learningRate * node.ErrorDelta *
-                            node.Primed * w.Parent.Output
-                        w.Value += adjustment '+ w.Previous * Me.weightAdjustment
-                        If Me.weightAdjustment <> 0 Then _
-                            w.Value += w.Previous * Me.weightAdjustment
-                        w.Previous = adjustment
+                'if not output layer, then errors need to be backpropogated from child layer to parent
+                If node.Type <> NeuronType.Output Then
+                    node.ErrorDelta = 0.0
+                    For Each w In node.WeightsToChild
+                        node.ErrorDelta += w.Value * w.Child.ErrorDelta * w.Child.Primed
                     Next
+                End If
 
-                    'adjusting weights between bias
-                    If Me.useBias Then
-                        Dim biasAdjustment = Me.learningRate * node.ErrorDelta *
-                            node.Primed * node.WeightToBias.Parent.Output
-                        node.WeightToBias.Value += biasAdjustment '+
-                        'node.WeightToBias.Previous * Me.weightAdjustment
-                        If Me.weightAdjustment <> 0 Then _
-                            node.WeightToBias.Value +=
-                                node.WeightToBias.Previous * Me.weightAdjustment
-                        node.WeightToBias.Previous = biasAdjustment
-                    End If
+                'calculating derivative value of input
+                'node.Primed = Layers(x).ActivationFunction.AbstractedDerivative(node.Output)
+                If IsNothing(Me.ActivationFunction) Then
+                    node.Primed = Me.lambdaFncD.Invoke(node.Input)
+                Else
+                    node.Primed = Me.Layers(x).ActivationFunction.Derivative(node.Input)
+                End If
+
+                'adjusting weight values between parent layer
+                For Each w In node.WeightsToParent
+                    Dim adjustment = Me.learningRate * node.ErrorDelta *
+                        node.Primed * w.Parent.Output
+                    w.Value += adjustment '+ w.Previous * Me.weightAdjustment
+                    If Me.weightAdjustment <> 0 Then _
+                        w.Value += w.Previous * Me.weightAdjustment
+                    w.Previous = adjustment
                 Next
+
+                'adjusting weights between bias
+                If Me.useBias Then
+                    Dim biasAdjustment = Me.learningRate * node.ErrorDelta *
+                        node.Primed * node.WeightToBias.Parent.Output
+                    node.WeightToBias.Value += biasAdjustment '+
+                    'node.WeightToBias.Previous * Me.weightAdjustment
+                    If Me.weightAdjustment <> 0 Then _
+                        node.WeightToBias.Value +=
+                            node.WeightToBias.Previous * Me.weightAdjustment
+                    node.WeightToBias.Previous = biasAdjustment
+                End If
             Next
+        Next
 
-        End Sub
+    End Sub
 
-        Public Overrides Function GetWeight!(layer%, neuron%, weight%)
-            Dim neuron_ = Me.Layers(layer).Neurons(neuron)
-            Dim nbWeights = neuron_.WeightsToParent.Count
-            If weight >= nbWeights Then
-                Dim wB# = neuron_.WeightToBias.Value
-                Dim wBSng = CSng(wB)
-                Return wBSng
-            End If
-            Dim w# = neuron_.WeightsToParent(weight).Value
-            Dim wSng = CSng(w)
-            Return wSng
-        End Function
+    Public Overrides Function GetWeight!(layer%, neuron%, weight%)
+        Dim neuron_ = Me.Layers(layer).Neurons(neuron)
+        Dim nbWeights = neuron_.WeightsToParent.Count
+        If weight >= nbWeights Then
+            Dim wB# = neuron_.WeightToBias.Value
+            Dim wBSng = CSng(wB)
+            Return wBSng
+        End If
+        Dim w# = neuron_.WeightsToParent(weight).Value
+        Dim wSng = CSng(w)
+        Return wSng
+    End Function
 
-    End Class
+End Class
 
-End Namespace
+'End Namespace

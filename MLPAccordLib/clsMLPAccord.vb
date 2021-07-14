@@ -35,6 +35,10 @@ Public Class clsMLPAccord : Inherits clsVectorizedMLPGeneric
     Public inputJaggedDblArray#()()
     Public targetJaggedDblArray#()()
 
+    Public Overrides Function GetMLPType$()
+        Return System.Reflection.MethodBase.GetCurrentMethod().DeclaringType.Name
+    End Function
+
     Public Overrides Function GetActivationFunctionType() As enumActivationFunctionType
         Return enumActivationFunctionType.LibraryOptimized
     End Function
@@ -170,7 +174,14 @@ Public Class clsMLPAccord : Inherits clsVectorizedMLPGeneric
         ' Dim x As New GaussianWeights(Me.network, 0.1)
         ' x.Randomize()
 
+        RoundWeights()
+
+    End Sub
+
+    Public Overrides Sub RoundWeights()
+
         ' Round the weights (to reproduce all tests exactly)
+
         For i = 0 To Me.layerCount - 2
             Dim layer = Me.network.Layers(i)
             Dim nbNeurons = layer.Neurons.Count
@@ -199,6 +210,7 @@ Public Class clsMLPAccord : Inherits clsVectorizedMLPGeneric
         Me.learningMode = enumLearningMode.Vectorial
         Me.vectorizedLearningMode = True
         For iteration = 0 To Me.nbIterations - 1
+            Me.numIteration = iteration
             TrainVectorOneIteration()
             If Me.printOutput_ Then PrintOutput(iteration)
         Next
@@ -259,18 +271,10 @@ Public Class clsMLPAccord : Inherits clsVectorizedMLPGeneric
         Else
             avgError = Me.teacherBPL.Run(inputArrayDbl, targetArrayDbl)
         End If
-        'Me.averageError = avgError
+        'Me.averageErrorOneSample = avgError
 
         Dim outputs#() = Me.network.Compute(inputArrayDbl)
         Me.lastOutputArray1DSingle = clsMLPHelper.Convert1DArrayOfDoubleToSingle(outputs)
-
-        Dim sum# = 0
-        For i = 0 To Me.nbOutputNeurons - 1
-            Dim ouput = outputs(i)
-            Dim target0 = target(i)
-            sum += Math.Abs(ouput - target0)
-        Next
-        Me.averageError = sum / Me.nbOutputNeurons
 
     End Sub
 

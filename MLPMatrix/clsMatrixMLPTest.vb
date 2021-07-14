@@ -9,7 +9,7 @@ Namespace MatrixMLP
     <TestClass()>
     Public Class MultiLayerPerceptronTest
 
-        Private m_mlp As New MultiLayerPerceptron
+        Private m_mlp As New clsMPLMatrix
 
         <TestInitialize()>
         Public Sub Init()

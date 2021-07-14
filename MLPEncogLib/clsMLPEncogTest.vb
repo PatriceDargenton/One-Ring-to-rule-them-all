@@ -81,7 +81,7 @@ Namespace EncogMLP
         Private m_mlp As New clsMLPEncog
 
         'Private m_mlp As New clsMLPClassic ' 1/13 success
-        'Private m_mlp As New NetworkOOP.MultilayerPerceptron ' 2/12 success
+        'Private m_mlp As New clsMLPOOP ' 2/12 success
         'Private m_mlp As New clsMLPAccord ' 1/13 success
         'Private m_mlp As New clsMLPTensorFlow  ' 0/14 success
 

@@ -20,6 +20,10 @@ Public Class clsMLPTensor : Inherits clsVectorizedMLPGeneric
     Private nbHiddenNeuronsTensor%
     Private nbHiddenNeuronsTensorWithBias%
 
+    Public Overrides Function GetMLPType$()
+        Return System.Reflection.MethodBase.GetCurrentMethod().DeclaringType.Name
+    End Function
+
     Public Overrides Function GetActivationFunctionType() As enumActivationFunctionType
         Return enumActivationFunctionType.SpecificCodeOptimized
     End Function
@@ -231,6 +235,7 @@ Public Class clsMLPTensor : Inherits clsVectorizedMLPGeneric
         SetTargetAllSamples()
 
         For iteration = 0 To Me.nbIterations - 1
+            Me.numIteration = iteration
             TrainVectorOneIteration()
             If Me.printOutput_ Then PrintOutput(iteration)
         Next
@@ -263,7 +268,8 @@ Public Class clsMLPTensor : Inherits clsVectorizedMLPGeneric
         SetTargetOneSample(target)
         ComputeErrorInternal()
         BackwardPropagateError()
-        ComputeAverageErrorFromLastError()
+        Me.averageErrorOneSample = ComputeAverageErrorFromLastError()
+        Me.averageErrorOneSampleSigned = ComputeAverageSignedErrorFromLastError()
 
     End Sub
 
@@ -282,14 +288,15 @@ Public Class clsMLPTensor : Inherits clsVectorizedMLPGeneric
         Me.lastError = Me.loss.Data
     End Sub
 
-    Public Overrides Function ComputeAverageError#()
-        ' Calculate the error: ERROR = TARGETS - OUTPUTS
-        Dim m As Matrix = Me.targetArray
-        Me.lastError = m - Me.output
-        ComputeSuccess()
-        ComputeAverageErrorFromLastError()
-        Return Me.averageError
-    End Function
+    'Public Overrides Function ComputeAverageError#()
+    '    ' Calculate the error: ERROR = TARGETS - OUTPUTS
+    '    Dim m As Matrix = Me.targetArray
+    '    Me.lastError = m - Me.output
+    '    ComputeSuccess()
+    '    Me.averageError = ComputeAverageErrorFromLastError()
+    '    Me.averageErrorSigned = Me.ComputeAverageSignedErrorFromLastError()
+    '    Return Me.averageError
+    'End Function
 
     Public Overrides Function ShowWeights$(Optional format$ = format2Dec)
 

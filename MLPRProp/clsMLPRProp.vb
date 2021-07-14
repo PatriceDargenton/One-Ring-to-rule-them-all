@@ -1,5 +1,5 @@
 ﻿
-' From: https://github.com/nokitakaze/ResilientBackProp : C# -> VB .NET conversion
+' From https://github.com/nokitakaze/ResilientBackProp : C# -> VB .NET conversion
 
 Imports System.IO
 Imports System.Text ' StringBuilder
@@ -19,6 +19,10 @@ Friend Class clsMLPRProp : Inherits clsVectorizedMLPGeneric
     Dim m_gnn As NeuralNetwork
 
     Private m_weights#()
+
+    Public Overrides Function GetMLPType$()
+        Return System.Reflection.MethodBase.GetCurrentMethod().DeclaringType.Name
+    End Function
 
     Public Overrides Function GetActivationFunctionType() As enumActivationFunctionType
         Return enumActivationFunctionType.SpecificCodeOptimized
@@ -256,6 +260,7 @@ Friend Class clsMLPRProp : Inherits clsVectorizedMLPGeneric
         Me.learningMode = enumLearningMode.Vectorial
         Me.vectorizedLearningMode = True
         For iteration = 0 To Me.nbIterations - 1
+            Me.numIteration = iteration
             TrainVectorOneIteration()
             If Me.printOutput_ Then PrintOutput(iteration)
         Next
@@ -361,6 +366,7 @@ Friend Class clsMLPRProp : Inherits clsVectorizedMLPGeneric
 
     Public Overrides Function GetWeight!(layer%, neuron%, weight%)
 
+        If IsNothing(Me.m_weights) Then Return 0.0!
         Dim l% = weight
         For i% = 1 To layer
             Dim nbNeuronsLayer = Me.neuronCount(i)

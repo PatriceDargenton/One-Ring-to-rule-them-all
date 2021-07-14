@@ -1,5 +1,5 @@
 ﻿
-' From: https://github.com/nlabiris/perceptrons : C# -> VB .NET conversion
+' From https://github.com/nlabiris/perceptrons : C# -> VB .NET conversion
 
 Imports System.Runtime.CompilerServices ' Extension
 

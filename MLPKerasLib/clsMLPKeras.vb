@@ -1,5 +1,5 @@
 ﻿
-' From  : https://github.com/SciSharp/Keras.NET : C# -> VB .NET conversion
+' From https://github.com/SciSharp/Keras.NET : C# -> VB .NET conversion
 ' https://www.nuget.org/packages/Keras.NET Nuget install
 ' https://scisharp.github.io/SciSharp Other .NET Machine Learning projects
 ' https://scisharp.github.io/Keras.NET Documentation
@@ -37,6 +37,10 @@ Public Class clsMLPKeras : Inherits clsVectorizedMLPGeneric
 
     Public inputJaggedDblArray#()()
     Public targetJaggedDblArray#()()
+
+    Public Overrides Function GetMLPType$()
+        Return System.Reflection.MethodBase.GetCurrentMethod().DeclaringType.Name
+    End Function
 
     Public Overrides Function GetActivationFunctionType() As enumActivationFunctionType
         Return enumActivationFunctionType.LibraryOptimized

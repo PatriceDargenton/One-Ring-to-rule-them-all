@@ -47,8 +47,12 @@ Public Class clsMLPNeuralNet : Inherits clsVectorizedMLPGeneric
     Private m_dataset As Interfaces.Data.ITrainingDataset
     Private m_nbIterationsBatchLast%
 
+    Public Overrides Function GetMLPType$()
+        Return System.Reflection.MethodBase.GetCurrentMethod().DeclaringType.Name
+    End Function
+
     Public Overrides Function GetActivationFunctionType() As enumActivationFunctionType
-        Return enumActivationFunctionType.LibraryOptimized
+        Return enumActivationFunctionType.Library
     End Function
 
     Public Overrides Sub InitializeStruct(neuronCount%(), addBiasColumn As Boolean)
@@ -79,33 +83,17 @@ Public Class clsMLPNeuralNet : Inherits clsVectorizedMLPGeneric
         center = 0
         If actFnc = enumActivationFunction.Sigmoid Then gain = 1
         If actFnc = enumActivationFunction.HyperbolicTangent Then gain = 2
+        MyBase.SetActivationFunction(actFnc, gain, center)
+
         Select Case actFnc
             Case enumActivationFunction.Sigmoid
-                SetActivationFunctionOptimized(
-                    enumActivationFunctionOptimized.Sigmoid, gain, center)
             Case enumActivationFunction.HyperbolicTangent
-                SetActivationFunctionOptimized(
-                    enumActivationFunctionOptimized.HyperbolicTangent, gain, center)
+#If GetWeightsImplementation Or GetWeightsImplementationVS2013 Then
+            Case enumActivationFunction.Mish
+#End If
             Case Else
                 Throw New NotImplementedException(
                     "This activation function is not available!")
-        End Select
-
-    End Sub
-
-    Public Overrides Sub SetActivationFunctionOptimized(
-        actFnc As enumActivationFunctionOptimized, Optional gain! = 1, Optional center! = 0)
-
-        center = 0
-        If actFnc = enumActivationFunctionOptimized.Sigmoid Then gain = 1
-        If actFnc = enumActivationFunctionOptimized.HyperbolicTangent Then gain = 2
-        MyBase.SetActivationFunctionOptimized(actFnc, gain, center)
-
-        Dim actFunc = ActivationType.Tanh
-        Select Case Me.m_actFunc
-            Case enumActivationFunction.Sigmoid : actFunc = ActivationType.Sigmoid
-            Case enumActivationFunction.HyperbolicTangent : actFunc = ActivationType.Tanh
-            Case Else : Throw New NotImplementedException("This activation function is not available!")
         End Select
 
         If IsNothing(Me.inputArray) Then Exit Sub
@@ -138,6 +126,9 @@ Public Class clsMLPNeuralNet : Inherits clsVectorizedMLPGeneric
         Select Case Me.m_actFunc
             Case enumActivationFunction.Sigmoid : actFunc = ActivationType.Sigmoid
             Case enumActivationFunction.HyperbolicTangent : actFunc = ActivationType.Tanh
+#If GetWeightsImplementation Or GetWeightsImplementationVS2013 Then
+            Case enumActivationFunction.Mish : actFunc = ActivationType.Mish 
+#End If
             Case Else : Throw New NotImplementedException("This activation function is not available!")
         End Select
 
@@ -420,6 +411,14 @@ Public Class clsMLPNeuralNet : Inherits clsVectorizedMLPGeneric
                 NetworkManager.TrainNetworkAsync(Me.network, dataset,
                     TrainingAlgorithms.RMSProp(), epochs:=Me.nbIterationsBatch).Wait()
         End Select
+
+        'If Me.numIteration < 10000 Then
+        'Debug.WriteLine("Itération : " & Me.numIteration) '  & "/" & Me.nbIterations)
+        'PrintWeights()
+        'SetOuput1D()
+        'ComputeAverageError()
+        'Debug.WriteLine("Err = " & Me.averageError)
+        'End If
 
     End Sub
 

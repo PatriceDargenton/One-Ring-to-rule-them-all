@@ -109,7 +109,7 @@ Namespace TensorFlowMLP
 
         ' Weights are not initialized:
         'Private m_mlp As New clsMLPClassic ' 0/2 success
-        'Private m_mlp As New NetworkOOP.MultilayerPerceptron ' 0/2 success
+        'Private m_mlp As New clsMLPOOP ' 0/2 success
         'Private m_mlp As New clsMLPAccord ' 0/2 success
         'Private m_mlp As New clsMLPEncog ' 0/2 success
 

@@ -1,5 +1,4 @@
 ﻿
-Imports Perceptron.NetworkOOP
 Imports Perceptron.Activation
 Imports Perceptron.Utilities
 Imports Perceptron.Utility ' Matrix
@@ -17,10 +16,14 @@ Module Main
 
     Public Sub OOPMLPXorTest(Optional nbXor% = 1)
 
+        Const minValue# = -1
+        Const maxValue# = 1
+        'Const minValue# = -0.5
+        'Const maxValue# = 0.5
         Dim standard As New Randoms.Standard(
-            New Range(-1, 1), seed:=DateTime.Now.Millisecond)
+            New Range(minValue, maxValue), seed:=DateTime.Now.Millisecond)
 
-        Dim mlp As New MultilayerPerceptron(
+        Dim mlp As New clsMLPOOP(
             learning_rate:=0.5,
             momentum:=0.8, randomizer:=standard,
             activation:=New HyperbolicTangent(alpha:=0.5#))
@@ -55,6 +58,8 @@ Module Main
         End If
 
         mlp.Randomize()
+        ' See above: standard As New Randoms.Standard
+        'mlp.Randomize(minValue:=-0.5, maxValue:=0.5)
         mlp.PrintWeights()
 
         WaitForKeyToStart()
@@ -115,7 +120,7 @@ Namespace OOPMLP
     <TestClass()>
     Public Class MultiLayerPerceptronOOPTest
 
-        Private m_mlp As New MultilayerPerceptron
+        Private m_mlp As New clsMLPOOP
 
         ' Weights are quite the same as MLP Classic, but not exactly:
         'Private m_mlp As New clsMLPClassic ' 13 success, 4 fails
@@ -123,8 +128,8 @@ Namespace OOPMLP
         'Private m_mlp As New clsMLPTensorFlow  ' 1 success, 16 fails
 
         ' Weights are not stored in the same way:
-        'Private m_mlp As New MatrixMLP.MultiLayerPerceptron ' 15/15 fails
-        'Private m_mlp As New VectorizedMatrixMLP.clsVectorizedMatrixMLP ' 15/15 fails
+        'Private m_mlp As New clsMPLMatrix ' 15/15 fails
+        'Private m_mlp As New clsVectorizedMatrixMLP ' 15/15 fails
         'Private m_mlp As New clsMLPTensor ' 15/15 fails
 
         <TestInitialize()>
@@ -224,8 +229,6 @@ Namespace OOPMLP
                 {0.82, 0.56}})
             m_mlp.InitializeWeights(2, {
                 {0.62, 0.54, 0.5}})
-
-            'm_mlp.PrintWeights()
 
             m_mlp.Train()
 
@@ -366,6 +369,51 @@ Namespace OOPMLP
         Public Sub MLPOOP3XORELUStdr() ' 166 msec
 
             TestMLP3XORELU(m_mlp, nbIterations:=400)
+
+        End Sub
+
+        '<TestMethod()>
+        'Public Sub MLPOOP3XORMishStdr()
+
+        '    TestMLP3XORMish(m_mlp)
+
+        'End Sub
+
+        <TestMethod()>
+        Public Sub MLPOOP3XORMish()
+
+            Init3XOR()
+            m_mlp.Initialize(learningRate:=0.01!, weightAdjustment:=0.005!)
+
+            m_mlp.nbIterations = 1800
+            m_mlp.SetActivationFunction(enumActivationFunction.Mish)
+
+            m_mlp.InitializeWeights(1, {
+                {0.28, 0.23, 0.13, 0.18, 0.05, 0.07, 0.16},
+                {0.21, 0.07, 0.25, 0.27, 0.04, 0.1, 0.12},
+                {0.04, 0.12, 0.26, 0.12, 0.26, 0.22, 0.19},
+                {0.05, 0.03, 0.07, 0.14, 0.14, 0.01, 0.14},
+                {0.26, 0.06, 0.26, 0.09, 0.04, 0.03, 0.05},
+                {0.15, 0.03, 0.22, 0.05, 0.26, 0.04, 0.03}})
+            m_mlp.InitializeWeights(2, {
+                 {0.17, 0.03, 0.23, 0.13, 0.26, 0.29, 0.19},
+                 {0.11, 0.21, 0.12, 0.1, 0.14, 0.01, 0.1},
+                 {0.2, 0.03, 0.02, 0.1, 0.12, 0.23, 0.03}})
+
+            m_mlp.Train()
+
+            Dim expectedOutput = m_targetArray3XOR
+            Dim expectedMatrix As Matrix = expectedOutput ' Single(,) -> Matrix
+
+            Dim sOutput = m_mlp.output.ToStringWithFormat(dec:="0.0")
+
+            Dim sExpectedOutput = expectedMatrix.ToStringWithFormat(dec:="0.0")
+            Assert.AreEqual(sExpectedOutput, sOutput)
+
+            Const expectedLoss# = 0.01
+            Dim loss# = m_mlp.averageError
+            Dim lossRounded# = Math.Round(loss, 2)
+            Assert.AreEqual(True, lossRounded <= expectedLoss)
 
         End Sub
 

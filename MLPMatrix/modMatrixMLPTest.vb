@@ -1,8 +1,8 @@
 ﻿
-' Matrix-MultiLayerPerceptron
-' From: https://github.com/nlabiris/perceptrons : C# -> VB .NET conversion
+' Matrix-MultiLayerPerceptron: clsMPLMatrix
+' From https://github.com/nlabiris/perceptrons : C# -> VB .NET conversion
 
-Imports Perceptron.MatrixMLP ' MultiLayerPerceptron
+Imports Perceptron.MatrixMLP ' clsMPLMatrix
 Imports Perceptron.clsMLPGeneric ' enumLearningMode
 
 Module modMatrixMLPTest
@@ -30,14 +30,14 @@ Retry:
             Case "3"c : MatrixMLPXorTest(nbXor:=3)
             Case "4"c
                 ' Three layers only, good results!
-                MLPGenericIrisFlowerTest(New MatrixMLP.MultiLayerPerceptron,
+                MLPGenericIrisFlowerTest(New clsMPLMatrix,
                     "Matrix MLP Iris flower logical test", nbIterations:=4000, threeLayers:=True)
             Case "5"c
                 ' Three layers only, good results!
-                MLPGenericIrisFlowerTestAnalog(New MatrixMLP.MultiLayerPerceptron,
+                MLPGenericIrisFlowerTestAnalog(New clsMPLMatrix,
                     "Matrix MLP Iris flower analog test", nbIterations:=4000, threeLayers:=True)
             Case "6"c
-                MLPGenericSunspotTest(New MatrixMLP.MultiLayerPerceptron,
+                MLPGenericSunspotTest(New clsMPLMatrix,
                     "Matrix MLP Sunspot test")
         End Select
 
@@ -47,7 +47,7 @@ Retry:
 
     Public Sub MatrixMLPXorTest(Optional nbXor% = 1)
 
-        Dim mlp As New MultiLayerPerceptron()
+        Dim mlp As New clsMPLMatrix()
 
         mlp.ShowMessage("Matrix MLP Xor test")
         mlp.ShowMessage("-------------------")

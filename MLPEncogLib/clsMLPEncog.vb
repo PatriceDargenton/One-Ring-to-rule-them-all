@@ -1,5 +1,5 @@
 ﻿
-' From  : https://github.com/encog/encog-dotnet-core : C# -> VB .NET conversion
+' From https://github.com/encog/encog-dotnet-core : C# -> VB .NET conversion
 ' https://www.nuget.org/packages/encog-dotnet-core
 ' <package id="encog-dotnet-core" version="3.4.0" targetFramework="net472" />
 ' https://www.heatonresearch.com/encog
@@ -23,6 +23,10 @@ Public Class clsMLPEncog : Inherits clsVectorizedMLPGeneric
 
     Public inputJaggedDblArray#()()
     Public targetJaggedDblArray#()()
+
+    Public Overrides Function GetMLPType$()
+        Return System.Reflection.MethodBase.GetCurrentMethod().DeclaringType.Name
+    End Function
 
     Public Overrides Function GetActivationFunctionType() As enumActivationFunctionType
         Return enumActivationFunctionType.Library
@@ -165,6 +169,7 @@ Public Class clsMLPEncog : Inherits clsVectorizedMLPGeneric
         Me.learningMode = enumLearningMode.Vectorial
         Me.vectorizedLearningMode = True
         For iteration = 0 To Me.nbIterations - 1
+            Me.numIteration = iteration
             TrainVectorOneIteration()
             If Me.printOutput_ Then PrintOutput(iteration)
         Next

@@ -88,7 +88,7 @@ Namespace AccordMLP
         Private m_mlp As New clsMLPAccord
 
         'Private m_mlp As New clsMLPClassic ' 18/18 success
-        'Private m_mlp As New NetworkOOP.MultilayerPerceptron ' 14 success, 4 fails
+        'Private m_mlp As New clsMLPOOP ' 14 success, 4 fails
         'Private m_mlp As New clsMLPEncog ' 8 success, 10 fails
         'Private m_mlp As New clsMLPTensorFlow  ' 0 success, 18 fails
 

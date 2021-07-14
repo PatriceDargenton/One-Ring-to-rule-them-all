@@ -16,10 +16,14 @@ Public MustInherit Class clsMLPGeneric
         NeuronAdded = 2
         NeuronAddedSpecial = 3
     End Enum
+    'Private biasType As TBias = TBias.Disabled
 
     Public Overridable Sub InitializeStruct(neuronCount%(), addBiasColumn As Boolean)
 
         Me.useBias = addBiasColumn
+        'Me.biasType = TBias.Disabled
+        'If Me.useBias Then Me.biasType = TBias.WeightAdded
+
         Me.layerCount = neuronCount.Length
         Me.neuronCount = neuronCount
         Me.nbInputNeurons = Me.neuronCount(0)
@@ -197,7 +201,8 @@ Public MustInherit Class clsMLPGeneric
     ''' </summary>
     Public minimalSuccessTreshold! = 0.1 ' 10%
 
-    Public nbIterations%
+    Public nbIterations%, numIteration%
+    Public nbSamples%, numSample%
 
     Protected layerCount%
     Protected neuronCount%()
@@ -230,9 +235,12 @@ Public MustInherit Class clsMLPGeneric
     End Sub
 
     ''' <summary>
-    ''' Average error of the output matrix
+    ''' Average error (absolute) of the output matrix (all samples)
     ''' </summary>
     Public averageError#
+    Public averageErrorOneSample#
+    Public averageErrorSigned#
+    Public averageErrorOneSampleSigned#
 
     ''' <summary>
     ''' Random generator (Shared)
@@ -297,6 +305,7 @@ Public MustInherit Class clsMLPGeneric
             Case enumActivationFunction.ReLu : Me.activFnc = New ReLuFunction
             Case enumActivationFunction.ReLuSigmoid : Me.activFnc = New ReLuSigmoidFunction
             Case enumActivationFunction.DoubleThreshold : Me.activFnc = New DoubleThresholdFunction
+            Case enumActivationFunction.Mish : Me.activFnc = New MishFunction
             Case Else
                 Me.activFnc = Nothing
                 Throw New ArgumentException("Activation function undefined!")
@@ -469,18 +478,27 @@ Public MustInherit Class clsMLPGeneric
     ''' <summary>
     ''' Compute average error of the output matrix for all samples from last error layer
     ''' </summary>
-    Public Overridable Sub ComputeAverageErrorFromLastError()
+    Public Overridable Function ComputeAverageErrorFromLastError#()
         ' Compute first abs then average:
-        Me.averageError = Me.lastError.Abs.Average
-    End Sub
+        'Me.averageError = Me.lastError.Abs.Average
+        Return Me.lastError.Abs.Average ' 23/05/2021
+    End Function
+
+    Public Overridable Function ComputeAverageSignedErrorFromLastError#()
+        Return Me.lastError.Average
+    End Function
 
     ''' <summary>
     ''' Compute average error of the output matrix for all samples
     ''' </summary>
     Public Overridable Function ComputeAverageError#()
+
         Me.ComputeError()
-        Me.ComputeAverageErrorFromLastError()
+        Me.averageError = Me.ComputeAverageErrorFromLastError()
+        Me.averageErrorSigned = Me.ComputeAverageSignedErrorFromLastError()
+
         Return Me.averageError
+
     End Function
 
     ''' <summary>
@@ -488,8 +506,9 @@ Public MustInherit Class clsMLPGeneric
     ''' </summary>
     Public Overridable Function ComputeAverageErrorOneSample#(targetArray!(,))
         Me.ComputeErrorOneSample(targetArray)
-        Me.ComputeAverageErrorFromLastError()
-        Return Me.averageError
+        Me.averageErrorOneSample = Me.ComputeAverageErrorFromLastError()
+        Me.averageErrorOneSampleSigned = Me.ComputeAverageSignedErrorFromLastError()
+        Return Me.averageErrorOneSample
     End Function
 
 #End Region
@@ -531,8 +550,10 @@ Public MustInherit Class clsMLPGeneric
     Public Sub Train(inputs!(,), targets!(,), nbIterations%,
         Optional learningMode As enumLearningMode = enumLearningMode.Defaut)
 
+        Me.numIteration = 0
         Me.nbIterations = nbIterations
         Me.learningMode = learningMode
+        InitializeTraining()
         Select Case learningMode
             Case enumLearningMode.Vectorial, enumLearningMode.VectorialBatch
                 TrainSystematic(inputs, targets, learningMode)
@@ -551,8 +572,10 @@ Public MustInherit Class clsMLPGeneric
     ''' </summary>
     Public Sub TrainAllSamples(inputs!(,), targets!(,))
 
-        Dim nbLines = inputs.GetLength(0)
-        For j = 0 To nbLines - 1 ' Systematic learning
+        InitializeTraining()
+        Me.nbSamples = inputs.GetLength(0)
+        For j = 0 To Me.nbSamples - 1 ' Systematic learning
+            Me.numSample = j
             Dim inp = clsMLPHelper.GetVector(inputs, j)
             Dim targ = clsMLPHelper.GetVector(targets, j)
             TrainOneSample(inp, targ)
@@ -566,10 +589,12 @@ Public MustInherit Class clsMLPGeneric
     Public Overridable Sub TrainStochastic(inputs!(,), targets!(,))
 
         Me.learningMode = enumLearningMode.Stochastic
-        Dim nbLines = inputs.GetLength(0)
+        InitializeTraining()
+        Me.nbSamples = inputs.GetLength(0)
         Dim nbTargets = targets.GetLength(1)
         For iteration = 0 To Me.nbIterations - 1
-            Dim r% = rndShared.Next(maxValue:=nbLines) ' Stochastic learning
+            Me.numIteration = iteration
+            Dim r% = rndShared.Next(maxValue:=Me.nbSamples) ' Stochastic learning
             Dim inp = clsMLPHelper.GetVector(inputs, r)
             Dim targ = clsMLPHelper.GetVector(targets, r)
             TrainOneSample(inp, targ)
@@ -585,18 +610,20 @@ Public MustInherit Class clsMLPGeneric
     Public Overridable Sub TrainSemiStochastic(inputs!(,), targets!(,))
 
         Me.learningMode = enumLearningMode.SemiStochastic
-        Dim nbLines = inputs.GetLength(0)
+        InitializeTraining()
+        Me.nbSamples = inputs.GetLength(0)
         Dim nbInputs = inputs.GetLength(1)
         Dim nbTargets = targets.GetLength(1)
-
         For iteration = 0 To Me.nbIterations - 1
+            Me.numIteration = iteration
 
             ' Semi-stochastic learning
             Dim lstEch As New List(Of Integer)
-            For i = 0 To nbLines - 1
+            For i = 0 To Me.nbSamples - 1
                 lstEch.Add(i)
             Next
-            For j = 0 To nbLines - 1
+            For j = 0 To Me.nbSamples - 1
+                Me.numSample = j
 
                 Dim nbItemsRemaining = lstEch.Count
                 ' 28/05/2020 In two stages!
@@ -624,13 +651,24 @@ Public MustInherit Class clsMLPGeneric
         Optional learningMode As enumLearningMode = enumLearningMode.Defaut)
 
         Me.learningMode = learningMode
+        InitializeTraining()
         Dim nbTargets = targets.GetLength(1)
         For iteration = 0 To Me.nbIterations - 1
+            Me.numIteration = iteration
             TrainAllSamples(inputs, targets)
             If Me.printOutput_ Then PrintOutput(iteration)
         Next
         TestAllSamples(inputs, nbTargets)
 
+    End Sub
+
+    ''' <summary>
+    ''' Initialize some training variables (for one iteration)
+    ''' </summary>
+    Public Sub InitializeTraining()
+        Me.averageErrorSigned = 0
+        Me.averageErrorOneSampleSigned = 0
+        Me.numSample = 0
     End Sub
 
     ''' <summary>
@@ -670,10 +708,13 @@ Public MustInherit Class clsMLPGeneric
     ''' Test all samples
     ''' </summary>
     Public Sub TestAllSamples(inputs!(,), nbOutputs%)
-        Dim length = inputs.GetLength(0)
+
+        InitializeTraining()
+        Me.nbSamples = inputs.GetLength(0)
         Dim nbInputs = inputs.GetLength(1)
-        Dim outputs!(0 To length - 1, 0 To nbOutputs - 1)
-        For i = 0 To length - 1
+        Dim outputs!(0 To Me.nbSamples - 1, 0 To nbOutputs - 1)
+        For i = 0 To Me.nbSamples - 1
+            Me.numSample = i
             Dim inp = clsMLPHelper.GetVector(inputs, i)
             TestOneSample(inp)
             Dim output!() = Me.lastOutputArray1DSingle
@@ -683,6 +724,7 @@ Public MustInherit Class clsMLPGeneric
         Next
         Me.output = outputs
         ComputeAverageError()
+
     End Sub
 
     ''' <summary>
@@ -776,10 +818,13 @@ Public MustInherit Class clsMLPGeneric
 
     End Sub
 
+    Public MustOverride Function GetMLPType$()
+
     Public Function ShowParameters$()
 
         Dim sb As New StringBuilder()
         sb.AppendLine("")
+        sb.AppendLine("MLP type=" & GetMLPType())
         If Me.learningMode <> enumLearningMode.Defaut Then sb.AppendLine(
             "learning mode=" & clsMLPHelper.ReadEnumDescription(Me.learningMode))
         If Me.trainingAlgorithm <> enumTrainingAlgorithm.Default Then sb.AppendLine(
@@ -845,7 +890,7 @@ Public MustInherit Class clsMLPGeneric
     End Sub
 
     Protected Sub PrintSuccess(iteration%)
-        Dim msg$ = vbLf & "Iteration n°" & iteration + 1 & "/" & nbIterations & vbLf
+        Dim msg$ = vbLf & "Iteration n°" & iteration + 1 & "/" & Me.nbIterations & vbLf
         If Me.printOutputMatrix Then msg &= "Output: " & Me.output.ToString() & vbLf
         If Not IsNothing(Me.success) Then msg &=
             "Average error: " & Me.averageError.ToString(format6Dec) & vbLf &

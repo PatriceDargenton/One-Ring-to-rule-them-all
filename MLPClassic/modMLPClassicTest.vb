@@ -75,6 +75,7 @@ Module modMLPClassicTest
         End If
 
         mlp.Randomize()
+        'mlp.Randomize(minValue:=-0.5, maxValue:=0.5)
         mlp.PrintWeights()
 
         WaitForKeyToStart()
@@ -108,17 +109,17 @@ Namespace ClassicMLP
         Private m_mlp As New clsMLPClassic
 
         ' Weights are quite the same as MLP Classic, but not exactly:
-        'Private m_mlp As New NetworkOOP.MultilayerPerceptron ' 24 success, 17 fails
-        'Private m_mlp As New clsMLPAccord ' 17 success, 24 fails
-        'Private m_mlp As New clsMLPEncog  ' 9 success, 32 fails
-        'Private m_mlp As New MatrixMLP.MultiLayerPerceptron ' 9 success, 32 fails
-        'Private m_mlp As New clsMLPRProp  ' 7 success, 34 fails
-        'Private m_mlp As New clsMLPNeuralNet ' 3 success, 38 fails
-        'Private m_mlp As New clsMLPTensorFlow ' 2 success, 39 fails
+        'Private m_mlp As New clsMLPOOP ' 33 success, 28 fails
+        'Private m_mlp As New clsMLPAccord ' 22 success, 39 fails
+        'Private m_mlp As New clsMLPEncog  ' 14 success, 47 fails
+        'Private m_mlp As New clsMPLMatrix ' 10 success, 51 fails
+        'Private m_mlp As New clsMLPRProp  ' 8 success, 53 fails
+        'Private m_mlp As New clsMLPNeuralNet ' 5 success, 56 fails
+        'Private m_mlp As New clsMLPTensorFlow ' 2 success, 59 fails
 
         ' Weights are not stored in the same way:
-        'Private m_mlp As New VectorizedMatrixMLP.clsVectorizedMatrixMLP ' 24/24 fails
-        'Private m_mlp As New clsMLPTensor ' 24/24 fails
+        'Private m_mlp As New clsVectorizedMatrixMLP ' 61/61 fails
+        'Private m_mlp As New clsMLPTensor ' 61/61 fails
 
         <TestInitialize()>
         Public Sub Init()
@@ -140,6 +141,12 @@ Namespace ClassicMLP
             m_mlp.inputArray = m_inputArray3XOR
             m_mlp.targetArray = m_targetArray3XOR
             m_mlp.InitializeStruct(m_neuronCount3XOR, addBiasColumn:=True)
+        End Sub
+
+        Private Sub InitXORAnalog()
+            m_mlp.inputArray = m_inputArrayXORAnalog
+            m_mlp.targetArray = m_targetArrayXORAnalog
+            m_mlp.InitializeStruct(m_neuronCountXOR, addBiasColumn:=True)
         End Sub
 
         <TestMethod()>
@@ -286,22 +293,22 @@ Namespace ClassicMLP
 #Region "Animated gifs"
 
         <TestMethod()>
-        Public Sub MLP1XORTanh221Gif()
+        Public Sub MLP1XORGifTanh221()
 
             ' Video of the learning process:
             ' http://patrice.dargenton.free.fr/ai/perceptron/xor/xor-tanh-221.gif
 
             InitXOR()
-            m_mlp.Initialize(learningRate:=0.02!, weightAdjustment:=0.1!)
+            m_mlp.Initialize(learningRate:=0.1!, weightAdjustment:=0.1!)
 
-            m_mlp.nbIterations = 3400
+            m_mlp.nbIterations = 1000
             m_mlp.SetActivationFunction(enumActivationFunction.HyperbolicTangent, gain:=2)
 
             m_mlp.InitializeWeights(1, {
-                {0.11, -0.43, 0.36},
-                {-0.13, 0.37, 0.4}})
+                {0.47, 0.13, 0.39},
+                {0.46, 0.49, 0.19}})
             m_mlp.InitializeWeights(2, {
-                {-0.01, 0.4, -0.03}})
+                {0.22, 0.41, 0.23}})
 
             m_mlp.Train()
 
@@ -313,7 +320,7 @@ Namespace ClassicMLP
             Dim sExpectedOutput = expectedMatrix.ToStringWithFormat(dec:="0.0")
             Assert.AreEqual(sExpectedOutput, sOutput)
 
-            Const expectedLoss# = 0.03
+            Const expectedLoss# = 0.02
             Dim loss# = m_mlp.averageError
             Dim lossRounded# = Math.Round(loss, 2)
             Assert.AreEqual(True, lossRounded <= expectedLoss)
@@ -321,24 +328,24 @@ Namespace ClassicMLP
         End Sub
 
         <TestMethod()>
-        Public Sub MLP1XORTanh231Gif()
+        Public Sub MLP1XORGifTanh231()
 
             ' Video of the learning process:
             ' http://patrice.dargenton.free.fr/ai/perceptron/xor/xor-tanh-231.gif
 
             InitXOR()
             m_mlp.InitializeStruct(m_neuronCountXOR231, addBiasColumn:=True)
-            m_mlp.Initialize(learningRate:=0.02!, weightAdjustment:=0.1!)
+            m_mlp.Initialize(learningRate:=0.1!, weightAdjustment:=0.1!)
 
-            m_mlp.nbIterations = 3400
+            m_mlp.nbIterations = 1000
             m_mlp.SetActivationFunction(enumActivationFunction.HyperbolicTangent, gain:=2)
 
             m_mlp.InitializeWeights(1, {
-                {0.39, 0.39, 0.13},
-                {0.48, -0.45, -0.1},
-                {-0.11, 0.4, -0.28}})
+                {0.05, 0.07, 0.43},
+                {0.08, 0.46, 0.04},
+                {0.04, 0.43, 0.54}})
             m_mlp.InitializeWeights(2, {
-                {0.38, -0.11, -0.27, -0.18}})
+                {0.21, 0.51, 0.33, 0.15}})
 
             m_mlp.Train()
 
@@ -358,29 +365,29 @@ Namespace ClassicMLP
         End Sub
 
         <TestMethod()>
-        Public Sub MLP1XORTanh281Gif()
+        Public Sub MLP1XORGifTanh281()
 
             ' Video of the learning process:
             ' http://patrice.dargenton.free.fr/ai/perceptron/xor/xor-tanh-281.gif
 
             InitXOR()
-            m_mlp.InitializeStruct(m_neuronCountXOR231, addBiasColumn:=True)
-            m_mlp.Initialize(learningRate:=0.02!, weightAdjustment:=0.1!)
+            m_mlp.InitializeStruct({2, 8, 1}, addBiasColumn:=True)
+            m_mlp.Initialize(learningRate:=0.1!, weightAdjustment:=0.1!)
 
-            m_mlp.nbIterations = 6000
+            m_mlp.nbIterations = 1000
             m_mlp.SetActivationFunction(enumActivationFunction.HyperbolicTangent, gain:=2)
 
             m_mlp.InitializeWeights(1, {
-                {0.14, -0.05, -0.5},
-                {0.34, 0.25, -0.38},
-                {-0.29, 0.33, -0.45},
-                {-0.5, -0.1, -0.33},
-                {0.15, -0.43, 0.42},
-                {0.08, -0.45, 0.03},
-                {0.04, -0.39, -0.04},
-                {0.02, 0.31, 0.46}})
+                {0.07, 0.11, 0.43},
+                {0.3, 0.49, 0.39},
+                {0.06, 0.34, 0.14},
+                {0.17, 0.13, 0.51},
+                {0.31, 0.31, 0.19},
+                {0.21, 0.43, 0.12},
+                {0.06, 0.08, 0.33},
+                {0.3, 0.38, 0.07}})
             m_mlp.InitializeWeights(2, {
-                {-0.19, -0.07, 0.15, 0.27, -0.08, 0.27, 0.33, 0.28, 0.04}})
+                {0.02, 0.13, 0.05, 0.26, 0.18, 0.5, 0.14, 0.1, 0.1}})
 
             m_mlp.Train()
 
@@ -400,26 +407,26 @@ Namespace ClassicMLP
         End Sub
 
         <TestMethod()>
-        Public Sub MLP1XORTanh2221Gif()
+        Public Sub MLP1XORGifTanh2221()
 
             ' Video of the learning process:
             ' http://patrice.dargenton.free.fr/ai/perceptron/xor/xor-tanh-2221.gif
 
             InitXOR()
             m_mlp.InitializeStruct(m_neuronCountXOR4Layers, addBiasColumn:=True)
-            m_mlp.Initialize(learningRate:=0.02!, weightAdjustment:=0.1!)
+            m_mlp.Initialize(learningRate:=0.1!, weightAdjustment:=0.1!)
 
-            m_mlp.nbIterations = 2700
+            m_mlp.nbIterations = 1000
             m_mlp.SetActivationFunction(enumActivationFunction.HyperbolicTangent, gain:=2)
 
             m_mlp.InitializeWeights(1, {
-                {0.25, -0.17, 0.18},
-                {-0.3, 0.27, 0.43}})
+                {0.36, 0.2, 0.16},
+                {0.18, 0.48, 0.02}})
             m_mlp.InitializeWeights(2, {
-                {0.39, 0.08, -0.45},
-                {0.39, -0.19, 0.36}})
+                {0.2, 0.51, 0.16},
+                {0.47, 0.41, 0.49}})
             m_mlp.InitializeWeights(3, {
-                {-0.29, 0.1, -0.05}})
+                {0.05, 0.31, 0.38}})
 
             m_mlp.Train()
 
@@ -431,7 +438,7 @@ Namespace ClassicMLP
             Dim sExpectedOutput = expectedMatrix.ToStringWithFormat(dec:="0.0")
             Assert.AreEqual(sExpectedOutput, sOutput)
 
-            Const expectedLoss# = 0.02
+            Const expectedLoss# = 0.01
             Dim loss# = m_mlp.averageError
             Dim lossRounded# = Math.Round(loss, 2)
             Assert.AreEqual(True, lossRounded <= expectedLoss)
@@ -439,22 +446,22 @@ Namespace ClassicMLP
         End Sub
 
         <TestMethod()>
-        Public Sub MLP1XORSigmoid221Gif()
+        Public Sub MLP1XORGifSigmoid221()
 
             ' Video of the learning process:
             ' http://patrice.dargenton.free.fr/ai/perceptron/xor/xor-sigmoid-221.gif
 
             InitXOR()
-            m_mlp.Initialize(learningRate:=0.15!, weightAdjustment:=0.15!)
+            m_mlp.Initialize(learningRate:=0.1!, weightAdjustment:=0.1!)
 
-            m_mlp.nbIterations = 9200
+            m_mlp.nbIterations = 13000
             m_mlp.SetActivationFunction(enumActivationFunction.Sigmoid)
 
             m_mlp.InitializeWeights(1, {
-                {0.45, -0.24, 0.33},
-                {0.2, 0.06, 0.43}})
+                {-0.18, -0.09, 0.46},
+                {-0.46, -0.46, -0.14}})
             m_mlp.InitializeWeights(2, {
-                {-0.32, -0.15, 0.03}})
+                {-0.41, -0.44, -0.1}})
 
             m_mlp.Train()
 
@@ -474,22 +481,22 @@ Namespace ClassicMLP
         End Sub
 
         <TestMethod()>
-        Public Sub MLP1XORElu221Gif()
+        Public Sub MLP1XORGifElu221()
 
             ' Video of the learning process:
             ' http://patrice.dargenton.free.fr/ai/perceptron/xor/xor-elu-221.gif
 
             InitXOR()
-            m_mlp.Initialize(learningRate:=0.04!, weightAdjustment:=0.04!)
+            m_mlp.Initialize(learningRate:=0.1!, weightAdjustment:=0.1!)
 
-            m_mlp.nbIterations = 500
+            m_mlp.nbIterations = 600
             m_mlp.SetActivationFunction(enumActivationFunction.ELU, gain:=0.3!)
 
             m_mlp.InitializeWeights(1, {
-                {-0.05, 0.35, -0.18},
-                {0.16, -0.09, -0.37}})
+                {0.26, 0.18, 0.49},
+                {0.42, 0.43, 0.43}})
             m_mlp.InitializeWeights(2, {
-                {0.09, 0.22, -0.19}})
+                {0.12, 0.11, 0.24}})
 
             m_mlp.Train()
 
@@ -501,7 +508,7 @@ Namespace ClassicMLP
             Dim sExpectedOutput = expectedMatrix.ToStringWithFormat(dec:="0.0")
             Assert.AreEqual(sExpectedOutput, sOutput)
 
-            Const expectedLoss# = 0.02
+            Const expectedLoss# = 0
             Dim loss# = m_mlp.averageError
             Dim lossRounded# = Math.Round(loss, 2)
             Assert.AreEqual(True, lossRounded <= expectedLoss)
@@ -510,7 +517,7 @@ Namespace ClassicMLP
 
         ' useAlternateDerivativeFunction = True
         '<TestMethod()>
-        'Public Sub MLP1XORDbleThreshold()
+        'Public Sub MLP1XORGifDbleThreshold()
 
         '    InitXOR()
         '    m_mlp.Initialize(learningRate:=0.1!, weightAdjustment:=0.1!)
@@ -542,7 +549,7 @@ Namespace ClassicMLP
         'End Sub
 
         <TestMethod()>
-        Public Sub MLP1XORDbleThreshold221Gif()
+        Public Sub MLP1XORGifDbleThreshold221()
 
             ' Video of the learning process:
             ' http://patrice.dargenton.free.fr/ai/perceptron/xor/xor-double-threshold-221.gif
@@ -550,14 +557,14 @@ Namespace ClassicMLP
             InitXOR()
             m_mlp.Initialize(learningRate:=0.1!, weightAdjustment:=0.1!)
 
-            m_mlp.nbIterations = 5500
+            m_mlp.nbIterations = 4000
             m_mlp.SetActivationFunction(enumActivationFunction.DoubleThreshold)
 
             m_mlp.InitializeWeights(1, {
-                {0.16, -0.17, 0.17},
-                {-0.29, 0.25, 0.03}})
+                {-0.44, -0.2, -0.07},
+                {-0.04, 0.22, 0.13}})
             m_mlp.InitializeWeights(2, {
-                {-0.16, -0.09, -0.46}})
+                {-0.21, 0.28, -0.03}})
 
             m_mlp.Train()
 
@@ -577,24 +584,22 @@ Namespace ClassicMLP
         End Sub
 
         <TestMethod()>
-        Public Sub MLP1XORDbleThreshold231Gif()
+        Public Sub MLP1XORGifGaussian221()
 
             ' Video of the learning process:
-            ' http://patrice.dargenton.free.fr/ai/perceptron/xor/xor-double-threshold-231.gif
+            ' http://patrice.dargenton.free.fr/ai/perceptron/xor/xor-gaussian-221.gif
 
             InitXOR()
-            m_mlp.InitializeStruct(m_neuronCountXOR231, addBiasColumn:=True)
-            m_mlp.Initialize(learningRate:=0.2!, weightAdjustment:=0.1!)
+            m_mlp.Initialize(learningRate:=0.1!, weightAdjustment:=0.1!)
 
-            m_mlp.nbIterations = 1600
-            m_mlp.SetActivationFunction(enumActivationFunction.DoubleThreshold)
+            m_mlp.nbIterations = 700
+            m_mlp.SetActivationFunction(enumActivationFunction.Gaussian)
 
             m_mlp.InitializeWeights(1, {
-                {-0.28, -0.04, -0.45},
-                {-0.21, 0.19, -0.31},
-                {-0.28, 0.31, 0.35}})
+                {0.22, 0.76, 0.51},
+                {0.71, 0.5, 0.46}})
             m_mlp.InitializeWeights(2, {
-                {-0.42, 0.12, -0.16, 0.38}})
+                {0.05, 0.87, 0.64}})
 
             m_mlp.Train()
 
@@ -614,248 +619,23 @@ Namespace ClassicMLP
         End Sub
 
         <TestMethod()>
-        Public Sub MLP1XORDbleThreshold241Gif()
-
-            ' Video of the learning process:
-            ' http://patrice.dargenton.free.fr/ai/perceptron/xor/xor-double-threshold-241.gif
-
-            InitXOR()
-            m_mlp.InitializeStruct({2, 4, 1}, addBiasColumn:=True)
-            m_mlp.Initialize(learningRate:=0.2!, weightAdjustment:=0.1!)
-
-            m_mlp.nbIterations = 1400
-            m_mlp.SetActivationFunction(enumActivationFunction.DoubleThreshold)
-
-            m_mlp.InitializeWeights(1, {
-                {0.28, -0.42, -0.34},
-                {-0.08, -0.28, -0.29},
-                {-0.02, 0.42, -0.45},
-                {-0.44, 0.16, -0.03}})
-            m_mlp.InitializeWeights(2, {
-                {-0.07, -0.15, -0.2, 0.06, -0.08}})
-
-            m_mlp.Train()
-
-            Dim expectedOutput = m_targetArrayXOR
-            Dim expectedMatrix As Matrix = expectedOutput ' Single(,) -> Matrix
-
-            Dim sOutput = m_mlp.output.ToStringWithFormat(dec:="0.0")
-
-            Dim sExpectedOutput = expectedMatrix.ToStringWithFormat(dec:="0.0")
-            Assert.AreEqual(sExpectedOutput, sOutput)
-
-            Const expectedLoss# = 0.01
-            Dim loss# = m_mlp.averageError
-            Dim lossRounded# = Math.Round(loss, 2)
-            Assert.AreEqual(True, lossRounded <= expectedLoss)
-
-        End Sub
-
-        <TestMethod()>
-        Public Sub MLP1XORDbleThreshold2221Gif()
-
-            ' Video of the learning process:
-            ' http://patrice.dargenton.free.fr/ai/perceptron/xor/xor-double-threshold-2221.gif
-
-            InitXOR()
-            m_mlp.InitializeStruct(m_neuronCountXOR4Layers, addBiasColumn:=True)
-            m_mlp.Initialize(learningRate:=0.1!, weightAdjustment:=0.2!)
-
-            m_mlp.nbIterations = 9500
-            m_mlp.SetActivationFunction(enumActivationFunction.DoubleThreshold)
-
-            m_mlp.InitializeWeights(1, {
-                {-0.29, 0.41, -0.02},
-                {-0.09, -0.48, 0.09}})
-            m_mlp.InitializeWeights(2, {
-                {-0.17, -0.12, -0.09},
-                {0.35, -0.47, 0.47}})
-            m_mlp.InitializeWeights(3, {
-                {-0.26, 0.45, 0.49}})
-
-            m_mlp.Train()
-
-            Dim expectedOutput = m_targetArrayXOR
-            Dim expectedMatrix As Matrix = expectedOutput ' Single(,) -> Matrix
-
-            Dim sOutput = m_mlp.output.ToStringWithFormat(dec:="0.0")
-
-            Dim sExpectedOutput = expectedMatrix.ToStringWithFormat(dec:="0.0")
-            Assert.AreEqual(sExpectedOutput, sOutput)
-
-            Const expectedLoss# = 0.01
-            Dim loss# = m_mlp.averageError
-            Dim lossRounded# = Math.Round(loss, 2)
-            Assert.AreEqual(True, lossRounded <= expectedLoss)
-
-        End Sub
-
-        <TestMethod()>
-        Public Sub MLP1XORDbleThreshold2331Gif()
-
-            ' Video of the learning process:
-            ' http://patrice.dargenton.free.fr/ai/perceptron/xor/xor-double-threshold-2331.gif
-
-            InitXOR()
-            m_mlp.InitializeStruct(m_neuronCountXOR4Layers2331, addBiasColumn:=True)
-            m_mlp.Initialize(learningRate:=0.2!, weightAdjustment:=0.1!)
-
-            m_mlp.nbIterations = 1900
-            m_mlp.SetActivationFunction(enumActivationFunction.DoubleThreshold)
-
-            m_mlp.InitializeWeights(1, {
-                {0.25, 0.29, -0.1},
-                {0.14, 0.2, -0.34},
-                {-0.48, 0.37, 0.14}})
-            m_mlp.InitializeWeights(2, {
-                {-0.48, 0.36, -0.41, 0.03},
-                {0.1, 0.3, 0.03, 0.42},
-                {-0.14, 0.25, -0.04, -0.32}})
-            m_mlp.InitializeWeights(3, {
-                {0.32, 0.33, -0.29, -0.48}})
-
-            m_mlp.Train()
-
-            Dim expectedOutput = m_targetArrayXOR
-            Dim expectedMatrix As Matrix = expectedOutput ' Single(,) -> Matrix
-
-            Dim sOutput = m_mlp.output.ToStringWithFormat(dec:="0.0")
-
-            Dim sExpectedOutput = expectedMatrix.ToStringWithFormat(dec:="0.0")
-            Assert.AreEqual(sExpectedOutput, sOutput)
-
-            Const expectedLoss# = 0
-            Dim loss# = m_mlp.averageError
-            Dim lossRounded# = Math.Round(loss, 2)
-            Assert.AreEqual(True, lossRounded <= expectedLoss)
-
-        End Sub
-
-        <TestMethod()>
-        Public Sub MLP1XORGaussian221Gif()
-
-            ' Video of the learning process:
-            ' http://patrice.dargenton.free.fr/ai/perceptron/xor/xor-gaussian-221.gif
-
-            InitXOR()
-            m_mlp.Initialize(learningRate:=0.03!, weightAdjustment:=0.02!)
-
-            m_mlp.nbIterations = 700
-            m_mlp.SetActivationFunction(enumActivationFunction.Gaussian)
-
-            m_mlp.InitializeWeights(1, {
-                {-0.27, -0.35, 0.21},
-                {-0.36, 0.36, -0.04}})
-            m_mlp.InitializeWeights(2, {
-                {-0.24, -0.17, -0.37}})
-
-            m_mlp.Train()
-
-            Dim expectedOutput = m_targetArrayXOR
-            Dim expectedMatrix As Matrix = expectedOutput ' Single(,) -> Matrix
-
-            Dim sOutput = m_mlp.output.ToStringWithFormat(dec:="0.0")
-
-            Dim sExpectedOutput = expectedMatrix.ToStringWithFormat(dec:="0.0")
-            Assert.AreEqual(sExpectedOutput, sOutput)
-
-            Const expectedLoss# = 0.04
-            Dim loss# = m_mlp.averageError
-            Dim lossRounded# = Math.Round(loss, 2)
-            Assert.AreEqual(True, lossRounded <= expectedLoss)
-
-        End Sub
-
-        <TestMethod()>
-        Public Sub MLP1XORSinus221Gif()
+        Public Sub MLP1XORGifSinus221()
 
             ' Video of the learning process:
             ' http://patrice.dargenton.free.fr/ai/perceptron/xor/xor-sinus-221.gif
             ' http://patrice.dargenton.free.fr/ai/perceptron/xor/xor-sinus-221-zoomed-out.gif
 
             InitXOR()
-            m_mlp.Initialize(learningRate:=0.02!, weightAdjustment:=0.01!)
+            m_mlp.Initialize(learningRate:=0.1!, weightAdjustment:=0.1!)
 
-            m_mlp.nbIterations = 1100
-            m_mlp.SetActivationFunction(enumActivationFunction.Gaussian)
-
-            m_mlp.InitializeWeights(1, {
-                {0.15, 0.18, 0.5},
-                {-0.17, -0.44, -0.07}})
-            m_mlp.InitializeWeights(2, {
-                {-0.02, 0.38, -0.09}})
-
-            m_mlp.Train()
-
-            Dim expectedOutput = m_targetArrayXOR
-            Dim expectedMatrix As Matrix = expectedOutput ' Single(,) -> Matrix
-
-            Dim sOutput = m_mlp.output.ToStringWithFormat(dec:="0.0")
-
-            Dim sExpectedOutput = expectedMatrix.ToStringWithFormat(dec:="0.0")
-            Assert.AreEqual(sExpectedOutput, sOutput)
-
-            Const expectedLoss# = 0.04
-            Dim loss# = m_mlp.averageError
-            Dim lossRounded# = Math.Round(loss, 2)
-            Assert.AreEqual(True, lossRounded <= expectedLoss)
-
-        End Sub
-
-        <TestMethod()>
-        Public Sub MLP1XORReLu221Gif()
-
-            ' Video of the learning process:
-            ' http://patrice.dargenton.free.fr/ai/perceptron/xor/xor-relu-221.gif
-
-            InitXOR()
-            m_mlp.Initialize(learningRate:=0.09!, weightAdjustment:=0.03!)
-
-            m_mlp.nbIterations = 800
-            m_mlp.SetActivationFunction(enumActivationFunction.ReLu, gain:=0.4!)
+            m_mlp.nbIterations = 200
+            m_mlp.SetActivationFunction(enumActivationFunction.Sinus)
 
             m_mlp.InitializeWeights(1, {
-                {-0.43, 0.43, -0.07},
-                {0.13, -0.32, 0.29}})
+                {0.22, 0.39, 0.15},
+                {0.2, 0.37, 0.39}})
             m_mlp.InitializeWeights(2, {
-                {-0.01, 0.13, 0.12}})
-
-            m_mlp.Train()
-
-            Dim expectedOutput = m_targetArrayXOR
-            Dim expectedMatrix As Matrix = expectedOutput ' Single(,) -> Matrix
-
-            Dim sOutput = m_mlp.output.ToStringWithFormat(dec:="0.0")
-
-            Dim sExpectedOutput = expectedMatrix.ToStringWithFormat(dec:="0.0")
-            Assert.AreEqual(sExpectedOutput, sOutput)
-
-            Const expectedLoss# = 0.02
-            Dim loss# = m_mlp.averageError
-            Dim lossRounded# = Math.Round(loss, 2)
-            Assert.AreEqual(True, lossRounded <= expectedLoss)
-
-        End Sub
-
-        <TestMethod()>
-        Public Sub MLP1XORReLu231Gif()
-
-            ' Video of the learning process:
-            ' http://patrice.dargenton.free.fr/ai/perceptron/xor/xor-relu-231.gif
-
-            InitXOR()
-            m_mlp.InitializeStruct(m_neuronCountXOR231, addBiasColumn:=True)
-            m_mlp.Initialize(learningRate:=0.07!, weightAdjustment:=0.03!)
-
-            m_mlp.nbIterations = 1200
-            m_mlp.SetActivationFunction(enumActivationFunction.ReLu, gain:=0.5!)
-
-            m_mlp.InitializeWeights(1, {
-                {-0.28, -0.2, 0.24},
-                {-0.06, -0.17, 0.14},
-                {0.38, 0.08, -0.09}})
-            m_mlp.InitializeWeights(2, {
-                {0.22, -0.45, 0.07, 0.1}})
+                {0.34, 0.12, 0.15}})
 
             m_mlp.Train()
 
@@ -875,25 +655,132 @@ Namespace ClassicMLP
         End Sub
 
         <TestMethod()>
-        Public Sub MLP1XORReLu241Gif()
+        Public Sub MLP1XORGifReLu221()
+
+            ' Video of the learning process:
+            ' http://patrice.dargenton.free.fr/ai/perceptron/xor/xor-relu-221.gif
+
+            InitXOR()
+            m_mlp.Initialize(learningRate:=0.1!, weightAdjustment:=0.1!)
+
+            m_mlp.nbIterations = 700
+            m_mlp.SetActivationFunction(enumActivationFunction.ReLu)
+
+            m_mlp.InitializeWeights(1, {
+                {0.1, 0.11, 0.14},
+                {0.28, 0.04, 0.44}})
+            m_mlp.InitializeWeights(2, {
+                {0.45, 0.48, 0.24}})
+
+            m_mlp.Train()
+
+            Dim expectedOutput = m_targetArrayXOR
+            Dim expectedMatrix As Matrix = expectedOutput ' Single(,) -> Matrix
+
+            Dim sOutput = m_mlp.output.ToStringWithFormat(dec:="0.0")
+
+            Dim sExpectedOutput = expectedMatrix.ToStringWithFormat(dec:="0.0")
+            Assert.AreEqual(sExpectedOutput, sOutput)
+
+            Const expectedLoss# = 0
+            Dim loss# = m_mlp.averageError
+            Dim lossRounded# = Math.Round(loss, 2)
+            Assert.AreEqual(True, lossRounded <= expectedLoss)
+
+        End Sub
+
+        <TestMethod()>
+        Public Sub MLP1XORGifReLu231()
+
+            ' Video of the learning process:
+            ' http://patrice.dargenton.free.fr/ai/perceptron/xor/xor-relu-231.gif
+
+            InitXOR()
+            m_mlp.InitializeStruct(m_neuronCountXOR231, addBiasColumn:=True)
+            m_mlp.Initialize(learningRate:=0.1!, weightAdjustment:=0.1!)
+
+            m_mlp.nbIterations = 400
+            m_mlp.SetActivationFunction(enumActivationFunction.ReLu)
+
+            m_mlp.InitializeWeights(1, {
+                {0.46, 0.27, 0.42},
+                {0.04, 0.29, 0.26},
+                {0.13, 0.12, 0.01}})
+            m_mlp.InitializeWeights(2, {
+                {0.27, 0.02, 0.34, 0.19}})
+
+            m_mlp.Train()
+
+            Dim expectedOutput = m_targetArrayXOR
+            Dim expectedMatrix As Matrix = expectedOutput ' Single(,) -> Matrix
+
+            Dim sOutput = m_mlp.output.ToStringWithFormat(dec:="0.0")
+
+            Dim sExpectedOutput = expectedMatrix.ToStringWithFormat(dec:="0.0")
+            Assert.AreEqual(sExpectedOutput, sOutput)
+
+            Const expectedLoss# = 0.01
+            Dim loss# = m_mlp.averageError
+            Dim lossRounded# = Math.Round(loss, 2)
+            Assert.AreEqual(True, lossRounded <= expectedLoss)
+
+        End Sub
+
+        <TestMethod()>
+        Public Sub MLP1XORGifReLu241()
 
             ' Video of the learning process:
             ' http://patrice.dargenton.free.fr/ai/perceptron/xor/xor-relu-241.gif
 
             InitXOR()
             m_mlp.InitializeStruct({2, 4, 1}, addBiasColumn:=True)
-            m_mlp.Initialize(learningRate:=0.08!, weightAdjustment:=0.04!)
+            m_mlp.Initialize(learningRate:=0.1!, weightAdjustment:=0.1!)
 
-            m_mlp.nbIterations = 2000
-            m_mlp.SetActivationFunction(enumActivationFunction.ReLu, gain:=0.3!)
+            m_mlp.nbIterations = 300
+            m_mlp.SetActivationFunction(enumActivationFunction.ReLu)
 
             m_mlp.InitializeWeights(1, {
-                {-0.49, -0.18, -0.32},
-                {-0.36, -0.27, 0.27},
-                {0.47, -0.17, 0.13},
-                {-0.48, 0.45, 0.46}})
+                {0.19, 0.17, 0.28},
+                {0.37, 0.07, 0.25},
+                {0.42, 0.02, 0.17},
+                {0.05, 0.44, 0.2}})
             m_mlp.InitializeWeights(2, {
-                {-0.07, -0.28, 0.35, -0.13, 0.15}})
+                {0.43, 0.16, 0.31, 0.18, 0.21}})
+
+            m_mlp.Train()
+
+            Dim expectedOutput = m_targetArrayXOR
+            Dim expectedMatrix As Matrix = expectedOutput ' Single(,) -> Matrix
+
+            Dim sOutput = m_mlp.output.ToStringWithFormat(dec:="0.0")
+
+            Dim sExpectedOutput = expectedMatrix.ToStringWithFormat(dec:="0.0")
+            Assert.AreEqual(sExpectedOutput, sOutput)
+
+            Const expectedLoss# = 0
+            Dim loss# = m_mlp.averageError
+            Dim lossRounded# = Math.Round(loss, 2)
+            Assert.AreEqual(True, lossRounded <= expectedLoss)
+
+        End Sub
+
+        <TestMethod()>
+        Public Sub MLP1XORGifArctan221()
+
+            ' Video of the learning process:
+            ' http://patrice.dargenton.free.fr/ai/perceptron/xor/xor-arctan-221.gif
+
+            InitXOR()
+            m_mlp.Initialize(learningRate:=0.1!, weightAdjustment:=0.1!)
+
+            m_mlp.nbIterations = 600
+            m_mlp.SetActivationFunction(enumActivationFunction.ArcTangent)
+
+            m_mlp.InitializeWeights(1, {
+                {0.19, 0.25, 0.2},
+                {0.47, 0.33, 0.49}})
+            m_mlp.InitializeWeights(2, {
+                {0.42, 0.23, 0.31}})
 
             m_mlp.Train()
 
@@ -913,26 +800,263 @@ Namespace ClassicMLP
         End Sub
 
         <TestMethod()>
-        Public Sub MLP1XORArctan221Gif()
+        Public Sub MLP1XORGifMish221()
 
             ' Video of the learning process:
-            ' http://patrice.dargenton.free.fr/ai/perceptron/xor/xor-arctan-221.gif
+            ' http://patrice.dargenton.free.fr/ai/perceptron/xor/xor-mish-221.gif
 
             InitXOR()
-            m_mlp.Initialize(learningRate:=0.07!, weightAdjustment:=0.07!)
+            m_mlp.Initialize(learningRate:=0.1!, weightAdjustment:=0.1!)
 
-            m_mlp.nbIterations = 700 '800 '1000
-            m_mlp.SetActivationFunction(enumActivationFunction.ArcTangent)
+            m_mlp.nbIterations = 400
+            m_mlp.SetActivationFunction(enumActivationFunction.Mish)
 
             m_mlp.InitializeWeights(1, {
-                {0.33, 0.3, 0.19},
-                {0.24, 0.33, 0.19}})
+                {0.52, 0.13, 0.49},
+                {0.15, 0.16, 0.35}})
             m_mlp.InitializeWeights(2, {
-                {-0.28, 0.48, 0.19}})
+                {0.35, 0.4, 0.11}})
 
             m_mlp.Train()
 
             Dim expectedOutput = m_targetArrayXOR
+            Dim expectedMatrix As Matrix = expectedOutput ' Single(,) -> Matrix
+
+            Dim sOutput = m_mlp.output.ToStringWithFormat(dec:="0.0")
+
+            Dim sExpectedOutput = expectedMatrix.ToStringWithFormat(dec:="0.0")
+            Assert.AreEqual(sExpectedOutput, sOutput)
+
+            Const expectedLoss# = 0.01
+            Dim loss# = m_mlp.averageError
+            Dim lossRounded# = Math.Round(loss, 2)
+            Assert.AreEqual(True, lossRounded <= expectedLoss)
+
+        End Sub
+
+        <TestMethod()>
+        Public Sub MLP1XORGifAnalogElu221()
+
+            ' Video of the learning process:
+            ' http://patrice.dargenton.free.fr/ai/perceptron/xor/xor-analog-elu-221.gif
+
+            InitXORAnalog()
+            m_mlp.Initialize(learningRate:=0.1!, weightAdjustment:=0.1!)
+
+            m_mlp.nbIterations = 700
+            m_mlp.SetActivationFunction(enumActivationFunction.ELU, gain:=0.5!)
+
+            m_mlp.InitializeWeights(1, {
+                {0.12, 0.2, 0.06},
+                {0.13, 0.11, 0.25}})
+            m_mlp.InitializeWeights(2, {
+                {0.25, 0.23, 0.22}})
+
+            m_mlp.Train()
+
+            'Dim expectedOutput = m_targetArrayXORAnalog
+            ' The structure is too small to perform full learning (underfitting):
+            Dim expectedOutput = New Double(,) {
+                {1.1},
+                {0.2},
+                {1.1},
+                {0.2},
+                {0.9},
+                {0.2},
+                {0.9},
+                {0.2},
+                {0.2}}
+            Dim expectedMatrix As Matrix = expectedOutput ' Single(,) -> Matrix
+
+            Dim sOutput = m_mlp.output.ToStringWithFormat(dec:="0.0")
+
+            Dim sExpectedOutput = expectedMatrix.ToStringWithFormat(dec:="0.0")
+            Assert.AreEqual(sExpectedOutput, sOutput)
+
+            Const expectedLoss# = 0.13
+            Dim loss# = m_mlp.averageError
+            Dim lossRounded# = Math.Round(loss, 2)
+            Assert.AreEqual(True, lossRounded <= expectedLoss)
+
+        End Sub
+
+        <TestMethod()>
+        Public Sub MLP1XORGifAnalogElu231()
+
+            ' Video of the learning process:
+            ' http://patrice.dargenton.free.fr/ai/perceptron/xor/xor-analog-elu-231.gif
+
+            InitXORAnalog()
+            m_mlp.InitializeStruct(m_neuronCountXOR231, addBiasColumn:=True)
+            m_mlp.Initialize(learningRate:=0.1!, weightAdjustment:=0.1!)
+
+            m_mlp.nbIterations = 1000
+            m_mlp.SetActivationFunction(enumActivationFunction.ELU, gain:=0.5!)
+
+            m_mlp.InitializeWeights(1, {
+                {0.22, 0.05, 0.16},
+                {0.07, 0.03, 0.24},
+                {0.1, 0.04, 0.2}})
+            m_mlp.InitializeWeights(2, {
+                {0.08, 0.12, 0.11, 0.24}})
+
+            m_mlp.Train()
+
+            Dim expectedOutput = m_targetArrayXORAnalog
+            Dim expectedMatrix As Matrix = expectedOutput ' Single(,) -> Matrix
+
+            Dim sOutput = m_mlp.output.ToStringWithFormat(dec:="0.0")
+
+            Dim sExpectedOutput = expectedMatrix.ToStringWithFormat(dec:="0.0")
+            Assert.AreEqual(sExpectedOutput, sOutput)
+
+            Const expectedLoss# = 0.01
+            Dim loss# = m_mlp.averageError
+            Dim lossRounded# = Math.Round(loss, 2)
+            Assert.AreEqual(True, lossRounded <= expectedLoss)
+
+        End Sub
+
+        <TestMethod()>
+        Public Sub MLP1XORGifAnalogDoubleThreshold241()
+
+            ' Video of the learning process:
+            ' http://patrice.dargenton.free.fr/ai/perceptron/xor/xor-analog-double-threshold-241.gif
+
+            InitXORAnalog()
+            m_mlp.InitializeStruct(m_neuronCountXOR241, addBiasColumn:=True)
+            m_mlp.Initialize(learningRate:=0.1!, weightAdjustment:=0.1!)
+
+            m_mlp.nbIterations = 5000
+            m_mlp.SetActivationFunction(enumActivationFunction.DoubleThreshold)
+
+            m_mlp.InitializeWeights(1, {
+                {0.47, -0.27, -0.1},
+                {0.2, 0.4, 0.22},
+                {-0.08, 0.22, -0.02},
+                {0.48, 0.29, -0.29}})
+            m_mlp.InitializeWeights(2, {
+                {0.22, 0.34, -0.31, -0.47, 0.34}})
+
+            m_mlp.Train()
+
+            Dim expectedOutput = m_targetArrayXORAnalog
+            Dim expectedMatrix As Matrix = expectedOutput ' Single(,) -> Matrix
+
+            Dim sOutput = m_mlp.output.ToStringWithFormat(dec:="0.0")
+
+            Dim sExpectedOutput = expectedMatrix.ToStringWithFormat(dec:="0.0")
+            Assert.AreEqual(sExpectedOutput, sOutput)
+
+            Const expectedLoss# = 0
+            Dim loss# = m_mlp.averageError
+            Dim lossRounded# = Math.Round(loss, 2)
+            Assert.AreEqual(True, lossRounded <= expectedLoss)
+
+        End Sub
+
+        <TestMethod()>
+        Public Sub MLP1XORGifAnalogReLu241()
+
+            ' Video of the learning process:
+            ' http://patrice.dargenton.free.fr/ai/perceptron/xor/xor-analog-relu-241.gif
+
+            InitXORAnalog()
+            m_mlp.InitializeStruct(m_neuronCountXOR241, addBiasColumn:=True)
+            m_mlp.Initialize(learningRate:=0.1!, weightAdjustment:=0.1!)
+
+            m_mlp.nbIterations = 500
+            m_mlp.SetActivationFunction(enumActivationFunction.ReLu)
+
+            m_mlp.InitializeWeights(1, {
+                {0.02, 0.29, 0.11},
+                {0.09, 0.05, 0.3},
+                {0.22, 0.31, 0.12},
+                {0.15, 0.21, 0.11}})
+            m_mlp.InitializeWeights(2, {
+                {0.19, 0.05, 0.17, 0.02, 0.34}})
+
+            m_mlp.Train()
+
+            Dim expectedOutput = m_targetArrayXORAnalog
+            Dim expectedMatrix As Matrix = expectedOutput ' Single(,) -> Matrix
+
+            Dim sOutput = m_mlp.output.ToStringWithFormat(dec:="0.0")
+
+            Dim sExpectedOutput = expectedMatrix.ToStringWithFormat(dec:="0.0")
+            Assert.AreEqual(sExpectedOutput, sOutput)
+
+            Const expectedLoss# = 0.01
+            Dim loss# = m_mlp.averageError
+            Dim lossRounded# = Math.Round(loss, 2)
+            Assert.AreEqual(True, lossRounded <= expectedLoss)
+
+        End Sub
+
+        <TestMethod()>
+        Public Sub MLP1XORGifAnalogTanh231()
+
+            ' Video of the learning process:
+            ' http://patrice.dargenton.free.fr/ai/perceptron/xor/xor-analog-tanh-231.gif
+
+            InitXORAnalog()
+            m_mlp.InitializeStruct(m_neuronCountXOR231, addBiasColumn:=True)
+            m_mlp.Initialize(learningRate:=0.1!, weightAdjustment:=0.1!)
+
+            m_mlp.nbIterations = 1000
+            m_mlp.SetActivationFunction(enumActivationFunction.HyperbolicTangent, gain:=2)
+
+            m_mlp.InitializeWeights(1, {
+                {0.51, 0.34, 0.03},
+                {0.33, 0.13, 0.28},
+                {0.14, 0.35, 0.43}})
+            m_mlp.InitializeWeights(2, {
+                {0.36, 0.05, 0.04, 0.31}})
+
+            m_mlp.Train()
+
+            Dim expectedOutput = m_targetArrayXORAnalog
+            Dim expectedMatrix As Matrix = expectedOutput ' Single(,) -> Matrix
+
+            Dim sOutput = m_mlp.output.ToStringWithFormat(dec:="0.0")
+
+            Dim sExpectedOutput = expectedMatrix.ToStringWithFormat(dec:="0.0")
+            Assert.AreEqual(sExpectedOutput, sOutput)
+
+            Const expectedLoss# = 0.02
+            Dim loss# = m_mlp.averageError
+            Dim lossRounded# = Math.Round(loss, 2)
+            Assert.AreEqual(True, lossRounded <= expectedLoss)
+
+        End Sub
+
+        <TestMethod()>
+        Public Sub MLP1XORGifAnalogTanh2331()
+
+            ' Video of the learning process:
+            ' http://patrice.dargenton.free.fr/ai/perceptron/xor/xor-analog-tanh-2331.gif
+
+            InitXORAnalog()
+            m_mlp.InitializeStruct(m_neuronCountXOR4Layers2331, addBiasColumn:=True)
+            m_mlp.Initialize(learningRate:=0.1!, weightAdjustment:=0.1!)
+
+            m_mlp.nbIterations = 2000
+            m_mlp.SetActivationFunction(enumActivationFunction.HyperbolicTangent, gain:=2)
+
+            m_mlp.InitializeWeights(1, {
+                {0.17, 0.55, 0.31},
+                {0.41, 0.04, 0.06},
+                {0.49, 0.16, 0.03}})
+            m_mlp.InitializeWeights(2, {
+                {0.03, 0.51, 0.52, 0.35},
+                {0.24, 0.26, 0.31, 0.11},
+                {0.26, 0.16, 0.3, 0.24}})
+            m_mlp.InitializeWeights(3, {
+                {0.51, 0.18, 0.08, 0.25}})
+
+            m_mlp.Train()
+
+            Dim expectedOutput = m_targetArrayXORAnalog
             Dim expectedMatrix As Matrix = expectedOutput ' Single(,) -> Matrix
 
             Dim sOutput = m_mlp.output.ToStringWithFormat(dec:="0.0")
@@ -1200,6 +1324,13 @@ Namespace ClassicMLP
         Public Sub MLP3XORSinusStdr()
 
             TestMLP3XORSinus(m_mlp)
+
+        End Sub
+
+        <TestMethod()>
+        Public Sub MLP3XORMishStdr()
+
+            TestMLP3XORMish(m_mlp)
 
         End Sub
 

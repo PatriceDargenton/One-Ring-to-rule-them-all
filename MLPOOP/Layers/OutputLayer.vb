@@ -31,7 +31,23 @@ Namespace Layers
             For Each n In Me.Neurons
                 sum += n.ErrorDelta * n.ErrorDelta
             Next
-            Return sum / 2
+            Return Math.Sqrt(sum) ' sum / 2
+        End Function
+
+        Public Function CalculateAbsError#()
+            Dim sum# = 0.0
+            For Each n In Me.Neurons
+                sum += Math.Abs(n.ErrorDelta)
+            Next
+            Return sum
+        End Function
+
+        Public Function CalculateSignedError#()
+            Dim sum# = 0.0
+            For Each n In Me.Neurons
+                sum += n.ErrorDelta
+            Next
+            Return sum
         End Function
 
     End Class

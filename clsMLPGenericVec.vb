@@ -54,15 +54,27 @@ Public MustInherit Class clsVectorizedMLPGeneric : Inherits clsMLPGeneric
                     nbIterationsBatch0 = Me.nbIterations - iterationTot
                 End If
                 If nbIterationsBatch0 <= 0 Then Exit Do
+
+                Me.numIteration += nbIterationsBatch0
+
                 TrainVectorBatch(nbIterationsBatch0)
+
+                ' Debug one batch of iterations:
+                'Debug.WriteLine(iterationTot & "/" & Me.nbIterations)
+                'SetOuput1D()
+                'ComputeAverageError()
+                'PrintOutput(iterationTot, force:=True)
+
                 iteration += 1
                 iterationTot += nbIterationsBatch0
+
             Loop
             'Debug.WriteLine(iterationTot & "/" & Me.nbIterations)
         Else
 
             Dim minBatchSizeFound = False
             Dim iteration = 0
+            Dim iterationTot = 0
             Do While iteration < Me.nbIterations
 
                 Dim nbIterationsBatch0%
@@ -89,6 +101,7 @@ Public MustInherit Class clsVectorizedMLPGeneric : Inherits clsMLPGeneric
                 End If
                 If nbIterationsBatch0 <= 0 Then Exit Do
 
+                Me.numIteration += nbIterationsBatch0
                 TrainVectorBatch(nbIterationsBatch0)
 
                 If minBatchSizeFound AndAlso iteration > 0 Then
@@ -101,6 +114,7 @@ Public MustInherit Class clsVectorizedMLPGeneric : Inherits clsMLPGeneric
                     Exit Do
                 End If
                 iteration += nbIterationsBatch0
+                iterationTot += nbIterationsBatch0
 
             Loop
 

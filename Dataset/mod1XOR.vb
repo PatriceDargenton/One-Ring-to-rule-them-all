@@ -13,6 +13,28 @@ Module mod1XOR
         {1},
         {0}}
 
+    Public ReadOnly m_inputArrayXORAnalog!(,) = {
+        {1, 0},
+        {0, 0},
+        {0, 1},
+        {1, 1},
+        {0.9, 0.1},
+        {0.1, 0.1},
+        {0.1, 0.9},
+        {0.9, 0.9},
+        {0.5, 0.5}}
+
+    Public ReadOnly m_targetArrayXORAnalog!(,) = {
+        {1},
+        {0},
+        {1},
+        {0},
+        {0.9},
+        {0.1},
+        {0.9},
+        {0.1},
+        {0.5}}
+
     Public ReadOnly m_inputArrayXOR90PC!(,) = {
         {0.9!, 0.1!},
         {0.1!, 0.1!},

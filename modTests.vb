@@ -130,7 +130,7 @@ Retry:
 
             Case "m"c
                 ' Three layers only, poor results!
-                MLPGenericIrisFlowerTest(New MatrixMLP.MultiLayerPerceptron,
+                MLPGenericIrisFlowerTest(New clsMPLMatrix,
                     "Matrix MLP Iris flower logical test", nbIterations:=4000, threeLayers:=True)
 
             Case "n"c
@@ -139,7 +139,7 @@ Retry:
                     nbIterations:=3000, threeLayers:=True, sigmoid:=False)
 
             Case "o"c
-                MLPGenericIrisFlowerTest(New NetworkOOP.MultilayerPerceptron,
+                MLPGenericIrisFlowerTest(New clsMLPOOP,
                     "Object-oriented programming MLP Iris flower logical test")
 
             Case "r"c
@@ -167,7 +167,7 @@ Retry:
 
             Case "v"c
                 ' Works only using sigmoid activation
-                MLPGenericIrisFlowerTest(New VectorizedMatrixMLP.clsVectorizedMatrixMLP,
+                MLPGenericIrisFlowerTest(New clsVectorizedMatrixMLP,
                     "Vectorized Matrix MLP Iris flower logical test",
                     nbIterations:=1000, sigmoid:=True)
 
@@ -209,7 +209,7 @@ Retry:
 
             Case "m"c
                 ' Three layers only, same results!
-                MLPGenericIrisFlowerTestAnalog(New MatrixMLP.MultiLayerPerceptron,
+                MLPGenericIrisFlowerTestAnalog(New clsMPLMatrix,
                     "Matrix MLP Iris flower analog test", nbIterations:=4000, threeLayers:=True)
 
             Case "n"c
@@ -217,7 +217,7 @@ Retry:
                     "NeuralNet.NET MLP Iris flower analog test", nbIterations:=3000, sigmoid:=False)
 
             Case "o"c
-                MLPGenericIrisFlowerTestAnalog(New NetworkOOP.MultilayerPerceptron,
+                MLPGenericIrisFlowerTestAnalog(New clsMLPOOP,
                     "Object-oriented programming MLP Iris flower analog test")
 
             Case "r"c
@@ -233,7 +233,7 @@ Retry:
 
             Case "v"c
                 ' Works only using sigmoid activation, poor results!
-                MLPGenericIrisFlowerTestAnalog(New VectorizedMatrixMLP.clsVectorizedMatrixMLP,
+                MLPGenericIrisFlowerTestAnalog(New clsVectorizedMatrixMLP,
                     "Vectorized Matrix MLP Iris flower analog test", sigmoid:=True)
 
         End Select
@@ -273,7 +273,7 @@ Retry:
                     nbIterations:=100, sigmoid:=True)
 
             Case "m"c
-                MLPGenericSunspotTest(New MatrixMLP.MultiLayerPerceptron,
+                MLPGenericSunspotTest(New clsMPLMatrix,
                     "Matrix MLP Sunspot test")
 
             Case "n"c
@@ -281,7 +281,7 @@ Retry:
                     "NeuralNet.NET MLP Sunspot test", sigmoid:=True, nbIterations:=3000)
 
             Case "o"c
-                MLPGenericSunspotTest(New NetworkOOP.MultilayerPerceptron,
+                MLPGenericSunspotTest(New clsMLPOOP,
                     "Object-oriented programming MLP Sunspot test")
 
             Case "r"c
@@ -296,7 +296,7 @@ Retry:
 
             Case "v"c
                 ' Works only using sigmoid activation
-                MLPGenericSunspotTest(New VectorizedMatrixMLP.clsVectorizedMatrixMLP,
+                MLPGenericSunspotTest(New clsVectorizedMatrixMLP,
                     "Vectorized Matrix MLP Sunspot test", sigmoid:=True)
 
         End Select

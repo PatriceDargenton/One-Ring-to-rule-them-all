@@ -299,7 +299,7 @@ Namespace NeuralNetMLP
 #Region "Animated gifs"
 
         <TestMethod()>
-        Public Sub NNMLP1XORTanh231SGDGif()
+        Public Sub NNMLP1XORGifTanh231SGD()
 
             ' Video of the learning process:
             ' http://patrice.dargenton.free.fr/ai/perceptron/xor/xor-tanh-231-sgd.gif
@@ -310,94 +310,15 @@ Namespace NeuralNetMLP
             m_mlp.trainingAlgorithm = enumTrainingAlgorithm.StochasticGradientDescent
             m_mlp.nbIterationsBatch = 3
 
-            m_mlp.nbIterations = 5000
+            m_mlp.nbIterations = 9000
             m_mlp.SetActivationFunction(enumActivationFunction.HyperbolicTangent)
 
             m_mlp.InitializeWeights(1, {
-                {-0.87, -1.06, 0.00},
-                {0.75, 0.1, 0.00},
-                {-0.81, -0.64, 0.00}})
+                {0.45, 0.44, 0.00},
+                {0.19, 0.19, 0.00},
+                {0.31, 0.47, 0.00}})
             m_mlp.InitializeWeights(2, {
-                {-0.39, -0.58, 0.84, 0.00}})
-
-            m_mlp.Train()
-
-            'Dim expectedOutput = m_targetArrayXOR
-            Dim expectedOutput = New Double(,) {
-                {0.9},
-                {0.0},
-                {0.9},
-                {0.0}}
-            Dim expectedMatrix As Matrix = expectedOutput ' Single(,) -> Matrix
-            Dim sOutput = m_mlp.output.ToStringWithFormat(dec:="0.0")
-            Dim sExpectedOutput = expectedMatrix.ToStringWithFormat(dec:="0.0")
-            Assert.AreEqual(sExpectedOutput, sOutput)
-
-            Const expectedLoss# = 0.07
-            Dim loss# = m_mlp.averageError
-            Dim lossRounded# = Math.Round(loss, 2)
-            Assert.AreEqual(True, lossRounded <= expectedLoss)
-
-        End Sub
-
-        <TestMethod()>
-        Public Sub NNMLP1XORTanh231RMSPropGif()
-
-            ' Video of the learning process:
-            ' http://patrice.dargenton.free.fr/ai/perceptron/xor/xor-tanh-231-rmsprop.gif
-
-            InitXOR(m_mlp)
-            m_mlp.Initialize(learningRate:=0)
-            m_mlp.InitializeStruct(m_neuronCountXOR231, addBiasColumn:=True)
-            m_mlp.trainingAlgorithm = enumTrainingAlgorithm.RMSProp
-            m_mlp.nbIterationsBatch = 3
-
-            m_mlp.nbIterations = 500
-            m_mlp.SetActivationFunction(enumActivationFunction.HyperbolicTangent)
-
-            m_mlp.InitializeWeights(1, {
-                {-0.65, -0.09, 0.00},
-                {0.57, 0.27, 0.00},
-                {-0.85, -0.29, 0.00}})
-            m_mlp.InitializeWeights(2, {
-                {-0.97, -0.86, -0.49, 0.00}})
-
-            m_mlp.Train()
-
-            Dim expectedOutput = m_targetArrayXOR
-            Dim expectedMatrix As Matrix = expectedOutput ' Single(,) -> Matrix
-            Dim sOutput = m_mlp.output.ToStringWithFormat(dec:="0.0")
-            Dim sExpectedOutput = expectedMatrix.ToStringWithFormat(dec:="0.0")
-            Assert.AreEqual(sExpectedOutput, sOutput)
-
-            Const expectedLoss# = 0.03
-            Dim loss# = m_mlp.averageError
-            Dim lossRounded# = Math.Round(loss, 2)
-            Assert.AreEqual(True, lossRounded <= expectedLoss)
-
-        End Sub
-
-        <TestMethod()>
-        Public Sub NNMLP1XORTanh231MomentumGif()
-
-            ' Video of the learning process:
-            ' http://patrice.dargenton.free.fr/ai/perceptron/xor/xor-tanh-231-momentum.gif
-
-            InitXOR(m_mlp)
-            m_mlp.Initialize(learningRate:=0)
-            m_mlp.InitializeStruct(m_neuronCountXOR231, addBiasColumn:=True)
-            m_mlp.trainingAlgorithm = enumTrainingAlgorithm.Momentum
-            m_mlp.nbIterationsBatch = 3
-
-            m_mlp.nbIterations = 3000
-            m_mlp.SetActivationFunction(enumActivationFunction.HyperbolicTangent)
-
-            m_mlp.InitializeWeights(1, {
-                {0.21, -0.84, 0.00},
-                {0.99, -0.67, 0.00},
-                {0.97, 0.62, 0.00}})
-            m_mlp.InitializeWeights(2, {
-                {1.16, 0.57, 0.7, 0.00}})
+                {0.52, 0.54, 0.01, 0.00}})
 
             m_mlp.Train()
 
@@ -420,105 +341,26 @@ Namespace NeuralNetMLP
         End Sub
 
         <TestMethod()>
-        Public Sub NNMLP1XORTanh231AdaMaxGif()
+        Public Sub NNMLP1XORGifTanh231RMSProp()
 
             ' Video of the learning process:
-            ' http://patrice.dargenton.free.fr/ai/perceptron/xor/xor-tanh-231-adamax.gif
+            ' http://patrice.dargenton.free.fr/ai/perceptron/xor/xor-tanh-231-rmsprop.gif
 
             InitXOR(m_mlp)
             m_mlp.Initialize(learningRate:=0)
             m_mlp.InitializeStruct(m_neuronCountXOR231, addBiasColumn:=True)
-            m_mlp.trainingAlgorithm = enumTrainingAlgorithm.AdaMax
+            m_mlp.trainingAlgorithm = enumTrainingAlgorithm.RMSProp
             m_mlp.nbIterationsBatch = 3
 
-            m_mlp.nbIterations = 1900
+            m_mlp.nbIterations = 3000
             m_mlp.SetActivationFunction(enumActivationFunction.HyperbolicTangent)
 
             m_mlp.InitializeWeights(1, {
-                {0.05, -0.69, 0.00},
-                {0.75, 0.38, 0.00},
-                {-0.93, 0.83, 0.00}})
+                {0.24, 0.26, 0.00},
+                {0.43, 0.39, 0.00},
+                {0.41, 0.01, 0.00}})
             m_mlp.InitializeWeights(2, {
-                {0.98, 0.87, -1.1, 0.00}})
-
-            m_mlp.Train()
-
-            'Dim expectedOutput = m_targetArrayXOR
-            Dim expectedOutput = New Double(,) {
-                {0.9},
-                {0.0},
-                {0.9},
-                {0.0}}
-            Dim expectedMatrix As Matrix = expectedOutput ' Single(,) -> Matrix
-            Dim sOutput = m_mlp.output.ToStringWithFormat(dec:="0.0")
-            Dim sExpectedOutput = expectedMatrix.ToStringWithFormat(dec:="0.0")
-            Assert.AreEqual(sExpectedOutput, sOutput)
-
-            Const expectedLoss# = 0.06
-            Dim loss# = m_mlp.averageError
-            Dim lossRounded# = Math.Round(loss, 2)
-            Assert.AreEqual(True, lossRounded <= expectedLoss)
-
-        End Sub
-
-        <TestMethod()>
-        Public Sub NNMLP1XORTanh231AdaDeltaGif()
-
-            ' Video of the learning process:
-            ' http://patrice.dargenton.free.fr/ai/perceptron/xor/xor-tanh-231-adadelta.gif
-
-            InitXOR(m_mlp)
-            m_mlp.Initialize(learningRate:=0)
-            m_mlp.InitializeStruct(m_neuronCountXOR231, addBiasColumn:=True)
-            m_mlp.trainingAlgorithm = enumTrainingAlgorithm.AdaDelta
-            m_mlp.nbIterationsBatch = 3
-
-            m_mlp.nbIterations = 6000
-            m_mlp.SetActivationFunction(enumActivationFunction.HyperbolicTangent)
-
-            m_mlp.InitializeWeights(1, {
-                {0.82, -0.41, 0.00},
-                {0.65, 0.37, 0.00},
-                {0.83, -0.82, 0.00}})
-            m_mlp.InitializeWeights(2, {
-                {0.48, -0.05, -0.5, 0.00}})
-
-            m_mlp.Train()
-
-            Dim expectedOutput = m_targetArrayXOR
-            Dim expectedMatrix As Matrix = expectedOutput ' Single(,) -> Matrix
-            Dim sOutput = m_mlp.output.ToStringWithFormat(dec:="0.0")
-            Dim sExpectedOutput = expectedMatrix.ToStringWithFormat(dec:="0.0")
-            Assert.AreEqual(sExpectedOutput, sOutput)
-
-            Const expectedLoss# = 0.02
-            Dim loss# = m_mlp.averageError
-            Dim lossRounded# = Math.Round(loss, 2)
-            Assert.AreEqual(True, lossRounded <= expectedLoss)
-
-        End Sub
-
-        <TestMethod()>
-        Public Sub NNMLP1XORTanh231AdaGradGif()
-
-            ' Video of the learning process:
-            ' http://patrice.dargenton.free.fr/ai/perceptron/xor/xor-tanh-231-adagrad.gif
-
-            InitXOR(m_mlp)
-            m_mlp.Initialize(learningRate:=0)
-            m_mlp.InitializeStruct(m_neuronCountXOR231, addBiasColumn:=True)
-            m_mlp.trainingAlgorithm = enumTrainingAlgorithm.AdaGrad
-            m_mlp.nbIterationsBatch = 3
-
-            m_mlp.nbIterations = 1800
-            m_mlp.SetActivationFunction(enumActivationFunction.HyperbolicTangent)
-
-            m_mlp.InitializeWeights(1, {
-                {-0.09, 0.11, 0.00},
-                {0.47, -0.61, 0.00},
-                {0.42, 0.72, 0.00}})
-            m_mlp.InitializeWeights(2, {
-                {-0.65, 0.37, -0.46, 0.00}})
+                {0.26, 0.53, 0.53, 0.00}})
 
             m_mlp.Train()
 
@@ -536,26 +378,105 @@ Namespace NeuralNetMLP
         End Sub
 
         <TestMethod()>
-        Public Sub NNMLP1XORTanh231AdamGif()
+        Public Sub NNMLP1XORGifTanh231Momentum()
 
             ' Video of the learning process:
-            ' http://patrice.dargenton.free.fr/ai/perceptron/xor/xor-tanh-231-adam.gif
+            ' http://patrice.dargenton.free.fr/ai/perceptron/xor/xor-tanh-231-momentum.gif
 
             InitXOR(m_mlp)
             m_mlp.Initialize(learningRate:=0)
             m_mlp.InitializeStruct(m_neuronCountXOR231, addBiasColumn:=True)
-            m_mlp.trainingAlgorithm = enumTrainingAlgorithm.Adam
+            m_mlp.trainingAlgorithm = enumTrainingAlgorithm.Momentum
             m_mlp.nbIterationsBatch = 3
 
-            m_mlp.nbIterations = 3300
+            m_mlp.nbIterations = 6000
             m_mlp.SetActivationFunction(enumActivationFunction.HyperbolicTangent)
 
             m_mlp.InitializeWeights(1, {
-                {-0.15, 0.14, 0.00},
-                {-0.88, -0.79, 0.00},
-                {0.07, -0.87, 0.00}})
+                {0.49, 0.47, 0.00},
+                {0.07, 0.52, 0.00},
+                {0.46, 0.31, 0.00}})
             m_mlp.InitializeWeights(2, {
-                {-1.12, -0.18, 0.31, 0.00}})
+                {0.17, 0.47, 0.52, 0.00}})
+
+            m_mlp.Train()
+
+            'Dim expectedOutput = m_targetArrayXOR
+            Dim expectedOutput = New Double(,) {
+                {0.9},
+                {0.0},
+                {0.9},
+                {0.0}}
+            Dim expectedMatrix As Matrix = expectedOutput ' Single(,) -> Matrix
+            Dim sOutput = m_mlp.output.ToStringWithFormat(dec:="0.0")
+            Dim sExpectedOutput = expectedMatrix.ToStringWithFormat(dec:="0.0")
+            Assert.AreEqual(sExpectedOutput, sOutput)
+
+            Const expectedLoss# = 0.08
+            Dim loss# = m_mlp.averageError
+            Dim lossRounded# = Math.Round(loss, 2)
+            Assert.AreEqual(True, lossRounded <= expectedLoss)
+
+        End Sub
+
+        <TestMethod()>
+        Public Sub NNMLP1XORGifTanh231AdaMax()
+
+            ' Video of the learning process:
+            ' http://patrice.dargenton.free.fr/ai/perceptron/xor/xor-tanh-231-adamax.gif
+
+            InitXOR(m_mlp)
+            m_mlp.Initialize(learningRate:=0)
+            m_mlp.InitializeStruct(m_neuronCountXOR231, addBiasColumn:=True)
+            m_mlp.trainingAlgorithm = enumTrainingAlgorithm.AdaMax
+            m_mlp.nbIterationsBatch = 3
+
+            m_mlp.nbIterations = 6000
+            m_mlp.SetActivationFunction(enumActivationFunction.HyperbolicTangent)
+
+            m_mlp.InitializeWeights(1, {
+                {0.46, 0.25, 0.00},
+                {0.52, 0.52, 0.00},
+                {0.04, 0.28, 0.00}})
+            m_mlp.InitializeWeights(2, {
+                {0.5, 0.25, 0.33, 0.00}})
+
+            m_mlp.Train()
+
+            Dim expectedOutput = m_targetArrayXOR
+            Dim expectedMatrix As Matrix = expectedOutput ' Single(,) -> Matrix
+            Dim sOutput = m_mlp.output.ToStringWithFormat(dec:="0.0")
+            Dim sExpectedOutput = expectedMatrix.ToStringWithFormat(dec:="0.0")
+            Assert.AreEqual(sExpectedOutput, sOutput)
+
+            Const expectedLoss# = 0.01
+            Dim loss# = m_mlp.averageError
+            Dim lossRounded# = Math.Round(loss, 2)
+            Assert.AreEqual(True, lossRounded <= expectedLoss)
+
+        End Sub
+
+        <TestMethod()>
+        Public Sub NNMLP1XORGifTanh231AdaDelta()
+
+            ' Video of the learning process:
+            ' http://patrice.dargenton.free.fr/ai/perceptron/xor/xor-tanh-231-adadelta.gif
+
+            InitXOR(m_mlp)
+            m_mlp.Initialize(learningRate:=0)
+            m_mlp.InitializeStruct(m_neuronCountXOR231, addBiasColumn:=True)
+            m_mlp.trainingAlgorithm = enumTrainingAlgorithm.AdaDelta
+            m_mlp.nbIterationsBatch = 3
+
+            m_mlp.nbIterations = 13000
+            m_mlp.SetActivationFunction(enumActivationFunction.HyperbolicTangent)
+
+            m_mlp.InitializeWeights(1, {
+                {0.34, 0.54, 0.00},
+                {0.36, 0.07, 0.00},
+                {0.44, 0.29, 0.00}})
+            m_mlp.InitializeWeights(2, {
+                {0.27, 0.5, 0.36, 0.00}})
 
             m_mlp.Train()
 
@@ -566,6 +487,80 @@ Namespace NeuralNetMLP
             Assert.AreEqual(sExpectedOutput, sOutput)
 
             Const expectedLoss# = 0.02
+            Dim loss# = m_mlp.averageError
+            Dim lossRounded# = Math.Round(loss, 2)
+            Assert.AreEqual(True, lossRounded <= expectedLoss)
+
+        End Sub
+
+        <TestMethod()>
+        Public Sub NNMLP1XORGifTanh231AdaGrad()
+
+            ' Video of the learning process:
+            ' http://patrice.dargenton.free.fr/ai/perceptron/xor/xor-tanh-231-adagrad.gif
+
+            InitXOR(m_mlp)
+            m_mlp.Initialize(learningRate:=0)
+            m_mlp.InitializeStruct(m_neuronCountXOR231, addBiasColumn:=True)
+            m_mlp.trainingAlgorithm = enumTrainingAlgorithm.AdaGrad
+            m_mlp.nbIterationsBatch = 3
+
+            m_mlp.nbIterations = 2500
+            m_mlp.SetActivationFunction(enumActivationFunction.HyperbolicTangent)
+
+            m_mlp.InitializeWeights(1, {
+                {0.24, 0.46, 0.00},
+                {0.54, 0.23, 0.00},
+                {0.41, 0.13, 0.00}})
+            m_mlp.InitializeWeights(2, {
+                {0.4, 0.52, 0.29, 0.00}})
+
+            m_mlp.Train()
+
+            Dim expectedOutput = m_targetArrayXOR
+            Dim expectedMatrix As Matrix = expectedOutput ' Single(,) -> Matrix
+            Dim sOutput = m_mlp.output.ToStringWithFormat(dec:="0.0")
+            Dim sExpectedOutput = expectedMatrix.ToStringWithFormat(dec:="0.0")
+            Assert.AreEqual(sExpectedOutput, sOutput)
+
+            Const expectedLoss# = 0.02
+            Dim loss# = m_mlp.averageError
+            Dim lossRounded# = Math.Round(loss, 2)
+            Assert.AreEqual(True, lossRounded <= expectedLoss)
+
+        End Sub
+
+        <TestMethod()>
+        Public Sub NNMLP1XORGifTanh231Adam()
+
+            ' Video of the learning process:
+            ' http://patrice.dargenton.free.fr/ai/perceptron/xor/xor-tanh-231-adam.gif
+
+            InitXOR(m_mlp)
+            m_mlp.Initialize(learningRate:=0)
+            m_mlp.InitializeStruct(m_neuronCountXOR231, addBiasColumn:=True)
+            m_mlp.trainingAlgorithm = enumTrainingAlgorithm.Adam
+            m_mlp.nbIterationsBatch = 3
+
+            m_mlp.nbIterations = 6000
+            m_mlp.SetActivationFunction(enumActivationFunction.HyperbolicTangent)
+
+            m_mlp.InitializeWeights(1, {
+                {0.46, 0.51, 0.00},
+                {0.09, 0.43, 0.00},
+                {0.32, 0.35, 0.00}})
+            m_mlp.InitializeWeights(2, {
+                {0.5, 0.48, 0.41, 0.00}})
+
+            m_mlp.Train()
+
+            Dim expectedOutput = m_targetArrayXOR
+            Dim expectedMatrix As Matrix = expectedOutput ' Single(,) -> Matrix
+            Dim sOutput = m_mlp.output.ToStringWithFormat(dec:="0.0")
+            Dim sExpectedOutput = expectedMatrix.ToStringWithFormat(dec:="0.0")
+            Assert.AreEqual(sExpectedOutput, sOutput)
+
+            Const expectedLoss# = 0.01
             Dim loss# = m_mlp.averageError
             Dim lossRounded# = Math.Round(loss, 2)
             Assert.AreEqual(True, lossRounded <= expectedLoss)
@@ -984,6 +979,123 @@ Namespace NeuralNetMLP
                 {-0.11, 0.68, -0.19, 0.66, -0.43, 0.6, 0},
                 {0.16, -0.74, -0.71, 0.43, -0.19, -0.48, 0},
                 {0.32, 0.24, 0.04, 0.35, -0.25, -0.73, 0}})
+
+            m_mlp.Train()
+
+            Dim expectedOutput = m_targetArray3XOR
+            Dim expectedMatrix As Matrix = expectedOutput ' Single(,) -> Matrix
+            Dim sExpectedOutput = expectedMatrix.ToStringWithFormat(dec:="0.0")
+            Dim sOutput = m_mlp.output.ToStringWithFormat(dec:="0.0")
+            Assert.AreEqual(sExpectedOutput, sOutput)
+
+            Const expectedLoss# = 0.01
+            Dim loss# = m_mlp.averageError
+            Dim lossRounded# = Math.Round(loss, 2)
+            Assert.AreEqual(True, lossRounded <= expectedLoss)
+
+        End Sub
+
+        '<TestMethod()>
+        'Public Sub NNMLP3XORMishStdr()
+
+        '    TestMLP3XORMish(m_mlp, nbIterations:=1000,
+        '        learningMode:=enumLearningMode.VectorialBatch)
+
+        'End Sub
+
+        <TestMethod()>
+        Public Sub NNMLP1XORMish() ' 345 msec
+
+            InitXOR(m_mlp)
+            m_mlp.Initialize(learningRate:=0.0!)
+            m_mlp.InitializeStruct(m_neuronCountXOR, addBiasColumn:=True)
+            m_mlp.trainingAlgorithm = enumTrainingAlgorithm.Default
+
+            m_mlp.SetActivationFunction(enumActivationFunction.Mish)
+
+            m_mlp.nbIterationsBatch = 10
+            m_mlp.nbIterations = 9000
+            m_mlp.InitializeWeights(1, {
+                {0.27, 0.41, 0.00},
+                {0.15, 0.39, 0.00}})
+            m_mlp.InitializeWeights(2, {
+                {0.71, 1.0, 0.00}})
+
+            m_mlp.Train()
+
+            Dim expectedOutput = m_targetArrayXOR
+            Dim expectedMatrix As Matrix = expectedOutput ' Single(,) -> Matrix
+            Dim sExpectedOutput = expectedMatrix.ToStringWithFormat(dec:="0.0")
+            Dim sOutput = m_mlp.output.ToStringWithFormat(dec:="0.0")
+            Assert.AreEqual(sExpectedOutput, sOutput)
+
+            Const expectedLoss# = 0.01
+            Dim loss# = m_mlp.averageError
+            Dim lossRounded# = Math.Round(loss, 2)
+            Assert.AreEqual(True, lossRounded <= expectedLoss)
+
+        End Sub
+
+        <TestMethod()>
+        Public Sub NNMLP2XORMish() ' 260 msec
+
+            Init2XOR(m_mlp)
+            m_mlp.Initialize(learningRate:=0.0!)
+            m_mlp.InitializeStruct(m_neuronCount2XOR, addBiasColumn:=True)
+            m_mlp.trainingAlgorithm = enumTrainingAlgorithm.Default
+
+            m_mlp.SetActivationFunction(enumActivationFunction.Mish)
+
+            ' Range : [-1 - +1]
+            m_mlp.nbIterationsBatch = 100
+            m_mlp.nbIterations = 5000
+            m_mlp.InitializeWeights(1, {
+                {-0.55, -0.5, 0.83, -0.78, 0.00},
+                {0.64, 0.38, -0.79, 0.4, 0.00},
+                {0.83, -0.52, 0.66, -0.34, 0.00},
+                {-0.73, 0.7, 0.61, 0.51, 0.00}})
+            m_mlp.InitializeWeights(2, {
+                {0.18, 0.99, -0.85, 0.97, 0.00},
+                {0.87, 0.23, 0.16, -0.93, 0.00}})
+
+            m_mlp.Train()
+
+            Dim expectedOutput = m_targetArray2XOR
+            Dim expectedMatrix As Matrix = expectedOutput ' Single(,) -> Matrix
+            Dim sExpectedOutput = expectedMatrix.ToStringWithFormat(dec:="0.0")
+            Dim sOutput = m_mlp.output.ToStringWithFormat(dec:="0.0")
+            Assert.AreEqual(sExpectedOutput, sOutput)
+
+            Const expectedLoss# = 0.02
+            Dim loss# = m_mlp.averageError
+            Dim lossRounded# = Math.Round(loss, 2)
+            Assert.AreEqual(True, lossRounded <= expectedLoss)
+
+        End Sub
+
+        <TestMethod()>
+        Public Sub NNMLP3XORMish() ' 1.3 sec
+
+            Init3XOR(m_mlp)
+            m_mlp.Initialize(learningRate:=0.0!)
+            m_mlp.InitializeStruct(m_neuronCount3XOR, addBiasColumn:=True)
+            m_mlp.trainingAlgorithm = enumTrainingAlgorithm.Default
+
+            m_mlp.SetActivationFunction(enumActivationFunction.Mish)
+
+            m_mlp.nbIterationsBatch = 100
+            m_mlp.nbIterations = 16000
+            m_mlp.InitializeWeights(1, {
+                {0.12, 0.6, 0.64, -0.71, -0.1, 0.56, 0.00},
+                {-0.22, -0.58, 0.56, 0.12, 0.43, 0.61, 0.00},
+                {-0.05, 0.67, -0.1, 0.11, -0.16, -0.42, 0.00},
+                {0.53, 0.37, 0.15, 0.05, -0.28, -0.43, 0.00},
+                {0.58, 0.68, -0.1, 0.09, -0.57, -0.62, 0.00},
+                {-0.48, 0.62, -0.04, -0.42, -0.63, 0.45, 0.00}})
+            m_mlp.InitializeWeights(2, {
+                {-0.37, 0.47, 0.41, 0.16, 0.66, 0.7, 0.00},
+                {-0.4, -0.53, -0.07, -0.56, -0.77, 0.81, 0.00},
+                {-0.72, -0.66, 0.65, -0.3, 0.79, 0.27, 0.00}})
 
             m_mlp.Train()
 

@@ -53,6 +53,14 @@ Public Module modFctAct
 
         DoubleThreshold = 10
 
+        ''' <summary>
+        ''' The Mish function, proposed by Diganta Misra (https://arxiv.org/abs/1908.08681)
+        ''' Definition: x tanh(ln(1 + e^2)) 
+        ''' Implementation: x * Tanh(Softplus(x))
+        ''' See https://github.com/Sergio0694/NeuralNetwork.NET/issues/93
+        ''' </summary>
+        Mish = 11
+
     End Enum
 
     ''' <summary>
@@ -679,6 +687,62 @@ Namespace MLP.ActivationFunction
                 Return SigmoidFunction.CommonDerivativeFromOriginalFunction(fx)
             Return 0
         End Function
+
+    End Class
+
+    ''' <summary>
+    ''' Implements f(x) = Mish(x) = x * tanh(log(1+exp(x))) = x ((1+ exp(x))^2 -1)/((1+ exp(x))^2 +1)
+    ''' https://github.com/Sergio0694/NeuralNetwork.NET/issues/93
+    ''' </summary>
+    Public Class MishFunction : Implements IActivationFunction
+
+        Public Function IsNonLinear() As Boolean Implements IActivationFunction.IsNonLinear
+            Return False
+        End Function
+
+        Function DoesDerivativeDependOnOriginalFunction() As Boolean Implements IActivationFunction.DoesDerivativeDependOnOriginalFunction
+            Return False
+        End Function
+
+        Public Function Activation#(x#, Optional gain# = 1, Optional center# = 0) Implements IActivationFunction.Activation
+            Dim xc# = x - center
+            'Dim y# = xc * Tanh(Softplus(xc))
+            Dim y# = xc * Math.Tanh(Softplus(xc))
+            Return y
+        End Function
+
+        Public Function Derivative#(x#, Optional gain# = 1, Optional center# = 0) Implements IActivationFunction.Derivative
+
+            ' https://www.wolframalpha.com/input/?i=x+*+tanh%28log%281%2Bexp%28x%29%29%29+derivate
+            Dim xc# = x - center
+            Dim s# = 2 * Math.Exp(xc) + Math.Exp(2 * xc) + 2
+            Dim w# =
+                4 * (xc + 1) +
+                (4 * (Math.Exp(2 * xc))) +
+                Math.Exp(3 * xc) +
+                Math.Exp(xc) * (4 * xc + 6)
+            Dim y# = Math.Exp(xc) * w / (s * s)
+            Return y
+
+        End Function
+
+        Public Function DerivativeFromOriginalFunction#(fx#, gain#) Implements IActivationFunction.DerivativeFromOriginalFunction
+            If useAlternateDerivativeFunction Then _
+                Return SigmoidFunction.CommonDerivativeFromOriginalFunction(fx)
+            Return 0
+        End Function
+
+        Private Function Softplus#(x#)
+            Dim exp# = Math.Exp(x)
+            Dim sum# = 1 + exp
+            Dim ln# = Math.Log(sum)
+            Return ln
+        End Function
+
+        'Private Function Tanh#(x#)
+        '    Dim e2x# = Math.Exp(2 * x)
+        '    Return (e2x - 1) / (e2x + 1)
+        'End Function
 
     End Class
 

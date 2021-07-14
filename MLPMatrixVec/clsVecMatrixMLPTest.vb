@@ -12,8 +12,8 @@ Namespace VectorizedMatrixMLP
         Private m_mlp As New clsVectorizedMatrixMLP
 
         'Private m_mlp As New clsMLPClassic ' Not same weight array size
-        'Private m_mlp As New MatrixMLP.MultiLayerPerceptron ' InitializeWeights not implemented
-        'Private m_mlp As New NetworkOOP.MultilayerPerceptron ' Not same weight array size
+        'Private m_mlp As New clsMPLMatrix ' InitializeWeights not implemented
+        'Private m_mlp As New clsMLPOOP ' Not same weight array size
 
         <TestInitialize()>
         Public Sub Init()
@@ -891,6 +891,52 @@ Namespace VectorizedMatrixMLP
                 {0.17, 0.78, 0.47},
                 {0.03, 0.57, 0.73},
                 {0.73, 0.4, 0.81}})
+
+            'm_mlp.TrainVector()
+            'm_mlp.Train(enumLearningMode.Vectorial)
+            m_mlp.Train()
+
+            Dim expectedOutput = m_targetArray3XOR
+
+            Dim sOutput$ = m_mlp.output.ToStringWithFormat(dec:="0.0")
+            Dim expectedMatrix As Matrix = expectedOutput ' Single(,) -> Matrix
+            Dim sExpectedOutput = expectedMatrix.ToStringWithFormat(dec:="0.0")
+            Assert.AreEqual(sExpectedOutput, sOutput)
+
+            Const expectedLoss# = 0.01
+            Dim loss# = m_mlp.averageError
+            Dim lossRounded# = Math.Round(loss, 2)
+            Assert.AreEqual(True, lossRounded <= expectedLoss)
+
+        End Sub
+
+        <TestMethod()>
+        Public Sub VecMatrixMLP3XORMish()
+
+            Init3XOR()
+            m_mlp.learningRate = 0.01
+            m_mlp.weightAdjustment = 0.005
+            m_mlp.nbIterations = 700
+            m_mlp.SetActivationFunction(enumActivationFunction.Mish)
+
+            m_mlp.InitializeStruct(m_neuronCount3XOR, addBiasColumn:=True)
+
+            m_mlp.InitializeWeights(1, {
+                {0.17, 0.19, 0.16, 0.09, 0.15, 0.07},
+                {0.04, 0.07, 0.27, 0.29, 0.14, 0.24},
+                {0.06, 0.17, 0.2, 0.03, 0.2, 0.2},
+                {0.02, 0.27, 0.15, 0.19, 0.2, 0.25},
+                {0.12, 0.26, 0.24, 0.03, 0.08, 0.28},
+                {0.17, 0.14, 0.07, 0.14, 0.22, 0.05},
+                {0.22, 0.18, 0.29, 0.19, 0.29, 0.17}})
+            m_mlp.InitializeWeights(2, {
+                {0.17, 0.22, 0.05},
+                {0.04, 0.06, 0.28},
+                {0.14, 0.07, 0.29},
+                {0.19, 0.26, 0.16},
+                {0.07, 0.28, 0.28},
+                {0.21, 0.27, 0.19},
+                {0.13, 0.02, 0.29}})
 
             'm_mlp.TrainVector()
             'm_mlp.Train(enumLearningMode.Vectorial)

@@ -1,5 +1,5 @@
 ﻿
-' From  : https://github.com/SciSharp/SciSharp-Stack-Examples/blob/master/src/TensorFlowNET.Examples/NeuralNetworks/NeuralNetXor.cs : C# -> VB .NET conversion
+' From https://github.com/SciSharp/SciSharp-Stack-Examples/blob/master/src/TensorFlowNET.Examples/NeuralNetworks/NeuralNetXor.cs : C# -> VB .NET conversion
 ' https://www.nuget.org/packages/TensorFlow.NET
 ' https://www.nuget.org/packages/Microsoft.ML.TensorFlow.Redist
 ' Install-Package TensorFlow.NET -Version 0.15.1
@@ -39,6 +39,10 @@ Public Class clsMLPTensorFlow : Inherits clsVectorizedMLPGeneric
         trainOperation As Operation, loss As Tensor,
         globalStep As Tensor, prediction As Tensor, hw As Tensor, ow As Tensor)
 #End If
+
+    Public Overrides Function GetMLPType$()
+        Return System.Reflection.MethodBase.GetCurrentMethod().DeclaringType.Name
+    End Function
 
     Public Overrides Function GetActivationFunctionType() As enumActivationFunctionType
         Return enumActivationFunctionType.LibraryOptimized
@@ -236,6 +240,7 @@ Public Class clsMLPTensorFlow : Inherits clsVectorizedMLPGeneric
         Me.learningMode = enumLearningMode.Vectorial
         Me.vectorizedLearningMode = True
         For iteration = 0 To Me.nbIterations - 1
+            Me.numIteration = iteration
             TrainVectorOneIteration()
             If Me.printOutput_ Then PrintOutput(iteration)
         Next
@@ -486,14 +491,14 @@ Public Class clsMLPTensorFlow : Inherits clsVectorizedMLPGeneric
             If computeScoreOneByOne Then
                 TestAllSamples(Me.inputArray)
                 If IsNothing(Me.outputs1D) Then
-                    ShowMessage(vbLf & "Iteration n°" & iteration + 1 & "/" & nbIterations & vbLf &
+                    ShowMessage(vbLf & "Iteration n°" & iteration + 1 & "/" & Me.nbIterations & vbLf &
                         "Output: nothing!")
                     Exit Sub
                 End If
             Else
                 If Not Me.vectorizedLearningMode Then TestAllSamples(Me.inputArray)
                 If IsNothing(Me.outputs1D) Then
-                    ShowMessage(vbLf & "Iteration n°" & iteration + 1 & "/" & nbIterations & vbLf &
+                    ShowMessage(vbLf & "Iteration n°" & iteration + 1 & "/" & Me.nbIterations & vbLf &
                         "Output: nothing!")
                     Exit Sub
                 End If

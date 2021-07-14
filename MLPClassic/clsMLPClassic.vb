@@ -46,6 +46,14 @@ Friend Class clsMLPClassic : Inherits clsMLPGeneric
 
 #Region "Initialization"
 
+    Public Overrides Function GetMLPType$()
+        Return System.Reflection.MethodBase.GetCurrentMethod().DeclaringType.Name
+    End Function
+
+    Public Overrides Function GetActivationFunctionType() As enumActivationFunctionType
+        Return enumActivationFunctionType.Normal
+    End Function
+
     Public Overrides Sub InitializeStruct(neuronCount%(), addBiasColumn As Boolean)
 
         MyBase.InitializeStruct(neuronCount, addBiasColumn)
@@ -92,6 +100,26 @@ Friend Class clsMLPClassic : Inherits clsMLPGeneric
                 For k = 0 To Me.Layers(i - 1).nbWeights - 1
                     With Me.Layers(i).Neurons(j)
                         Dim r# = rndShared.NextDouble(minValue, maxValue)
+                        Dim rounded# = Math.Round(r, clsMLPGeneric.nbRoundingDigits)
+                        .w(k) = CSng(rounded)
+                        .dw(k) = 0
+                        .wCopy(k) = 0
+                    End With
+                Next k
+            Next j
+        Next i
+
+    End Sub
+
+    Public Overrides Sub RoundWeights()
+
+        ' Round the weights (to reproduce all tests exactly)
+
+        For i As Integer = 1 To Me.layerCount - 1
+            For j As Integer = 0 To Me.Layers(i).nbNeurons - 1
+                For k As Integer = 0 To Me.Layers(i - 1).nbWeights - 1
+                    With Me.Layers(i).Neurons(j)
+                        Dim r! = .w(k)
                         Dim rounded# = Math.Round(r, clsMLPGeneric.nbRoundingDigits)
                         .w(k) = CSng(rounded)
                         .dw(k) = 0
@@ -150,7 +178,7 @@ Friend Class clsMLPClassic : Inherits clsMLPGeneric
 
         Dim output!(Me.nbOutputNeurons - 1)
         TestOneSample(input, output)
-        ComputeOutputError(target)
+        Me.averageErrorOneSample = ComputeOutputError(target) ' 21/05/2021 Keep average error
         BackwardPropagateError()
         ComputeGradientAndAdjustWeights()
 
@@ -220,11 +248,10 @@ Friend Class clsMLPClassic : Inherits clsMLPGeneric
 
         ' Backward propagate error from the output layer through to the first layer
 
-        Dim sumError!
         For i = Me.layerCount - 2 To 0 Step -1
             For j = 0 To Me.Layers(i).nbNeurons - 1
 
-                sumError = 0
+                Dim sumError! = 0
                 For k = 0 To Me.Layers(i + 1).nbNeurons - 1
                     sumError += Me.Layers(i + 1).Neurons(k).w(j) *
                         Me.Layers(i + 1).Neurons(k).err
@@ -279,7 +306,8 @@ Friend Class clsMLPClassic : Inherits clsMLPGeneric
 
     Public Function ComputeOutputError!(target!())
 
-        Dim averageAbsErr! = 0
+        Dim totalErr! = 0
+        Dim totalAbsErr! = 0
         Dim outputLayerIndex = Me.layerCount - 1
 
         For i = 0 To Me.nbOutputNeurons - 1
@@ -298,13 +326,15 @@ Friend Class clsMLPClassic : Inherits clsMLPGeneric
 
             Me.Layers(outputLayerIndex).Neurons(i).err = delta * CSng(deriv)
 
-            averageAbsErr += Math.Abs(delta)
+            totalAbsErr += Math.Abs(delta)
+            totalErr += delta
 
         Next i
 
-        If Me.nbOutputNeurons <> 1 Then averageAbsErr /= Me.nbOutputNeurons
+        Me.averageErrorOneSample = totalAbsErr / Me.nbOutputNeurons
+        Me.averageErrorOneSampleSigned = totalErr / Me.nbOutputNeurons
 
-        Return averageAbsErr
+        Return totalAbsErr
 
     End Function
 

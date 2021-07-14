@@ -30,15 +30,15 @@ Retry:
             Case "3"c : VectorizedMatrixMLPXorTest(nbXor:=3)
             Case "4"c
                 ' Works only using sigmoid activation
-                MLPGenericIrisFlowerTest(New VectorizedMatrixMLP.clsVectorizedMatrixMLP,
+                MLPGenericIrisFlowerTest(New clsVectorizedMatrixMLP,
                     "Vectorized Matrix MLP Iris flower logical test", nbIterations:=1000, sigmoid:=True)
             Case "5"c
                 ' Works only using sigmoid activation, poor results!
-                MLPGenericIrisFlowerTestAnalog(New VectorizedMatrixMLP.clsVectorizedMatrixMLP,
+                MLPGenericIrisFlowerTestAnalog(New clsVectorizedMatrixMLP,
                     "Vectorized Matrix MLP Iris flower analog test", sigmoid:=True)
             Case "6"c
                 ' Works only using sigmoid activation
-                MLPGenericSunspotTest(New VectorizedMatrixMLP.clsVectorizedMatrixMLP,
+                MLPGenericSunspotTest(New clsVectorizedMatrixMLP,
                     "Vectorized Matrix MLP Sunspot test", sigmoid:=True)
         End Select
 
