@@ -78,14 +78,6 @@ Functional tests for Multi-Layer Perceptron implementations, using O.O.P. paradi
         title = "XOR: activation: ReLU (Rectified Linear Units), structure: {2, 2, 1}" />
     <br><em>XOR: activation: ReLU (Rectified Linear Units), structure: {2, 2, 1}</em>
     <br>
-    <br><img src = "http://patrice.dargenton.free.fr/ai/perceptron/xor/xor-relu-231u.gif"
-        title = "XOR: activation: ReLU (Rectified Linear Units), structure: {2, 3, 1}" />
-    <br><em>XOR: activation: ReLU (Rectified Linear Units), structure: {2, 3, 1}</em>
-    <br>
-    <br><img src = "http://patrice.dargenton.free.fr/ai/perceptron/xor/xor-relu-241.gif"
-        title = "XOR: activation: ReLU (Rectified Linear Units), structure: {2, 4, 1}" />
-    <br><em>XOR: activation: ReLU (Rectified Linear Units), structure: {2, 4, 1}</em>
-    <br>
     <br><img src = "http://patrice.dargenton.free.fr/ai/perceptron/xor/xor-gaussian-221.gif"
         title = "XOR: activation: gaussian, structure: {2, 2, 1}" />
     <br><em>XOR: activation: gaussian, structure: {2, 2, 1}</em>
