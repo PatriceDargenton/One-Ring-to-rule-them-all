@@ -693,7 +693,7 @@ Namespace ClassicMLP
         Public Sub MLP1XORGifReLu231()
 
             ' Video of the learning process:
-            ' http://patrice.dargenton.free.fr/ai/perceptron/xor/xor-relu-231.gif
+            ' http://patrice.dargenton.free.fr/ai/perceptron/xor/xor-relu-231u.gif
 
             InitXOR()
             m_mlp.InitializeStruct(m_neuronCountXOR231, addBiasColumn:=True)
