@@ -50,18 +50,9 @@ Functional tests for Multi-Layer Perceptron implementations, using O.O.P. paradi
         title = "XOR: activation: tanh, structure: {2, 2, 1}" />
     <br><em>XOR: activation: tanh, structure: {2, 2, 1}</em>
     <br>
-    <br><img src = "http://patrice.dargenton.free.fr/ai/perceptron/xor/xor-tanh-231.gif"
-        title = "XOR: activation: tanh, structure: {2, 3, 1}" />
-    <br><em>XOR: activation: tanh, structure: {2, 3, 1}</em>
-    <br>
     <br><img src = "http://patrice.dargenton.free.fr/ai/perceptron/xor/xor-tanh-2221.gif"
         title = "XOR: activation: tanh, structure: {2, 2, 2, 1}" />
     <br><em>XOR: activation: tanh, structure: {2, 2, 2, 1}</em>
-    <br>
-    <br><img src = "http://patrice.dargenton.free.fr/ai/perceptron/xor/xor-tanh-281.gif"
-        title = "XOR: activation: tanh, structure: {2, 8, 1}" />
-    <br><em>XOR: activation: tanh, structure: {2, 8, 1}</em>
-    <br>
     <br><img src = "http://patrice.dargenton.free.fr/ai/perceptron/xor/xor-sigmoid-221.gif"
         title = "XOR: activation: sigmoid, structure: {2, 2, 1}" />
     <br><em>XOR: activation: sigmoid, structure: {2, 2, 1}</em>
