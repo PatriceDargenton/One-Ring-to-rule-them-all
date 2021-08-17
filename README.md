@@ -122,6 +122,22 @@ Functional tests for Multi-Layer Perceptron implementations, using O.O.P. paradi
         title = "XOR-analog: activation: ReLU (Rectified Linear Units), structure: {2, 4, 1}" />
     <br><em>XOR-analog: activation: ReLU (Rectified Linear Units), structure: {2, 4, 1}</em>
     <br>
+        <br><img src = "http://patrice.dargenton.free.fr/ai/perceptron/xor/xor-analog-arctan-231.gif"
+        title = "XOR-analog: activation: arctan, structure: {2, 3, 1}" />
+    <br><em>XOR-analog: activation: arctan, structure: {2, 3, 1}</em>
+    <br>
+        <br><img src = "http://patrice.dargenton.free.fr/ai/perceptron/xor/xor-analog-gaussian-231.gif"
+        title = "XOR-analog: activation: gaussian, structure: {2, 3, 1}" />
+    <br><em>XOR-analog: activation: gaussian, structure: {2, 3, 1}</em>
+    <br>
+        <br><img src = "http://patrice.dargenton.free.fr/ai/perceptron/xor/xor-analog-mish-231.gif"
+        title = "XOR-analog: activation: mish, structure: {2, 3, 1}" />
+    <br><em>XOR-analog: activation: mish, structure: {2, 3, 1}</em>
+    <br>
+        <br><img src = "http://patrice.dargenton.free.fr/ai/perceptron/xor/xor-analog-sigmoid-231.gif"
+        title = "XOR-analog: activation: sigmoid, structure: {2, 3, 1}" />
+    <br><em>XOR-analog: activation: sigmoid, structure: {2, 3, 1}</em>
+    <br>
     <br><img src = "http://patrice.dargenton.free.fr/ai/perceptron/xor/xor-tanh-231-sgd.gif"
         title = "XOR: activation: tanh, structure: {2, 3, 1}, optimizer: SGD" />
     <br><em>XOR: activation: tanh, structure: {2, 3, 1}, optimizer: SGD</em>
@@ -410,6 +426,10 @@ Note: To update the packages, you will need to restore this deleted line in the 
 [MLPComparison.xls](MLPComparison.xls)
 
 # Version history
+
+16/08/2021 V1.42
+- Tests added with animated gifs: xor-analog-arctan-231, xor-analog-gaussian-231, xor-analog-mish-231 and xor-analog-sigmoid-231
+- Information added in animated gifs: targets reached drawn in green
 
 14/07/2021 V1.41
 - Analog XOR dataset and tests added: see animated gifs

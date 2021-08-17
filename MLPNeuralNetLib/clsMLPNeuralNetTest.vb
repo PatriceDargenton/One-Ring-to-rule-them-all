@@ -431,7 +431,7 @@ Namespace NeuralNetMLP
             m_mlp.trainingAlgorithm = enumTrainingAlgorithm.AdaMax
             m_mlp.nbIterationsBatch = 3
 
-            m_mlp.nbIterations = 6000
+            m_mlp.nbIterations = 5000 '6000
             m_mlp.SetActivationFunction(enumActivationFunction.HyperbolicTangent)
 
             m_mlp.InitializeWeights(1, {
@@ -449,7 +449,7 @@ Namespace NeuralNetMLP
             Dim sExpectedOutput = expectedMatrix.ToStringWithFormat(dec:="0.0")
             Assert.AreEqual(sExpectedOutput, sOutput)
 
-            Const expectedLoss# = 0.01
+            Const expectedLoss# = 0.02
             Dim loss# = m_mlp.averageError
             Dim lossRounded# = Math.Round(loss, 2)
             Assert.AreEqual(True, lossRounded <= expectedLoss)
