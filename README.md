@@ -5,7 +5,7 @@ Functional tests for Multi-Layer Perceptron implementations, using O.O.P. paradi
 ==
 
 <p align="center">
-<img src="http://patrice.dargenton.free.fr/ai/perceptron/xor/xor-tanh-221-big.gif" alt="xor-tanh-221-big.gif"
+<img src="http://patrice.dargenton.free.fr/ai/perceptron/xor/xor-tanh-221-big2.gif" alt="xor-tanh-221-big2.gif"
   title = "Machine Learning and Deep Learning simply minimize the distance between the crosses and the curve (this is the XOR example here: Exclusive or)" />
     <br>
     <em>XOR: activation: tanh, structure: {2, 2, 1}</em>
@@ -114,7 +114,7 @@ Functional tests for Multi-Layer Perceptron implementations, using O.O.P. paradi
         title = "XOR-analog: activation: tanh, structure: {2, 3, 3, 1}" />
     <br><em>XOR-analog: activation: tanh, structure: {2, 3, 3, 1}</em>
     <br>
-    <br><img src = "http://patrice.dargenton.free.fr/ai/perceptron/xor/xor-analog-double-threshold-241.gif"
+    <br><img src = "http://patrice.dargenton.free.fr/ai/perceptron/xor/xor-analog-double-threshold-241b.gif"
         title = "XOR-analog: activation: double threshold, structure: {2, 4, 1}" />
     <br><em>XOR-analog: activation: double threshold, structure: {2, 4, 1}</em>
     <br>
