@@ -45,6 +45,8 @@ Functional tests for Multi-Layer Perceptron implementations, using O.O.P. paradi
 
 # More animated gifs
 
+Here are animations, according to different structures and activation functions, with the logic gate XOR (exclusive OR) which, as it has only 2 inputs, can be represented in 3D, even during learning. The output is drawn on the verticale axis, according to the two horizontal and perpendicular inputs. It is a logical gate, but nothing prevents it from being drawn as if it were an analog function, and even, why not, from adding points! This is the simplest example that can illustrate the learning algorithm of the multilayer perceptron, and historically the one which made it possible to definitively validate the principle of neural networks in 1986, which perceptron is still used today in Deep Learning: this is the "FullyConnected" method used in most of these software libraries, and this software brick is even the heart of neural networks; there are also for example the convolutional networks, but the idea then is just to carry out a preprocessing directly on the pixels of the image, otherwise the principle remains quite similar. If we save the weights of the neural network and later restore them, then the learning algorithm is perfectly deterministic, which has the advantage of being able to program functional tests, to ensure that the software works always correctly, when adding features.
+
 <p align="center">
     <br><img src = "http://patrice.dargenton.free.fr/ai/perceptron/xor/xor-tanh-221.gif"
         title = "XOR: activation: tanh, structure: {2, 2, 1}" />
