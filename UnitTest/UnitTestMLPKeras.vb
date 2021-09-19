@@ -1,8 +1,7 @@
 ﻿
 Imports Perceptron
 Imports Perceptron.Utility ' Matrix
-Imports Perceptron.clsMLPClassic ' enumLearningMode
-Imports Microsoft.VisualStudio.TestTools.UnitTesting
+'Imports Perceptron.clsMLPClassic ' enumLearningMode
 
 ' Tests are very slow!?
 #Const Implementation = 0 ' 0: Off, 1: On
