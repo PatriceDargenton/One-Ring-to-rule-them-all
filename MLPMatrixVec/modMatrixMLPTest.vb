@@ -2,7 +2,7 @@
 ' Vectorized-MultiLayerPerceptron
 ' From https://github.com/HectorPulido/Vectorized-multilayer-neural-network : C# -> VB .NET conversion
 
-Imports Perceptron.VectorizedMatrixMLP
+'Imports Perceptron.VectorizedMatrixMLP
 Imports Perceptron.clsMLPGeneric ' enumLearningMode
 
 Module modMatrixVecMLPTest

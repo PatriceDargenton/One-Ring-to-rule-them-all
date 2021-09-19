@@ -420,6 +420,9 @@ Note: To update the packages, you will need to restore this deleted line in the 
 
 # Version history
 
+19/09/2021 V1.43
+- Tests moved in UnitTestOne-Ring-to-rule-them-all project and Microsoft.VisualStudio.QualityTools.UnitTestFramework.dll link removed
+
 16/08/2021 V1.42
 - Tests added with animated gifs: xor-analog-arctan-231, xor-analog-gaussian-231, xor-analog-mish-231 and xor-analog-sigmoid-231
 - Information added in animated gifs: targets reached drawn in green

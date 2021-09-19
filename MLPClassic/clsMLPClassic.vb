@@ -13,7 +13,7 @@
 Imports System.Text ' StringBuilder
 Imports Perceptron.Utility ' Matrix
 
-Friend Class clsMLPClassic : Inherits clsMLPGeneric
+Public Class clsMLPClassic : Inherits clsMLPGeneric
 
 #Region "Declarations"
 

@@ -1,5 +1,5 @@
 ﻿
-Module mod2XOR
+Public Module mod2XOR
 
     Public ReadOnly m_inputArray2XOR!(,) = {
         {1, 0, 1, 0},

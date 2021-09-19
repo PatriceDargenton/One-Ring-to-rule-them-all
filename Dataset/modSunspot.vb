@@ -1,5 +1,5 @@
 ﻿
-Module modSunspot
+Public Module modSunspot
 
     ' Network:     Backpropagation Network with Bias Terms and Momentum
     '              ====================================================

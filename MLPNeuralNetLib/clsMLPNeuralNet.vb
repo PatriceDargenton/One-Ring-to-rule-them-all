@@ -311,7 +311,9 @@ Public Class clsMLPNeuralNet : Inherits clsVectorizedMLPGeneric
         Me.vectorizedLearningMode = True
 
         If Me.nbIterationsBatch <> Me.m_nbIterationsBatchLast Then
+#If GetWeightsImplementationVS2013 Then
             Me.m_dataset = DatasetLoader.Training2(Me.inputJaggedArray, Me.targetJaggedArray, size:=1)
+#End If
         End If
 
         For iteration = 0 To Me.nbIterations - 1

@@ -1,5 +1,5 @@
 ﻿
-Module modIrisFlowerTargetAnalog
+Public Module modIrisFlowerTargetAnalog
 
     ' Iris flower data set
     ' https://en.wikipedia.org/wiki/Iris_flower_data_set

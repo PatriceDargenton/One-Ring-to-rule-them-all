@@ -12,7 +12,7 @@ Imports System.Text ' StringBuilder
 ''' <summary>
 ''' Multi-Layer Perceptron
 ''' </summary>
-Class clsMPLMatrix : Inherits clsMLPGeneric
+Public Class clsMPLMatrix : Inherits clsMLPGeneric
 
     ''' <summary>
     ''' hidden x input weights matrix

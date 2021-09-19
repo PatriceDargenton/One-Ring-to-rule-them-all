@@ -2,7 +2,7 @@
 ' Matrix-MultiLayerPerceptron: clsMPLMatrix
 ' From https://github.com/nlabiris/perceptrons : C# -> VB .NET conversion
 
-Imports Perceptron.MatrixMLP ' clsMPLMatrix
+'Imports Perceptron.MatrixMLP ' clsMPLMatrix
 Imports Perceptron.clsMLPGeneric ' enumLearningMode
 
 Module modMatrixMLPTest

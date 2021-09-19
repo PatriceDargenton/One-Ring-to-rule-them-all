@@ -9,7 +9,7 @@ Imports System.Threading.Tasks ' TaskFactory
 ''' <summary>
 ''' Resilient Back Propagation (RPROP)
 ''' </summary>
-Friend Class clsMLPRProp : Inherits clsVectorizedMLPGeneric
+Public Class clsMLPRProp : Inherits clsVectorizedMLPGeneric
 
     Public multiThread As Boolean = False
     Public inputJaggedDblArray#()()
