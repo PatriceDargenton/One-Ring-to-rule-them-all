@@ -288,7 +288,6 @@
     </PropertyGroup>
     <Error Condition="!Exists('packages\Microsoft.ML.TensorFlow.Redist.0.14.0\build\netstandard2.0\Microsoft.ML.TensorFlow.Redist.props')" Text="$([System.String]::Format('$(ErrorText)', 'packages\Microsoft.ML.TensorFlow.Redist.0.14.0\build\netstandard2.0\Microsoft.ML.TensorFlow.Redist.props'))" />
     <Error Condition="!Exists('packages\Alea.3.0.4\build\Alea.targets')" Text="$([System.String]::Format('$(ErrorText)', 'packages\Alea.3.0.4\build\Alea.targets'))" />
-    <Error Condition="!Exists('packages\Microsoft.Net.Compilers.Toolset.3.9.0\build\Microsoft.Net.Compilers.Toolset.props')" Text="$([System.String]::Format('$(ErrorText)', 'packages\Microsoft.Net.Compilers.Toolset.3.9.0\build\Microsoft.Net.Compilers.Toolset.props'))" />
   </Target>
   <Import Project="packages\Alea.3.0.4\build\Alea.targets" Condition="Exists('packages\Alea.3.0.4\build\Alea.targets')" />
 </Project>

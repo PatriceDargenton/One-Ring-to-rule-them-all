@@ -86,14 +86,20 @@ Public Class clsMLPTensorFlow : Inherits clsVectorizedMLPGeneric
             ' If \bin\Debug directory:
             Dim srcDllPath2 = System.IO.Path.GetDirectoryName(
                 System.IO.Path.GetDirectoryName(exePath)) & TFDllPath
+            Dim srcDllPath3 = System.IO.Path.GetDirectoryName(
+                System.IO.Path.GetDirectoryName(
+                System.IO.Path.GetDirectoryName(exePath))) & TFDllPath
             If Not System.IO.File.Exists(srcDllPath) AndAlso
-               Not System.IO.File.Exists(srcDllPath2) Then _
+               Not System.IO.File.Exists(srcDllPath2) AndAlso
+               Not System.IO.File.Exists(srcDllPath3) Then _
                 Throw New System.IO.FileNotFoundException(
                     "Please build the solution in Debug mode!")
             If System.IO.File.Exists(srcDllPath) Then
                 System.IO.File.Copy(srcDllPath, dllPath)
             ElseIf System.IO.File.Exists(srcDllPath2) Then
                 System.IO.File.Copy(srcDllPath2, dllPath)
+            ElseIf System.IO.File.Exists(srcDllPath3) Then
+                System.IO.File.Copy(srcDllPath3, dllPath)
             End If
         End If
 
