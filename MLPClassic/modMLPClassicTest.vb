@@ -1,6 +1,6 @@
 ﻿
 Imports Perceptron.Utility ' Matrix
-Imports Perceptron.clsMLPClassic ' enumLearningMode
+Imports Perceptron.clsMLPGeneric ' enumLearningMode
 
 Module modMLPClassicTest
 

@@ -414,14 +414,6 @@ Public Class clsMLPNeuralNet : Inherits clsVectorizedMLPGeneric
                     TrainingAlgorithms.RMSProp(), epochs:=Me.nbIterationsBatch).Wait()
         End Select
 
-        'If Me.numIteration < 10000 Then
-        'Debug.WriteLine("Itération : " & Me.numIteration) '  & "/" & Me.nbIterations)
-        'PrintWeights()
-        'SetOuput1D()
-        'ComputeAverageError()
-        'Debug.WriteLine("Err = " & Me.averageError)
-        'End If
-
     End Sub
 
     Private Sub Forward()

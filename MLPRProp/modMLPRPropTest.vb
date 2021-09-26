@@ -1,6 +1,6 @@
 ﻿
 Imports Perceptron.Utility ' Matrix
-Imports Perceptron.clsMLPClassic ' enumLearningMode
+Imports Perceptron.clsMLPGeneric ' enumLearningMode
 
 #Const TestConsoleDemo = 0 ' 0: Off, 1: On
 

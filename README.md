@@ -420,6 +420,9 @@ Note: To update the packages, you will need to restore this deleted line in the 
 
 # Version history
 
+26/09/2021 V1.45
+- Test modules renamed
+
 26/09/2021 V1.44
 - Packages updated:
 ```

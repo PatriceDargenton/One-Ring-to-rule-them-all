@@ -1,7 +1,7 @@
 ﻿
 Imports Perceptron
 Imports Perceptron.Utility ' Matrix
-Imports Perceptron.clsMLPClassic ' enumLearningMode
+Imports Perceptron.clsMLPGeneric ' enumLearningMode
 
 Namespace EncogMLP
 

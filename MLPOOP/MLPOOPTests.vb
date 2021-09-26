@@ -6,7 +6,7 @@ Imports Perceptron.clsMLPGeneric ' enumLearningMode
 
 Module Main
 
-    Sub Main()
+    Sub MainOOP()
 
         OOPMLPXorTest()
 

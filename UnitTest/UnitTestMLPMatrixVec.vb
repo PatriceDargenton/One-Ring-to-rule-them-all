@@ -1,12 +1,12 @@
 ﻿
 Imports Perceptron
 Imports Perceptron.Utility ' Matrix
-Imports Perceptron.clsMLPClassic ' enumLearningMode
+Imports Perceptron.clsMLPGeneric ' enumLearningMode
 
 Namespace VectorizedMatrixMLP
 
     <TestClass()>
-    Public Class clsVecMatrixMLPTest
+    Public Class clsVectorizedMatrixMLPTest
 
         Private m_mlp As New clsVectorizedMatrixMLP
 

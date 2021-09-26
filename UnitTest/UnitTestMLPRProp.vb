@@ -1,12 +1,12 @@
 ﻿
 Imports Perceptron
 Imports Perceptron.Utility ' Matrix
-Imports Perceptron.clsMLPClassic ' enumLearningMode
+Imports Perceptron.clsMLPGeneric ' enumLearningMode
 
 Namespace RPropMLP
 
     <TestClass()>
-    Public Class MultiLayerPerceptronTest
+    Public Class clsMLPRPropTest
 
         Private m_mlp As New clsMLPRProp
 

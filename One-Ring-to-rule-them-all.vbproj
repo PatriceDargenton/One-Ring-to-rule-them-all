@@ -227,21 +227,21 @@
     <Compile Include="MLPTensor\Layer\clsSigmoidLayer.vb" />
     <Compile Include="MLPTensor\Layer\clsELULayer.vb" />
     <Compile Include="MLPTensor\clsStochasticGradientDescent.vb" />
-    <Compile Include="MLPTensor\clsMLPTensorTest.vb" />
+    <Compile Include="MLPTensor\modMLPTensorTest.vb" />
     <Compile Include="MLPTensor\clsMLPTensor.vb" />
     <Compile Include="MLPTensor\clsActivation.vb" />
     <Compile Include="MLPTensor\clsMeanSquaredError.vb" />
     <Compile Include="MLPTensor\clsTensor.vb" />
     <Compile Include="MLPAccordLib\clsMLPAccord.vb" />
-    <Compile Include="MLPAccordLib\clsMLPAccordTest.vb" />
+    <Compile Include="MLPAccordLib\modMLPAccordTest.vb" />
     <Compile Include="MLPEncogLib\clsMLPEncog.vb" />
-    <Compile Include="MLPEncogLib\clsMLPEncogTest.vb" />
+    <Compile Include="MLPEncogLib\modMLPEncogTest.vb" />
     <Compile Include="MLPTensorFlowLib\clsMLPTensorFlow.vb" />
-    <Compile Include="MLPTensorFlowLib\clsMLPTensorFlowTest.vb" />
-    <Compile Include="MLPKerasLib\clsMLPKerasTest.vb" />
+    <Compile Include="MLPTensorFlowLib\modMLPTensorFlowTest.vb" />
+    <Compile Include="MLPKerasLib\modMLPKerasTest.vb" />
     <Compile Include="MLPKerasLib\clsMLPKeras.vb" />
     <Compile Include="MLPNeuralNetLib\clsMLPNeuralNet.vb" />
-    <Compile Include="MLPNeuralNetLib\clsMLPNeuralNetTest.vb" />
+    <Compile Include="MLPNeuralNetLib\modMLPNeuralNetTest.vb" />
     <Compile Include="My Project\Application.Designer.vb">
       <AutoGen>True</AutoGen>
       <DependentUpon>Application.myapp</DependentUpon>
