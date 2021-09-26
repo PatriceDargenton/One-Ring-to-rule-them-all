@@ -420,6 +420,16 @@ Note: To update the packages, you will need to restore this deleted line in the 
 
 # Version history
 
+26/09/2021 V1.44
+- Packages updated:
+```
+Packages updated:
+----------------
+FSharp.Core.5.0.1 -> FSharp.Core.6.0.0
+Google.Protobuf.3.15.6 -> Google.Protobuf.3.18.0
+JetBrains.Annotations.2020.3.0 -> JetBrains.Annotations.2021.2.0
+Newtonsoft.Json.12.0.3 -> Newtonsoft.Json.13.0.1
+```
 19/09/2021 V1.43
 - Tests moved in UnitTestOne-Ring-to-rule-them-all project and Microsoft.VisualStudio.QualityTools.UnitTestFramework.dll link removed
 

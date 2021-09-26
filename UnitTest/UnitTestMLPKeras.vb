@@ -1,7 +1,7 @@
 ﻿
 Imports Perceptron
 Imports Perceptron.Utility ' Matrix
-'Imports Perceptron.clsMLPClassic ' enumLearningMode
+Imports Perceptron.clsMLPGeneric ' enumLearningMode
 
 ' Tests are very slow!?
 #Const Implementation = 0 ' 0: Off, 1: On
