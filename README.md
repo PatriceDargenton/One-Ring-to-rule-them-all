@@ -420,7 +420,10 @@ Note: To update the packages, you will need to restore this deleted line in the 
 
 # Version history
 
-26/09/2021 V1.45
+16/10/2021 V2.01
+- A single source code, 3 solutions, 3 .NET frameworks (.Net472, .Net5, .Net6)
+
+26/09/2021 V1.45 -> 'Version1' branch
 - Test modules renamed
 
 26/09/2021 V1.44
