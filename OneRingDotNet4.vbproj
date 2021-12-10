@@ -185,7 +185,6 @@
     <Compile Include="MLP\MLP\clsRndExtension.vb" />
     <Compile Include="MLP\MLP\modMLPTest.vb" />
     <Compile Include="MLP\MLP\modTests.vb" />
-    <Compile Include="MLP\MLP\AssemblyInfo.vb" />
     <Compile Include="MLP\MLP\Dataset\mod1XOR.vb" />
     <Compile Include="MLP\MLP\Dataset\mod2XOR.vb" />
     <Compile Include="MLP\MLP\Dataset\mod3XOR.vb" />
@@ -250,7 +249,7 @@
       <AutoGen>True</AutoGen>
       <DependentUpon>Application.myapp</DependentUpon>
     </Compile>
-    <Compile Include="My Project\AssemblyInfo.vb" />
+    <Compile Include="SolutionDotNet4\AssemblyInfo.vb" />
     <Compile Include="My Project\Resources.Designer.vb">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>

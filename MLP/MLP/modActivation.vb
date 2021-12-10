@@ -116,13 +116,13 @@ Public Module modFctAct
 
         ''' <summary>
         ''' Library (can use general activation function proposed in the library)
-        ''' (ex.: MLPEncog)
+        ''' (ex.: MLPEncog, MLPNeuralNet)
         ''' </summary>
         Library = 6
 
         ''' <summary>
         ''' Library (can use only optimized activation function proposed in the library)
-        ''' (ex.: MLPAccord, MLPKeras, MLPTensorFlow, MLPNeuralNet)
+        ''' (ex.: MLPAccord, MLPKeras, MLPTensorFlow)
         ''' </summary>
         LibraryOptimized = 7
 

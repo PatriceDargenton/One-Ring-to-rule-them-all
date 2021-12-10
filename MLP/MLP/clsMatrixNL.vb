@@ -668,7 +668,7 @@ Namespace Utility
 
         Public Function ToStringWithFormat$(Optional dec$ = format2Dec)
 
-            If dec = "0.0" Then dec = "0.0;-0.0;0.0"
+            dec = removeNegativeSignFromZero(dec)
 
             Dim sb As New StringBuilder()
             sb.AppendLine("{")

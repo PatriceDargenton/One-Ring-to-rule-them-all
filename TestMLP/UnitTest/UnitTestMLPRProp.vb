@@ -529,7 +529,7 @@ Namespace RPropMLP
         End Sub
 
         <TestMethod()>
-        Public Sub RPropMLPIrisFlowerLogicalSoftMax2()
+        Public Sub RPropMLPIrisFlowerLogicalTanh()
 
             ' 100% prediction, 97.2% learning with 100 iterations in 100 msec.
 

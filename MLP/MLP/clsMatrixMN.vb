@@ -479,6 +479,8 @@ Namespace Utility
 
         Public Function ToStringWithFormat$(Optional dec$ = format2Dec)
 
+            dec = removeNegativeSignFromZero(dec)
+
             Dim sb As New StringBuilder()
             sb.AppendLine("{")
             For i = 0 To Me.r - 1

@@ -420,6 +420,9 @@ Note: To update the packages, you will need to restore this deleted line in the 
 
 # Version history
 
+10/12/2021 V2.02
+- Matrix.ToStringWithFormat() : removeNegativeSignFromZero function added
+
 16/10/2021 V2.01
 - A single source code, 3 solutions, 3 .NET frameworks (.Net472, .Net5, .Net6)
 

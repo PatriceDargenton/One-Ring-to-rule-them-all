@@ -3,14 +3,22 @@ Imports System.Runtime.CompilerServices ' Extension
 
 Public Module modMLPHelper
 
-#If NET4 Then
     Public Const format2Dec$ = "0.00"
-#ElseIf NETCORE Then
-    Public Const format2Dec$ = "#;-#;0.00"
-#End If
-
     Public Const format4Dec$ = "0.0000"
     Public Const format6Dec$ = "0.000000"
+
+    Public Function removeNegativeSignFromZero$(format$)
+        If format.Contains(";") Then
+            Return format
+        Else
+            ' Replace "-0.0" by "0.0" (the sign - is not relevant here)
+            'If dec = "0" Then dec = "0;-0;0"
+            'If dec = "0.0" Then dec = "0.0;-0.0;0.0"
+            'If dec = "0.00" Then dec = "0.00;-0.00;0.00" 
+            Dim formatWithoutNegSign$ = format & ";-" & format & ";" & format
+            Return formatWithoutNegSign
+        End If
+    End Function
 
     <Extension()>
     Public Function ReplaceCommaByDot$(text$)

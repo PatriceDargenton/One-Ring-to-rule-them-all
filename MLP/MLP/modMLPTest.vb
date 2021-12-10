@@ -129,7 +129,8 @@ Public Module modMLPTest
         Optional addBiasColumn As Boolean = True,
         Optional nbHiddenLayersFromInput As Boolean = False,
         Optional sigmoid As Boolean = False,
-        Optional minValue! = -0.5, Optional maxValue! = 0.5, Optional gain! = 2)
+        Optional minValue! = -0.5, Optional maxValue! = 0.5, Optional gain! = 2,
+        Optional learningMode As enumLearningMode = enumLearningMode.Defaut)
 
         mlp.ShowMessage(testName)
 
@@ -140,6 +141,7 @@ Public Module modMLPTest
         mlp.minimalSuccessTreshold = 0.3
         mlp.printOutput_ = True
         mlp.printOutputMatrix = False
+        'mlp.classificationObjective = True
 
         If threeLayers Then
             mlp.inputArray = m_inputArrayIrisFlowerTrain
@@ -168,7 +170,7 @@ Public Module modMLPTest
 
         WaitForKeyToStart()
 
-        mlp.Train()
+        mlp.Train(learningMode)
 
         mlp.TestAllSamples(m_inputArrayIrisFlowerTest,
             m_targetArrayIrisFlowerLogicalTest, nbOutputs:=3)
@@ -184,7 +186,8 @@ Public Module modMLPTest
                 Optional addBiasColumn As Boolean = True,
                 Optional nbHiddenLayersFromInput As Boolean = False,
                 Optional sigmoid As Boolean = False,
-                Optional minValue! = -0.5, Optional maxValue! = 0.5, Optional gain! = 2)
+                Optional minValue! = -0.5, Optional maxValue! = 0.5, Optional gain! = 2,
+                Optional learningMode As enumLearningMode = enumLearningMode.Defaut)
 
         mlp.ShowMessage(testName)
 
@@ -223,7 +226,7 @@ Public Module modMLPTest
 
         WaitForKeyToStart()
 
-        mlp.Train()
+        mlp.Train(learningMode)
 
         mlp.TestAllSamples(m_inputArrayIrisFlowerTest,
             m_targetArrayIrisFlowerAnalogTest, nbOutputs:=1)
@@ -242,7 +245,8 @@ Public Module modMLPTest
                 Optional addBiasColumn As Boolean = True,
                 Optional nbHiddenLayersFromInput As Boolean = False,
                 Optional sigmoid As Boolean = False,
-                Optional minValue! = -0.5, Optional maxValue! = 0.5, Optional gain! = 1)
+                Optional minValue! = -0.5, Optional maxValue! = 0.5, Optional gain! = 1,
+                Optional learningMode As enumLearningMode = enumLearningMode.Defaut)
 
         mlp.ShowMessage(testName)
 
@@ -279,7 +283,7 @@ Public Module modMLPTest
 
         WaitForKeyToStart()
 
-        mlp.Train()
+        mlp.Train(learningMode)
 
         mlp.TestAllSamples(mlp.inputArrayTest, mlp.targetArrayTest, nbOutputs:=1)
         mlp.PrintSuccessPrediction()

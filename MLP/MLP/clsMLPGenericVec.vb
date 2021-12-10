@@ -54,6 +54,7 @@ Public MustInherit Class clsVectorizedMLPGeneric : Inherits clsMLPGeneric
         If Not Me.printOutput_ Then
 
             Dim nbIterationsBatch0 = Me.nbIterationsBatch
+            If nbIterationsBatch0 < 1 Then nbIterationsBatch0 = 1
             Dim nbIterations0 = CInt(Me.nbIterations / nbIterationsBatch0)
             If Me.nbIterations < nbIterationsBatch0 Then nbIterations0 = 1
             Dim iteration = 0
