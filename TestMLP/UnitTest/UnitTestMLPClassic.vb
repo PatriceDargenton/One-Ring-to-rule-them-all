@@ -19,7 +19,7 @@ Namespace ClassicMLP
         'Private m_mlp As New clsMLPRProp  ' 8 success, 53 fails
         'Private m_mlp As New clsMLPNeuralNet ' 5 success, 56 fails
         'Private m_mlp As New clsMLPTensorFlow ' 2 success, 59 fails
-        'Private m_mlp As New clsMLPBrightWire  ' 1 success, 62 fails
+        'Private m_mlp As New clsMLPBrightWire  ' 4 success, 59 fails
 
         ' Weights are not stored in the same way:
         'Private m_mlp As New clsVectorizedMatrixMLP ' 61/61 fails

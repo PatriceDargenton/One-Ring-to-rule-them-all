@@ -122,7 +122,7 @@ Public Module modFctAct
 
         ''' <summary>
         ''' Library (can use only optimized activation function proposed in the library)
-        ''' (ex.: MLPAccord, MLPKeras, MLPTensorFlow)
+        ''' (ex.: MLPAccord, MLPKeras, MLPTensorFlow, MLPBrightWire)
         ''' </summary>
         LibraryOptimized = 7
 

@@ -372,6 +372,12 @@ Public MustInherit Class clsMLPGeneric
         Undefined
 
         ''' <summary>
+        ''' Nesterov, Y. (1983). A method for unconstrained convex minimization problem with the rate of 
+        '''  convergence O(1/k^2). Doklady ANSSSR (translated as Soviet.Math.Docl.), vol. 269, pp. 543–547.
+        ''' </summary>
+        NesterovMomentum
+
+        ''' <summary>
         ''' The plain stochastic gradient descent (SGD) training algorithm, by Yann Le Cun (1986)
         ''' (readen in his book "Quand la machine apprend", p. 50)
         ''' see https://en.wikipedia.org/wiki/Stochastic_gradient_descent
@@ -707,7 +713,7 @@ Public MustInherit Class clsMLPGeneric
     ''' <summary>
     ''' Test all samples
     ''' </summary>
-    Public Sub TestAllSamples(inputs!(,), nbOutputs%)
+    Public Overridable Sub TestAllSamples(inputs!(,), nbOutputs%)
 
         InitializeTraining()
         Me.nbSamples = inputs.GetLength(0)

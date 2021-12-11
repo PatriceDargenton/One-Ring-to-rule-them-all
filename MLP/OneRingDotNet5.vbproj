@@ -29,6 +29,8 @@
     <PackageReference Include="Accord.MachineLearning" Version="3.8.0" />
     <PackageReference Include="Accord.Neuro" Version="3.8.0" />
     <PackageReference Include="Accord.Statistics" Version="3.8.0" />
+    <PackageReference Include="BrightData.Numerics" Version="3.0.2" />
+    <PackageReference Include="BrightWire" Version="3.0.2" />
     <PackageReference Include="encog-dotnet-core" Version="3.4.0">
       <NoWarn>NU1701</NoWarn>
     </PackageReference>

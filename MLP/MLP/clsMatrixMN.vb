@@ -36,6 +36,18 @@ Namespace Utility
             End Set
         End Property
 
+        ' API should be conform to the CLS [Common Language Specification]
+        ' Specifically, unsigned types should not be part of the class's public interface,
+        '  as users will be forced to implement any combinations like this
+        Public Property ItemUIntSng!(r As UInteger, c As UInteger)
+            Get
+                Return CSng(Me.m_matrix(CType(r, Integer), CType(c, Integer)))
+            End Get
+            Set(value!)
+                Me.m_matrix(CType(r, Integer), CType(c, Integer)) = value
+            End Set
+        End Property
+
         Public Property matrixP As Double(,)
             Get
                 Return Me.m_matrix.ToArray

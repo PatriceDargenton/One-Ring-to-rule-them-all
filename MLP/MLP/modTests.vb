@@ -13,6 +13,7 @@ Retry:
         Console.WriteLine("MLP Test, choose an option from the following list:")
         Console.WriteLine("0: Exit")
         Console.WriteLine("a: Accord MLP")
+        Console.WriteLine("b: BrightWire MLP")
         Console.WriteLine("c: Classical MLP")
         Console.WriteLine("e: Encog MLP")
         Console.WriteLine("f: TensorFlow.NET MLP")
@@ -28,6 +29,7 @@ Retry:
         Select Case k.KeyChar
             Case "0"c : Exit Sub
             Case "a"c : ApplicationMenu(k.KeyChar)
+            Case "b"c : ApplicationMenu(k.KeyChar)
             Case "c"c : ApplicationMenu(k.KeyChar)
             Case "e"c : ApplicationMenu(k.KeyChar)
             Case "f"c : ApplicationMenu(k.KeyChar)
@@ -79,6 +81,7 @@ Retry:
 
         Select Case mlpChoice
             Case "a"c : AccordMLPXorTest(nbXor)
+            Case "b"c : BrightWireMLPXorTest(nbXor)
             Case "c"c : ClassicMLPXorTest(nbXor)
             Case "e"c : EncogMLPXorTest(nbXor)
             Case "f"c : TensorFlowMLPXORTest(nbXor) ' Works only with 1XOR?
@@ -104,6 +107,11 @@ Retry:
             Case "a"c
                 MLPGenericIrisFlowerTest(New clsMLPAccord,
                     "Accord MLP Iris flower logical test")
+
+            Case "b"c
+                MLPGenericIrisFlowerTest(New clsMLPBrightWire,
+                    "BrightWire MLP Iris flower logical test", sigmoid:=True,
+                    learningMode:=clsMLPGeneric.enumLearningMode.VectorialBatch)
 
             Case "c"c
                 ' Works only using sigmoid activation
@@ -185,6 +193,11 @@ Retry:
                 MLPGenericIrisFlowerTestAnalog(New clsMLPAccord,
                     "Accord MLP Iris flower analog test")
 
+            Case "b"c
+                MLPGenericIrisFlowerTestAnalog(New clsMLPBrightWire,
+                    "BrightWire MLP Iris flower analog test", sigmoid:=True,
+                    learningMode:=clsMLPGeneric.enumLearningMode.VectorialBatch)
+
             Case "c"c
                 MLPGenericIrisFlowerTestAnalog(New clsMLPClassic,
                     "Classic MLP Iris flower analog test")
@@ -249,6 +262,11 @@ Retry:
             Case "a"c
                 MLPGenericSunspotTest(New clsMLPAccord,
                     "Accord MLP Sunspot test")
+
+            Case "b"c
+                MLPGenericSunspotTest(New clsMLPBrightWire,
+                    "BrightWire MLP Sunspot test", sigmoid:=True,
+                    learningMode:=clsMLPGeneric.enumLearningMode.VectorialBatch)
 
             Case "c"c
                 MLPGenericSunspotTest(New clsMLPClassic,

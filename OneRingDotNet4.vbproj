@@ -81,6 +81,9 @@
     <Reference Include="Alea.Parallel, Version=3.0.0.0, Culture=neutral, PublicKeyToken=ba52afc3c2e933d6, processorArchitecture=MSIL">
       <HintPath>SolutionDotNet4\packages\Alea.3.0.4\lib\net45\Alea.Parallel.dll</HintPath>
     </Reference>
+    <Reference Include="BrightWire.Net4, Version=2.0.1.1, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>SolutionDotNet4\packages\BrightWire.Net4.2.1.1\lib\net46\BrightWire.Net4.dll</HintPath>
+    </Reference>
     <Reference Include="encog-core-cs">
       <HintPath>SolutionDotNet4\packages\encog-dotnet-core.3.4.0\lib\encog-core-cs.dll</HintPath>
     </Reference>
@@ -115,6 +118,9 @@
     </Reference>
     <Reference Include="NumSharp.Lite, Version=0.1.12.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
       <HintPath>SolutionDotNet4\packages\NumSharp.Lite.0.1.12\lib\netstandard2.0\NumSharp.Lite.dll</HintPath>
+    </Reference>
+    <Reference Include="protobuf-net, Version=2.4.0.0, Culture=neutral, PublicKeyToken=257b51d87d2e4d67, processorArchitecture=MSIL">
+      <HintPath>SolutionDotNet4\packages\protobuf-net.2.4.0\lib\net40\protobuf-net.dll</HintPath>
     </Reference>
     <Reference Include="Protobuf.Text, Version=0.5.0.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>SolutionDotNet4\packages\Protobuf.Text.0.5.0\lib\netstandard2.0\Protobuf.Text.dll</HintPath>
@@ -153,6 +159,9 @@
     <Reference Include="System.Runtime.Serialization" />
     <Reference Include="System.ServiceModel" />
     <Reference Include="System.Threading.Thread" />
+    <Reference Include="System.ValueTuple, Version=4.0.3.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
+      <HintPath>SolutionDotNet4\packages\System.ValueTuple.4.5.0\lib\net47\System.ValueTuple.dll</HintPath>
+    </Reference>
     <Reference Include="System.Xml" />
     <Reference Include="System.Core" />
     <Reference Include="System.Xml.Linq" />
@@ -194,6 +203,8 @@
     <Compile Include="MLP\MLP\Dataset\modIrisFlowerTargetAnalogOriginal.vb" />
     <Compile Include="MLP\MLP\Dataset\modIrisFlowerTargetAnalog.vb" />
     <Compile Include="MLP\MLP\Dataset\modSunspot.vb" />
+    <Compile Include="MLP\MLP\MLPBrightWire\clsMLPBrightWire.vb" />
+    <Compile Include="MLP\MLP\MLPBrightWire\modMLPBrightWireTest.vb" />
     <Compile Include="MLP\MLP\MLPRProp\clsMLPRProp.vb" />
     <Compile Include="MLP\MLP\MLPRProp\modMLPRPropTest.vb" />
     <Compile Include="MLP\MLP\MLPClassic\clsMLPClassic.vb" />

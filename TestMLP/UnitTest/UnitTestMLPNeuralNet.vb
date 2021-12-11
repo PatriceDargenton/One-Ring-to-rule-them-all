@@ -9,7 +9,8 @@ Namespace NeuralNetMLP
     <TestClass()>
     Public Class clsMLPNeuralNetTest
 
-        Private m_mlp As New clsMLPNeuralNet
+        Private m_mlp As New clsMLPNeuralNet ' 39 success, 0 fails
+        'Private m_mlp As New clsMLPBrightWire  ' 8 success, 31 fails
 
         <TestMethod()>
         Public Sub NNMLP1XORSigmoidBatch1RMSProp() ' 270 msec

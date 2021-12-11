@@ -38,6 +38,7 @@ Functional tests for Multi-Layer Perceptron implementations, using O.O.P. paradi
     - [TensorFlow MLP: implementation using TensorFlow.NET Framework](#tensorflow-mlp-implementation-using-tensorflownet-framework)
     - [Keras MLP: implementation using Keras.NET Framework](#keras-mlp-implementation-using-kerasnet-framework)
     - [NeuralNet MLP: implementation using NeuralNet.NET Framework](#neuralnet-mlp-implementation-using-neuralnetnet-framework)
+    - [Bright Wire MLP: implementation using Bright Wire Framework](#bright-wire-mlp-implementation-using-bright-wire-framework)
 - [MLP comparison](#mlp-comparison)
 - [Version history](#version-history)
 
@@ -239,7 +240,6 @@ Let see a functionnal test for a small learning example:
 # List of frameworks and libraries remaining to be tested
 - [ML.NET](https://github.com/dotnet/machinelearning) (Microsoft Machine Learning for .NET): ML.NET requires the definition of a class representing the object to learn and predict, if we want to be able to avoid this definition and do tests in a generic way, then it is specified in the FAQ that it is necessary to use the FeatureVector, but I did not find any example of implementation!
 - [CNTK](https://github.com/microsoft/CNTK) (Microsoft Cognitive Toolkit)
-- [Bright Wire](https://github.com/jdermody/brightwire)
 - [Synapses](https://github.com/mrdimosthenis/Synapses)
 - [Vulpes](https://github.com/fsprojects/Vulpes)
 - [OpenCVDotNet](https://code.google.com/archive/p/opencvdotnet)
@@ -414,11 +414,41 @@ Note: To update the packages, you will need to restore this deleted line in the 
 <Import Project="packages\Microsoft.Net.Compilers.Toolset.3.9.0\build\Microsoft.Net.Compilers.Toolset.props" Condition="Exists('packages\Microsoft.Net.Compilers.Toolset.3.9.0\build\Microsoft.Net.Compilers.Toolset.props')" />
 ```
 
+## Bright Wire MLP: implementation using Bright Wire Framework
+
+From https://github.com/jdermody/brightwire .Net core (.Net 5 and .Net 6)
+
+From https://github.com/jdermody/brightwire-v2 .Net 4.6
+
+
+Packages added:
+```
+  .Net 4
+  <package id="BrightWire.Net4" version="2.1.1" targetFramework="net472" />
+  <package id="protobuf-net" version="2.4.0" targetFramework="net472" />
+  <package id="System.ValueTuple" version="4.5.0" targetFramework="net472" />
+```
+```
+  .Net 5
+  <PackageReference Include="BrightData.Numerics" Version="3.0.2" />
+  <PackageReference Include="BrightWire" Version="3.0.2" />
+```
+```
+  .Net 6
+  <PackageReference Include="BrightData.Numerics" Version="3.0.3" />
+  <PackageReference Include="BrightWire" Version="3.0.3" />
+```
+
+Note: The optimization is not complete, as the lack of stability during the training process makes functional tests difficult to perform. Despite the setted weights, there is still a random factor that could not be identified. So there will be no performance comparison data in the [Excel workbook](MLPComparison.xls) at this time.
+
 # MLP comparison
 
 [MLPComparison.xls](MLPComparison.xls)
 
 # Version history
+
+11/12/2021 V2.03
+- [Bright Wire](https://github.com/jdermody/brightwire) MLP added
 
 10/12/2021 V2.02
 - Matrix.ToStringWithFormat() : removeNegativeSignFromZero function added
