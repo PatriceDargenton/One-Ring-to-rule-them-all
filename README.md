@@ -447,6 +447,9 @@ Note: The optimization is not complete, as the lack of stability during the trai
 
 # Version history
 
+17/12/2021 V2.04
+- GetWeight updated, SetWeight added
+
 11/12/2021 V2.03
 - [Bright Wire](https://github.com/jdermody/brightwire) MLP added
 

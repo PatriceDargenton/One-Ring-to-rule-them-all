@@ -9,8 +9,6 @@ Imports Perceptron.Randoms
 Imports Perceptron.Utility ' Matrix
 Imports System.Text ' StringBuilder
 
-'Namespace NetworkOOP
-
 Public Class clsMLPOOP : Inherits clsMLPGeneric
 
     Public Property TotalSquaredError#
@@ -290,19 +288,36 @@ Public Class clsMLPOOP : Inherits clsMLPGeneric
 
     End Sub
 
-    Public Overrides Function GetWeight!(layer%, neuron%, weight%)
+    Public Overrides Function GetWeight#(layer%, neuron%, weight%)
         Dim neuron_ = Me.Layers(layer).Neurons(neuron)
         Dim nbWeights = neuron_.WeightsToParent.Count
         If weight >= nbWeights Then
             Dim wB# = neuron_.WeightToBias.Value
-            Dim wBSng = CSng(wB)
-            Return wBSng
+            Return wB
         End If
-        Dim w# = neuron_.WeightsToParent(weight).Value
-        Dim wSng = CSng(w)
-        Return wSng
+        Dim wd# = neuron_.WeightsToParent(weight).Value
+        Return wd
     End Function
 
-End Class
+    Public Overrides Function GetWeightSingle!(layer%, neuron%, weight%)
+        Dim wd# = Me.GetWeight(layer, neuron, weight)
+        Dim ws! = CSng(wd)
+        Return ws
+    End Function
 
-'End Namespace
+    Public Overrides Sub SetWeight(layer%, neuron%, weight%, weightWalue#)
+        Dim neuron_ = Me.Layers(layer).Neurons(neuron)
+        Dim nbWeights = neuron_.WeightsToParent.Count
+        If weight >= nbWeights Then
+            neuron_.WeightToBias.Value = weightWalue
+            Exit Sub
+        End If
+        neuron_.WeightsToParent(weight).Value = weightWalue
+    End Sub
+
+    Public Overrides Sub SetWeightSingle(layer%, neuron%, weight%, weightWalue!)
+        Dim wd# = weightWalue
+        SetWeight(layer, neuron, weight, wd)
+    End Sub
+
+End Class

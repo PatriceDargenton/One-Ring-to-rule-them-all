@@ -340,11 +340,26 @@ Public Class clsMLPClassic : Inherits clsMLPGeneric
 
 #End Region
 
-#Region "Print"
+#Region "Get/Set weights"
 
-    Public Overrides Function GetWeight!(layer%, neuron%, weight%)
+    Public Overrides Function GetWeight#(layer%, neuron%, weight%)
+        Dim ws! = Me.GetWeightSingle(layer, neuron, weight)
+        Dim wd# = ws
+        Return wd
+    End Function
+
+    Public Overrides Function GetWeightSingle!(layer%, neuron%, weight%)
         Return Me.Layers(layer).Neurons(neuron).w(weight)
     End Function
+
+    Public Overrides Sub SetWeight(layer%, neuron%, weight%, weightWalue#)
+        Dim ws! = CSng(weightWalue)
+        SetWeightSingle(layer, neuron, weight, ws)
+    End Sub
+
+    Public Overrides Sub SetWeightSingle(layer%, neuron%, weight%, weightWalue!)
+        Me.Layers(layer).Neurons(neuron).w(weight) = weightWalue
+    End Sub
 
 #End Region
 

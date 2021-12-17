@@ -193,8 +193,7 @@ Public Class clsMLPKeras : Inherits clsVectorizedMLPGeneric
             Dim w2#(nbNeuronsPreviousLayer - 1, nbNeuronsLayer - 1)
             Dim l = 0
             For j = 0 To nbNeuronsPreviousLayer - 1
-                Dim nbWeights = nbNeuronsLayer
-                For k = 0 To nbWeights - 1
+                For k = 0 To nbNeuronsLayer - 1
                     Dim weight = wsi(l)
                     Dim rounded = Math.Round(weight, clsMLPGeneric.nbRoundingDigits)
                     wsi(l) = CSng(rounded)
@@ -362,12 +361,11 @@ Public Class clsMLPKeras : Inherits clsVectorizedMLPGeneric
                 sb.Append(" ")
                 If Not oneDim Then sb.Append("{")
 
-                Dim nbWeights = nbNeuronsLayer
-                For k = 0 To nbWeights - 1
+                For k = 0 To nbNeuronsLayer - 1
                     Dim weight = wsi(l)
                     Dim sVal$ = weight.ToString(format).ReplaceCommaByDot()
                     sb.Append(sVal)
-                    If Me.useBias OrElse k < nbWeights - 1 Then sb.Append(", ")
+                    If Me.useBias OrElse k < nbNeuronsLayer - 1 Then sb.Append(", ")
                     l += 1
                 Next k
 

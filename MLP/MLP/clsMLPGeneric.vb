@@ -204,8 +204,8 @@ Public MustInherit Class clsMLPGeneric
     Public nbIterations%, numIteration%
     Public nbSamples%, numSample%
 
-    Protected layerCount%
-    Protected neuronCount%()
+    Public layerCount%
+    Public neuronCount%()
 
     ''' <summary>
     ''' Learning rate of the MLP (Eta coeff.)
@@ -809,9 +809,19 @@ Public MustInherit Class clsMLPGeneric
 
     End Function
 
-    Public Overridable Function GetWeight!(layer%, neuron%, weight%)
+    Public Overridable Function GetWeight#(layer%, neuron%, weight%)
+        Return 0.0#
+    End Function
+
+    Public Overridable Function GetWeightSingle!(layer%, neuron%, weight%)
         Return 0.0!
     End Function
+
+    Public Overridable Sub SetWeight(layer%, neuron%, weight%, weightValue#)
+    End Sub
+
+    Public Overridable Sub SetWeightSingle(layer%, neuron%, weight%, weightValue!)
+    End Sub
 
     Public Overridable Sub PrintOutput(iteration%, Optional force As Boolean = False)
 

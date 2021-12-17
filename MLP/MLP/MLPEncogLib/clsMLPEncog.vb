@@ -128,14 +128,13 @@ Public Class clsMLPEncog : Inherits clsVectorizedMLPGeneric
         Dim nbNeuronsLayer = Me.network.GetLayerNeuronCount(i + 1)
         Dim nbNeuronsPreviousLayer = Me.network.GetLayerNeuronCount(i)
         For j = 0 To nbNeuronsLayer - 1
-            Dim nbWeights = nbNeuronsPreviousLayer
-            For k = 0 To nbWeights - 1
+            For k = 0 To nbNeuronsPreviousLayer - 1
                 Dim r = weights(j, k)
                 Me.network.SetWeight(i, k, j, r)
             Next k
             If Me.useBias Then
-                Dim r = weights(j, nbWeights)
-                Me.network.SetWeight(i, nbWeights, j, r)
+                Dim r = weights(j, nbNeuronsPreviousLayer)
+                Me.network.SetWeight(i, nbNeuronsPreviousLayer, j, r)
             End If
         Next j
 
@@ -157,16 +156,15 @@ Public Class clsMLPEncog : Inherits clsVectorizedMLPGeneric
             Dim nbNeuronsLayer = Me.network.GetLayerNeuronCount(i)
             Dim nbNeuronsPreviousLayer = Me.network.GetLayerNeuronCount(i - 1)
             For j = 0 To nbNeuronsLayer - 1
-                Dim nbWeights = nbNeuronsPreviousLayer
-                For k = 0 To nbWeights - 1
+                For k = 0 To nbNeuronsPreviousLayer - 1
                     Dim weight = Me.network.GetWeight(i - 1, k, j)
                     Dim rounded = Math.Round(weight, clsMLPGeneric.nbRoundingDigits)
                     Me.network.SetWeight(i - 1, k, j, rounded)
                 Next k
                 If Me.useBias Then
-                    Dim weightT = Me.network.GetWeight(i - 1, nbWeights, j)
+                    Dim weightT = Me.network.GetWeight(i - 1, nbNeuronsPreviousLayer, j)
                     Dim rounded = Math.Round(weightT, clsMLPGeneric.nbRoundingDigits)
-                    Me.network.SetWeight(i - 1, nbWeights, j, rounded)
+                    Me.network.SetWeight(i - 1, nbNeuronsPreviousLayer, j, rounded)
                 End If
             Next j
         Next i
@@ -271,12 +269,23 @@ Public Class clsMLPEncog : Inherits clsVectorizedMLPGeneric
 
     End Sub
 
-    Public Overrides Function GetWeight!(layer%, neuron%, weight%)
-
-        Dim weightDbl = Me.network.GetWeight(layer - 1, weight, neuron)
-        Dim weightSng = CSng(weightDbl)
-        Return weightSng
-
+    Public Overrides Function GetWeight#(layer%, neuron%, weight%)
+        Return Me.network.GetWeight(layer - 1, weight, neuron)
     End Function
+
+    Public Overrides Function GetWeightSingle!(layer%, neuron%, weight%)
+        Dim wd# = Me.GetWeight(layer, neuron, weight)
+        Dim ws! = CSng(wd)
+        Return ws
+    End Function
+
+    Public Overrides Sub SetWeight(layer%, neuron%, weight%, weightWalue#)
+        Me.network.SetWeight(layer - 1, weight, neuron, weightWalue)
+    End Sub
+
+    Public Overrides Sub SetWeightSingle(layer%, neuron%, weight%, weightWalue!)
+        Dim wd# = weightWalue
+        SetWeight(layer, neuron, weight, wd)
+    End Sub
 
 End Class

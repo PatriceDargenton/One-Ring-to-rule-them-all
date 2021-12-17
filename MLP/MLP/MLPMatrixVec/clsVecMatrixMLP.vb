@@ -253,11 +253,24 @@ Public Class clsVectorizedMatrixMLP : Inherits clsVectorizedMLPGeneric
 
     End Function
 
-    Public Overrides Function GetWeight!(layer%, neuron%, weight%)
-        Dim wDbl# = Me.w(layer - 1).GetValue(weight, neuron)
-        Dim wSng = CSng(wDbl)
-        Return wSng
+    Public Overrides Function GetWeight#(layer%, neuron%, weight%)
+        Return Me.w(layer - 1).GetValue(weight, neuron)
     End Function
+
+    Public Overrides Function GetWeightSingle!(layer%, neuron%, weight%)
+        Dim wd# = Me.GetWeight(layer, neuron, weight)
+        Dim ws! = CSng(wd)
+        Return ws
+    End Function
+
+    Public Overrides Sub SetWeight(layer%, neuron%, weight%, weightWalue#)
+        Me.w(layer - 1).Item(weight, neuron) = weightWalue
+    End Sub
+
+    Public Overrides Sub SetWeightSingle(layer%, neuron%, weight%, weightWalue!)
+        Dim wd# = weightWalue
+        SetWeight(layer, neuron, weight, wd)
+    End Sub
 
     Public Overrides Sub PrintOutput(iteration%, Optional force As Boolean = False)
 
@@ -280,5 +293,3 @@ Public Class clsVectorizedMatrixMLP : Inherits clsVectorizedMLPGeneric
     End Sub
 
 End Class
-
-'End Namespace

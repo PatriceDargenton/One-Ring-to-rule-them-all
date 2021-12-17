@@ -291,20 +291,41 @@ Public Class clsMLPAccord : Inherits clsVectorizedMLPGeneric
 
     End Sub
 
-    Public Overrides Function GetWeight!(layer%, neuron%, weight%)
+    Public Overrides Function GetWeight#(layer%, neuron%, weight%)
 
         Dim layer_ = Me.network.Layers(layer - 1)
         Dim neuron_ = CType(layer_.Neurons(neuron), ActivationNeuron)
         Dim nbWeights = neuron_.Weights.Count
-        Dim w#
+        Dim wd#
         If weight < nbWeights Then
-            w = neuron_.Weights(weight)
+            wd = neuron_.Weights(weight)
         Else
-            w = neuron_.Threshold
+            wd = neuron_.Threshold
         End If
-        Dim wSng = CSng(w)
-        Return wSng
+        Return wd
 
     End Function
+
+    Public Overrides Function GetWeightSingle!(layer%, neuron%, weight%)
+        Dim wd# = Me.GetWeight(layer, neuron, weight)
+        Dim ws! = CSng(wd)
+        Return ws
+    End Function
+
+    Public Overrides Sub SetWeight(layer%, neuron%, weight%, weightWalue#)
+        Dim layer_ = Me.network.Layers(layer - 1)
+        Dim neuron_ = CType(layer_.Neurons(neuron), ActivationNeuron)
+        Dim nbWeights = neuron_.Weights.Count
+        If weight < nbWeights Then
+            neuron_.Weights(weight) = weightWalue
+        Else
+            neuron_.Threshold = weightWalue
+        End If
+    End Sub
+
+    Public Overrides Sub SetWeightSingle(layer%, neuron%, weight%, weightWalue!)
+        Dim wd# = weightWalue
+        SetWeight(layer, neuron, weight, wd)
+    End Sub
 
 End Class

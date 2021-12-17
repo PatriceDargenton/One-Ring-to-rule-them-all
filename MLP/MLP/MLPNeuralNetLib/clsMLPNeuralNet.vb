@@ -170,24 +170,22 @@ Public Class clsMLPNeuralNet : Inherits clsVectorizedMLPGeneric
 
         Dim i = layer - 1
         Dim nbNeuronsLayer = Me.neuronCount(i + 1)
-        Dim nbBiases = nbNeuronsLayer
-        Dim n = nbBiases * Me.neuronCount(i)
-        ReDim Me.m_weights(i)(0 To n - 1)
-        ReDim Me.m_biases(i)(0 To nbBiases - 1)
-        For j = 0 To nbBiases - 1
+        Dim nbWeights = nbNeuronsLayer * Me.neuronCount(i)
+        ReDim Me.m_weights(i)(0 To nbWeights - 1)
+        ReDim Me.m_biases(i)(0 To nbNeuronsLayer - 1)
+        For j = 0 To nbNeuronsLayer - 1
             Me.m_biases(i)(j) = 0
         Next j
         Dim nbNeuronsPreviousLayer = Me.neuronCount(i)
         Dim l = 0
         For j = 0 To nbNeuronsLayer - 1
-            Dim nbWeights = nbNeuronsPreviousLayer
-            For k = 0 To nbWeights - 1
+            For k = 0 To nbNeuronsPreviousLayer - 1
                 Dim r = weights(j, k)
                 Me.m_weights(i)(l) = CSng(r)
                 l += 1
             Next k
             If Me.useBias Then
-                Dim r = weights(j, nbWeights)
+                Dim r = weights(j, nbNeuronsPreviousLayer)
                 Me.m_biases(i)(j) = CSng(r)
             End If
         Next j
@@ -237,10 +235,10 @@ Public Class clsMLPNeuralNet : Inherits clsVectorizedMLPGeneric
         ReDim Me.m_weights(0 To Me.layerCount - 2)
         ReDim Me.m_biases(0 To Me.layerCount - 2)
         For i = 0 To Me.layerCount - 2
-            Dim nbBiases = Me.neuronCount(i + 1)
-            Dim n = nbBiases * Me.neuronCount(i)
-            ReDim Me.m_weights(i)(0 To n - 1)
-            ReDim Me.m_biases(i)(0 To nbBiases - 1)
+            Dim nbNeuronsLayer = Me.neuronCount(i + 1)
+            Dim nbWeights = nbNeuronsLayer * Me.neuronCount(i)
+            ReDim Me.m_weights(i)(0 To nbWeights - 1)
+            ReDim Me.m_biases(i)(0 To nbNeuronsLayer - 1)
         Next
     End Sub
 
@@ -251,8 +249,8 @@ Public Class clsMLPNeuralNet : Inherits clsVectorizedMLPGeneric
 
         For i = 0 To Me.network.Layers.Count - 1
 
-            Dim nbBiases = Me.neuronCount(i + 1)
-            Dim nbWeights = nbBiases * Me.neuronCount(i)
+            Dim nbNeuronsLayer = Me.neuronCount(i + 1)
+            Dim nbWeights = nbNeuronsLayer * Me.neuronCount(i)
 
             For k = 0 To nbWeights - 1
                 Dim weight = Me.m_weights(i)(k)
@@ -261,7 +259,7 @@ Public Class clsMLPNeuralNet : Inherits clsVectorizedMLPGeneric
             Next k
 
             If Me.useBias Then
-                For k = 0 To nbBiases - 1
+                For k = 0 To nbNeuronsLayer - 1
                     Dim weightT = Me.m_biases(i)(k)
                     Dim rounded = Math.Round(weightT, clsMLPGeneric.nbRoundingDigits)
                     Me.m_biases(i)(k) = CSng(rounded)
@@ -506,19 +504,43 @@ Public Class clsMLPNeuralNet : Inherits clsVectorizedMLPGeneric
 
     End Function
 
-    Public Overrides Function GetWeight!(layer%, neuron%, weight%)
+    Public Overrides Function GetWeight#(layer%, neuron%, weight%)
+        Dim ws! = Me.GetWeightSingle(layer, neuron, weight)
+        Dim wd# = ws
+        Return wd
+    End Function
 
-        Dim nbNeuronsPreviousLayer = Me.neuronCount(layer - 1)
-        If weight >= nbNeuronsPreviousLayer Then
-            Dim l2% = weight - nbNeuronsPreviousLayer + neuron
-            Dim bias_ = Me.m_biases(layer - 1)(l2)
-            Return bias_
+    Public Overrides Function GetWeightSingle!(layer%, neuron%, weight%)
+
+        Dim nbNeuronsLayer = Me.neuronCount(layer - 1)
+        If weight >= nbNeuronsLayer Then
+            Dim l2% = weight - nbNeuronsLayer + neuron
+            Dim biasValue = Me.m_biases(layer - 1)(l2)
+            Return biasValue
         End If
-        Dim l% = neuron * nbNeuronsPreviousLayer + weight
-        Dim weight_ = Me.m_weights(layer - 1)(l)
-        Return weight_
+        Dim l% = neuron * nbNeuronsLayer + weight
+        Dim weightValue = Me.m_weights(layer - 1)(l)
+        Return weightValue
 
     End Function
+
+    Public Overrides Sub SetWeight(layer%, neuron%, weight%, weightWalue#)
+        Dim ws! = CSng(weightWalue)
+        SetWeightSingle(layer, neuron, weight, ws)
+    End Sub
+
+    Public Overrides Sub SetWeightSingle(layer%, neuron%, weight%, weightWalue!)
+
+        Dim nbNeuronsLayer = Me.neuronCount(layer - 1)
+        If weight >= nbNeuronsLayer Then
+            Dim l2% = weight - nbNeuronsLayer + neuron
+            Me.m_biases(layer - 1)(l2) = weightWalue
+            Exit Sub
+        End If
+        Dim l% = neuron * nbNeuronsLayer + weight
+        Me.m_weights(layer - 1)(l) = weightWalue
+
+    End Sub
 
 #Else
 

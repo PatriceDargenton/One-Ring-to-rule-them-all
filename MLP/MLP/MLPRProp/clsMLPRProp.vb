@@ -16,9 +16,9 @@ Public Class clsMLPRProp : Inherits clsVectorizedMLPGeneric
     Public targetJaggedDblArray#()()
     Dim m_trainData#()()
     Dim m_nbWeights%
-    Dim m_gnn As NeuralNetwork
+    Public m_gnn As NeuralNetwork
 
-    Private m_weights#()
+    Public m_weights#()
 
     Public Overrides Function GetMLPType$()
         Return System.Reflection.MethodBase.GetCurrentMethod().DeclaringType.Name
@@ -364,7 +364,7 @@ Public Class clsMLPRProp : Inherits clsVectorizedMLPGeneric
 
     End Function
 
-    Public Overrides Function GetWeight!(layer%, neuron%, weight%)
+    Public Overrides Function GetWeight#(layer%, neuron%, weight%)
 
         If IsNothing(Me.m_weights) Then Return 0.0!
         Dim l% = weight
@@ -376,11 +376,36 @@ Public Class clsMLPRProp : Inherits clsVectorizedMLPGeneric
             If i < layer Then mult = nbNeuronsLayer
             l += nbNeuronsPreviousLayer * mult
         Next
-        Dim weightDbl = Me.m_weights(l)
-        Dim weightSng = CSng(weightDbl)
-        Return weightSng
+        Return Me.m_weights(l)
 
     End Function
+
+    Public Overrides Function GetWeightSingle!(layer%, neuron%, weight%)
+        Dim wd# = Me.GetWeight(layer, neuron, weight)
+        Dim ws! = CSng(wd)
+        Return ws
+    End Function
+
+    Public Overrides Sub SetWeight(layer%, neuron%, weight%, weightWalue#)
+
+        If IsNothing(Me.m_weights) Then Exit Sub
+        Dim l% = weight
+        For i% = 1 To layer
+            Dim nbNeuronsLayer = Me.neuronCount(i)
+            Dim nbNeuronsPreviousLayer = Me.neuronCount(i - 1)
+            If Me.useBias Then nbNeuronsPreviousLayer += 1
+            Dim mult = neuron
+            If i < layer Then mult = nbNeuronsLayer
+            l += nbNeuronsPreviousLayer * mult
+        Next
+        Me.m_weights(l) = weightWalue
+
+    End Sub
+
+    Public Overrides Sub SetWeightSingle(layer%, neuron%, weight%, weightWalue!)
+        Dim wd# = weightWalue
+        SetWeight(layer, neuron, weight, wd)
+    End Sub
 
 #Region "Console demo"
 
