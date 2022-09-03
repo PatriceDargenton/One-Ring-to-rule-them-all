@@ -238,8 +238,18 @@ Let see a functionnal test for a small learning example:
 - The [Sunspots](https://courses.cs.washington.edu/courses/cse599/01wi/admin/Assignments/nn.html) test.
 
 # List of frameworks and libraries remaining to be tested
-- [ML.NET](https://github.com/dotnet/machinelearning) (Microsoft Machine Learning for .NET): ML.NET requires the definition of a class representing the object to learn and predict, if we want to be able to avoid this definition and do tests in a generic way, then it is specified in the FAQ that it is necessary to use the FeatureVector, but I did not find any example of implementation!
+- [ML.NET](https://github.com/dotnet/machinelearning) (Microsoft Machine Learning for .NET): See there for an example with XOR and AutoML in C#:
+    - https://github.com/PatriceDargenton/machinelearning-samples/tree/main/samples/csharp/getting-started/XOR
+	- and in VB:
+https://github.com/PatriceDargenton/machinelearning-samples/tree/VB/samples/visualbasic/getting-started/XOR
+	- AutoML is very interesting for testing many algorithms using the same data! But in my example, only the FastTree algorithm is working for the moment, I still need to find and tune at least one algorithm with a neural network, and show the weights in a console demo, like for the other libraries.
+	- But there are major drawbacks with ML.NET:
+		* ML.NET requires the definition of a class representing the object, and must therefore be compiled before running the app;
+		* Even using FeatureVector, it is still required to compile before running the app (to set the size of the vector);
+		* There is no multi-ouput regression with ML.NET: if you have multiple outputs to learn (e.g. to test 2XOR or 3XOR), then you must learn an array of independent ML.NET networks (instead of an integrated multi-output network, and potentially dependant outputs);
+		* A small dataset (e.g. XOR one) needs to be duplicated in order to have enough rows to learn (it would be better to define a number of iterations for learning, like in the other libraries, it may be an AutoML drawback).
 - [CNTK](https://github.com/microsoft/CNTK) (Microsoft Cognitive Toolkit)
+- [SynapseML](https://github.com/microsoft/SynapseML) from Microsoft (use python)
 - [Synapses](https://github.com/mrdimosthenis/Synapses)
 - [Vulpes](https://github.com/fsprojects/Vulpes)
 - [OpenCVDotNet](https://code.google.com/archive/p/opencvdotnet)
