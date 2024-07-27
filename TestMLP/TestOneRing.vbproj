@@ -32,7 +32,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\MLP\OneRingDotNet6.vbproj" />
+    <ProjectReference Include="..\MLP\OneRing.vbproj" />
   </ItemGroup>
 
 </Project>

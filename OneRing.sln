@@ -3,9 +3,9 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 16
 VisualStudioVersion = 16.0.31702.278
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{778DAE3C-4631-46EA-AA77-85C1314464D9}") = "OneRingDotNet6", "..\MLP\OneRingDotNet6.vbproj", "{0E554FDF-1054-4199-9866-C3CAFF5C462C}"
+Project("{778DAE3C-4631-46EA-AA77-85C1314464D9}") = "OneRing", "MLP\OneRing.vbproj", "{0E554FDF-1054-4199-9866-C3CAFF5C462C}"
 EndProject
-Project("{778DAE3C-4631-46EA-AA77-85C1314464D9}") = "TestOneRingDotNet6", "..\TestMLP\TestOneRingDotNet6.vbproj", "{8B875A07-2FB9-45D6-964E-8B9D317B8318}"
+Project("{778DAE3C-4631-46EA-AA77-85C1314464D9}") = "TestOneRing", "TestMLP\TestOneRing.vbproj", "{8B875A07-2FB9-45D6-964E-8B9D317B8318}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
