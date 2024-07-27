@@ -3,7 +3,7 @@
   <PropertyGroup>
     <OutputType>Exe</OutputType>
     <RootNamespace>Perceptron</RootNamespace>
-    <TargetFramework>net6.0</TargetFramework>
+    <TargetFramework>net8.0</TargetFramework>
     <AssemblyName>Perceptron</AssemblyName>
     <StartupObject>Sub Main</StartupObject>
     <OptionStrict>On</OptionStrict>
