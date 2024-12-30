@@ -1,0 +1,7 @@
+<Project>
+  <PropertyGroup>
+    <!-- To implement NeuralNetwork.NET, define the conditional compilation constant "NeuralNetworkNETEngine" right here -->
+    <!-- <DefineConstants>NeuralNetworkNETEngine</DefineConstants> -->
+    <DefineConstants></DefineConstants>
+  </PropertyGroup>
+</Project>

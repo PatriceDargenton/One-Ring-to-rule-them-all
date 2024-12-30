@@ -2,9 +2,11 @@
 Imports Perceptron.Utility ' Matrix
 Imports Perceptron.clsMLPGeneric ' enumLearningMode
 
+#If NeuralNetworkNETEngine Then
 Imports Perceptron.clsMLPNeuralNet ' TrainingAlgorithmType
 ' BC40025: Type of this member is not CLS-compliant:
 'Imports NeuralNetworkNET.SupervisedLearning.Algorithms ' TrainingAlgorithmType
+#End If
 
 Module modMLPNeuralNetTest
 
@@ -16,6 +18,8 @@ Module modMLPNeuralNetTest
     End Sub
 
     Public Sub NeuralNetMLPXorTest(Optional nbXor% = 1)
+
+#If NeuralNetworkNETEngine Then
 
         Dim mlp As New clsMLPNeuralNet
 
@@ -69,6 +73,8 @@ Module modMLPNeuralNetTest
 
         WaitForKeyToContinue("Press a key to print MLP weights")
         mlp.PrintWeights()
+
+#End If
 
     End Sub
 

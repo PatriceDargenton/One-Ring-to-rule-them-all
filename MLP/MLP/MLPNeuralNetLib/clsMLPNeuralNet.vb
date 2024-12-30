@@ -3,10 +3,22 @@
 ' https://github.com/Sergio0694/NeuralNetwork.NET
 ' https://scisharp.github.io/SciSharp Other .NET Machine Learning projects
 
-' Install-Package NeuralNetwork.NET
+' Install-Package NeuralNetwork.NET -Version 2.1.3
 ' Fix SixLabors.ImageSharp FileLoadException (0x80131040) bug:
 ' Install-Package SixLabors.ImageSharp -Version 1.0.0-beta0007
 ' (bug starting from 1.0.0-rc0001 version)
+
+' To implement NeuralNetwork.NET set the conditional compilation constant "NeuralNetworkNETEngine" 
+'  in the Directory.Build.props file at the solution level:
+' <DefineConstants>NeuralNetworkNETEngine</DefineConstants>
+' Not there:
+'#Const NeuralNetworkNETEngine = 0 ' 0: Off, 1: On
+' This engine has been disabled, because it uses a vulnerable version of the SixLabors.ImageSharp library,
+'  which cannot be updated:
+' https://github.com/advisories/GHSA-65x7-c272-7g7r Severity: high
+' https://github.com/advisories/GHSA-63p8-c4ww-9cg7 Severity: high
+
+#If NeuralNetworkNETEngine Then
 
 Imports NeuralNetworkNET.APIs
 Imports NeuralNetworkNET.APIs.Enums
@@ -565,3 +577,5 @@ Public Class clsMLPNeuralNet : Inherits clsVectorizedMLPGeneric
 #End If
 
 End Class
+    
+#End If

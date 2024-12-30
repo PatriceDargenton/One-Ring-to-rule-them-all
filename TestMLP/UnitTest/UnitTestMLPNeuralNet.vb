@@ -4,6 +4,8 @@ Imports Perceptron.Utility ' Matrix
 Imports Perceptron.clsMLPGeneric ' enumLearningMode
 Imports Microsoft.VisualStudio.TestTools.UnitTesting
 
+#If NeuralNetworkNETEngine Then
+
 Namespace NeuralNetMLP
 
     <TestClass()>
@@ -1431,3 +1433,5 @@ Namespace NeuralNetMLP
     End Class
 
 End Namespace
+
+#End If

@@ -140,9 +140,11 @@ Retry:
                     "Matrix MLP Iris flower logical test", nbIterations:=4000, threeLayers:=True)
 
             Case "n"c
+#If NeuralNetworkNETEngine Then
                 MLPGenericIrisFlowerTest(New clsMLPNeuralNet,
                     "NeuralNet.NET MLP Iris flower logical test",
                     nbIterations:=3000, threeLayers:=True, sigmoid:=False)
+#End If
 
             Case "o"c
                 MLPGenericIrisFlowerTest(New clsMLPOOP,
@@ -224,8 +226,10 @@ Retry:
                     "Matrix MLP Iris flower analog test", nbIterations:=4000, threeLayers:=True)
 
             Case "n"c
+#If NeuralNetworkNETEngine Then
                 MLPGenericIrisFlowerTestAnalog(New clsMLPNeuralNet,
                     "NeuralNet.NET MLP Iris flower analog test", nbIterations:=3000, sigmoid:=False)
+#End If
 
             Case "o"c
                 MLPGenericIrisFlowerTestAnalog(New clsMLPOOP,
@@ -293,8 +297,10 @@ Retry:
                     "Matrix MLP Sunspot test")
 
             Case "n"c
+#If NeuralNetworkNETEngine Then
                 MLPGenericSunspotTest(New clsMLPNeuralNet,
                     "NeuralNet.NET MLP Sunspot test", sigmoid:=True, nbIterations:=3000)
+#End If
 
             Case "o"c
                 MLPGenericSunspotTest(New clsMLPOOP,
